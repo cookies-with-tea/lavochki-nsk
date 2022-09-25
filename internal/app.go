@@ -3,10 +3,12 @@ package internal
 import (
 	"benches-bot/internal/config"
 	"benches-bot/internal/domain"
-	"fmt"
+	"bytes"
+	"encoding/json"
 	"github.com/NicoNex/echotron/v3"
 	"go.uber.org/zap"
 	"log"
+	"net/http"
 	"strings"
 )
 
@@ -19,9 +21,10 @@ type app struct {
 }
 
 type bot struct {
-	state    stateFn
-	location *domain.Location
-	image    string
+	state      stateFn
+	location   *domain.Location
+	image      []byte
+	backendUrl string
 	echotron.API
 }
 
@@ -40,53 +43,72 @@ func (a *app) Run() {
 
 func (b *bot) handleMessage(update *echotron.Update) stateFn {
 	if strings.HasPrefix(update.Message.Text, "/add") {
-		b.SendMessage("Окей, отправь мне геолокацию", update.Message.Chat.ID, nil)
-		return b.handleImage
+		_, err := b.SendMessage("Окей, отправь мне геолокацию", update.Message.Chat.ID, nil)
+		if err != nil {
+			panic(err)
+		}
+		return b.handleLocation
 	}
 	return b.handleMessage
 }
 
-//func (b *bot) handleLocation(update *echotron.Update) stateFn {
-//	location := &domain.Location{}
-//	fmt.Println(update.Message.Location)
-//	if update.Message.Location == nil {
-//		b.SendMessage("Это не похоже на локацию. Попробуй ещё раз.", update.Message.Chat.ID, nil)
-//		return b.handleMessage
-//	}
-//	location.Lat = update.Message.Location.Latitude
-//	location.Lng = update.Message.Location.Longitude
-//	b.location = location
-//
-//	b.SendMessage("Отлично! Координаты установлены. Не мог бы ты теперь прислать фото?", update.Message.Chat.ID, nil)
-//	return b.handleImage
-//}
+func (b *bot) handleLocation(update *echotron.Update) stateFn {
+	location := &domain.Location{}
+	if update.Message.Location == nil {
+		_, err := b.SendMessage("Это не похоже на локацию. Попробуй ещё раз.", update.Message.Chat.ID, nil)
+		if err != nil {
+			panic(err)
+		}
+		return b.handleMessage
+	}
+	location.Lat = update.Message.Location.Latitude
+	location.Lng = update.Message.Location.Longitude
+	b.location = location
+
+	_, err := b.SendMessage("Отлично! Координаты установлены. Не мог бы ты теперь прислать фото?", update.Message.Chat.ID, nil)
+	if err != nil {
+		panic(err)
+	}
+	return b.handleImage
+}
 
 func (b *bot) handleImage(update *echotron.Update) stateFn {
 	images := update.Message.Photo
 	if len(images) == 0 {
-		b.SendMessage("Это не похоже на фото. Попробуй ещё раз.", update.Message.Chat.ID, nil)
+		_, err := b.SendMessage("Это не похоже на фото. Попробуй ещё раз.", update.Message.Chat.ID, nil)
+		if err != nil {
+			panic(err)
+		}
 		return b.handleMessage
 	}
-	b.SendMessage("Отлично!", update.Message.Chat.ID, nil)
-	fileInfo, err := b.GetFile(images[0].FileID)
+	_, err := b.SendMessage("Отлично!", update.Message.Chat.ID, nil)
 	if err != nil {
-
+		panic(err)
 	}
-	fmt.Println(fileInfo.Result.FilePath)
-	file, err := b.DownloadFile(fileInfo.Result.FilePath)
-	if err != nil {
-	}
-	fmt.Println(file)
+	fileInfo, _ := b.GetFile(images[0].FileID)
+	file, _ := b.DownloadFile(fileInfo.Result.FilePath)
+	b.image = file
+	b.createBench()
 	return b.handleMessage
+}
+
+func (b *bot) createBench() {
+	model := domain.CreateBench{Lat: b.location.Lat, Lng: b.location.Lng, Image: b.image}
+	jsonBody, _ := json.Marshal(model)
+	_, err := http.Post(b.backendUrl, "application/json", bytes.NewBuffer(jsonBody))
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (b *bot) Update(update *echotron.Update) {
 	b.state = b.state(update)
 }
 
-func (a *app) createBot(chatID int64) echotron.Bot {
+func (a *app) createBot(_ int64) echotron.Bot {
 	abot := &bot{API: echotron.NewAPI(a.cfg.Telegram.Token)}
 	abot.state = abot.handleMessage
 	a.bot = abot
+	a.bot.backendUrl = a.cfg.BackendServer.Url
 	return abot
 }

@@ -18,6 +18,9 @@ type Config struct {
 			Password string `env:"ADMIN_PWD" env-default:"admin"`
 		}
 	}
+	BackendServer struct {
+		Url string `env:"BACKEND_URL" env-default:"localhost:8000"`
+	}
 }
 
 var instance *Config
