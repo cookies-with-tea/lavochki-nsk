@@ -6,24 +6,27 @@ import (
 )
 
 type benchModel struct {
-	bun.Model `bun:"table:benches,alias:benches,select:benches"`
+	bun.BaseModel `bun:"table:benches,alias:benches,select:benches"`
 
-	ID        string `bun:"id,pk"`
-	PositionX int    `bun:"position_x"`
-	PositionY int    `bun:"position_y"`
+	ID    string  `bun:"id,pk"`
+	Lat   float64 `bun:"lat"`
+	Lng   float64 `bun:"lng"`
+	Image string  `bun:"image"`
 }
 
 func (b *benchModel) FromDomain(bench domain.Bench) {
 	b.ID = bench.ID
-	b.PositionY = bench.PositionY
-	b.PositionX = bench.PositionX
+	b.Lat = bench.Lat
+	b.Lng = bench.Lng
+	b.Image = bench.Image
 }
 
 func benchModelToDomain(model benchModel) domain.Bench {
 	return domain.Bench{
-		ID:        model.ID,
-		PositionX: model.PositionX,
-		PositionY: model.PositionY,
+		ID:    model.ID,
+		Lat:   model.Lat,
+		Lng:   model.Lng,
+		Image: model.Image,
 	}
 }
 

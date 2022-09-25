@@ -3,6 +3,7 @@ package postgres
 import (
 	"benches/internal/domain"
 	"context"
+	"github.com/oklog/ulid/v2"
 	"github.com/uptrace/bun"
 )
 
@@ -24,4 +25,15 @@ func (b *BenchesRepository) GetBenches(ctx context.Context) ([]domain.Bench, err
 	}
 	users := benchModelsToDomain(benchesModel)
 	return users, nil
+}
+
+func (b *BenchesRepository) CreateBench(ctx context.Context, bench domain.Bench) error {
+	model := benchModel{}
+	model.FromDomain(bench)
+	model.ID = ulid.Make().String()
+	_, err := b.db.NewInsert().Model(&model).Exec(ctx)
+	if err != nil {
+		return err
+	}
+	return nil
 }
