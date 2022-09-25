@@ -85,7 +85,8 @@ func (b *bot) handleImage(update *echotron.Update) stateFn {
 	if err != nil {
 		panic(err)
 	}
-	fileInfo, _ := b.GetFile(images[0].FileID)
+	image := images[3]
+	fileInfo, _ := b.GetFile(image.FileID)
 	file, _ := b.DownloadFile(fileInfo.Result.FilePath)
 	b.image = file
 	b.createBench()
