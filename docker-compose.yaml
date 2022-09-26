@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  bot:
+    container_name: benches-bot
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/opt/benches/
