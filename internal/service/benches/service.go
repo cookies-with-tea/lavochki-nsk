@@ -26,6 +26,9 @@ func (s *Service) GetListBenches(ctx context.Context) ([]domain.Bench, error) {
 		s.log.Error("error get all benches", zap.Error(err))
 		return nil, err
 	}
+	for idx := range users {
+		users[idx].Image = s.storage.GetImageURL(users[idx].Image)
+	}
 	return users, nil
 }
 
