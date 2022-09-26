@@ -8,3 +8,4 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./:/opt/benches/
+    network_mode: host
