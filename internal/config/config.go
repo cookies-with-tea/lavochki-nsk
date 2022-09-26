@@ -33,6 +33,9 @@ type Config struct {
 		Bucket    string `env:"MINIO_BUCKET" env-default:"benches"`
 		UseSSL    bool   `env:"MINIO_USE_SSL" env-default:"true"`
 	}
+	Images struct {
+		PublicEndpoint string `env:"IMAGES_PUBLIC_ENDPOINT" env-default:"http://localhost:9000"`
+	}
 }
 
 var instance *Config
