@@ -40,6 +40,17 @@ services:
       - minio_data:/data
       - minio_config:/root/.minio
 
+  nginx:
+    container_name: benches-nginx
+    build:
+      context: ./
+      dockerfile: ./deploy/nginx/Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - minio
+      - web
+
 volumes:
   postgres_data:
   minio_data:
