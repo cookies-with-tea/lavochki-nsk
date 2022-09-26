@@ -10,5 +10,19 @@ services:
     ports:
       - "5432:5432"
 
+  minio:
+    image: minio/minio:latest
+    command: server --console-address ":9001" /data
+    restart: always
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    env_file: .env
+    volumes:
+      - minio_data:/data
+      - minio_config:/root/.minio
+
 volumes:
   postgres_data:
+  minio_data:
+  minio_config:
