@@ -54,7 +54,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 			logger.Fatal("run minio client: ", zap.Error(err))
 		}
 	}
-	appBenchesStorage := storage.NewMinioStorage(minioClient, cfg.Minio.Bucket, "")
+	appBenchesStorage := storage.NewMinioStorage(minioClient, cfg.Minio.Bucket, cfg.Images.PublicEndpoint)
 	appBenchesRepository := postgres.NewBenchesRepository(db)
 	appBenchesService := benchesService.NewService(appBenchesRepository, appBenchesStorage, logger)
 	appHandlerBenches := benches.NewBenchesHandler(appBenchesService)
