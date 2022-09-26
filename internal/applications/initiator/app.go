@@ -5,11 +5,14 @@ import (
 	"benches/internal/handlers/benches"
 	"benches/internal/repository/postgres"
 	benchesService "benches/internal/service/benches"
+	storage "benches/internal/storage/minio"
 	"benches/pkg/database"
 	"context"
 	"errors"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/minio/minio-go/v7"
+	"github.com/minio/minio-go/v7/pkg/credentials"
 	"github.com/rs/cors"
 	"github.com/uptrace/bun"
 	"go.uber.org/zap"
@@ -32,8 +35,28 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 
 	db := postgres.NewPostgresDatabase(database.DatabaseParametersToDSN("postgres", cfg.PostgreSQL.Host,
 		cfg.PostgreSQL.Database, cfg.PostgreSQL.Username, cfg.PostgreSQL.Password, false))
+	minioClient, err := minio.New(cfg.Minio.Endpoint, &minio.Options{
+		Creds:  credentials.NewStaticV4(cfg.Minio.AccessKey, cfg.Minio.SecretKey, ""),
+		Secure: false,
+	})
+	if err != nil {
+		logger.Fatal("creating minio client: ", zap.Error(err))
+	}
+	err = minioClient.MakeBucket(context.Background(), cfg.Minio.Bucket, minio.MakeBucketOptions{
+		Region:        "",
+		ObjectLocking: false,
+	})
+	if err != nil {
+		exists, errBucketExists := minioClient.BucketExists(context.Background(), cfg.Minio.Bucket)
+		if errBucketExists == nil && exists {
+			logger.Info("we already own", zap.String("bucket", cfg.Minio.Bucket))
+		} else {
+			logger.Fatal("run minio client: ", zap.Error(err))
+		}
+	}
+	appBenchesStorage := storage.NewMinioStorage(minioClient, cfg.Minio.Bucket, "")
 	appBenchesRepository := postgres.NewBenchesRepository(db)
-	appBenchesService := benchesService.NewService(appBenchesRepository, logger)
+	appBenchesService := benchesService.NewService(appBenchesRepository, appBenchesStorage, logger)
 	appHandlerBenches := benches.NewBenchesHandler(appBenchesService)
 	appHandlerBenches.Register(router)
 

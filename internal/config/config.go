@@ -26,6 +26,13 @@ type Config struct {
 		Port     string `env:"POSTGRES_PORT" env-required:"true"`
 		Database string `env:"POSTGRES_DB" env-required:"true"`
 	}
+	Minio struct {
+		Endpoint  string `env:"MINIO_ENDPOINT" env-default:"minio:9000"`
+		AccessKey string `env:"MINIO_ACCESS_KEY"`
+		SecretKey string `env:"MINIO_SECRET_KEY"`
+		Bucket    string `env:"MINIO_BUCKET" env-default:"benches"`
+		UseSSL    bool   `env:"MINIO_USE_SSL" env-default:"true"`
+	}
 }
 
 var instance *Config
