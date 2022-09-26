@@ -1,6 +1,19 @@
 version: '3.8'
 
 services:
+  web:
+    container_name: benches-web
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/opt/benches/
+    depends_on:
+      - db
+      - minio
+
   db:
     image: postgres:12.0-alpine
     container_name: benches-db
