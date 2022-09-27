@@ -34,13 +34,11 @@ func (h *Handler) listBenches(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) addBench(w http.ResponseWriter, r *http.Request) {
 	var bench dto.CreateBench
 	if err := json.NewDecoder(r.Body).Decode(&bench); err != nil {
-		fmt.Println(err)
 		h.ResponseErrorJson(w, "wrong data", http.StatusBadRequest)
 		return
 	}
 	err := h.benches.CreateBench(r.Context(), bench)
 	if err != nil {
-		fmt.Println(err)
 		h.ResponseErrorJson(w, fmt.Sprint(err), http.StatusBadRequest)
 		return
 	}
