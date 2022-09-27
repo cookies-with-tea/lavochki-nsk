@@ -33,11 +33,29 @@ const StyledHeader = styled.header`
   }
 `
 
+const StyledLink = styled.a`
+  display: block;
+  margin-right: 12px;
+  width: 140px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  background-color: #d58225;
+  text-align: center;
+  border-radius: 4px;
+`
+
 const TheHeader = (): any => {
     return (
         <StyledHeader>
             <div className="logo">logo</div>
             <div className="auth">
+                <StyledLink
+                    href="https://t.me/s1veme_timetable_bot?start=1"
+                    target="_blank"
+                >
+                    Привязать аккаунт
+                </StyledLink>
                 <div className="auth__title">Хренсберг</div>
                 <div className="auth__avatar">
                     <Image src={AvatarImage} alt="Image" />
