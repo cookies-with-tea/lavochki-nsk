@@ -1,0 +1,18 @@
+version: "3.8"
+
+
+services:
+  react:
+    container_name: benches-react
+    build:
+      dockerfile: Dockerfile
+      context: ./
+  
+  nginx:
+    build:
+      dockerfile: ./deploy/nginx/Dockerfile
+      context: ./
+    ports:
+      - "80:80"
+    depends_on:
+      - react
