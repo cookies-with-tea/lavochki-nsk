@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import TheHeader from "@/components/TheHeader";
 import TheMap from "@/components/home/TheMap";
-import LastAdd from "@/components/home/LassAdd/LastAdd";
+import LastAdd from "@/components/home/LastAdd/LastAdd";
 import {useEffect, useState} from "react";
 import benchesApi from "@/api/benches.api";
 // import axios from "axios";
