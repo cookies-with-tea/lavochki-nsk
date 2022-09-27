@@ -1,0 +1,97 @@
+@import 'variables';
+
+.text-bold {
+  font-weight: 700 !important;
+}
+
+.c-pointer {
+  cursor: pointer !important;
+}
+
+.link {
+  text-decoration: none !important;
+  cursor: pointer;
+}
+
+.mt-auto {
+  margin-top: auto !important;
+}
+
+.bg-white-border {
+  border: 1px solid $color--border !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.word-break {
+  word-break: break-all !important;
+}
+
+.w-fit {
+  width: fit-content !important;
+}
+
+body {
+  color: #000;
+}
+
+body, html, #app {
+  height: 100%;
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+.jc-between {
+  justify-content: space-between !important;
+}
+
+.ai-center {
+  align-items: center !important;
+}
+
+.w-100 {
+  width: 100% !important;
+}
+
+.container {
+  max-width: 1174px;
+  padding: 0 20px;
+  margin: 0 auto;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+}
+
+.text {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: #0A0A0A;
+}
+
+.text-title {
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 39px;
+  color: #000000;
+}
+
+.text-subtitle {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  color: #000000;
+  margin-bottom: 8px;
+}
+
+.text-gray {
+  color: #949494;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
