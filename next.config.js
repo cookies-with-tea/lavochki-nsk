@@ -4,6 +4,9 @@ module.exports = {
   },
   reactStrictMode: false,
   swcMinify: true,
+  env: {
+    BOT_USERNAME: process.env.BOT_USERNAME
+  },
   async rewrites() {
     return[
       {
