@@ -1,4 +1,4 @@
-import React from 'react';
+import React  from 'react';
 import styled from 'styled-components'
 import Image from 'next/image'
 import AvatarImage from '@/assets/profile-img.jpg'
@@ -78,3 +78,4 @@ const TheHeader = (): any => {
 };
 
 export default TheHeader;
+
