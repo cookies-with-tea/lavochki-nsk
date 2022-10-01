@@ -3,10 +3,14 @@ package initiator
 import (
 	"benches/internal/config"
 	"benches/internal/handlers/benches"
+	"benches/internal/handlers/users"
 	"benches/internal/repository/postgres"
 	benchesService "benches/internal/service/benches"
+	usersService "benches/internal/service/users"
 	storage "benches/internal/storage/minio"
+	"benches/pkg/auth"
 	"benches/pkg/database"
+	"benches/pkg/telegram"
 	"context"
 	"errors"
 	"fmt"
@@ -59,6 +63,16 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appBenchesService := benchesService.NewService(appBenchesRepository, appBenchesStorage, logger)
 	appHandlerBenches := benches.NewBenchesHandler(appBenchesService)
 	appHandlerBenches.Register(router)
+
+	appUsersRepository := postgres.NewUsersRepository(db)
+	appUsersTelegramManager := telegram.NewTelegramManager(cfg.Telegram.Token)
+	appUsersAuthManager, err := auth.NewManager(cfg.SigningKey)
+	if err != nil {
+		logger.Fatal("init auth manager: ", zap.Error(err))
+	}
+	appUsersService := usersService.NewService(appUsersRepository, appUsersAuthManager, appUsersTelegramManager, logger)
+	appHandlerUsers := users.NewUsersHandler(appUsersService)
+	appHandlerUsers.Register(router)
 
 	return &App{cfg: cfg, logger: logger, router: router}, nil
 }
