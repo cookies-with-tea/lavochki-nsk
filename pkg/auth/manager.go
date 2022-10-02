@@ -1,8 +1,11 @@
 package auth
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -52,4 +55,38 @@ func (m *Manager) Parse(accessToken string) (string, error) {
 	}
 
 	return claims["sub"].(string), nil
+}
+
+func (m *Manager) JWTMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		authHeader := strings.Split(r.Header.Get("Authorization"), "Bearer ")
+		if len(authHeader) != 2 {
+			fmt.Println("Malformed token")
+			w.WriteHeader(http.StatusUnauthorized)
+			_, err := w.Write([]byte("Malformed Token"))
+			if err != nil {
+				w.WriteHeader(http.StatusUnauthorized)
+			}
+		} else {
+			jwtToken := authHeader[1]
+			token, err := jwt.Parse(jwtToken, func(token *jwt.Token) (interface{}, error) {
+				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+					return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+				}
+				return []byte(m.signingKey), nil
+			})
+
+			if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+				ctx := context.WithValue(r.Context(), "props", claims["sub"])
+				next.ServeHTTP(w, r.WithContext(ctx))
+			} else {
+				fmt.Println(err)
+				w.WriteHeader(http.StatusUnauthorized)
+				_, err2 := w.Write([]byte("Unauthorized"))
+				if err2 != nil {
+					return
+				}
+			}
+		}
+	})
 }
