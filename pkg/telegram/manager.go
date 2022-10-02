@@ -26,7 +26,7 @@ func (m *Manager) CheckTelegramAuthorization(params map[string]string) bool {
 
 	var checkParams []string
 	for k, v := range params {
-		if k != "hash" {
+		if k != "hash" && len(v) != 0 {
 			checkParams = append(checkParams, fmt.Sprintf("%s=%s", k, v))
 		}
 	}
