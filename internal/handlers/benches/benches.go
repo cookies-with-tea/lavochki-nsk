@@ -18,8 +18,8 @@ func NewBenchesHandler(benches Service) *Handler {
 }
 
 func (h *Handler) Register(router *mux.Router) {
-	router.HandleFunc("/api/v1/benches", h.listBenches).Methods("GET")
-	router.HandleFunc("/api/v1/benches", h.addBench).Methods("POST")
+	router.HandleFunc("/", h.listBenches).Methods("GET")
+	router.HandleFunc("/", h.addBench).Methods("POST")
 }
 
 func (h *Handler) listBenches(w http.ResponseWriter, r *http.Request) {
