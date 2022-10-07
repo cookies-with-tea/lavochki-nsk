@@ -20,8 +20,8 @@ func NewService(db Database, storage *storage.Storage, log *zap.Logger) *Service
 	return &Service{db: db, storage: storage, log: log}
 }
 
-func (s *Service) GetListBenches(ctx context.Context) ([]domain.Bench, error) {
-	users, err := s.db.GetBenches(ctx)
+func (s *Service) GetListBenches(ctx context.Context, isActive bool) ([]domain.Bench, error) {
+	users, err := s.db.GetBenches(ctx, isActive)
 	if err != nil {
 		s.log.Error("error get all benches", zap.Error(err))
 		return nil, err
@@ -40,6 +40,14 @@ func (s *Service) CreateBench(ctx context.Context, dto dto.CreateBench) error {
 	}
 	model := domain.Bench{Lng: dto.Lng, Lat: dto.Lat, Image: imageName}
 	err = s.db.CreateBench(ctx, model)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *Service) DecisionBench(ctx context.Context, dto dto.DecisionBench) error {
+	err := s.db.UpdateActiveBench(ctx, dto.ID, dto.Decision)
 	if err != nil {
 		return err
 	}
