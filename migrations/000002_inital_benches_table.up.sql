@@ -6,6 +6,7 @@ CREATE TABLE benches (
     lng decimal,
     image TEXT,
     owner_id TEXT,
+    is_active BOOLEAN DEFAULT false,
     CONSTRAINT fk_owner
     FOREIGN KEY(owner_id)
     REFERENCES users(id)
