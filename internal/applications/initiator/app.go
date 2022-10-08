@@ -62,9 +62,6 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	if err != nil {
 		logger.Fatal("init auth manager: ", zap.Error(err))
 	}
-	appUsersRepository := postgres.NewUsersRepository(db)
-	// error
-	authRoleManager, err := auth.NewRoleManager(cfg.SigningKey, appUsersRepository)
 
 	appBenchesRouter := router.PathPrefix("/api/v1/benches").Subrouter()
 	appBenchesRouter.Use(authManager.JWTMiddleware)
@@ -72,9 +69,10 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appBenchesRepository := postgres.NewBenchesRepository(db)
 	appBenchesService := benchesService.NewService(appBenchesRepository, appBenchesStorage, logger)
 	appHandlerBenches := benches.NewBenchesHandler(appBenchesService)
-	appHandlerBenches.Register(appBenchesRouter, authRoleManager)
+	appHandlerBenches.Register(appBenchesRouter)
 
 	appUsersTelegramManager := telegram.NewTelegramManager(cfg.Telegram.Token)
+	appUsersRepository := postgres.NewUsersRepository(db)
 	appUsersService := usersService.NewService(appUsersRepository, authManager, appUsersTelegramManager, logger)
 	appHandlerUsers := users.NewUsersHandler(appUsersService)
 	appHandlerUsers.Register(router)
