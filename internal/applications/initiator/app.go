@@ -58,19 +58,22 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 			logger.Fatal("run minio client: ", zap.Error(err))
 		}
 	}
+	authManager, err := auth.NewManager(cfg.SigningKey)
+	if err != nil {
+		logger.Fatal("init auth manager: ", zap.Error(err))
+	}
+
+	appBenchesRouter := router.PathPrefix("/api/v1/benches").Subrouter()
+	appBenchesRouter.Use(authManager.JWTMiddleware)
 	appBenchesStorage := storage.NewMinioStorage(minioClient, cfg.Minio.Bucket, cfg.Images.PublicEndpoint)
 	appBenchesRepository := postgres.NewBenchesRepository(db)
 	appBenchesService := benchesService.NewService(appBenchesRepository, appBenchesStorage, logger)
 	appHandlerBenches := benches.NewBenchesHandler(appBenchesService)
-	appHandlerBenches.Register(router)
+	appHandlerBenches.Register(appBenchesRouter)
 
-	appUsersRepository := postgres.NewUsersRepository(db)
 	appUsersTelegramManager := telegram.NewTelegramManager(cfg.Telegram.Token)
-	appUsersAuthManager, err := auth.NewManager(cfg.SigningKey)
-	if err != nil {
-		logger.Fatal("init auth manager: ", zap.Error(err))
-	}
-	appUsersService := usersService.NewService(appUsersRepository, appUsersAuthManager, appUsersTelegramManager, logger)
+	appUsersRepository := postgres.NewUsersRepository(db)
+	appUsersService := usersService.NewService(appUsersRepository, authManager, appUsersTelegramManager, logger)
 	appHandlerUsers := users.NewUsersHandler(appUsersService)
 	appHandlerUsers.Register(router)
 
