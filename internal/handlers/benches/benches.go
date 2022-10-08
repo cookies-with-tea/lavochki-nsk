@@ -2,7 +2,6 @@ package benches
 
 import (
 	"benches/internal/dto"
-	"benches/pkg/auth"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
@@ -18,14 +17,11 @@ func NewBenchesHandler(benches Service) *Handler {
 	return &Handler{benches: benches}
 }
 
-func (h *Handler) Register(router *mux.Router, roleManager *auth.RoleManager) {
+func (h *Handler) Register(router *mux.Router) {
 	router.HandleFunc("/", h.listBenches).Methods("GET")
 	router.HandleFunc("/", h.addBench).Methods("POST")
-
-	moderationSubRouter := router.NewRoute().Subrouter()
-	moderationSubRouter.Use(roleManager.JWTAndRoleMiddleware)
-	moderationSubRouter.HandleFunc("/moderation", h.listModerationBench).Methods("GET")
-	moderationSubRouter.HandleFunc("/moderation", h.decisionBench).Methods("POST")
+	router.HandleFunc("/moderation", h.listModerationBench).Methods("GET")
+	router.HandleFunc("/moderation", h.decisionBench).Methods("POST")
 }
 
 func (h *Handler) listBenches(w http.ResponseWriter, r *http.Request) {
@@ -52,6 +48,11 @@ func (h *Handler) addBench(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) listModerationBench(w http.ResponseWriter, r *http.Request) {
+	role := r.Context().Value("userRole")
+	if role != "admin" {
+		h.ResponseErrorJson(w, "not enough rights", http.StatusForbidden)
+		return
+	}
 	benches, err := h.benches.GetListBenches(r.Context(), false)
 	if err != nil {
 		h.ResponseErrorJson(w, "", http.StatusBadRequest)
