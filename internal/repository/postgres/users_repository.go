@@ -36,3 +36,12 @@ func (u *UsersRepository) CreateUser(ctx context.Context, user domain.User) (dom
 	}
 	return userModelToDomain(model), nil
 }
+
+func (u *UsersRepository) GetUserByID(ctx context.Context, id string) (domain.User, error) {
+	model := userModel{}
+	err := u.db.NewSelect().Model(&model).Where("id = ?", id).Scan(ctx)
+	if err != nil {
+		return domain.User{}, err
+	}
+	return userModelToDomain(model), nil
+}

@@ -11,12 +11,14 @@ type userModel struct {
 	ID         string `bun:"id,pk"`
 	Username   string `bun:"username"`
 	TelegramID int    `bun:"telegram_id"`
+	Role       string `bun:"role"`
 }
 
 func (u *userModel) FromDomain(user domain.User) {
 	u.ID = user.ID
 	u.Username = user.Username
 	u.TelegramID = user.TelegramID
+	u.Role = user.Role
 }
 
 func userModelToDomain(model userModel) domain.User {
@@ -24,6 +26,7 @@ func userModelToDomain(model userModel) domain.User {
 		ID:         model.ID,
 		Username:   model.Username,
 		TelegramID: model.TelegramID,
+		Role:       model.Role,
 	}
 }
 
