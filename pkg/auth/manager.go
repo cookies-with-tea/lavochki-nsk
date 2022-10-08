@@ -20,6 +20,12 @@ type Manager struct {
 	signingKey string
 }
 
+type tokenClaims struct {
+	jwt.StandardClaims
+	UserId string `json:"user_id"`
+	Role   string `json:"role"`
+}
+
 func NewManager(signingKey string) (*Manager, error) {
 	if signingKey == "" {
 		return nil, errors.New("empty signing key")
@@ -28,10 +34,13 @@ func NewManager(signingKey string) (*Manager, error) {
 	return &Manager{signingKey: signingKey}, nil
 }
 
-func (m *Manager) NewJWT(userId string, ttl time.Duration) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
-		ExpiresAt: time.Now().Add(ttl).Unix(),
-		Subject:   userId,
+func (m *Manager) NewJWT(userID string, role string, ttl time.Duration) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(ttl).Unix(),
+		},
+		UserId: userID,
+		Role:   role,
 	})
 
 	return token.SignedString([]byte(m.signingKey))
@@ -76,11 +85,17 @@ func (m *Manager) JWTMiddleware(next http.Handler) http.Handler {
 				return []byte(m.signingKey), nil
 			})
 
+			if err != nil {
+				w.WriteHeader(http.StatusUnauthorized)
+				_, err = w.Write([]byte("Unauthorized"))
+				return
+			}
+
 			if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-				ctx := context.WithValue(r.Context(), "props", claims["sub"])
+				ctx := context.WithValue(r.Context(), "userID", claims["user_id"])
+				ctx = context.WithValue(ctx, "userRole", claims["role"])
 				next.ServeHTTP(w, r.WithContext(ctx))
 			} else {
-				fmt.Println(err)
 				w.WriteHeader(http.StatusUnauthorized)
 				_, err2 := w.Write([]byte("Unauthorized"))
 				if err2 != nil {
