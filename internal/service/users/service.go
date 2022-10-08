@@ -54,7 +54,7 @@ func (s *Service) LoginViaTelegram(ctx context.Context, dto dto.CreateUser) (str
 		return "", errors.New("not is auth")
 	}
 	var token string
-	token, err = s.tokenManager.NewJWT(dbUser.ID, 48*time.Hour)
+	token, err = s.tokenManager.NewJWT(dbUser.ID, dbUser.Role, 48*time.Hour)
 	if err != nil {
 		return "", err
 	}
