@@ -64,12 +64,11 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	}
 
 	appBenchesRouter := router.PathPrefix("/api/v1/benches").Subrouter()
-	appBenchesRouter.Use(authManager.JWTMiddleware)
 	appBenchesStorage := storage.NewMinioStorage(minioClient, cfg.Minio.Bucket, cfg.Images.PublicEndpoint)
 	appBenchesRepository := postgres.NewBenchesRepository(db)
 	appBenchesService := benchesService.NewService(appBenchesRepository, appBenchesStorage, logger)
 	appHandlerBenches := benches.NewBenchesHandler(appBenchesService)
-	appHandlerBenches.Register(appBenchesRouter)
+	appHandlerBenches.Register(appBenchesRouter, authManager)
 
 	appUsersTelegramManager := telegram.NewTelegramManager(cfg.Telegram.Token)
 	appUsersRepository := postgres.NewUsersRepository(db)

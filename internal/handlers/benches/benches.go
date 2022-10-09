@@ -2,6 +2,7 @@ package benches
 
 import (
 	"benches/internal/dto"
+	"benches/pkg/auth"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
@@ -17,11 +18,14 @@ func NewBenchesHandler(benches Service) *Handler {
 	return &Handler{benches: benches}
 }
 
-func (h *Handler) Register(router *mux.Router) {
+func (h *Handler) Register(router *mux.Router, authManager *auth.Manager) {
 	router.HandleFunc("/", h.listBenches).Methods("GET")
 	router.HandleFunc("/", h.addBench).Methods("POST")
-	router.HandleFunc("/moderation", h.listModerationBench).Methods("GET")
-	router.HandleFunc("/moderation", h.decisionBench).Methods("POST")
+
+	routerModeration := router.NewRoute().Subrouter()
+	routerModeration.Use(authManager.JWTMiddleware)
+	routerModeration.HandleFunc("/moderation", h.listModerationBench).Methods("GET")
+	routerModeration.HandleFunc("/moderation", h.decisionBench).Methods("POST")
 }
 
 func (h *Handler) listBenches(w http.ResponseWriter, r *http.Request) {
