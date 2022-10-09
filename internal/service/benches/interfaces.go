@@ -10,4 +10,5 @@ type Database interface {
 	CreateBench(ctx context.Context, bench domain.Bench) error
 	UpdateActiveBench(ctx context.Context, id string, decision bool) error
 	DeleteBench(ctx context.Context, id string) error
+	GetBenchByID(ctx context.Context, id string) (domain.Bench, error)
 }

@@ -78,7 +78,7 @@ func (h *Handler) decisionBench(w http.ResponseWriter, r *http.Request) {
 	}
 	err := h.benches.DecisionBench(r.Context(), decisionBench)
 	if err != nil {
-		h.ResponseErrorJson(w, "", http.StatusBadRequest)
+		h.ResponseErrorJson(w, "failed to update bench", http.StatusBadRequest)
 		return
 	}
 	h.ResponseJson(w, map[string]string{"result": "okay"}, http.StatusAccepted)
