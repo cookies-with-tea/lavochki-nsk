@@ -46,3 +46,12 @@ func (b *BenchesRepository) UpdateActiveBench(ctx context.Context, id string, ac
 	}
 	return nil
 }
+
+func (b *BenchesRepository) DeleteBench(ctx context.Context, id string) error {
+	model := &benchModel{}
+	_, err := b.db.NewDelete().Model(model).Where("id = ?", id).Exec(ctx)
+	if err != nil {
+		return err
+	}
+	return nil
+}
