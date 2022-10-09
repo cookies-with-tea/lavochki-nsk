@@ -48,6 +48,10 @@ func (s *Service) CreateBench(ctx context.Context, dto dto.CreateBench) error {
 
 func (s *Service) DecisionBench(ctx context.Context, dto dto.DecisionBench) error {
 	var err error
+	_, err = s.db.GetBenchByID(ctx, dto.ID)
+	if err != nil {
+		return err
+	}
 	if dto.Decision {
 		err = s.db.UpdateActiveBench(ctx, dto.ID, dto.Decision)
 	} else {

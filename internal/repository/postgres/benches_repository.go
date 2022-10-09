@@ -23,8 +23,8 @@ func (b *BenchesRepository) GetBenches(ctx context.Context, isActive bool) ([]do
 	if err != nil {
 		return nil, err
 	}
-	users := benchModelsToDomain(benchesModel)
-	return users, nil
+	benches := benchModelsToDomain(benchesModel)
+	return benches, nil
 }
 
 func (b *BenchesRepository) CreateBench(ctx context.Context, bench domain.Bench) error {
@@ -54,4 +54,13 @@ func (b *BenchesRepository) DeleteBench(ctx context.Context, id string) error {
 		return err
 	}
 	return nil
+}
+
+func (b *BenchesRepository) GetBenchByID(ctx context.Context, id string) (domain.Bench, error) {
+	model := benchModel{}
+	err := b.db.NewSelect().Model(&model).Where("id = ?", id).Scan(ctx)
+	if err != nil {
+		return domain.Bench{}, err
+	}
+	return benchModelToDomain(model), nil
 }
