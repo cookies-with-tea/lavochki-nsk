@@ -1,4 +1,4 @@
-import {AxiosService} from "@/api/AxiosService";
+import {AxiosService} from "@/api/axios/AxiosService";
 import {AxiosRequestConfig} from "axios";
 
 class UsersApi extends AxiosService {
@@ -7,7 +7,7 @@ class UsersApi extends AxiosService {
     }
 
     public loginViaTelegram(payload: any) {
-        return this.axiosCall<string>({
+        return this.axiosCall<{ token: string }>({
             method: 'post',
             url: '/',
             data: payload

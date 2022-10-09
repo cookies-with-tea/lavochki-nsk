@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {FC} from 'react';
 import styled from 'styled-components'
 import Image from "next/image";
 import AvatarImage from "@/assets/profile-img.jpg";
+import benchesApi from "@/api/benches/benches.api";
 
 const StyledModerationItem = styled.div `
   display: flex;
@@ -51,22 +52,30 @@ const StyledModerationItem = styled.div `
   }
 `
 
+const setDecision = async (id: string, decision: boolean): Promise<void> => {
+    const [error, data] = await benchesApi.setDecision({
+        id,
+        decision
+    })
 
-const ModerationItem = () => {
+    console.log(error)
+}
+
+const ModerationItem: FC<any> = ({ bench }) => {
     return (
         <StyledModerationItem className="moderation-item">
             <div className="moderation-item__content">
                 <div className="moderation-item__info">
-                    <div className="moderation-item__username">username</div>
-                    <div>id</div>
+                    <div className="moderation-item__username">{bench.name}</div>
+                    <div>{bench.id}</div>
                 </div>
                 <div className="moderation-item__image">
                     <Image src={AvatarImage} alt="Image" />
                 </div>
             </div>
             <div className="moderation-item__buttons">
-                <button>Принять</button>
-                <button>Отклонить</button>
+                <button onClick={() => setDecision(bench.id, true)}>Принять</button>
+                <button onClick={() => setDecision(bench.id, false)}>Отклонить</button>
             </div>
         </StyledModerationItem>
     );

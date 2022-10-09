@@ -10,10 +10,14 @@ module.exports = {
   async rewrites() {
     return[
       {
+        source: '/benches',
+        destination: 'http://localhost:8000/api/v1/benches/',
+      },
+      {
         source: '/:path*',
         destination: 'http://localhost:8000/api/v1/:path*',
-      },
+      }
     ]
-},
+  }
 }
 

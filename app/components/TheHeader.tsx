@@ -1,10 +1,10 @@
-import React  from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components'
 import Image from 'next/image'
 import AvatarImage from '@/assets/profile-img.jpg'
 // @ts-ignore
 import TelegramLoginButton from 'react-telegram-login';
-import usersApi from "@/api/users.api";
+import usersApi from "@/api/users/users.api";
 
 const StyledHeader = styled.header`
   display: flex;
@@ -48,30 +48,41 @@ const StyledHeader = styled.header`
 //   border-radius: 4px;
 // `
 
-const handleTelegramResponse = async (response: any) => {
+const handleTelegramResponse = async (response: any): Promise<void> => {
     const [error, data] = await usersApi.loginViaTelegram(response)
 
     if (!error && data) {
-        console.log(data)
+       localStorage.setItem('token', data.token)
+
+        location.reload()
     }
 };
 
+const handleLogout = (): void => {
+    localStorage.clear()
+
+    location.reload()
+}
+
 const TheHeader = (): any => {
+    const [isAuth, setIsAuth] = useState(false)
+
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+
+        if (token) {
+            setIsAuth(true)
+        }
+    }, [])
+
     return (
         <StyledHeader>
             <div className="logo">logo</div>
             <div className="auth">
-                {/*<StyledLink*/}
-                {/*    href="https://t.me/s1veme_timetable_bot?start=1"*/}
-                {/*    target="_blank"*/}
-                {/*>*/}
-                {/*    Привязать аккаунт*/}
-                {/*</StyledLink>*/}
-                <TelegramLoginButton dataOnauth={handleTelegramResponse} botName={process.env.BOT_USERNAME} />
-                <div className="auth__title">Хренсберг</div>
-                <div className="auth__avatar">
-                    <Image src={AvatarImage} alt="Image" />
-                </div>
+                { !isAuth
+                    ? ( <TelegramLoginButton dataOnauth={handleTelegramResponse} botName={process.env.BOT_USERNAME} /> )
+                    : <button onClick={handleLogout}>Выйти</button>}
+
             </div>
         </StyledHeader>
     );

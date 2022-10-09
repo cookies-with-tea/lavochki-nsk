@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
-import { AxiosResponseType } from '@/types/axios.type'
+import { AxiosResponseType } from '@/api/axios/axios.type'
 
 export class AxiosService {
     private axiosInstance!: AxiosInstance
@@ -8,16 +8,15 @@ export class AxiosService {
         this.axiosInstance = axios.create(config)
 
         this.axiosInstance.interceptors.request.use((config) => {
-            // const token = Cookies.get('token_for_admin_panel')
             //
             // config.xsrfCookieName = 'XSRF-TOKEN'
             // config.xsrfHeaderName = 'X-XSRF-TOKEN'
 
-            // const token = localStorage.getItem('token')
+            const token = localStorage.getItem('token') || ''
 
-            // config.headers = {
-            //     Authorization: `Bearer ${token}`,
-            // }
+            config.headers = {
+                Authorization: `Bearer ${token}`,
+            }
 
             return config
         })
