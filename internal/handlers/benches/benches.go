@@ -66,6 +66,11 @@ func (h *Handler) listModerationBench(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) decisionBench(w http.ResponseWriter, r *http.Request) {
+	role := r.Context().Value("userRole")
+	if role != "admin" {
+		h.ResponseErrorJson(w, "not enough rights", http.StatusForbidden)
+		return
+	}
 	var decisionBench dto.DecisionBench
 	if err := json.NewDecoder(r.Body).Decode(&decisionBench); err != nil {
 		h.ResponseErrorJson(w, "wrong data", http.StatusBadRequest)
@@ -73,7 +78,6 @@ func (h *Handler) decisionBench(w http.ResponseWriter, r *http.Request) {
 	}
 	err := h.benches.DecisionBench(r.Context(), decisionBench)
 	if err != nil {
-		fmt.Println(err)
 		h.ResponseErrorJson(w, "", http.StatusBadRequest)
 		return
 	}

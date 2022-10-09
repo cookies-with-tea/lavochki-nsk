@@ -47,7 +47,12 @@ func (s *Service) CreateBench(ctx context.Context, dto dto.CreateBench) error {
 }
 
 func (s *Service) DecisionBench(ctx context.Context, dto dto.DecisionBench) error {
-	err := s.db.UpdateActiveBench(ctx, dto.ID, dto.Decision)
+	var err error
+	if dto.Decision {
+		err = s.db.UpdateActiveBench(ctx, dto.ID, dto.Decision)
+	} else {
+		err = s.db.DeleteBench(ctx, dto.ID)
+	}
 	if err != nil {
 		return err
 	}
