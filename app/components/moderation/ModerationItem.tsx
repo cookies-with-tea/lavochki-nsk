@@ -52,16 +52,18 @@ const StyledModerationItem = styled.div `
   }
 `
 
-const setDecision = async (id: string, decision: boolean): Promise<void> => {
+const setDecision = async (id: string, decision: boolean): Promise<any> => {
     const [error, data] = await benchesApi.setDecision({
         id,
         decision
     })
 
-    console.log(error)
+    if (!error && data) {
+        console.log('Успешно')
+    }
 }
 
-const ModerationItem: FC<any> = ({ bench }) => {
+const ModerationItem: FC<any> = ({ bench, updateTable }) => {
     return (
         <StyledModerationItem className="moderation-item">
             <div className="moderation-item__content">
@@ -74,8 +76,8 @@ const ModerationItem: FC<any> = ({ bench }) => {
                 </div>
             </div>
             <div className="moderation-item__buttons">
-                <button onClick={() => setDecision(bench.id, true)}>Принять</button>
-                <button onClick={() => setDecision(bench.id, false)}>Отклонить</button>
+                <button onClick={() => { setDecision(bench.id, true); updateTable()}}>Принять</button>
+                <button onClick={() => { setDecision(bench.id, false); updateTable()}}>Отклонить</button>
             </div>
         </StyledModerationItem>
     );

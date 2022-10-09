@@ -3,8 +3,6 @@ import styled from 'styled-components'
 import ModerationItem from "@/components/moderation/ModerationItem";
 import benchesApi from "@/api/benches/benches.api";
 import {useEffect, useState} from "react";
-import {parseAndGenerateServices} from "@typescript-eslint/typescript-estree";
-import {data} from "dom7";
 
 const StyledModerationPage = styled.div`
     padding: 30px;
@@ -55,7 +53,14 @@ const Moderation: NextPage<any> = () => {
     return (
         <div className="container">
             <StyledModerationPage className="moderation-page">
-                { benches && benches.map((bench: any) => ( <ModerationItem bench={bench} key={bench.id}/> )) }
+                <h1>Moderation </h1>
+                { benches && benches.map((bench: any) => (
+                    <ModerationItem
+                        bench={bench}
+                        key={bench.id}
+                        updateTable={getModerationBenches}
+                    />
+                )) }
 
             </StyledModerationPage>
         </div>
