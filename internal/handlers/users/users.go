@@ -20,6 +20,14 @@ func (h *Handler) Register(router *mux.Router) {
 	router.HandleFunc("/api/v1/users", h.registerUser)
 }
 
+// RegisterUser
+// @Summary User registration
+// @Tags Users
+// @Produce json
+// @Param user body dto.CreateUser true "user info"
+// @Success 200
+// @Failure 400
+// @Router /api/v1/users [post]
 func (h *Handler) registerUser(w http.ResponseWriter, r *http.Request) {
 	var user dto.CreateUser
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
