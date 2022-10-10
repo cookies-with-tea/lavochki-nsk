@@ -1,6 +1,7 @@
 package initiator
 
 import (
+	_ "benches/docs"
 	"benches/internal/config"
 	"benches/internal/handlers/benches"
 	"benches/internal/handlers/users"
@@ -20,6 +21,7 @@ import (
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	"github.com/rs/cors"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"github.com/uptrace/bun"
 	"go.uber.org/zap"
 	"net"
@@ -38,6 +40,9 @@ type App struct {
 func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	logger.Info("router init")
 	router := mux.NewRouter()
+
+	logger.Info("swagger docs initializing")
+	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
 	db := postgres.NewPostgresDatabase(database.DatabaseParametersToDSN("postgres", cfg.PostgreSQL.Host,
 		cfg.PostgreSQL.Database, cfg.PostgreSQL.Username, cfg.PostgreSQL.Password, false))
