@@ -7,13 +7,15 @@ import (
 	"benches/internal/repository/postgres"
 	benchesService "benches/internal/service/benches"
 	usersService "benches/internal/service/users"
-	storage "benches/internal/storage/minio"
+	minioStorage "benches/internal/storage/minio"
+	redisStorage "benches/internal/storage/redis"
 	"benches/pkg/auth"
 	"benches/pkg/database"
 	"benches/pkg/telegram"
 	"context"
 	"errors"
 	"fmt"
+	"github.com/go-redis/redis/v9"
 	"github.com/gorilla/mux"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
@@ -39,6 +41,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 
 	db := postgres.NewPostgresDatabase(database.DatabaseParametersToDSN("postgres", cfg.PostgreSQL.Host,
 		cfg.PostgreSQL.Database, cfg.PostgreSQL.Username, cfg.PostgreSQL.Password, false))
+	logger.Info("create minio client")
 	minioClient, err := minio.New(cfg.Minio.Endpoint, &minio.Options{
 		Creds:  credentials.NewStaticV4(cfg.Minio.AccessKey, cfg.Minio.SecretKey, ""),
 		Secure: false,
@@ -58,21 +61,30 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 			logger.Fatal("run minio client: ", zap.Error(err))
 		}
 	}
+	logger.Info("create redis client")
+	redisClient := redis.NewClient(&redis.Options{
+		Addr:     cfg.Redis.Host,
+		Password: cfg.Redis.Password,
+		DB:       cfg.Redis.DB,
+	})
+
 	authManager, err := auth.NewManager(cfg.SigningKey)
 	if err != nil {
 		logger.Fatal("init auth manager: ", zap.Error(err))
 	}
 
 	appBenchesRouter := router.PathPrefix("/api/v1/benches").Subrouter()
-	appBenchesStorage := storage.NewMinioStorage(minioClient, cfg.Minio.Bucket, cfg.Images.PublicEndpoint)
+	appBenchesStorage := minioStorage.NewMinioStorage(minioClient, cfg.Minio.Bucket, cfg.Images.PublicEndpoint)
 	appBenchesRepository := postgres.NewBenchesRepository(db)
 	appBenchesService := benchesService.NewService(appBenchesRepository, appBenchesStorage, logger)
 	appHandlerBenches := benches.NewBenchesHandler(appBenchesService)
 	appHandlerBenches.Register(appBenchesRouter, authManager)
 
+	appUsersRedisStorage := redisStorage.NewRedisStorage(redisClient)
 	appUsersTelegramManager := telegram.NewTelegramManager(cfg.Telegram.Token)
 	appUsersRepository := postgres.NewUsersRepository(db)
-	appUsersService := usersService.NewService(appUsersRepository, authManager, appUsersTelegramManager, logger)
+	appUsersService := usersService.NewService(appUsersRepository,
+		appUsersRedisStorage, authManager, appUsersTelegramManager, logger)
 	appHandlerUsers := users.NewUsersHandler(appUsersService)
 	appHandlerUsers.Register(router)
 
