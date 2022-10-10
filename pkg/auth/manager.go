@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math/rand"
 	"net/http"
 	"strings"
 	"time"
@@ -64,6 +65,19 @@ func (m *Manager) Parse(accessToken string) (string, error) {
 	}
 
 	return claims["sub"].(string), nil
+}
+
+func (m *Manager) NewRefreshToken() (string, error) {
+	b := make([]byte, 32)
+
+	s := rand.NewSource(time.Now().Unix())
+	r := rand.New(s)
+
+	if _, err := r.Read(b); err != nil {
+		return "", err
+	}
+
+	return fmt.Sprintf("%x", b), nil
 }
 
 func (m *Manager) JWTMiddleware(next http.Handler) http.Handler {
