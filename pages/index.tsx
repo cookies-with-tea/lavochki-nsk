@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import TheHeader from "@/components/TheHeader";
+import TheHeader from "@/components/TheHeader/TheHeader";
 import TheMap from "@/components/home/TheMap";
 import LastAdd from "@/components/home/LastAdd/LastAdd";
 import {useEffect, useState} from "react";

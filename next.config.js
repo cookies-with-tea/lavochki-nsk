@@ -1,3 +1,5 @@
+const path = require("path");
+
 module.exports = {
     compiler: {
     styledComponents: true
@@ -6,6 +8,9 @@ module.exports = {
   swcMinify: true,
   env: {
     BOT_USERNAME: process.env.BOT_USERNAME
+  },
+  sassOptions: {
+    includePaths: [path.join(__dirname, 'app/styles')],
   },
   async rewrites() {
     return[

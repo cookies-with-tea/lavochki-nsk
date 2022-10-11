@@ -1,0 +1,22 @@
+.modal-root {
+  &__backdrop {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 100;
+  }
+
+  &__wrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 450px;
+    min-height: 500px;
+    background-color: #f3f3f3;
+    z-index: 120;
+  }
+}

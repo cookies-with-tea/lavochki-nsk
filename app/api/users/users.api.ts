@@ -1,4 +1,4 @@
-import {AxiosService} from "@/api/axios/AxiosService";
+import {AxiosService} from "@/api/axios-service/axiosService";
 import {AxiosRequestConfig} from "axios";
 
 class UsersApi extends AxiosService {
