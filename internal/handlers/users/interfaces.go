@@ -6,5 +6,6 @@ import (
 )
 
 type Service interface {
-	LoginViaTelegram(ctx context.Context, dto dto.CreateUser) (string, error)
+	LoginViaTelegram(ctx context.Context, dto dto.CreateUser) (string, string, error)
+	RefreshToken(ctx context.Context, token string) (string, string, error)
 }

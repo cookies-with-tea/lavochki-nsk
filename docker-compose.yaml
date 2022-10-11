@@ -13,6 +13,7 @@ services:
     depends_on:
       - db
       - minio
+      - redis
 
   db:
     image: postgres:12.0-alpine
@@ -27,6 +28,14 @@ services:
       interval: 10s
       timeout: 15s
       retries: 5
+
+  redis:
+    image: bitnami/redis:7.0.5
+    container_name: benches-redis
+    volumes:
+      - redis_data:/bitnami/redis/data
+    ports:
+      - "6379:6379"
 
   minio:
     image: minio/minio:latest
@@ -55,3 +64,4 @@ volumes:
   postgres_data:
   minio_data:
   minio_config:
+  redis_data:

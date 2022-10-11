@@ -34,6 +34,11 @@ type Config struct {
 		Bucket    string `env:"MINIO_BUCKET" env-default:"benches"`
 		UseSSL    bool   `env:"MINIO_USE_SSL" env-default:"true"`
 	}
+	Redis struct {
+		Host     string `env:"REDIS_HOST" env-default:"redis:6379"`
+		Password string `env:"REDIS_PASSWORD"`
+		DB       int    `env:"REDIS_DB" env-default:"0"`
+	}
 	Images struct {
 		PublicEndpoint string `env:"IMAGES_PUBLIC_ENDPOINT" env-default:"http://localhost:9000"`
 	}
