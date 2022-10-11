@@ -36,14 +36,14 @@ type Config struct {
 	}
 	Redis struct {
 		Host     string `env:"REDIS_HOST" env-default:"redis:6379"`
-		Password string `env:"REDIS_PASSWORD"`
+		Password string `env:"REDIS_PASSWORD" env-required:"true"`
 		DB       int    `env:"REDIS_DB" env-default:"0"`
 	}
 	Images struct {
 		PublicEndpoint string `env:"IMAGES_PUBLIC_ENDPOINT" env-default:"http://localhost:9000"`
 	}
 	Telegram struct {
-		Token string `env:"TELEGRAM_TOKEN"`
+		Token string `env:"TELEGRAM_TOKEN" env-required:"true"`
 	}
 }
 
