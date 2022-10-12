@@ -31,11 +31,16 @@ services:
 
   redis:
     image: bitnami/redis:7.0.5
+    command:
+      - /bin/sh
+      - -c
+      - redis-server --requirepass "$${REDIS_PASSWORD:?REDIS_PASSWORD variable is not set}"
     container_name: benches-redis
     volumes:
       - redis_data:/bitnami/redis/data
     ports:
       - "6379:6379"
+    env_file: .env
 
   minio:
     image: minio/minio:latest
