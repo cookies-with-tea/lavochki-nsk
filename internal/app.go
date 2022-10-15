@@ -5,6 +5,7 @@ import (
 	"benches-bot/internal/domain"
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"github.com/NicoNex/echotron/v3"
 	"go.uber.org/zap"
 	"log"
@@ -45,7 +46,7 @@ func (b *bot) handleMessage(update *echotron.Update) stateFn {
 	if strings.HasPrefix(update.Message.Text, "/add") {
 		_, err := b.SendMessage("Окей, отправь мне геолокацию", update.Message.Chat.ID, nil)
 		if err != nil {
-			panic(err)
+			fmt.Errorf("error send message: %s", err)
 		}
 		return b.handleLocation
 	}
@@ -57,7 +58,7 @@ func (b *bot) handleLocation(update *echotron.Update) stateFn {
 	if update.Message.Location == nil {
 		_, err := b.SendMessage("Это не похоже на локацию. Попробуй ещё раз.", update.Message.Chat.ID, nil)
 		if err != nil {
-			panic(err)
+			fmt.Errorf("error send message: %s", err)
 		}
 		return b.handleMessage
 	}
@@ -67,7 +68,7 @@ func (b *bot) handleLocation(update *echotron.Update) stateFn {
 
 	_, err := b.SendMessage("Отлично! Координаты установлены. Не мог бы ты теперь прислать фото?", update.Message.Chat.ID, nil)
 	if err != nil {
-		panic(err)
+		fmt.Errorf("error send message: %s", err)
 	}
 	return b.handleImage
 }
@@ -77,13 +78,13 @@ func (b *bot) handleImage(update *echotron.Update) stateFn {
 	if len(images) == 0 {
 		_, err := b.SendMessage("Это не похоже на фото. Попробуй ещё раз.", update.Message.Chat.ID, nil)
 		if err != nil {
-			panic(err)
+			fmt.Errorf("error send message: %s", err)
 		}
 		return b.handleMessage
 	}
 	_, err := b.SendMessage("Отлично!", update.Message.Chat.ID, nil)
 	if err != nil {
-		panic(err)
+		fmt.Errorf("error send message: %s", err)
 	}
 	image := images[3]
 	fileInfo, _ := b.GetFile(image.FileID)
@@ -98,7 +99,7 @@ func (b *bot) createBench() {
 	jsonBody, _ := json.Marshal(model)
 	_, err := http.Post(b.backendUrl, "application/json", bytes.NewBuffer(jsonBody))
 	if err != nil {
-		panic(err)
+		fmt.Errorf("error post request: %s", err)
 	}
 }
 
