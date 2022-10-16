@@ -39,7 +39,7 @@ func NewApp(logger *zap.Logger, cfg *config.Config) (*app, error) {
 func (a *app) Run() {
 	a.logger.Info("Run bot")
 	dsp := echotron.NewDispatcher(a.cfg.Telegram.Token, a.createBot)
-	log.Println(dsp.Poll())
+	log.Println(dsp.ListenWebhook(a.cfg.WebHookURL))
 }
 
 func (b *bot) handleMessage(update *echotron.Update) stateFn {
