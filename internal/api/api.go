@@ -13,8 +13,8 @@ type API struct {
 	bot *echotron.API
 }
 
-func NewAPI() *API {
-	return &API{}
+func NewAPI(bot *echotron.API) *API {
+	return &API{bot: bot}
 }
 
 func (a *API) Register(router *mux.Router) {
@@ -27,8 +27,15 @@ func (a *API) createUserNotification(w http.ResponseWriter, r *http.Request) {
 		a.ResponseErrorJson(w, "wrong data", http.StatusBadRequest)
 		return
 	}
-	_, err := a.bot.SendMessage("Hello world!", notification.UserID, nil)
+
+	if notification.Type != "create_bench" {
+		a.ResponseErrorJson(w, "invalid notification type", http.StatusBadRequest)
+		return
+	}
+
+	_, err := a.bot.SendMessage("Лавочка успешно создана!", notification.UserID, nil)
 	if err != nil {
 		a.ResponseErrorJson(w, "error send message", http.StatusBadRequest)
 	}
+	a.ResponseJson(w, notification, 200)
 }

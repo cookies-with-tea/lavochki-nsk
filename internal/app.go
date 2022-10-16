@@ -34,13 +34,13 @@ func (a *app) Run() {
 	termChan := make(chan os.Signal, 1)
 	signal.Notify(termChan, syscall.SIGINT, syscall.SIGTERM)
 
-	// Create API
-	router := mux.NewRouter()
-	api := api2.NewAPI()
-	api.Register(router)
-
 	// Create Bot
 	bot := bot2.NewBot(a.cfg.Telegram.Token, a.cfg.BackendServer.Url)
+
+	// Create API
+	router := mux.NewRouter()
+	api := api2.NewAPI(&bot.API)
+	api.Register(router)
 
 	// Create HTTP server
 	server := &http.Server{Addr: a.cfg.HTTP.Addr, Handler: router}
