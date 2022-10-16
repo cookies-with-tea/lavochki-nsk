@@ -7,7 +7,7 @@ class UsersApi extends AxiosService {
     }
 
     public loginViaTelegram(payload: any) {
-        return this.axiosCall<{ token: string }>({
+        return this.axiosCall<{ access: string; refresh: string }>({
             method: 'post',
             url: '/',
             data: payload

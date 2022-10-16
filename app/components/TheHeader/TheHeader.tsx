@@ -1,11 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components'
-import Image from 'next/image'
-import AvatarImage from '@/assets/profile-img.jpg'
 // @ts-ignore
 import TelegramLoginButton from 'react-telegram-login';
 import usersApi from "@/api/users/users.api";
-import TheMenu from "@/utils/TheModal";
 import TheHeaderMenu from "@/components/TheHeader/TheHeaderMenu";
 
 const StyledHeader = styled.header`
@@ -38,23 +35,11 @@ const StyledHeader = styled.header`
   }
 `
 
-// const StyledLink = styled.a`
-//   display: block;
-//   margin-right: 12px;
-//   width: 140px;
-//   color: #fff;
-//   font-size: 18px;
-//   font-weight: 500;
-//   background-color: #d58225;
-//   text-align: center;
-//   border-radius: 4px;
-// `
-
 const handleTelegramResponse = async (response: any): Promise<void> => {
     const [error, data] = await usersApi.loginViaTelegram(response)
 
     if (!error && data) {
-       localStorage.setItem('token', data.token)
+       localStorage.setItem('token', data.access)
 
         location.reload()
     }

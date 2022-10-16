@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
-import TheMenu from "@/utils/TheModal";
+import TheModal from "@/utils/TheModal";
 
 const TheHeaderMenu: FC<any> = ({ setShowModal, className }): JSX.Element => {
     return (
-        <Theenu className={className}>
+        <TheModal className={className}>
             <div className="the-header-menu">
                 Im a modal!
                 <button
@@ -13,7 +13,7 @@ const TheHeaderMenu: FC<any> = ({ setShowModal, className }): JSX.Element => {
                     close
                 </button>
             </div>
-        </Theenu>
+        </TheModal>
     );
 };
 
