@@ -1,8 +1,10 @@
 package users
 
 import (
+	"benches/internal/apperror"
 	"benches/internal/dto"
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 )
@@ -17,8 +19,8 @@ func NewUsersHandler(users Service) *Handler {
 }
 
 func (h *Handler) Register(router *mux.Router) {
-	router.HandleFunc("/api/v1/users", h.registerUser)
-	router.HandleFunc("/api/v1/users/refresh", h.refreshToken)
+	router.HandleFunc("/api/v1/users", apperror.Middleware(h.registerUser))
+	router.HandleFunc("/api/v1/users/refresh", apperror.Middleware(h.refreshToken))
 }
 
 // RegisterUser
@@ -29,18 +31,19 @@ func (h *Handler) Register(router *mux.Router) {
 // @Success 200
 // @Failure 400
 // @Router /api/v1/users [post]
-func (h *Handler) registerUser(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) registerUser(w http.ResponseWriter, r *http.Request) error {
 	var user dto.CreateUser
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		h.ResponseErrorJson(w, "wrong data", http.StatusBadRequest)
-		return
+		fmt.Println(err)
+		return apperror.ErrIncorrectDataAuth
 	}
 	token, refreshToken, err := h.users.LoginViaTelegram(r.Context(), user)
 	if err != nil {
-		h.ResponseErrorJson(w, "wrong data", http.StatusBadRequest)
-		return
+		fmt.Println(err)
+		return apperror.ErrIncorrectDataAuth
 	}
 	h.ResponseJson(w, map[string]string{"access": token, "refresh": refreshToken}, 200)
+	return nil
 }
 
 // RefreshToken
@@ -52,16 +55,17 @@ func (h *Handler) registerUser(w http.ResponseWriter, r *http.Request) {
 // @Success 200
 // @Failure 400
 // @Router /api/v1/users/refresh [post]
-func (h *Handler) refreshToken(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) refreshToken(w http.ResponseWriter, r *http.Request) error {
 	var token dto.RefreshToken
 	if err := json.NewDecoder(r.Body).Decode(&token); err != nil {
-		h.ResponseErrorJson(w, "wrong data", http.StatusBadRequest)
-		return
+		fmt.Println(err)
+		return apperror.ErrIncorrectDataToken
 	}
 	accessToken, refreshToken, err := h.users.RefreshToken(r.Context(), token.Token)
 	if err != nil {
-		h.ResponseErrorJson(w, "wrong data", http.StatusBadRequest)
-		return
+		fmt.Println(err)
+		return apperror.ErrIncorrectDataToken
 	}
 	h.ResponseJson(w, map[string]string{"access": accessToken, "refresh": refreshToken}, 200)
+	return nil
 }

@@ -3,6 +3,7 @@ package benches
 import (
 	"benches/internal/domain"
 	"benches/internal/dto"
+	"benches/internal/service/notifications"
 	storage "benches/internal/storage/minio"
 	"context"
 	"fmt"
@@ -11,13 +12,14 @@ import (
 )
 
 type Service struct {
-	db      Database
-	log     *zap.Logger
-	storage *storage.Storage
+	db                   Database
+	log                  *zap.Logger
+	storage              *storage.Storage
+	notificationsService *notifications.Service
 }
 
-func NewService(db Database, storage *storage.Storage, log *zap.Logger) *Service {
-	return &Service{db: db, storage: storage, log: log}
+func NewService(db Database, storage *storage.Storage, log *zap.Logger, notificationsService *notifications.Service) *Service {
+	return &Service{db: db, storage: storage, log: log, notificationsService: notificationsService}
 }
 
 func (s *Service) GetListBenches(ctx context.Context, isActive bool) ([]domain.Bench, error) {
@@ -48,17 +50,23 @@ func (s *Service) CreateBench(ctx context.Context, dto dto.CreateBench) error {
 
 func (s *Service) DecisionBench(ctx context.Context, dto dto.DecisionBench) error {
 	var err error
+	var typeDecision string
+
 	_, err = s.db.GetBenchByID(ctx, dto.ID)
 	if err != nil {
 		return err
 	}
 	if dto.Decision {
 		err = s.db.UpdateActiveBench(ctx, dto.ID, dto.Decision)
+		typeDecision = "received"
 	} else {
 		err = s.db.DeleteBench(ctx, dto.ID)
+		typeDecision = "denied"
 	}
 	if err != nil {
 		return err
 	}
+
+	s.notificationsService.SendNotificationInTelegram(ctx, typeDecision, 1)
 	return nil
 }

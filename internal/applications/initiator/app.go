@@ -7,6 +7,7 @@ import (
 	"benches/internal/handlers/users"
 	"benches/internal/repository/postgres"
 	benchesService "benches/internal/service/benches"
+	notificationsSerivce "benches/internal/service/notifications"
 	usersService "benches/internal/service/users"
 	minioStorage "benches/internal/storage/minio"
 	redisStorage "benches/internal/storage/redis"
@@ -78,10 +79,12 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 		logger.Fatal("init auth manager: ", zap.Error(err))
 	}
 
+	appNotificationsService := notificationsSerivce.NewService(logger, "http://localhost:8080/api/v1/notification")
+
 	appBenchesRouter := router.PathPrefix("/api/v1/benches").Subrouter()
 	appBenchesStorage := minioStorage.NewMinioStorage(minioClient, cfg.Minio.Bucket, cfg.Images.PublicEndpoint)
 	appBenchesRepository := postgres.NewBenchesRepository(db)
-	appBenchesService := benchesService.NewService(appBenchesRepository, appBenchesStorage, logger)
+	appBenchesService := benchesService.NewService(appBenchesRepository, appBenchesStorage, logger, appNotificationsService)
 	appHandlerBenches := benches.NewBenchesHandler(appBenchesService)
 	appHandlerBenches.Register(appBenchesRouter, authManager)
 
