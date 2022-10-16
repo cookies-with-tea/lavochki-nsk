@@ -1,19 +1,17 @@
 package internal
 
 import (
+	api2 "benches-bot/internal/api"
+	bot2 "benches-bot/internal/bot"
 	"benches-bot/internal/config"
-	"benches-bot/internal/domain"
-	"bytes"
 	"context"
-	"encoding/json"
-	"fmt"
 	"github.com/NicoNex/echotron/v3"
+	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
-	"strings"
 	"syscall"
 )
 
@@ -22,15 +20,6 @@ type stateFn func(*echotron.Update) stateFn
 type app struct {
 	cfg    *config.Config
 	logger *zap.Logger
-	bot    *bot
-}
-
-type bot struct {
-	state      stateFn
-	location   *domain.Location
-	image      []byte
-	backendUrl string
-	echotron.API
 }
 
 func NewApp(logger *zap.Logger, cfg *config.Config) (*app, error) {
@@ -44,93 +33,26 @@ func (a *app) Run() {
 	a.logger.Info("Run bot")
 	termChan := make(chan os.Signal, 1)
 	signal.Notify(termChan, syscall.SIGINT, syscall.SIGTERM)
-	mux := http.NewServeMux()
-	mux.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 
-	})
-	server := &http.Server{Addr: ":8080", Handler: mux}
+	// Create API
+	router := mux.NewRouter()
+	api := api2.NewAPI()
+	api.Register(router)
+
+	// Create Bot
+	bot := bot2.NewBot(a.cfg.Telegram.Token, a.cfg.BackendServer.Url)
+
+	// Create HTTP server
+	server := &http.Server{Addr: a.cfg.HTTP.Addr, Handler: router}
 	go func() {
 		<-termChan
-		// Perform some cleanup..
 		if err := server.Shutdown(context.Background()); err != nil {
 			log.Print(err)
 		}
 	}()
 
-	dsp := echotron.NewDispatcher(a.cfg.Telegram.Token, a.createBot)
+	// Start App
+	dsp := echotron.NewDispatcher(a.cfg.Telegram.Token, bot.Create)
 	dsp.SetHTTPServer(server)
 	log.Println(dsp.ListenWebhook(a.cfg.WebHookURL))
-}
-
-func (b *bot) handleMessage(update *echotron.Update) stateFn {
-	if strings.HasPrefix(update.Message.Text, "/add") {
-		_, err := b.SendMessage("Окей, отправь мне геолокацию", update.Message.Chat.ID, nil)
-		if err != nil {
-			fmt.Errorf("error send message: %s", err)
-		}
-		return b.handleLocation
-	}
-	return b.handleMessage
-}
-
-func (b *bot) handleLocation(update *echotron.Update) stateFn {
-	location := &domain.Location{}
-	if update.Message.Location == nil {
-		_, err := b.SendMessage("Это не похоже на локацию. Попробуй ещё раз.", update.Message.Chat.ID, nil)
-		if err != nil {
-			fmt.Errorf("error send message: %s", err)
-		}
-		return b.handleMessage
-	}
-	location.Lat = update.Message.Location.Latitude
-	location.Lng = update.Message.Location.Longitude
-	b.location = location
-
-	_, err := b.SendMessage("Отлично! Координаты установлены. Не мог бы ты теперь прислать фото?", update.Message.Chat.ID, nil)
-	if err != nil {
-		fmt.Errorf("error send message: %s", err)
-	}
-	return b.handleImage
-}
-
-func (b *bot) handleImage(update *echotron.Update) stateFn {
-	images := update.Message.Photo
-	if len(images) == 0 {
-		_, err := b.SendMessage("Это не похоже на фото. Попробуй ещё раз.", update.Message.Chat.ID, nil)
-		if err != nil {
-			fmt.Errorf("error send message: %s", err)
-		}
-		return b.handleMessage
-	}
-	_, err := b.SendMessage("Отлично!", update.Message.Chat.ID, nil)
-	if err != nil {
-		fmt.Errorf("error send message: %s", err)
-	}
-	image := images[3]
-	fileInfo, _ := b.GetFile(image.FileID)
-	file, _ := b.DownloadFile(fileInfo.Result.FilePath)
-	b.image = file
-	b.createBench()
-	return b.handleMessage
-}
-
-func (b *bot) createBench() {
-	model := domain.CreateBench{Lat: b.location.Lat, Lng: b.location.Lng, Image: b.image}
-	jsonBody, _ := json.Marshal(model)
-	_, err := http.Post(b.backendUrl, "application/json", bytes.NewBuffer(jsonBody))
-	if err != nil {
-		fmt.Errorf("error post request: %s", err)
-	}
-}
-
-func (b *bot) Update(update *echotron.Update) {
-	b.state = b.state(update)
-}
-
-func (a *app) createBot(_ int64) echotron.Bot {
-	abot := &bot{API: echotron.NewAPI(a.cfg.Telegram.Token)}
-	abot.state = abot.handleMessage
-	a.bot = abot
-	a.bot.backendUrl = a.cfg.BackendServer.Url
-	return abot
 }
