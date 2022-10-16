@@ -4,13 +4,17 @@ import (
 	"benches-bot/internal/config"
 	"benches-bot/internal/domain"
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/NicoNex/echotron/v3"
 	"go.uber.org/zap"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
 	"strings"
+	"syscall"
 )
 
 type stateFn func(*echotron.Update) stateFn
@@ -38,7 +42,23 @@ func NewApp(logger *zap.Logger, cfg *config.Config) (*app, error) {
 
 func (a *app) Run() {
 	a.logger.Info("Run bot")
+	termChan := make(chan os.Signal, 1)
+	signal.Notify(termChan, syscall.SIGINT, syscall.SIGTERM)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+
+	})
+	server := &http.Server{Addr: ":8080", Handler: mux}
+	go func() {
+		<-termChan
+		// Perform some cleanup..
+		if err := server.Shutdown(context.Background()); err != nil {
+			log.Print(err)
+		}
+	}()
+
 	dsp := echotron.NewDispatcher(a.cfg.Telegram.Token, a.createBot)
+	dsp.SetHTTPServer(server)
 	log.Println(dsp.ListenWebhook(a.cfg.WebHookURL))
 }
 
