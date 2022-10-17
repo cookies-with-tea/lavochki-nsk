@@ -11,7 +11,7 @@ type userModel struct {
 	ID         string `bun:"id,pk"`
 	Username   string `bun:"username"`
 	TelegramID int    `bun:"telegram_id"`
-	Role       string `bun:"role"`
+	Role       string `bun:"role,nullzero,notnull,default:'user'"`
 }
 
 func (u *userModel) FromDomain(user domain.User) {
