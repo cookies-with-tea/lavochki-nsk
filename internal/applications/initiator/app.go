@@ -79,7 +79,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 		logger.Fatal("init auth manager: ", zap.Error(err))
 	}
 
-	appNotificationsService := notificationsSerivce.NewService(logger, "http://localhost:8080/api/v1/notification")
+	appNotificationsService := notificationsSerivce.NewService(logger, cfg.Telegram.NotificationToken)
 
 	appUsersRedisStorage := redisStorage.NewRedisStorage(redisClient)
 	appUsersTelegramManager := telegram.NewTelegramManager(cfg.Telegram.Token)

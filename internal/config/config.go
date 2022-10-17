@@ -43,7 +43,8 @@ type Config struct {
 		PublicEndpoint string `env:"IMAGES_PUBLIC_ENDPOINT" env-default:"http://localhost:9000"`
 	}
 	Telegram struct {
-		Token string `env:"TELEGRAM_TOKEN" env-required:"true"`
+		Token             string `env:"TELEGRAM_TOKEN" env-required:"true"`
+		NotificationToken string `env:"TELEGRAM_NOTIFICATION_URL" env-required:"true"`
 	}
 }
 
