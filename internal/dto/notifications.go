@@ -1,6 +1,6 @@
 package dto
 
 type CreateNotification struct {
-	UserID int64  `json:"user_id"`
-	Type   string `json:"type"`
+	UserID  int64  `json:"user_id"`
+	Message string `json:"message"`
 }
