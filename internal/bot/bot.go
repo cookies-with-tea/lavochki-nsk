@@ -16,6 +16,7 @@ type Bot struct {
 	state      stateFn
 	location   *domain.Location
 	image      []byte
+	userID     int
 	backendUrl string
 	echotron.API
 }
@@ -79,12 +80,13 @@ func (b *Bot) handleImage(update *echotron.Update) stateFn {
 	fileInfo, _ := b.GetFile(image.FileID)
 	file, _ := b.DownloadFile(fileInfo.Result.FilePath)
 	b.image = file
+	b.userID = int(update.Message.Chat.ID)
 	b.createBench()
 	return b.handleMessage
 }
 
 func (b *Bot) createBench() {
-	model := domain.CreateBench{Lat: b.location.Lat, Lng: b.location.Lng, Image: b.image}
+	model := domain.CreateBench{Lat: b.location.Lat, Lng: b.location.Lng, Image: b.image, UserTelegramID: b.userID}
 	jsonBody, _ := json.Marshal(model)
 	_, err := http.Post(b.backendUrl, "application/json", bytes.NewBuffer(jsonBody))
 	if err != nil {
