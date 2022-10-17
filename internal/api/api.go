@@ -28,12 +28,7 @@ func (a *API) createUserNotification(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if notification.Type != "create_bench" {
-		a.ResponseErrorJson(w, "invalid notification type", http.StatusBadRequest)
-		return
-	}
-
-	_, err := a.bot.SendMessage("Лавочка успешно создана!", notification.UserID, nil)
+	_, err := a.bot.SendMessage(notification.Message, notification.UserID, &echotron.MessageOptions{ParseMode: "markdown"})
 	if err != nil {
 		a.ResponseErrorJson(w, "error send message", http.StatusBadRequest)
 	}
