@@ -22,6 +22,9 @@ func (h *Handler) Register(router *mux.Router, authManager *auth.Manager) {
 	router.HandleFunc("/", h.listBenches).Methods("GET")
 	router.HandleFunc("/", h.addBench).Methods("POST")
 
+	// Создание лавочки через telegram
+	router.HandleFunc("/telegram", h.addBenchViaTelegram).Methods("POST")
+
 	routerModeration := router.NewRoute().Subrouter()
 	routerModeration.Use(authManager.JWTMiddleware)
 	routerModeration.HandleFunc("/moderation", h.listModerationBench).Methods("GET")
@@ -35,6 +38,27 @@ func (h *Handler) listBenches(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	h.ResponseJson(w, benches, 200)
+}
+
+// @Summary Create bench via telegram
+// @Tags Benches
+// @Produce json
+// @Param create bench via telegram body dto.CreateBenchViaTelegram true "bench data"
+// @Success 201
+// @Failure 400
+// @Router /api/v1/benches/telegram [post]
+func (h *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Request) {
+	var bench dto.CreateBenchViaTelegram
+	if err := json.NewDecoder(r.Body).Decode(&bench); err != nil {
+		h.ResponseErrorJson(w, "wrong data", http.StatusBadRequest)
+		return
+	}
+	err := h.benches.CreateBenchViaTelegram(r.Context(), bench)
+	if err != nil {
+		h.ResponseErrorJson(w, fmt.Sprint(err), http.StatusBadRequest)
+		return
+	}
+	w.WriteHeader(http.StatusCreated)
 }
 
 func (h *Handler) addBench(w http.ResponseWriter, r *http.Request) {
