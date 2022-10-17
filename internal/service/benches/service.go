@@ -3,6 +3,7 @@ package benches
 import (
 	"benches/internal/domain"
 	"benches/internal/dto"
+	"benches/internal/repository/postgres"
 	"benches/internal/service/notifications"
 	storage "benches/internal/storage/minio"
 	"context"
@@ -16,10 +17,13 @@ type Service struct {
 	log                  *zap.Logger
 	storage              *storage.Storage
 	notificationsService *notifications.Service
+	usersRepository      *postgres.UsersRepository
 }
 
-func NewService(db Database, storage *storage.Storage, log *zap.Logger, notificationsService *notifications.Service) *Service {
-	return &Service{db: db, storage: storage, log: log, notificationsService: notificationsService}
+func NewService(db Database, storage *storage.Storage, log *zap.Logger,
+	notificationsService *notifications.Service, usersRepository *postgres.UsersRepository) *Service {
+	return &Service{db: db, storage: storage, log: log, notificationsService: notificationsService,
+		usersRepository: usersRepository}
 }
 
 func (s *Service) GetListBenches(ctx context.Context, isActive bool) ([]domain.Bench, error) {
@@ -34,13 +38,21 @@ func (s *Service) GetListBenches(ctx context.Context, isActive bool) ([]domain.B
 	return users, nil
 }
 
-func (s *Service) CreateBench(ctx context.Context, dto dto.CreateBench) error {
+func (s *Service) CreateBench(ctx context.Context, bench dto.CreateBench) error {
+	panic("implement me")
+}
+
+func (s *Service) CreateBenchViaTelegram(ctx context.Context, dto dto.CreateBenchViaTelegram) error {
 	imageName := fmt.Sprintf("%s%s", ulid.Make(), ".jpg")
 	err := s.storage.CreateImageFromBytes(ctx, imageName, dto.Image)
 	if err != nil {
 		return err
 	}
-	model := domain.Bench{Lng: dto.Lng, Lat: dto.Lat, Image: imageName}
+	user, err := s.usersRepository.GetUserByTelegramID(ctx, dto.UserTelegramID)
+	if err != nil {
+		return err
+	}
+	model := domain.Bench{Lng: dto.Lng, Lat: dto.Lat, Image: imageName, Owner: &user}
 	err = s.db.CreateBench(ctx, model)
 	if err != nil {
 		return err
@@ -52,7 +64,8 @@ func (s *Service) DecisionBench(ctx context.Context, dto dto.DecisionBench) erro
 	var err error
 	var typeDecision string
 
-	_, err = s.db.GetBenchByID(ctx, dto.ID)
+	var bench domain.Bench
+	bench, err = s.db.GetBenchByID(ctx, dto.ID)
 	if err != nil {
 		return err
 	}
@@ -67,6 +80,6 @@ func (s *Service) DecisionBench(ctx context.Context, dto dto.DecisionBench) erro
 		return err
 	}
 
-	s.notificationsService.SendNotificationInTelegram(ctx, typeDecision, 1)
+	s.notificationsService.SendNotificationInTelegram(ctx, typeDecision, bench.Owner.TelegramID, bench.ID)
 	return nil
 }

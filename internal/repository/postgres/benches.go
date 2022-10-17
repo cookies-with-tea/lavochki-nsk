@@ -13,7 +13,8 @@ type benchModel struct {
 	Lng      float64    `bun:"lng"`
 	Image    string     `bun:"image"`
 	IsActive bool       `bun:"is_active"`
-	Owner    *userModel `bun:"owner_id,rel:belongs-to,join=owner_id=id"`
+	OwnerID  string     `bun:"owner_id"`
+	Owner    *userModel `bun:"rel:belongs-to,join:owner_id=id"`
 }
 
 func (b *benchModel) FromDomain(bench domain.Bench) {
@@ -22,6 +23,7 @@ func (b *benchModel) FromDomain(bench domain.Bench) {
 	b.Lng = bench.Lng
 	b.Image = bench.Image
 	b.IsActive = bench.IsActive
+	b.OwnerID = bench.Owner.ID
 }
 
 func benchModelToDomain(model benchModel) domain.Bench {
