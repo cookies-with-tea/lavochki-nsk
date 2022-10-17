@@ -64,7 +64,8 @@ func (s *Service) DecisionBench(ctx context.Context, dto dto.DecisionBench) erro
 	var err error
 	var typeDecision string
 
-	_, err = s.db.GetBenchByID(ctx, dto.ID)
+	var bench domain.Bench
+	bench, err = s.db.GetBenchByID(ctx, dto.ID)
 	if err != nil {
 		return err
 	}
@@ -79,6 +80,6 @@ func (s *Service) DecisionBench(ctx context.Context, dto dto.DecisionBench) erro
 		return err
 	}
 
-	s.notificationsService.SendNotificationInTelegram(ctx, typeDecision, 1)
+	s.notificationsService.SendNotificationInTelegram(ctx, typeDecision, bench.Owner.TelegramID, bench.ID)
 	return nil
 }
