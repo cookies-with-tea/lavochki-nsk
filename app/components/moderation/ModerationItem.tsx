@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import styled from 'styled-components'
 import Image from "next/image";
 import AvatarImage from "@/assets/profile-img.jpg";
@@ -63,7 +63,39 @@ const setDecision = async (id: string, decision: boolean): Promise<any> => {
     }
 }
 
-const ModerationItem: FC<any> = ({ bench, updateTable }) => {
+const StyledModal = styled.div`
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  background-color: rgba(0,0,0,0.3);
+  
+  .modal__wrapper {
+    z-index: 120;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    width: 450px;
+    height: 600px;
+  }
+`
+
+const handleSubmitReason = async (reason: string): Promise<void> => {
+    // const [error, data] =
+    console.log(reason)
+}
+
+
+const ModerationItem: FC<any> = ({ bench = {name: '123', id: '0'}, updateTable }) => {
+    const [isModalVisible, setIsModalVisible] = useState(false)
+    const [revertReason, setRevertReason] = useState('')
+
     return (
         <StyledModerationItem className="moderation-item">
             <div className="moderation-item__content">
@@ -77,8 +109,18 @@ const ModerationItem: FC<any> = ({ bench, updateTable }) => {
             </div>
             <div className="moderation-item__buttons">
                 <button onClick={() => { setDecision(bench.id, true); updateTable()}}>Принять</button>
-                <button onClick={() => { setDecision(bench.id, false); updateTable()}}>Отклонить</button>
+                <button onClick={() => { setIsModalVisible(true) }}>Отклонить</button>
             </div>
+            { isModalVisible && (
+                <StyledModal onClick={() => setIsModalVisible(false)}>
+                    <div className="modal__wrapper" onClick={(e) => e.stopPropagation()}>
+                        <input placeholder={'input reason'} onChange={(e) => setRevertReason(e.target.value)} />
+                        <div className="moderation-item__buttons">
+                            <button onClick={() => handleSubmitReason(revertReason)}>Submit</button>
+                        </div>
+                    </div>
+                </StyledModal>
+            ) }
         </StyledModerationItem>
     );
 };

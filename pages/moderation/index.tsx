@@ -62,6 +62,8 @@ const Moderation: NextPage<any> = () => {
                     />
                 )) }
 
+                <ModerationItem updateTable={getModerationBenches} />
+
             </StyledModerationPage>
         </div>
     )
