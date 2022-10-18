@@ -12,3 +12,7 @@ type Database interface {
 	DeleteBench(ctx context.Context, id string) error
 	GetBenchByID(ctx context.Context, id string) (domain.Bench, error)
 }
+
+type NotificationService interface {
+	SendNotificationInTelegram(ctx context.Context, decision string, id int, id2 string)
+}
