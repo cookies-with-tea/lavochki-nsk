@@ -7,7 +7,7 @@ import (
 	"benches/internal/handlers/users"
 	"benches/internal/repository/postgres"
 	benchesService "benches/internal/service/benches"
-	notificationsSerivce "benches/internal/service/notifications"
+	notificationsService "benches/internal/service/notifications"
 	usersService "benches/internal/service/users"
 	minioStorage "benches/internal/storage/minio"
 	redisStorage "benches/internal/storage/redis"
@@ -79,7 +79,12 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 		logger.Fatal("init auth manager: ", zap.Error(err))
 	}
 
-	appNotificationsService := notificationsSerivce.NewService(logger, cfg.Telegram.NotificationToken)
+	var appNotificationsService benchesService.NotificationService
+	if cfg.IsDevelopment {
+		appNotificationsService = notificationsService.NewServiceMock(logger, cfg.Telegram.NotificationToken)
+	} else {
+		appNotificationsService = notificationsService.NewService(logger, cfg.Telegram.NotificationToken)
+	}
 
 	appUsersRedisStorage := redisStorage.NewRedisStorage(redisClient)
 	appUsersTelegramManager := telegram.NewTelegramManager(cfg.Telegram.Token)

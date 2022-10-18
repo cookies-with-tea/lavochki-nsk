@@ -4,7 +4,6 @@ import (
 	"benches/internal/domain"
 	"benches/internal/dto"
 	"benches/internal/repository/postgres"
-	"benches/internal/service/notifications"
 	storage "benches/internal/storage/minio"
 	"context"
 	"fmt"
@@ -16,12 +15,12 @@ type Service struct {
 	db                   Database
 	log                  *zap.Logger
 	storage              *storage.Storage
-	notificationsService *notifications.Service
+	notificationsService NotificationService
 	usersRepository      *postgres.UsersRepository
 }
 
 func NewService(db Database, storage *storage.Storage, log *zap.Logger,
-	notificationsService *notifications.Service, usersRepository *postgres.UsersRepository) *Service {
+	notificationsService NotificationService, usersRepository *postgres.UsersRepository) *Service {
 	return &Service{db: db, storage: storage, log: log, notificationsService: notificationsService,
 		usersRepository: usersRepository}
 }
