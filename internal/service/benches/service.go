@@ -4,6 +4,7 @@ import (
 	"benches/internal/domain"
 	"benches/internal/dto"
 	"benches/internal/repository/postgres"
+	"benches/internal/service/notifications"
 	storage "benches/internal/storage/minio"
 	"context"
 	"fmt"
@@ -11,21 +12,28 @@ import (
 	"go.uber.org/zap"
 )
 
-type Service struct {
-	db                   Database
-	log                  *zap.Logger
-	storage              *storage.Storage
-	notificationsService NotificationService
-	usersRepository      *postgres.UsersRepository
+type Service interface {
+	GetListBenches(ctx context.Context, isActive bool) ([]domain.Bench, error)
+	CreateBench(ctx context.Context, bench dto.CreateBench) error
+	CreateBenchViaTelegram(ctx context.Context, bench dto.CreateBenchViaTelegram) error
+	DecisionBench(ctx context.Context, decisionBench dto.DecisionBench) error
 }
 
-func NewService(db Database, storage *storage.Storage, log *zap.Logger,
-	notificationsService NotificationService, usersRepository *postgres.UsersRepository) *Service {
-	return &Service{db: db, storage: storage, log: log, notificationsService: notificationsService,
+type service struct {
+	db                   postgres.BenchesRepository
+	log                  *zap.Logger
+	storage              *storage.Storage
+	notificationsService notifications.Service
+	usersRepository      postgres.UsersRepository
+}
+
+func NewService(db postgres.BenchesRepository, storage *storage.Storage, log *zap.Logger,
+	notificationsService notifications.Service, usersRepository postgres.UsersRepository) Service {
+	return &service{db: db, storage: storage, log: log, notificationsService: notificationsService,
 		usersRepository: usersRepository}
 }
 
-func (s *Service) GetListBenches(ctx context.Context, isActive bool) ([]domain.Bench, error) {
+func (s *service) GetListBenches(ctx context.Context, isActive bool) ([]domain.Bench, error) {
 	users, err := s.db.GetBenches(ctx, isActive)
 	if err != nil {
 		s.log.Error("error get all benches", zap.Error(err))
@@ -37,11 +45,11 @@ func (s *Service) GetListBenches(ctx context.Context, isActive bool) ([]domain.B
 	return users, nil
 }
 
-func (s *Service) CreateBench(ctx context.Context, bench dto.CreateBench) error {
+func (s *service) CreateBench(ctx context.Context, bench dto.CreateBench) error {
 	panic("implement me")
 }
 
-func (s *Service) CreateBenchViaTelegram(ctx context.Context, dto dto.CreateBenchViaTelegram) error {
+func (s *service) CreateBenchViaTelegram(ctx context.Context, dto dto.CreateBenchViaTelegram) error {
 	imageName := fmt.Sprintf("%s%s", ulid.Make(), ".jpg")
 	err := s.storage.CreateImageFromBytes(ctx, imageName, dto.Image)
 	if err != nil {
@@ -59,7 +67,7 @@ func (s *Service) CreateBenchViaTelegram(ctx context.Context, dto dto.CreateBenc
 	return nil
 }
 
-func (s *Service) DecisionBench(ctx context.Context, dto dto.DecisionBench) error {
+func (s *service) DecisionBench(ctx context.Context, dto dto.DecisionBench) error {
 	var err error
 	var typeDecision string
 

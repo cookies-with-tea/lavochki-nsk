@@ -79,7 +79,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 		logger.Fatal("init auth manager: ", zap.Error(err))
 	}
 
-	var appNotificationsService benchesService.NotificationService
+	var appNotificationsService notificationsService.Service
 	if cfg.IsDevelopment {
 		appNotificationsService = notificationsService.NewServiceMock(logger, cfg.Telegram.NotificationToken)
 	} else {

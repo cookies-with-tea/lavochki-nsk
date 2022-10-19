@@ -2,6 +2,7 @@ package benches
 
 import (
 	"benches/internal/dto"
+	benchesService "benches/internal/service/benches"
 	"benches/pkg/auth"
 	"encoding/json"
 	"fmt"
@@ -11,10 +12,10 @@ import (
 
 type Handler struct {
 	baseHandler
-	benches Service
+	benches benchesService.Service
 }
 
-func NewBenchesHandler(benches Service) *Handler {
+func NewBenchesHandler(benches benchesService.Service) *Handler {
 	return &Handler{benches: benches}
 }
 
