@@ -7,17 +7,23 @@ import (
 	"github.com/uptrace/bun"
 )
 
-type UsersRepository struct {
+type UsersRepository interface {
+	GetUserByTelegramID(ctx context.Context, telegramID int) (domain.User, error)
+	CreateUser(ctx context.Context, user domain.User) (domain.User, error)
+	GetUserByID(ctx context.Context, id string) (domain.User, error)
+}
+
+type usersRepository struct {
 	db *bun.DB
 }
 
-func NewUsersRepository(db *bun.DB) *UsersRepository {
-	return &UsersRepository{
+func NewUsersRepository(db *bun.DB) UsersRepository {
+	return &usersRepository{
 		db: db,
 	}
 }
 
-func (u *UsersRepository) GetUserByTelegramID(ctx context.Context, telegramID int) (domain.User, error) {
+func (u *usersRepository) GetUserByTelegramID(ctx context.Context, telegramID int) (domain.User, error) {
 	model := userModel{}
 	err := u.db.NewSelect().Model(&model).Where("telegram_id = ?", telegramID).Scan(ctx)
 	if err != nil {
@@ -26,7 +32,7 @@ func (u *UsersRepository) GetUserByTelegramID(ctx context.Context, telegramID in
 	return userModelToDomain(model), nil
 }
 
-func (u *UsersRepository) CreateUser(ctx context.Context, user domain.User) (domain.User, error) {
+func (u *usersRepository) CreateUser(ctx context.Context, user domain.User) (domain.User, error) {
 	model := userModel{}
 	model.FromDomain(user)
 	model.ID = ulid.Make().String()
@@ -37,7 +43,7 @@ func (u *UsersRepository) CreateUser(ctx context.Context, user domain.User) (dom
 	return userModelToDomain(model), nil
 }
 
-func (u *UsersRepository) GetUserByID(ctx context.Context, id string) (domain.User, error) {
+func (u *usersRepository) GetUserByID(ctx context.Context, id string) (domain.User, error) {
 	model := userModel{}
 	err := u.db.NewSelect().Model(&model).Where("id = ?", id).Scan(ctx)
 	if err != nil {
