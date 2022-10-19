@@ -3,6 +3,7 @@ package users
 import (
 	"benches/internal/apperror"
 	"benches/internal/dto"
+	usersService "benches/internal/service/users"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
@@ -11,10 +12,10 @@ import (
 
 type Handler struct {
 	baseHandler
-	users Service
+	users usersService.Service
 }
 
-func NewUsersHandler(users Service) *Handler {
+func NewUsersHandler(users usersService.Service) *Handler {
 	return &Handler{users: users}
 }
 

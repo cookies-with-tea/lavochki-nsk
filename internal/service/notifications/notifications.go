@@ -9,20 +9,24 @@ import (
 	"net/http"
 )
 
-type Service struct {
+type Service interface {
+	SendNotificationInTelegram(ctx context.Context, typeNotification string, userID int, benchID string)
+}
+
+type service struct {
 	log                     *zap.Logger
 	telegramNotificationURL string
 }
 
-func NewService(log *zap.Logger, telegramNotificationURL string) *Service {
-	return &Service{
+func NewService(log *zap.Logger, telegramNotificationURL string) Service {
+	return &service{
 		log:                     log,
 		telegramNotificationURL: telegramNotificationURL,
 	}
 }
 
 // Отправляем сообщение пользователю в Telegram
-func (s *Service) SendNotificationInTelegram(ctx context.Context, typeNotification string, userID int, benchID string) {
+func (s *service) SendNotificationInTelegram(ctx context.Context, typeNotification string, userID int, benchID string) {
 	// TODO: Избавиться от benchID
 
 	var message string
