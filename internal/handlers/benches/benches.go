@@ -44,7 +44,7 @@ func (h *Handler) listBenches(w http.ResponseWriter, r *http.Request) {
 // @Summary Create bench via telegram
 // @Tags Benches
 // @Produce json
-// @Param create bench via telegram body dto.CreateBenchViaTelegram true "bench data"
+// @Param CreateBenchViaTelegram body dto.CreateBenchViaTelegram true "bench data"
 // @Success 201
 // @Failure 400
 // @Router /api/v1/benches/telegram [post]
