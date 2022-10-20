@@ -87,6 +87,9 @@ func (s *service) DecisionBench(ctx context.Context, dto dto.DecisionBench) erro
 		return err
 	}
 
-	s.notificationsService.SendNotificationInTelegram(ctx, typeDecision, bench.Owner.TelegramID, bench.ID)
+	err = s.notificationsService.SendNotificationInTelegram(ctx, typeDecision, bench.Owner.TelegramID, bench.ID)
+	if err != nil {
+		return err
+	}
 	return nil
 }
