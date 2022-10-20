@@ -1,6 +1,7 @@
 package notifications
 
 import (
+	"benches/internal/domain"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -10,7 +11,7 @@ import (
 )
 
 type Service interface {
-	SendNotificationInTelegram(ctx context.Context, typeNotification string, userID int, benchID string)
+	SendNotificationInTelegram(ctx context.Context, typeNotification string, userID int, benchID string) error
 }
 
 type service struct {
@@ -26,7 +27,7 @@ func NewService(log *zap.Logger, telegramNotificationURL string) Service {
 }
 
 // Отправляем сообщение пользователю в Telegram
-func (s *service) SendNotificationInTelegram(ctx context.Context, typeNotification string, userID int, benchID string) {
+func (s *service) SendNotificationInTelegram(ctx context.Context, typeNotification string, userID int, benchID string) error {
 	// TODO: Избавиться от benchID
 
 	var message string
@@ -37,12 +38,16 @@ func (s *service) SendNotificationInTelegram(ctx context.Context, typeNotificati
 		message = fmt.Sprintf("Лавочка `%s` успешно отказана :(", benchID)
 	}
 
-	data := struct {
-		UserID  int    `json:"user_id"`
-		Message string `json:"message"`
-	}{UserID: userID, Message: message}
+	data := domain.TelegramNotification{
+		UserID:  userID,
+		Message: message,
+	}
 	jsonBody, _ := json.Marshal(data)
 
 	// Отправляем запрос на endpoint бота
-	http.Post(s.telegramNotificationURL, "application/json", bytes.NewBuffer(jsonBody))
+	_, err := http.Post(s.telegramNotificationURL, "application/json", bytes.NewBuffer(jsonBody))
+	if err != nil {
+		return err
+	}
+	return nil
 }
