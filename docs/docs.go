@@ -16,6 +16,36 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/v1/benches/telegram": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Benches"
+                ],
+                "summary": "Create bench via telegram",
+                "parameters": [
+                    {
+                        "description": "bench data",
+                        "name": "CreateBenchViaTelegram",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateBenchViaTelegram"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
         "/api/v1/users": {
             "post": {
                 "produces": [
@@ -65,7 +95,7 @@ const docTemplate = `{
                     },
                     {
                         "description": "token info",
-                        "name": "user",
+                        "name": "token",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -85,6 +115,26 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dto.CreateBenchViaTelegram": {
+            "type": "object",
+            "properties": {
+                "image": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "lat": {
+                    "type": "number"
+                },
+                "lng": {
+                    "type": "number"
+                },
+                "user_telegram_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "dto.CreateUser": {
             "type": "object",
             "properties": {
