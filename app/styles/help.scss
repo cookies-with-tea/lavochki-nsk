@@ -1,0 +1,41 @@
+@import 'resources/variables';
+
+.d-flex {
+  display: flex !important;
+}
+
+.ai-center {
+  align-items: center !important;
+}
+
+.jc-between {
+  justify-content: space-between !important;
+}
+
+.jc-center {
+  justify-content: center !important;
+}
+
+.fd-column {
+  flex-direction: column !important;
+}
+
+.w-100 {
+  width: 100% !important;
+}
+
+.mb-4 {
+  margin-bottom: 4px !important;
+}
+
+.mr-8 {
+  margin-right: $size--8 !important;
+}
+
+.mb-16 {
+  margin-bottom: $size--16 !important;
+}
+
+.mr-50 {
+  margin-right: 50px !important;
+}
