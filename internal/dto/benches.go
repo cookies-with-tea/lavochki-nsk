@@ -1,5 +1,7 @@
 package dto
 
+import validation "github.com/go-ozzo/ozzo-validation"
+
 type CreateBench struct {
 	Lat   float64 `json:"lat"`
 	Lng   float64 `json:"lng"`
@@ -16,4 +18,25 @@ type CreateBenchViaTelegram struct {
 type DecisionBench struct {
 	ID       string `json:"id"`
 	Decision bool   `json:"decision"`
+}
+
+func (bench *CreateBench) Validate() error {
+	return validation.ValidateStruct(bench,
+		validation.Field(&bench.Lat, validation.Required),
+		validation.Field(&bench.Lng, validation.Required),
+		validation.Field(&bench.Image, validation.Required))
+}
+
+func (bench *CreateBenchViaTelegram) Validate() error {
+	return validation.ValidateStruct(bench,
+		validation.Field(&bench.Lat, validation.Required),
+		validation.Field(&bench.Lng, validation.Required),
+		validation.Field(&bench.Image, validation.Required),
+		validation.Field(&bench.UserTelegramID, validation.Required))
+}
+
+func (bench *DecisionBench) Validate() error {
+	return validation.ValidateStruct(bench,
+		validation.Field(&bench.ID, validation.Required),
+		validation.Field(&bench.Decision, validation.Required))
 }
