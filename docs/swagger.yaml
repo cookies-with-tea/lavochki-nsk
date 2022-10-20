@@ -1,4 +1,17 @@
 definitions:
+  dto.CreateBenchViaTelegram:
+    properties:
+      image:
+        items:
+          type: integer
+        type: array
+      lat:
+        type: number
+      lng:
+        type: number
+      user_telegram_id:
+        type: integer
+    type: object
   dto.CreateUser:
     properties:
       auth_date:
@@ -24,6 +37,25 @@ definitions:
 info:
   contact: {}
 paths:
+  /api/v1/benches/telegram:
+    post:
+      parameters:
+      - description: bench data
+        in: body
+        name: CreateBenchViaTelegram
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateBenchViaTelegram'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+      summary: Create bench via telegram
+      tags:
+      - Benches
   /api/v1/users:
     post:
       parameters:
@@ -53,7 +85,7 @@ paths:
         type: string
       - description: token info
         in: body
-        name: user
+        name: token
         required: true
         schema:
           $ref: '#/definitions/dto.RefreshToken'
