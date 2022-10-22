@@ -1,5 +1,9 @@
+@import 'resources/variables';
+@import 'resources/mixins';
+
 body {
   font-size: 16px;
+  line-height: 100%;
 }
 
 .container {
@@ -12,3 +16,22 @@ img {
   width: 100%;
   height: 100%;
 }
+
+
+// Colors
+@each $_class-name,
+$_color
+in (
+                ('primary', $color--primary),
+) {
+  // @sample
+  // .bg-primary
+  // .color-primary
+  @include color($_class-name, $_color);
+}
+
+// Margins | Paddings
+@include sizes-classes;
+
+// Global classes
+@include project-classes;
