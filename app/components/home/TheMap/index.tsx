@@ -47,6 +47,7 @@ const benches = [
 const TheMap: FC<any> = () => {
     return (
         <div className="mb-52">
+            <h2>Расположение лавочек</h2>
             <YMaps>
                 <Map
                     defaultState={mapState}
