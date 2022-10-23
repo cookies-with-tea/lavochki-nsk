@@ -16,13 +16,39 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/v1/benches/": {
+            "get": {
+                "description": "Get list active benches",
+                "tags": [
+                    "Benches"
+                ],
+                "summary": "List benches",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Bench"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apperror.AppError"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/benches/telegram": {
             "post": {
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Benches"
+                    "Benches Moderation"
                 ],
                 "summary": "Create bench via telegram",
                 "parameters": [
@@ -115,6 +141,40 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "apperror.AppError": {
+            "type": "object",
+            "properties": {
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.Bench": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "lat": {
+                    "type": "number"
+                },
+                "lng": {
+                    "type": "number"
+                }
+            }
+        },
         "dto.CreateBenchViaTelegram": {
             "type": "object",
             "properties": {
