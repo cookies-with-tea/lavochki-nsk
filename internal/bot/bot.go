@@ -15,7 +15,7 @@ type stateFn func(*echotron.Update) stateFn
 type Bot struct {
 	state      stateFn
 	location   *domain.Location
-	image      []byte
+	images     [][]byte
 	userID     int
 	backendUrl string
 	echotron.API
@@ -64,34 +64,39 @@ func (b *Bot) handleLocation(update *echotron.Update) stateFn {
 }
 
 func (b *Bot) handleImage(update *echotron.Update) stateFn {
+	if strings.HasPrefix(update.Message.Text, "/finish") {
+		b.userID = int(update.Message.Chat.ID)
+		b.createBench()
+		_, err := b.SendMessage("Отлично!", update.Message.Chat.ID, nil)
+		if err != nil {
+			fmt.Errorf("error send message: %s", err)
+		}
+		return b.handleMessage
+	}
 	images := update.Message.Photo
 	if len(images) == 0 {
 		_, err := b.SendMessage("Это не похоже на фото. Попробуй ещё раз.", update.Message.Chat.ID, nil)
 		if err != nil {
 			fmt.Errorf("error send message: %s", err)
 		}
-		return b.handleMessage
+		return b.handleImage
 	}
-	_, err := b.SendMessage("Отлично!", update.Message.Chat.ID, nil)
-	if err != nil {
-		fmt.Errorf("error send message: %s", err)
-	}
-	image := images[3]
+	image := update.Message.Photo[3]
 	fileInfo, _ := b.GetFile(image.FileID)
 	file, _ := b.DownloadFile(fileInfo.Result.FilePath)
-	b.image = file
-	b.userID = int(update.Message.Chat.ID)
-	b.createBench()
-	return b.handleMessage
+	b.images = append(b.images, file)
+
+	return b.handleImage
 }
 
 func (b *Bot) createBench() {
-	model := domain.CreateBench{Lat: b.location.Lat, Lng: b.location.Lng, Image: b.image, UserTelegramID: b.userID}
+	model := domain.CreateBench{Lat: b.location.Lat, Lng: b.location.Lng, Images: b.images, UserTelegramID: b.userID}
 	jsonBody, _ := json.Marshal(model)
 	_, err := http.Post(b.backendUrl, "application/json", bytes.NewBuffer(jsonBody))
 	if err != nil {
 		fmt.Errorf("error post request: %s", err)
 	}
+	b.images = make([][]byte, 0)
 }
 
 func (b *Bot) Update(update *echotron.Update) {
