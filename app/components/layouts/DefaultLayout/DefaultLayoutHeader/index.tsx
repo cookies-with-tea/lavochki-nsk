@@ -35,9 +35,9 @@ const DefaultLayoutHeader: FC = (): JSX.Element => {
                             </>
                         ) : (
                             <>
-                                <Button className="default-layout-header__login-button mr-16">
-                                    Войти
-                                </Button>
+                                {/*<Button className="default-layout-header__login-button mr-16">*/}
+                                {/*    Войти*/}
+                                {/*</Button>*/}
                                 <StyledTelegram className="default-layout-header__telegram">
                                     <Image src={TelegramIcon} alt="telegram" />
                                 </StyledTelegram>
