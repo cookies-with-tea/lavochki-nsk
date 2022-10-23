@@ -9,7 +9,7 @@ $(APP_BIN):
 
 .PHONY: swagger
 swagger:
-	swag init -g ./cmd/initiator/main.go -o ./docs
+	swag init --parseDependency --parseInternal --parseDepth 1 -g ./cmd/initiator/main.go -o ./docs
 
 
 
