@@ -15,8 +15,12 @@ body {
 
 .container {
   padding: 15px 0;
-  max-width: 1340px;
+  max-width: 1240px;
   margin-inline: auto;
+
+  @media (max-width: 1470px){
+    max-width: 1140px;
+  }
 }
 
 img {
@@ -36,6 +40,11 @@ a {
   z-index: 0;
 }
 
+.text {
+  font-size: $size--22;
+  line-height: 33px;
+  color: $color--primary-dark;
+}
 
 // Colors
 @each $_class-name,

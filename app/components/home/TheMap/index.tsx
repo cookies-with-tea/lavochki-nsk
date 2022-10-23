@@ -2,7 +2,6 @@ import React, {FC} from 'react';
 import {YMaps, Map, ObjectManager, ObjectManagerFeatures, Placemark, Clusterer} from "react-yandex-maps";
 
 const getPointData = (index: any) => {
-    console.log(index)
     return {
         hintContent: "Лавочка <strong>#" + index.id + "</strong>",
         balloonContentBody: `<div class="the-map__balloon-image"><img src=${index.image} alt="123"/></div>`,
@@ -65,7 +64,6 @@ const TheMap: FC<any> = () => {
                         }}
                     >
                         {benches?.map((coordinates: any, idx: number) => {
-                            console.log(coordinates, idx)
                             return (
                                 <Placemark
                                     key={idx}

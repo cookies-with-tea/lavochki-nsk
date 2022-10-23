@@ -13,7 +13,7 @@ const DefaultLayoutFooter = () => {
     return (
         <>
             <StyledFooter>
-                <StyledFooterWrapper>
+                <StyledFooterWrapper className="container">
                     <div className="d-flex ai-center">
                         Ознакомиться с&nbsp;
                         <Link href="/pdf" passHref>
