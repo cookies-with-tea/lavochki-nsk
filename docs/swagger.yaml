@@ -1,4 +1,26 @@
 definitions:
+  apperror.AppError:
+    properties:
+      details:
+        items:
+          type: integer
+        type: array
+      message:
+        type: string
+    type: object
+  domain.Bench:
+    properties:
+      id:
+        type: string
+      image:
+        type: string
+      is_active:
+        type: boolean
+      lat:
+        type: number
+      lng:
+        type: number
+    type: object
   dto.CreateBenchViaTelegram:
     properties:
       image:
@@ -37,6 +59,23 @@ definitions:
 info:
   contact: {}
 paths:
+  /api/v1/benches/:
+    get:
+      description: Get list active benches
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Bench'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/apperror.AppError'
+      summary: List benches
+      tags:
+      - Benches
   /api/v1/benches/telegram:
     post:
       parameters:
@@ -55,7 +94,7 @@ paths:
           description: Bad Request
       summary: Create bench via telegram
       tags:
-      - Benches
+      - Benches Moderation
   /api/v1/users:
     post:
       parameters:
