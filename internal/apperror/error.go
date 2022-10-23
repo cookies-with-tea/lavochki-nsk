@@ -3,14 +3,22 @@ package apperror
 import "encoding/json"
 
 var (
-	ErrNotFound           = NewAppError(nil, "not found")
-	ErrIncorrectDataAuth  = NewAppError(nil, "incorrect login details")
-	ErrIncorrectDataToken = NewAppError(nil, "incorrect token")
+	ErrNotFound           = NewAppError(nil, "not found", nil)
+	ErrIncorrectDataAuth  = NewAppError(nil, "incorrect login details", nil)
+	ErrIncorrectDataToken = NewAppError(nil, "incorrect token", nil)
+	ErrDecodeData         = NewAppError(nil, "error decode data", nil)
+	ErrNotEnoughRights    = NewAppError(nil, "not enough rights", nil)
 )
 
+type JSONMarshal interface {
+	MarshalJSON() ([]byte, error)
+	UnmarshalJSON(data []byte) error
+}
+
 type AppError struct {
-	Err     error  `json:"-"`
-	Message string `json:"message,omitempty"`
+	Err     error           `json:"-"`
+	Message string          `json:"message,omitempty"`
+	Details json.RawMessage `json:"details"`
 }
 
 func (e *AppError) Error() string {
@@ -27,13 +35,14 @@ func (e *AppError) Marshal() []byte {
 	return marshal
 }
 
-func NewAppError(err error, message string) *AppError {
+func NewAppError(err error, message string, details json.RawMessage) *AppError {
 	return &AppError{
 		Err:     err,
 		Message: message,
+		Details: details,
 	}
 }
 
 func systemError(err error) *AppError {
-	return NewAppError(err, "internal system error")
+	return NewAppError(err, "internal system error", nil)
 }

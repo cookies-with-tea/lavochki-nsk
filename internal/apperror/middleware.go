@@ -30,6 +30,16 @@ func Middleware(h appHandler) http.HandlerFunc {
 					w.Write(ErrIncorrectDataToken.Marshal())
 					return
 				}
+				if errors.Is(err, ErrDecodeData) {
+					w.WriteHeader(http.StatusNotFound)
+					w.Write(ErrDecodeData.Marshal())
+					return
+				}
+				if errors.Is(err, ErrNotEnoughRights) {
+					w.WriteHeader(http.StatusForbidden)
+					w.Write(ErrNotEnoughRights.Marshal())
+					return
+				}
 				err = err.(*AppError)
 				w.WriteHeader(http.StatusBadRequest)
 				w.Write(appErr.Marshal())
