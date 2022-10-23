@@ -8,8 +8,8 @@ const nextConfig = {
   },
   swcMinify: true,
   sassOptions: {
-    includePaths: [path.join(__dirname, 'app/styles')],
-      prependData: `@import "@/app/styles/variable.scss";`,
+    includePaths: [path.join(__dirname, './app/styles')],
+    prependData: `@import "@/app/styles/resources/variables/index.scss";`,
   },
 }
 

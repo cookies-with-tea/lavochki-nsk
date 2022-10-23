@@ -24,18 +24,17 @@
   width: 100% !important;
 }
 
-.mb-4 {
-  margin-bottom: 4px !important;
+h2, .h2 {
+  font-size: $size--52;
+  line-height: $size--44;
+  font-weight: 700;
+  color: $color--primary-dark;
+  margin-bottom: $size--40;
 }
 
-.mr-8 {
-  margin-right: $size--8 !important;
-}
-
-.mb-16 {
-  margin-bottom: $size--16 !important;
-}
-
-.mr-50 {
-  margin-right: 50px !important;
+h3, .h3 {
+  font-weight: 600;
+  font-size: $size--34;
+  line-height: $size--44;
+  color: $color--primary-dark;
 }
