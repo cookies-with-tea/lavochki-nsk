@@ -25,7 +25,6 @@ const LatestBenchSlider: FC<any> = ({ className }) => {
                 slidesPerView={3.5}
                 onBeforeInit={(swiper) => {
                     if (swiperRef) {
-                        console.log(swiper)
                         swiperRef.current = swiper;
                     }
                 }}
