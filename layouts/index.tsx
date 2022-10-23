@@ -10,7 +10,9 @@ const DefaultLayout: NextPage<IProps> = ({ children }): JSX.Element => {
     return (
         <div>
             <DefaultLayoutHeader />
-            { children }
+            <div className="container">
+                { children }
+            </div>
         </div>
     )
 };

@@ -8,3 +8,29 @@
   border-radius: 100px;
   z-index: 0;
 }
+
+//.default-layout-header {
+//  &__benches {
+//    &.MuiButton-root {
+//      transform: translateX(89%);
+//    }
+//  }
+//
+//  &__login-button {
+//    &.MuiButton-root {
+//      transform: translateX(89%);
+//      visibility: visible;
+//      opacity: 1;
+//    }
+//  }
+//}
+
+//.default-layout-header__telegram {
+//  &:hover {
+//    background-color: #f90;
+//
+//    & ~ .default-layout-header__login-button {
+//      display: none;
+//    }
+//  }
+//}
