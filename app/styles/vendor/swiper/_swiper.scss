@@ -1,0 +1,9 @@
+.swiper {
+  &-button-next,
+  &-button-prev {
+    background-color: $color--primary-dark;
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+  }
+}
