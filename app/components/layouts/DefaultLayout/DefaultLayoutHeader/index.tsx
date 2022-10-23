@@ -8,7 +8,8 @@ import TelegramIcon from '@/public/icons/telegram.svg'
 import {
     StyledHeaderWrapper,
     StyledHeader,
-    StyledTelegram
+    StyledTelegram,
+    StyledHomeLink
 } from '@/app/components/layouts/DefaultLayout/DefaultLayoutHeader/styles'
 
 const DefaultLayoutHeader: FC = (): JSX.Element => {
@@ -17,8 +18,10 @@ const DefaultLayoutHeader: FC = (): JSX.Element => {
     return (
         <StyledHeader className="default-layout-header">
             <StyledHeaderWrapper>
-                <Link href='/'>
-                    <Image src={Logo} alt='Logo' />
+                <Link href='/' passHref>
+                    <StyledHomeLink>
+                        <Image src={Logo} alt='Logo' />
+                    </StyledHomeLink>
                 </Link>
                 <div className="d-flex ai-center">
                     <Link href="/benches">Все лавочки</Link>
@@ -32,9 +35,9 @@ const DefaultLayoutHeader: FC = (): JSX.Element => {
                             </>
                         ) : (
                             <>
-                                {/*<Button className="default-layout-header__login-button mr-16">*/}
-                                {/*    Войти*/}
-                                {/*</Button>*/}
+                                <Button className="default-layout-header__login-button mr-16">
+                                    Войти
+                                </Button>
                                 <StyledTelegram className="default-layout-header__telegram">
                                     <Image src={TelegramIcon} alt="telegram" />
                                 </StyledTelegram>
