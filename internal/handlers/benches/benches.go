@@ -79,20 +79,13 @@ func (h *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Request) er
 	return nil
 }
 
-func (h *Handler) addBench(w http.ResponseWriter, r *http.Request) {
-	var bench dto.CreateBench
-	if err := json.NewDecoder(r.Body).Decode(&bench); err != nil {
-		h.ResponseErrorJson(w, "wrong data", http.StatusBadRequest)
-		return
-	}
-	err := h.benches.CreateBench(r.Context(), bench)
-	if err != nil {
-		h.ResponseErrorJson(w, fmt.Sprint(err), http.StatusBadRequest)
-		return
-	}
-	w.WriteHeader(http.StatusCreated)
-}
-
+// @Summary Moderation list benches
+// @Description Get list moderation benches
+// @Tags Benches Moderation
+// @Param Authorization header string true "Bearer"
+// @Success 200 {object} []domain.Bench
+// @Failure 400 {object}  apperror.AppError
+// @Router /api/v1/benches/moderation [get]
 func (h *Handler) listModerationBench(w http.ResponseWriter, r *http.Request) error {
 	role := r.Context().Value("userRole")
 	if role != "admin" {
@@ -106,6 +99,13 @@ func (h *Handler) listModerationBench(w http.ResponseWriter, r *http.Request) er
 	return nil
 }
 
+// @Summary Decision bench
+// @Description Accept or reject a bench
+// @Tags Benches Moderation
+// @Param Authorization header string true "Bearer"
+// @Success 200
+// @Failure 400 {object}  apperror.AppError
+// @Router /api/v1/benches/moderation [get]
 func (h *Handler) decisionBench(w http.ResponseWriter, r *http.Request) error {
 	role := r.Context().Value("userRole")
 	if role != "admin" {
