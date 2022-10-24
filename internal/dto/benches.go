@@ -9,10 +9,10 @@ type CreateBench struct {
 }
 
 type CreateBenchViaTelegram struct {
-	Lat            float64 `json:"lat"`
-	Lng            float64 `json:"lng"`
-	Image          []byte  `json:"image"`
-	UserTelegramID int     `json:"user_telegram_id"`
+	Lat            float64  `json:"lat"`
+	Lng            float64  `json:"lng"`
+	Images         [][]byte `json:"images"`
+	UserTelegramID int      `json:"user_telegram_id"`
 }
 
 type DecisionBench struct {
@@ -31,7 +31,7 @@ func (bench *CreateBenchViaTelegram) Validate() error {
 	return validation.ValidateStruct(bench,
 		validation.Field(&bench.Lat, validation.Required),
 		validation.Field(&bench.Lng, validation.Required),
-		validation.Field(&bench.Image, validation.Required),
+		validation.Field(&bench.Images, validation.Required),
 		validation.Field(&bench.UserTelegramID, validation.Required))
 }
 
