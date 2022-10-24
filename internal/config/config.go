@@ -6,8 +6,9 @@ import (
 )
 
 type Config struct {
-	IsDebug       bool `env:"IS_DEBUG" env-default:"false"`
-	IsDevelopment bool `env:"IS_DEV" env-default:"false"`
+	IsDebug       bool   `env:"IS_DEBUG" env-default:"false"`
+	IsDevelopment bool   `env:"IS_DEV" env-default:"false"`
+	WebHookURL    string `env:"WEBHOOK_URL"`
 	Telegram      struct {
 		Token string `env:"BOT_TELEGRAM_TOKEN" env-required:"true"`
 	}
@@ -20,6 +21,9 @@ type Config struct {
 	}
 	BackendServer struct {
 		Url string `env:"BACKEND_URL" env-default:"localhost:8000"`
+	}
+	HTTP struct {
+		Addr string `env:"SERVER_ADDR" env-default:"localhost:8080"`
 	}
 }
 

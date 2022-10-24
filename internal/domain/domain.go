@@ -6,7 +6,8 @@ type Location struct {
 }
 
 type CreateBench struct {
-	Lat   float64 `json:"lat"`
-	Lng   float64 `json:"lng"`
-	Image []byte  `json:"image"`
+	Lat            float64  `json:"lat"`
+	Lng            float64  `json:"lng"`
+	Images         [][]byte `json:"images"`
+	UserTelegramID int      `json:"user_telegram_id"`
 }
