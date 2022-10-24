@@ -12,8 +12,10 @@ definitions:
     properties:
       id:
         type: string
-      image:
-        type: string
+      images:
+        items:
+          type: string
+        type: array
       is_active:
         type: boolean
       lat:
@@ -23,9 +25,11 @@ definitions:
     type: object
   dto.CreateBenchViaTelegram:
     properties:
-      image:
+      images:
         items:
-          type: integer
+          items:
+            type: integer
+          type: array
         type: array
       lat:
         type: number

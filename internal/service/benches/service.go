@@ -34,15 +34,19 @@ func NewService(db postgres.BenchesRepository, storage *storage.Storage, log *za
 }
 
 func (s *service) GetListBenches(ctx context.Context, isActive bool) ([]domain.Bench, error) {
-	users, err := s.db.GetBenches(ctx, isActive)
+	// Получаем все лавочки из базы данных
+	benches, err := s.db.GetBenches(ctx, isActive)
 	if err != nil {
 		s.log.Error("error get all benches", zap.Error(err))
 		return nil, err
 	}
-	for idx := range users {
-		users[idx].Image = s.storage.GetImageURL(users[idx].Image)
+	// Получаем картинки из Minio
+	for idx := range benches {
+		for idxImage := range benches[idx].Images {
+			benches[idx].Images[idxImage] = s.storage.GetImageURL(benches[idx].Images[idxImage])
+		}
 	}
-	return users, nil
+	return benches, nil
 }
 
 func (s *service) CreateBench(ctx context.Context, bench dto.CreateBench) error {
@@ -50,16 +54,22 @@ func (s *service) CreateBench(ctx context.Context, bench dto.CreateBench) error 
 }
 
 func (s *service) CreateBenchViaTelegram(ctx context.Context, dto dto.CreateBenchViaTelegram) error {
-	imageName := fmt.Sprintf("%s%s", ulid.Make(), ".jpg")
-	err := s.storage.CreateImageFromBytes(ctx, imageName, dto.Image)
-	if err != nil {
-		return err
+	var imagesName []string
+
+	// Генерируем ULID и сохраняем каждую картинку в Minio
+	for image := range dto.Images {
+		imageName := fmt.Sprintf("%s%s", ulid.Make(), ".jpg")
+		err := s.storage.CreateImageFromBytes(ctx, imageName, dto.Images[image])
+		if err != nil {
+			return err
+		}
+		imagesName = append(imagesName, imageName)
 	}
 	user, err := s.usersRepository.GetUserByTelegramID(ctx, dto.UserTelegramID)
 	if err != nil {
 		return err
 	}
-	model := domain.Bench{Lng: dto.Lng, Lat: dto.Lat, Image: imageName, Owner: &user}
+	model := domain.Bench{Lng: dto.Lng, Lat: dto.Lat, Images: imagesName, Owner: &user}
 	err = s.db.CreateBench(ctx, model)
 	if err != nil {
 		return err
