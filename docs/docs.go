@@ -161,8 +161,11 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "image": {
-                    "type": "string"
+                "images": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "is_active": {
                     "type": "boolean"
@@ -178,10 +181,13 @@ const docTemplate = `{
         "dto.CreateBenchViaTelegram": {
             "type": "object",
             "properties": {
-                "image": {
+                "images": {
                     "type": "array",
                     "items": {
-                        "type": "integer"
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
                     }
                 },
                 "lat": {
