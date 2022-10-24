@@ -4,6 +4,10 @@
     "paths": {
       "@/*": ["./*"]
     },
+    "types": [
+      "node",
+      "webpack-env" // here
+    ],
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,

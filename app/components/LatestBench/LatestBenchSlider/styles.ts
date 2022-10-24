@@ -31,7 +31,7 @@ export const StyledNavigation = styled.div`
     cursor: pointer;
     left: -32px;
     
-    &:first-child span {
+    &:first-of-type span {
       transform: rotate(180deg);
     }
   }

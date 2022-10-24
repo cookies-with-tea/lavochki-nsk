@@ -7,8 +7,6 @@ export const StyledFooter = styled.div`
 `
 
 export const StyledFooterWrapper = styled.div`
-  max-width: 1340px;
-  margin-inline: auto;
   font-size: 16px;
   line-height: 32px;
   display: flex;
@@ -19,6 +17,7 @@ export const StyledFooterWrapper = styled.div`
   
   .default-default-footer__home {
     padding: 0;
+    color: var(--color--background);
   }
 `
 

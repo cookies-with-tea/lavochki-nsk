@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import {Button} from "@mui/material";
 
 export const StyledHeader = styled.header`
   background-color: var(--color--primary);
@@ -16,12 +17,15 @@ export const StyledHeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 0;
-  max-width: 1340px;
-  margin-inline: auto;
 `
 
 export const StyledHomeLink = styled.a`
   border: none;
   background: none;
+`
+
+export const StyledAvatarButton = styled(Button)`
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
 `

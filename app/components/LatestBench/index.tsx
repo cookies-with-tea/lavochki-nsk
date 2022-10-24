@@ -7,7 +7,7 @@ import {
     StyledLink,
     StyledLocationButton
 } from "@/app/components/LatestBench/styles";
-import Location from '@/public/icons/location.svg'
+import Location from '@/app/assets/icons/location.svg'
 import Image from "next/image";
 import Link from "next/link";
 import LatestBenchSlider from "@/app/components/LatestBench/LatestBenchSlider";
