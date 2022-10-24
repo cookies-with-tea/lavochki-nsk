@@ -8,6 +8,7 @@ import Slide3 from '@/public/benches/3.png'
 import Slide4 from '@/public/benches/1.png'
 import Image from "next/image";
 import Arrow from '@/app/assets/icons/arrow.svg'
+import CommonIcon from "@/app/components/common/CommonIcon";
 
 // TODO: Может быть слайдеры будут связаны друг с другом. При интеграции надо проверить.
 const LatestBenchSlider: FC<any> = ({ className }) => {
@@ -50,10 +51,10 @@ const LatestBenchSlider: FC<any> = ({ className }) => {
             </Swiper>
             <StyledNavigation>
                 <button className="swiper-button-prev" onClick={() => swiperRef.current?.slidePrev()}>
-                    <Image src={Arrow} alt="prev" />
+                    <CommonIcon name="arrow" width={27} height={22} />
                 </button>
                 <button className="swiper-button-next" onClick={() => swiperRef.current?.slideNext()}>
-                    <Image src={Arrow} alt="next" />
+                    <CommonIcon name="arrow" width={27} height={22} />
                 </button>
             </StyledNavigation>
         </div>
