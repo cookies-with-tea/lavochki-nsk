@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const path = require("path");
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin')
-const glob = require("glob");
 
 const nextConfig = {
   reactStrictMode: false,
