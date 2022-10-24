@@ -24,6 +24,9 @@ export const StyledNavigation = styled.div`
   .swiper-button-prev,
   .swiper-button-next {
     transition: all 0.3s ease-in;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .swiper-button-prev {
