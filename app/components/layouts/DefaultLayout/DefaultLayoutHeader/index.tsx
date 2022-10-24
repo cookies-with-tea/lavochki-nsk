@@ -1,22 +1,23 @@
 import React, {FC, useState} from 'react';
 import Link from "next/link";
 import Image from "next/image";
-import Logo from '@/public/icons/logo.svg'
 import Profile from '@/public/Avatar.png'
 import { Avatar, Menu } from "@mui/material";
-import TelegramIcon from '@/public/icons/telegram.svg'
+import TelegramIcon from '@/app/assets/icons/telegram.svg'
 import {
     StyledHeaderWrapper,
     StyledHeader,
     StyledTelegram,
-    StyledHomeLink, StyledAvatarButton
+    StyledHomeLink,
+    StyledAvatarButton
 } from '@/app/components/layouts/DefaultLayout/DefaultLayoutHeader/styles'
 import {menuItems} from "@/app/components/layouts/DefaultLayout/DefaultLayoutMenu/menu.constants";
 import {
     StyledLink,
-    StyledLogoutButton, StyledMenu,
+    StyledLogoutButton,
     StyledMenuItem
 } from '@/app/components/layouts/DefaultLayout/DefaultLayoutMenu/styles'
+import CommonIcon from "@/app/components/common/CommonIcon";
 
 const DefaultLayoutHeader: FC = (): JSX.Element => {
     const [isAuth, setIsAuth] = useState(true)
@@ -24,10 +25,11 @@ const DefaultLayoutHeader: FC = (): JSX.Element => {
 
     const open = Boolean(anchorEl);
 
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleAnchorSet = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
-    const handleClose = (): void => {
+
+    const handleMenuClose = (): void => {
         setAnchorEl(null);
     };
 
@@ -36,7 +38,7 @@ const DefaultLayoutHeader: FC = (): JSX.Element => {
             <StyledHeaderWrapper className="container">
                 <Link href='/' passHref>
                     <StyledHomeLink>
-                        <Image src={Logo} alt='Logo' />
+                        <CommonIcon name="logo" width={58} height={22} fillColor="#f90" />
                     </StyledHomeLink>
                 </Link>
                 <div className="d-flex ai-center">
@@ -50,22 +52,22 @@ const DefaultLayoutHeader: FC = (): JSX.Element => {
                                     aria-controls={open ? 'profile-menu' : undefined}
                                     aria-haspopup="true"
                                     aria-expanded={open ? 'true' : undefined}
-                                    onClick={handleClick}
+                                    onClick={handleAnchorSet}
                                 >
                                     <Avatar sx={{ width: 62, height: 62 }}>
                                         <Image src={Profile} alt="Profile" />
                                     </Avatar>
                                 </StyledAvatarButton>
-                                <StyledMenu
+                                <Menu
                                     id="profile-menu"
                                     anchorEl={anchorEl}
                                     open={open}
-                                    onClose={handleClose}
+                                    onClose={handleMenuClose}
                                     MenuListProps={{
                                         style: {
                                             padding: 0,
                                         },
-                                        'aria-labelledby': 'resources-button',
+                                        'aria-labelledby': 'profile-button',
                                     }}
                                     disableAutoFocusItem
                                     PaperProps={{
@@ -85,16 +87,32 @@ const DefaultLayoutHeader: FC = (): JSX.Element => {
                                     { menuItems.map((item) => (
                                         <StyledMenuItem key={item.title}>
                                             <Link href={item.url as string} passHref>
-                                                <StyledLink>{item.title}</StyledLink>
+                                                <StyledLink className="menu__link">
+                                                    <div>{item.title}</div>
+                                                    <CommonIcon
+                                                        name={item.icon}
+                                                        width={24}
+                                                        height={24}
+                                                        fillColor="#49260A"
+                                                    />
+                                                </StyledLink>
                                             </Link>
                                         </StyledMenuItem>
                                     )) }
                                     <StyledMenuItem>
-                                        <StyledLogoutButton>
-                                            Выйти
+                                        <StyledLogoutButton className="menu__link">
+                                            <div>
+                                                Выйти
+                                            </div>
+                                            <CommonIcon
+                                                name="logout"
+                                                width={24}
+                                                height={24}
+                                                fillColor="#49260A"
+                                            />
                                         </StyledLogoutButton>
                                     </StyledMenuItem>
-                                </StyledMenu>
+                                </Menu>
                             </>
                         ) : (
                             <>

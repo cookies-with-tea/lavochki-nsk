@@ -7,7 +7,8 @@ import {
 import Link from "next/link";
 import {StyledHomeLink} from "@/app/components/layouts/DefaultLayout/DefaultLayoutHeader/styles";
 import Image from "next/image";
-import Logo from "@/public/icons/logo-light.svg";
+import Logo from "@/app/assets/icons/logo-light.svg";
+import CommonIcon from "@/app/components/common/CommonIcon";
 
 const DefaultLayoutFooter = () => {
     return (
@@ -22,7 +23,7 @@ const DefaultLayoutFooter = () => {
                     </div>
                     <Link href='/' passHref>
                         <StyledHomeLink className="default-default-footer__home">
-                            <Image src={Logo} alt='Logo' />
+                            <CommonIcon name="logo" width={58} height={22} fillColor="#F6EDDD" />
                         </StyledHomeLink>
                     </Link>
                 </StyledFooterWrapper>

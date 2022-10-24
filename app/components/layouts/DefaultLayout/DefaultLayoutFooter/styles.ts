@@ -17,6 +17,7 @@ export const StyledFooterWrapper = styled.div`
   
   .default-default-footer__home {
     padding: 0;
+    color: var(--color--background);
   }
 `
 

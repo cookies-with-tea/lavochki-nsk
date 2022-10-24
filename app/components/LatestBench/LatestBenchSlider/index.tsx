@@ -7,7 +7,7 @@ import Slide2 from '@/public/benches/2.png'
 import Slide3 from '@/public/benches/3.png'
 import Slide4 from '@/public/benches/1.png'
 import Image from "next/image";
-import Arrow from '@/public/icons/arrow.svg'
+import Arrow from '@/app/assets/icons/arrow.svg'
 
 // TODO: Может быть слайдеры будут связаны друг с другом. При интеграции надо проверить.
 const LatestBenchSlider: FC<any> = ({ className }) => {
