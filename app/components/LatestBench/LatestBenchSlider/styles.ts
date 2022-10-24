@@ -33,10 +33,7 @@ export const StyledNavigation = styled.div`
     position: relative;
     cursor: pointer;
     left: -32px;
-    
-    &:first-of-type span {
-      transform: rotate(180deg);
-    }
+    transform: rotate(180deg);
   }
 
   .swiper-button-next {
