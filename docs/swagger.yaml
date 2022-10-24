@@ -80,6 +80,25 @@ paths:
       summary: List benches
       tags:
       - Benches
+  /api/v1/benches/moderation:
+    get:
+      description: Accept or reject a bench
+      parameters:
+      - description: Bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/apperror.AppError'
+      summary: Decision bench
+      tags:
+      - Benches Moderation
   /api/v1/benches/telegram:
     post:
       parameters:
