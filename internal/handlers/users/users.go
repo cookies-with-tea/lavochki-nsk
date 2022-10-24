@@ -38,6 +38,13 @@ func (h *Handler) registerUser(w http.ResponseWriter, r *http.Request) error {
 		fmt.Println(err)
 		return apperror.ErrIncorrectDataAuth
 	}
+
+	// Валидация
+	if err := user.Validate(); err != nil {
+		details, _ := json.Marshal(err)
+		return apperror.NewAppError(err, "validation error", details)
+	}
+
 	token, refreshToken, err := h.users.LoginViaTelegram(r.Context(), user)
 	if err != nil {
 		fmt.Println(err)
@@ -59,9 +66,15 @@ func (h *Handler) registerUser(w http.ResponseWriter, r *http.Request) error {
 func (h *Handler) refreshToken(w http.ResponseWriter, r *http.Request) error {
 	var token dto.RefreshToken
 	if err := json.NewDecoder(r.Body).Decode(&token); err != nil {
-		fmt.Println(err)
 		return apperror.ErrIncorrectDataToken
 	}
+
+	// Валидация
+	if err := token.Validate(); err != nil {
+		details, _ := json.Marshal(err)
+		return apperror.NewAppError(err, "validation error", details)
+	}
+
 	accessToken, refreshToken, err := h.users.RefreshToken(r.Context(), token.Token)
 	if err != nil {
 		fmt.Println(err)
