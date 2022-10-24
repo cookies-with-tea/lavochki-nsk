@@ -23,7 +23,6 @@ func NewBenchesHandler(benches benchesService.Service) *Handler {
 
 func (h *Handler) Register(router *mux.Router, authManager *auth.Manager) {
 	router.HandleFunc("/", apperror.Middleware(h.listBenches)).Methods("GET")
-	router.HandleFunc("/", h.addBench).Methods("POST")
 
 	// Создание лавочки через telegram
 	router.HandleFunc("/telegram", apperror.Middleware(h.addBenchViaTelegram)).Methods("POST")
