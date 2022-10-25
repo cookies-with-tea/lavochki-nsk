@@ -11,6 +11,7 @@ import Location from '@/app/assets/icons/location.svg'
 import Image from "next/image";
 import Link from "next/link";
 import LatestBenchSlider from "@/app/components/LatestBench/LatestBenchSlider";
+import CommonIcon from "@/app/components/common/CommonIcon";
 
 const LatestBench: FC<any> = ({ id }): JSX.Element => {
     return (
@@ -20,7 +21,7 @@ const LatestBench: FC<any> = ({ id }): JSX.Element => {
                 <StyledLatestBenchInfoLocation>
                     <StyledLatestBenchInfoLocationTitle>Г. Новосибирск, ул. Зыряновская</StyledLatestBenchInfoLocationTitle>
                     <StyledLocationButton>
-                        <Image src={Location} alt="Bench" />
+                       <CommonIcon name="location" width={32} height={24} />
                     </StyledLocationButton>
                 </StyledLatestBenchInfoLocation>
                 <Link href='/benches/1' passHref>

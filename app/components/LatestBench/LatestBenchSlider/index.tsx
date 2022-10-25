@@ -31,22 +31,22 @@ const LatestBenchSlider: FC<any> = ({ className }) => {
                 }}
             >
                 <StyledSlide>
-                    <Image src={Slide1} alt="Bench" />
+                   1 {/*<Image src={Slide1} alt="Bench" />*/}
                 </StyledSlide>
                 <StyledSlide>
-                    <Image src={Slide2} alt="Bench" />
+                  1  {/*<Image src={Slide2} alt="Bench" />*/}
                 </StyledSlide>
                 <StyledSlide>
-                    <Image src={Slide3} alt="Bench" />
+                   1 {/*<Image src={Slide3} alt="Bench" />*/}
                 </StyledSlide>
                 <StyledSlide>
-                    <Image src={Slide4} alt="Bench" />
+                  1  {/*<Image src={Slide4} alt="Bench" />*/}
                 </StyledSlide>
                 <StyledSlide>
-                    <Image src={Slide3} alt="Bench" />
+                  1  {/*<Image src={Slide3} alt="Bench" />*/}
                 </StyledSlide>
                 <StyledSlide>
-                    <Image src={Slide2} alt="Bench" />
+                   1 {/*<Image src={Slide2} alt="Bench" />*/}
                 </StyledSlide>
             </Swiper>
             <StyledNavigation>

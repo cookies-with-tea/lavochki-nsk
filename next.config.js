@@ -7,6 +7,9 @@ const nextConfig = {
   compiler: {
     styledComponents: true
   },
+  env: {
+    BOT_USERNAME: process.env.BOT_USERNAME
+  },
   swcMinify: true,
   sassOptions: {
     includePaths: [path.join(__dirname, './app/styles')],
@@ -25,6 +28,31 @@ const nextConfig = {
 
     return config
   },
+  async redirects() {
+    return [
+      {
+        source: '/auth',
+        destination: 'https://oauth.telegram.org/auth',
+        permanent: true,
+      },
+    ]
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/auth/get',
+        destination: 'https://oauth.telegram.org/auth/get'
+      },
+      {
+        source: '/benches',
+        destination: 'http://localhost:8000/api/v1/benches/',
+      },
+      {
+        source: '/:path*',
+        destination: 'http://localhost:8000/api/v1/:path*',
+      },
+    ]
+  }
 }
 
 module.exports = nextConfig
