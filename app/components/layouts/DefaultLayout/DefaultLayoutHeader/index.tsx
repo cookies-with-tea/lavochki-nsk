@@ -46,7 +46,7 @@ const DefaultLayoutHeader: FC = (): JSX.Element => {
         if (!error && data) {
             localStorage.setItem('token', data.access)
 
-            // location.reload()
+            location.reload()
         }
     };
 

@@ -13,6 +13,7 @@ export const StyledTelegram = styled(Button)`
   z-index: 1;
   background-color: var(--color--primary);
   border-radius: 50%;
+  border: none !important;
 `
 
 export const StyledHeaderWrapper = styled.div`
