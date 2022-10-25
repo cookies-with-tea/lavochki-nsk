@@ -2,12 +2,13 @@ import React, {FC, useEffect, useRef, useState} from 'react';
 import Link from "next/link";
 import Image from "next/image";
 import Profile from '@/public/Avatar.png'
-import {Avatar, Button, Menu} from "@mui/material";
+import {Avatar, Menu} from "@mui/material";
 import {
     StyledAvatarButton,
     StyledHeader,
     StyledHeaderWrapper,
     StyledHomeLink,
+    StyledTelegram,
     StyledHuitaTelegramButton
 } from '@/app/components/layouts/DefaultLayout/DefaultLayoutHeader/styles'
 import {menuItems} from "@/app/components/layouts/DefaultLayout/DefaultLayoutMenu/menu.constants";
@@ -140,7 +141,7 @@ const DefaultLayoutHeader: FC = (): JSX.Element => {
                         ) : (
                             <>
                                 <StyledHuitaTelegramButton>
-                                    <TelegramLoginButton ref={telegramWidget} botName={process.env.BOT_USERNAME}/>
+                                    <TelegramLoginButton ref={telegramWidget} dataOnauth={handleTelegramResponse} botName={process.env.BOT_USERNAME}/>
                                 </StyledHuitaTelegramButton>
                                 <TgButton />
                             </>
