@@ -8,6 +8,7 @@ var (
 	ErrIncorrectDataToken = NewAppError(nil, "incorrect token", nil)
 	ErrDecodeData         = NewAppError(nil, "error decode data", nil)
 	ErrNotEnoughRights    = NewAppError(nil, "not enough rights", nil)
+	ErrFailedToCreate     = NewAppError(nil, "failed to create", nil)
 )
 
 type JSONMarshal interface {

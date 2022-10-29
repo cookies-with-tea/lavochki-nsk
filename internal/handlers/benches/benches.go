@@ -7,7 +7,6 @@ import (
 	benchesService "benches/internal/service/benches"
 	"benches/pkg/auth"
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 )
@@ -40,7 +39,7 @@ func (h *Handler) Register(router *mux.Router, authManager *auth.Manager) {
 // @Description Get list active benches
 // @Tags Benches
 // @Success 200 {object} []domain.Bench
-// @Failure 400 {object}  apperror.AppError
+// @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches/ [get]
 func (h *Handler) listBenches(w http.ResponseWriter, r *http.Request) error {
 	benches, err := h.benches.GetListBenches(r.Context(), true)
@@ -72,8 +71,7 @@ func (h *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Request) er
 
 	err := h.benches.CreateBenchViaTelegram(r.Context(), bench)
 	if err != nil {
-		h.ResponseErrorJson(w, fmt.Sprint(err), http.StatusBadRequest)
-		return nil
+		return err
 	}
 	w.WriteHeader(http.StatusCreated)
 	return nil
@@ -84,7 +82,7 @@ func (h *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Request) er
 // @Tags Benches Moderation
 // @Param Authorization header string true "Bearer"
 // @Success 200 {object} []domain.Bench
-// @Failure 400 {object}  apperror.AppError
+// @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches/moderation [get]
 func (h *Handler) listModerationBench(w http.ResponseWriter, r *http.Request) error {
 	role := r.Context().Value("userRole")
@@ -104,7 +102,7 @@ func (h *Handler) listModerationBench(w http.ResponseWriter, r *http.Request) er
 // @Tags Benches Moderation
 // @Param Authorization header string true "Bearer"
 // @Success 200
-// @Failure 400 {object}  apperror.AppError
+// @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches/moderation [get]
 func (h *Handler) decisionBench(w http.ResponseWriter, r *http.Request) error {
 	role := r.Context().Value("userRole")

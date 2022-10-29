@@ -1,6 +1,7 @@
 package benches
 
 import (
+	"benches/internal/apperror"
 	"benches/internal/domain"
 	"benches/internal/dto"
 	"benches/internal/repository/postgres"
@@ -56,6 +57,11 @@ func (s *service) CreateBench(ctx context.Context, bench dto.CreateBench) error 
 func (s *service) CreateBenchViaTelegram(ctx context.Context, dto dto.CreateBenchViaTelegram) error {
 	var imagesName []string
 
+	user, err := s.usersRepository.GetUserByTelegramID(ctx, dto.UserTelegramID)
+	if err != nil {
+		return apperror.ErrNotEnoughRights
+	}
+
 	// Генерируем ULID и сохраняем каждую картинку в Minio
 	for image := range dto.Images {
 		imageName := fmt.Sprintf("%s%s", ulid.Make(), ".jpg")
@@ -65,14 +71,11 @@ func (s *service) CreateBenchViaTelegram(ctx context.Context, dto dto.CreateBenc
 		}
 		imagesName = append(imagesName, imageName)
 	}
-	user, err := s.usersRepository.GetUserByTelegramID(ctx, dto.UserTelegramID)
-	if err != nil {
-		return err
-	}
+
 	model := domain.Bench{Lng: dto.Lng, Lat: dto.Lat, Images: imagesName, Owner: &user}
 	err = s.db.CreateBench(ctx, model)
 	if err != nil {
-		return err
+		return apperror.ErrFailedToCreate
 	}
 	return nil
 }
