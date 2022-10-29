@@ -10,5 +10,5 @@
 - установить `.env` файл
 - запустить контейнер
     ```console
-    docker-compose up --build -d
+    $ docker-compose up --build -d
     ```
