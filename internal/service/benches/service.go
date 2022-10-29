@@ -4,8 +4,9 @@ import (
 	"benches/internal/apperror"
 	"benches/internal/domain"
 	"benches/internal/dto"
+	"benches/internal/notifications"
 	"benches/internal/repository/postgres"
-	"benches/internal/service/notifications"
+	notificationService "benches/internal/service/notifications"
 	storage "benches/internal/storage/minio"
 	"context"
 	"fmt"
@@ -24,12 +25,12 @@ type service struct {
 	db                   postgres.BenchesRepository
 	log                  *zap.Logger
 	storage              *storage.Storage
-	notificationsService notifications.Service
+	notificationsService notificationService.Service
 	usersRepository      postgres.UsersRepository
 }
 
 func NewService(db postgres.BenchesRepository, storage *storage.Storage, log *zap.Logger,
-	notificationsService notifications.Service, usersRepository postgres.UsersRepository) Service {
+	notificationsService notificationService.Service, usersRepository postgres.UsersRepository) Service {
 	return &service{db: db, storage: storage, log: log, notificationsService: notificationsService,
 		usersRepository: usersRepository}
 }
@@ -82,7 +83,7 @@ func (s *service) CreateBenchViaTelegram(ctx context.Context, dto dto.CreateBenc
 
 func (s *service) DecisionBench(ctx context.Context, dto dto.DecisionBench) error {
 	var err error
-	var typeDecision string
+	var notification *notifications.TelegramNotification
 
 	var bench domain.Bench
 	bench, err = s.db.GetBenchByID(ctx, dto.ID)
@@ -91,16 +92,16 @@ func (s *service) DecisionBench(ctx context.Context, dto dto.DecisionBench) erro
 	}
 	if dto.Decision {
 		err = s.db.UpdateActiveBench(ctx, dto.ID, dto.Decision)
-		typeDecision = "received"
+		notification = notifications.BenchSuccessfullyAccepted.ToNotification(bench.Owner.TelegramID, bench.ID)
 	} else {
 		err = s.db.DeleteBench(ctx, dto.ID)
-		typeDecision = "denied"
+		notification = notifications.BenchDenied.ToNotification(bench.Owner.TelegramID, bench.ID)
 	}
 	if err != nil {
 		return err
 	}
 
-	err = s.notificationsService.SendNotificationInTelegram(ctx, typeDecision, bench.Owner.TelegramID, bench.ID)
+	err = s.notificationsService.SendNotificationInTelegram(ctx, notification)
 	if err != nil {
 		return err
 	}
