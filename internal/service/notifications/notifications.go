@@ -1,17 +1,16 @@
 package notifications
 
 import (
-	"benches/internal/domain"
+	"benches/internal/notifications"
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
 	"go.uber.org/zap"
 	"net/http"
 )
 
 type Service interface {
-	SendNotificationInTelegram(ctx context.Context, typeNotification string, userID int, benchID string) error
+	SendNotificationInTelegram(ctx context.Context, notification *notifications.TelegramNotification) error
 }
 
 type service struct {
@@ -26,23 +25,9 @@ func NewService(log *zap.Logger, telegramNotificationURL string) Service {
 	}
 }
 
-// Отправляем сообщение пользователю в Telegram
-func (s *service) SendNotificationInTelegram(ctx context.Context, typeNotification string, userID int, benchID string) error {
-	// TODO: Избавиться от benchID
-
-	var message string
-	switch typeNotification {
-	case "received":
-		message = fmt.Sprintf("Лавочка `%s` успешно одобрена!", benchID)
-	case "denied":
-		message = fmt.Sprintf("Лавочка `%s` успешно отказана :(", benchID)
-	}
-
-	data := domain.TelegramNotification{
-		UserID:  userID,
-		Message: message,
-	}
-	jsonBody, _ := json.Marshal(data)
+// Отправка уведомления пользователю в Telegram
+func (s *service) SendNotificationInTelegram(ctx context.Context, notification *notifications.TelegramNotification) error {
+	jsonBody, _ := json.Marshal(notification)
 
 	// Отправляем запрос на endpoint бота
 	_, err := http.Post(s.telegramNotificationURL, "application/json", bytes.NewBuffer(jsonBody))
