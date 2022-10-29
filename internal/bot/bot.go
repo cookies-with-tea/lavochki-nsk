@@ -66,10 +66,14 @@ func (b *Bot) handleLocation(update *echotron.Update) stateFn {
 func (b *Bot) handleImage(update *echotron.Update) stateFn {
 	if strings.HasPrefix(update.Message.Text, "/finish") {
 		b.userID = int(update.Message.Chat.ID)
-		b.createBench()
-		_, err := b.SendMessage("Отлично!", update.Message.Chat.ID, nil)
-		if err != nil {
-			fmt.Errorf("error send message: %s", err)
+		response := b.createBench()
+		if response.StatusCode == http.StatusForbidden {
+			b.SendMessage("Чтобы создать лавочку, пожалуйста, зарегестрируйтесь для начала на сайте", int64(b.userID), nil)
+		} else {
+			_, err := b.SendMessage("Отлично!", update.Message.Chat.ID, nil)
+			if err != nil {
+				fmt.Errorf("error send message: %s", err)
+			}
 		}
 		return b.handleMessage
 	}
@@ -89,14 +93,15 @@ func (b *Bot) handleImage(update *echotron.Update) stateFn {
 	return b.handleImage
 }
 
-func (b *Bot) createBench() {
+func (b *Bot) createBench() *http.Response {
 	model := domain.CreateBench{Lat: b.location.Lat, Lng: b.location.Lng, Images: b.images, UserTelegramID: b.userID}
 	jsonBody, _ := json.Marshal(model)
-	_, err := http.Post(b.backendUrl, "application/json", bytes.NewBuffer(jsonBody))
+	response, err := http.Post(b.backendUrl, "application/json", bytes.NewBuffer(jsonBody))
 	if err != nil {
 		fmt.Errorf("error post request: %s", err)
 	}
 	b.images = make([][]byte, 0)
+	return response
 }
 
 func (b *Bot) Update(update *echotron.Update) {
