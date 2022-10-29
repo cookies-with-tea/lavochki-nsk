@@ -40,6 +40,11 @@ func Middleware(h appHandler) http.HandlerFunc {
 					w.Write(ErrNotEnoughRights.Marshal())
 					return
 				}
+				if errors.Is(err, ErrFailedToCreate) {
+					w.WriteHeader(http.StatusNotFound)
+					w.Write(ErrFailedToCreate.Marshal())
+					return
+				}
 				err = err.(*AppError)
 				w.WriteHeader(http.StatusBadRequest)
 				w.Write(appErr.Marshal())
