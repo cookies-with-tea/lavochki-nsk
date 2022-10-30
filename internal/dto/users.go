@@ -16,8 +16,8 @@ func (u *CreateUser) Validate() error {
 	return validation.ValidateStruct(u,
 		validation.Field(&u.ID, validation.Required),
 		validation.Field(&u.FirstName, validation.Required),
-		validation.Field(&u.LastName, validation.Required),
-		validation.Field(&u.Username, validation.Required),
+		validation.Field(&u.LastName),
+		validation.Field(&u.Username),
 		validation.Field(&u.PhotoUrl, validation.Required),
 		validation.Field(&u.AuthDate, validation.Required),
 		validation.Field(&u.Hash, validation.Required))
