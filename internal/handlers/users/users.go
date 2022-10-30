@@ -35,7 +35,6 @@ func (h *Handler) Register(router *mux.Router) {
 func (h *Handler) registerUser(w http.ResponseWriter, r *http.Request) error {
 	var user dto.CreateUser
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		fmt.Println(err)
 		return apperror.ErrIncorrectDataAuth
 	}
 
