@@ -18,7 +18,7 @@ func main() {
 	}
 	defer logger.Sync() // nolint:errcheck
 	appLogger := logging.NewLogger(logger, "benches")
-	logger.Info("init config")
+	logger.Info("config initializing")
 	cfg := config.GetConfig()
 	migrateManager := migrations.NewManager(database.DatabaseParametersToDSN("postgres", cfg.PostgreSQL.Host,
 		cfg.PostgreSQL.Database, cfg.PostgreSQL.Username, cfg.PostgreSQL.Password, false))
@@ -30,6 +30,6 @@ func main() {
 	if err != nil {
 		appLogger.Fatal("Error create app", zap.Error(err))
 	}
-	logger.Info("Running Application")
+	logger.Info("running application")
 	a.Run()
 }
