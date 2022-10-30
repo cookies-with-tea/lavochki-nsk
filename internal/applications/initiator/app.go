@@ -39,21 +39,23 @@ type App struct {
 }
 
 func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
-	logger.Info("router init")
+	logger.Info("router initializing")
 	router := mux.NewRouter()
 
-	logger.Info("swagger docs initializing")
+	logger.Info("swagger initializing")
 	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
+	logger.Info("database initializing")
 	db := postgres.NewPostgresDatabase(database.DatabaseParametersToDSN("postgres", cfg.PostgreSQL.Host,
 		cfg.PostgreSQL.Database, cfg.PostgreSQL.Username, cfg.PostgreSQL.Password, false))
-	logger.Info("create minio client")
+
+	logger.Info("minio initializing")
 	minioClient, err := minio.New(cfg.Minio.Endpoint, &minio.Options{
 		Creds:  credentials.NewStaticV4(cfg.Minio.AccessKey, cfg.Minio.SecretKey, ""),
 		Secure: false,
 	})
 	if err != nil {
-		logger.Fatal("creating minio client: ", zap.Error(err))
+		logger.Fatal("creating minio client", zap.Error(err))
 	}
 	err = minioClient.MakeBucket(context.Background(), cfg.Minio.Bucket, minio.MakeBucketOptions{
 		Region:        "",
@@ -67,7 +69,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 			logger.Fatal("run minio client: ", zap.Error(err))
 		}
 	}
-	logger.Info("create redis client")
+	logger.Info("redis initializing")
 	redisClient := redis.NewClient(&redis.Options{
 		Addr:     cfg.Redis.Host,
 		Password: cfg.Redis.Password,
@@ -76,7 +78,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 
 	authManager, err := auth.NewManager(cfg.SigningKey)
 	if err != nil {
-		logger.Fatal("init auth manager: ", zap.Error(err))
+		logger.Fatal("init auth manager", zap.Error(err))
 	}
 
 	var appNotificationsService notificationsService.Service
