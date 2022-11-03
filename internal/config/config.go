@@ -10,7 +10,9 @@ type Config struct {
 	IsDevelopment bool   `env:"IS_DEV" env-default:"false"`
 	WebHookURL    string `env:"WEBHOOK_URL"`
 	Telegram      struct {
-		Token string `env:"BOT_TELEGRAM_TOKEN" env-required:"true"`
+		Token       string `env:"BOT_TELEGRAM_TOKEN" env-required:"true"`
+		LoginKey    string `env:"BOT_TELEGRAM_LOGIN_KEY" env-required:"true"`
+		PasswordKey string `env:"BOT_TELEGRAM_PASSWORD_KEY" env-required:"true"`
 	}
 	AppConfig struct {
 		LogLevel  string `env:"LOG_LEVEL" env-default:"trace"`
