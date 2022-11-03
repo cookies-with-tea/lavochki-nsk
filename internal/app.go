@@ -5,6 +5,7 @@ import (
 	bot2 "benches-bot/internal/bot"
 	"benches-bot/internal/config"
 	"context"
+	"fmt"
 	"github.com/NicoNex/echotron/v3"
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
@@ -34,8 +35,20 @@ func (a *app) Run() {
 	termChan := make(chan os.Signal, 1)
 	signal.Notify(termChan, syscall.SIGINT, syscall.SIGTERM)
 
+	// Create Auth Manager
+	authManager := bot2.NewAuth(fmt.Sprintf("%s/api/v1/bot/auth", a.cfg.BackendServer.BaseUrl),
+		fmt.Sprintf("%s/api/v1/bot/refresh", a.cfg.BackendServer.BaseUrl))
+
 	// Create Bot
-	bot := bot2.NewBot(a.cfg.Telegram.Token, a.cfg.BackendServer.Url)
+	bot := bot2.NewBot(
+		a.cfg.Telegram.Token,
+		fmt.Sprintf("%s/api/v1/benches/telegram", a.cfg.BackendServer.BaseUrl),
+		a.cfg.Telegram.LoginKey, a.cfg.Telegram.PasswordKey,
+		authManager)
+	err := bot.Authorization()
+	if err != nil {
+		a.logger.Error("auth error", zap.Error(err))
+	}
 
 	// Create API
 	router := mux.NewRouter()

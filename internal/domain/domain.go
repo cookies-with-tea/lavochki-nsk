@@ -11,3 +11,8 @@ type CreateBench struct {
 	Images         [][]byte `json:"images"`
 	UserTelegramID int      `json:"user_telegram_id"`
 }
+
+type Tokens struct {
+	Access  string `json:"access"`
+	Refresh string `json:"refresh"`
+}

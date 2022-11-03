@@ -10,7 +10,9 @@ type Config struct {
 	IsDevelopment bool   `env:"IS_DEV" env-default:"false"`
 	WebHookURL    string `env:"WEBHOOK_URL"`
 	Telegram      struct {
-		Token string `env:"BOT_TELEGRAM_TOKEN" env-required:"true"`
+		Token       string `env:"BOT_TELEGRAM_TOKEN" env-required:"true"`
+		LoginKey    string `env:"BOT_TELEGRAM_LOGIN_KEY" env-required:"true"`
+		PasswordKey string `env:"BOT_TELEGRAM_PASSWORD_KEY" env-required:"true"`
 	}
 	AppConfig struct {
 		LogLevel  string `env:"LOG_LEVEL" env-default:"trace"`
@@ -20,7 +22,7 @@ type Config struct {
 		}
 	}
 	BackendServer struct {
-		Url string `env:"BACKEND_URL" env-default:"localhost:8000"`
+		BaseUrl string `env:"BACKEND_URL" env-default:"localhost:8000"`
 	}
 	HTTP struct {
 		Addr string `env:"SERVER_ADDR" env-default:"localhost:8080"`
