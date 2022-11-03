@@ -40,7 +40,7 @@ func (s *service) AuthorizationBot(ctx context.Context, bot dto.AuthorizationBot
 		return "", "", apperror.ErrNotEnoughRights
 	}
 	var token string
-	token, err := s.tokenManager.NewJWT(s.login, "bot", 1*time.Minute)
+	token, err := s.tokenManager.NewJWT(s.login, "bot", 15*time.Minute)
 	if err != nil {
 		return "", "", err
 	}
@@ -49,7 +49,7 @@ func (s *service) AuthorizationBot(ctx context.Context, bot dto.AuthorizationBot
 	if err != nil {
 		return "", "", err
 	}
-	err = s.redisStorage.WriteRefreshToken(ctx, refreshToken, s.login, 15*time.Minute)
+	err = s.redisStorage.WriteRefreshToken(ctx, refreshToken, s.login, 20*time.Minute)
 	if err != nil {
 		return "", "", err
 	}
@@ -73,7 +73,7 @@ func (s *service) RefreshToken(ctx context.Context, token string) (string, strin
 		return "", "", err
 	}
 
-	err = s.redisStorage.WriteRefreshToken(ctx, newRefreshToken, botLogin, 15*time.Minute)
+	err = s.redisStorage.WriteRefreshToken(ctx, newRefreshToken, botLogin, 20*time.Minute)
 	if err != nil {
 		return "", "", err
 	}
