@@ -8,24 +8,54 @@ import (
 	"github.com/NicoNex/echotron/v3"
 	"net/http"
 	"strings"
+	"time"
 )
 
 type stateFn func(*echotron.Update) stateFn
 
+type Credentials struct {
+	login    string
+	password string
+}
+
 type Bot struct {
-	state      stateFn
-	location   *domain.Location
-	images     [][]byte
-	userID     int
-	backendUrl string
+	state    stateFn
+	location *domain.Location
+	images   [][]byte
+	userID   int
+
+	tokens      *domain.Tokens
+	authService *Auth
+	credentials *Credentials
+	backendUrl  string
 	echotron.API
 }
 
-func NewBot(token string, backendUrl string) *Bot {
-	bot := &Bot{API: echotron.NewAPI(token)}
+func NewBot(token, backendUrl, login, password string, authService *Auth) *Bot {
+	bot := &Bot{
+		API:         echotron.NewAPI(token),
+		authService: authService,
+		backendUrl:  backendUrl,
+		credentials: &Credentials{
+			login:    login,
+			password: password,
+		},
+	}
 	bot.state = bot.handleMessage
-	bot.backendUrl = backendUrl
 	return bot
+}
+
+func (b *Bot) Authorization() error {
+	access, refresh, err := b.authService.GetJWT(b.credentials.login, b.credentials.password)
+	if err != nil {
+		return err
+	}
+	tokens := domain.Tokens{
+		Access:  access,
+		Refresh: refresh,
+	}
+	b.tokens = &tokens
+	return nil
 }
 
 func (b *Bot) Create(_ int64) echotron.Bot {
@@ -96,10 +126,53 @@ func (b *Bot) handleImage(update *echotron.Update) stateFn {
 func (b *Bot) createBench() *http.Response {
 	model := domain.CreateBench{Lat: b.location.Lat, Lng: b.location.Lng, Images: b.images, UserTelegramID: b.userID}
 	jsonBody, _ := json.Marshal(model)
-	response, err := http.Post(b.backendUrl, "application/json", bytes.NewBuffer(jsonBody))
+
+	req, err := http.NewRequest(http.MethodPost, b.backendUrl, bytes.NewBuffer(jsonBody))
+	if err != nil {
+		fmt.Errorf("could not create request: %s", err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", b.tokens.Access))
+	client := http.Client{
+		Timeout: 30 * time.Second,
+	}
+	response, err := client.Do(req)
 	if err != nil {
 		fmt.Errorf("error post request: %s", err)
 	}
+	if response.StatusCode == http.StatusUnauthorized && b.tokens.Refresh != "" {
+		b.tokens.Access, b.tokens.Refresh, err = b.authService.Refresh(b.tokens.Refresh)
+		if err != nil {
+			fmt.Errorf("error post request: %s", err)
+		}
+	} else if response.StatusCode == http.StatusUnauthorized {
+		b.tokens.Access, b.tokens.Refresh, err = b.authService.GetJWT(b.credentials.login, b.credentials.password)
+		if err != nil {
+			fmt.Errorf("error post request: %s", err)
+		}
+	}
+
+	if response.StatusCode == http.StatusUnauthorized {
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", b.tokens.Access))
+		response, err = client.Do(req)
+		if err != nil {
+			fmt.Errorf("error post request: %s", err)
+		}
+
+		if response.StatusCode == http.StatusUnauthorized {
+			b.tokens.Access, b.tokens.Refresh, err = b.authService.GetJWT(b.credentials.login, b.credentials.password)
+			if err != nil {
+				fmt.Errorf("error post request: %s", err)
+			}
+		}
+
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", b.tokens.Access))
+		response, err = client.Do(req)
+		if err != nil {
+			fmt.Errorf("error post request: %s", err)
+		}
+	}
+
 	b.images = make([][]byte, 0)
 	return response
 }
