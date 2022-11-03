@@ -45,6 +45,8 @@ type Config struct {
 	Telegram struct {
 		Token             string `env:"TELEGRAM_TOKEN" env-required:"true"`
 		NotificationToken string `env:"TELEGRAM_NOTIFICATION_URL" env-required:"true"`
+		Login             string `env:"BOT_TELEGRAM_LOGIN" env-required:"true"`
+		Password          string `env:"BOT_TELEGRAM_PASSWORD" env-required:"true"`
 	}
 }
 
