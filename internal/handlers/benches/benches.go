@@ -24,7 +24,9 @@ func (h *Handler) Register(router *mux.Router, authManager *auth.Manager) {
 	router.HandleFunc("/", apperror.Middleware(h.listBenches)).Methods("GET")
 
 	// Создание лавочки через telegram
-	router.HandleFunc("/telegram", apperror.Middleware(h.addBenchViaTelegram)).Methods("POST")
+	routerCreateBenches := router.NewRoute().Subrouter()
+	routerCreateBenches.Use(authManager.JWTMiddleware)
+	routerCreateBenches.HandleFunc("/telegram", apperror.Middleware(h.addBenchViaTelegram)).Methods("POST")
 
 	// Роутер для функционала модерации
 	routerModeration := router.NewRoute().Subrouter()
@@ -58,6 +60,9 @@ func (h *Handler) listBenches(w http.ResponseWriter, r *http.Request) error {
 // @Failure 400
 // @Router /api/v1/benches/telegram [post]
 func (h *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Request) error {
+	if role := r.Context().Value("userRole"); role != "bot" {
+		return apperror.ErrNotEnoughRights
+	}
 	var bench dto.CreateBenchViaTelegram
 	if err := json.NewDecoder(r.Body).Decode(&bench); err != nil {
 		return apperror.ErrDecodeData
