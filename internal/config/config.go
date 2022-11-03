@@ -22,7 +22,7 @@ type Config struct {
 		}
 	}
 	BackendServer struct {
-		Url string `env:"BACKEND_URL" env-default:"localhost:8000"`
+		BaseUrl string `env:"BACKEND_URL" env-default:"localhost:8000"`
 	}
 	HTTP struct {
 		Addr string `env:"SERVER_ADDR" env-default:"localhost:8080"`
