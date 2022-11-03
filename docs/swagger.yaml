@@ -23,6 +23,13 @@ definitions:
       lng:
         type: number
     type: object
+  dto.AuthorizationBot:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    type: object
   dto.CreateBenchViaTelegram:
     properties:
       images:
@@ -118,6 +125,49 @@ paths:
       summary: Create bench via telegram
       tags:
       - Benches Moderation
+  /api/v1/bot/auth:
+    post:
+      parameters:
+      - description: bot info
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AuthorizationBot'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Forbidden
+      summary: Authorization bot
+      tags:
+      - Bot
+  /api/v1/bot/refresh:
+    post:
+      parameters:
+      - description: Bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: token info
+        in: body
+        name: token
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RefreshToken'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+      summary: Bot refresh token
+      tags:
+      - Bot
   /api/v1/users:
     post:
       parameters:
