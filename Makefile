@@ -10,6 +10,3 @@ $(APP_BIN):
 .PHONY: swagger
 swagger:
 	swag init --parseDependency --parseInternal --parseDepth 1 -g ./cmd/initiator/main.go -o ./docs
-
-
-

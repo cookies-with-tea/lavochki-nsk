@@ -5,7 +5,6 @@ import (
 	"benches/internal/dto"
 	usersService "benches/internal/service/users"
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 )
@@ -46,7 +45,6 @@ func (h *Handler) registerUser(w http.ResponseWriter, r *http.Request) error {
 
 	token, refreshToken, err := h.users.LoginViaTelegram(r.Context(), user)
 	if err != nil {
-		fmt.Println(err)
 		return apperror.ErrIncorrectDataAuth
 	}
 	h.ResponseJson(w, map[string]string{"access": token, "refresh": refreshToken}, 200)
@@ -76,7 +74,6 @@ func (h *Handler) refreshToken(w http.ResponseWriter, r *http.Request) error {
 
 	accessToken, refreshToken, err := h.users.RefreshToken(r.Context(), token.Token)
 	if err != nil {
-		fmt.Println(err)
 		return apperror.ErrIncorrectDataToken
 	}
 	h.ResponseJson(w, map[string]string{"access": accessToken, "refresh": refreshToken}, 200)
