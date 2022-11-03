@@ -4,9 +4,11 @@ import (
 	_ "benches/docs"
 	"benches/internal/config"
 	"benches/internal/handlers/benches"
+	"benches/internal/handlers/bot"
 	"benches/internal/handlers/users"
 	"benches/internal/repository/postgres"
 	benchesService "benches/internal/service/benches"
+	botService "benches/internal/service/bot"
 	notificationsService "benches/internal/service/notifications"
 	usersService "benches/internal/service/users"
 	minioStorage "benches/internal/storage/minio"
@@ -88,6 +90,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 		appNotificationsService = notificationsService.NewService(logger, cfg.Telegram.NotificationToken)
 	}
 
+	// Пользователи
 	appUsersRedisStorage := redisStorage.NewRedisStorage(redisClient)
 	appUsersTelegramManager := telegram.NewTelegramManager(cfg.Telegram.Token)
 	appUsersRepository := postgres.NewUsersRepository(db)
@@ -96,12 +99,19 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appHandlerUsers := users.NewUsersHandler(appUsersService)
 	appHandlerUsers.Register(router)
 
+	// Лавочки
 	appBenchesRouter := router.PathPrefix("/api/v1/benches").Subrouter()
 	appBenchesStorage := minioStorage.NewMinioStorage(minioClient, cfg.Minio.Bucket, cfg.Images.PublicEndpoint)
 	appBenchesRepository := postgres.NewBenchesRepository(db)
 	appBenchesService := benchesService.NewService(appBenchesRepository, appBenchesStorage, logger, appNotificationsService, appUsersRepository)
 	appHandlerBenches := benches.NewBenchesHandler(appBenchesService)
 	appHandlerBenches.Register(appBenchesRouter, authManager)
+
+	// Бот
+	appBotRouter := router.PathPrefix("/api/v1/bot").Subrouter()
+	appBotService := botService.NewService(cfg.Telegram.Login, cfg.Telegram.Password, logger, authManager, appUsersRedisStorage)
+	appBotHandler := bot.NewBotHandler(appBotService)
+	appBotHandler.Register(appBotRouter)
 
 	return &App{cfg: cfg, logger: logger, router: router}, nil
 }
