@@ -6,5 +6,6 @@ type Bench struct {
 	Lng      float64  `json:"lng"`
 	Images   []string `json:"images"`
 	IsActive bool     `json:"is_active"`
+	Tags     []Tag    `json:"tags"`
 	Owner    *User    `json:"-"`
 }
