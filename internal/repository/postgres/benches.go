@@ -15,6 +15,16 @@ type benchModel struct {
 	IsActive bool       `bun:"is_active"`
 	OwnerID  string     `bun:"owner_id"`
 	Owner    *userModel `bun:"rel:belongs-to,join:owner_id=id"`
+	Tags     []tagModel `bun:"m2m:tags_benches,join:Bench=Tag"`
+}
+
+type benchToTagsModel struct {
+	bun.BaseModel `bun:"table:tags_benches,alias:tags_benches,select:tags_benches"`
+
+	BenchID string      `bun:"bench_id,pk"`
+	Bench   *benchModel `bun:"rel:belongs-to,join:bench_id=id"`
+	TagID   string      `bun:"tag_id,pk"`
+	Tag     *tagModel   `bun:"rel:belongs-to,join:tag_id=id"`
 }
 
 func (b *benchModel) FromDomain(bench domain.Bench) {
@@ -28,12 +38,14 @@ func (b *benchModel) FromDomain(bench domain.Bench) {
 
 func benchModelToDomain(model benchModel) domain.Bench {
 	owner := userModelToDomain(*model.Owner)
+	tags := tagModelsToDomain(model.Tags)
 	return domain.Bench{
 		ID:       model.ID,
 		Lat:      model.Lat,
 		Lng:      model.Lng,
 		Images:   model.Images,
 		IsActive: model.IsActive,
+		Tags:     tags,
 		Owner:    &owner,
 	}
 }
