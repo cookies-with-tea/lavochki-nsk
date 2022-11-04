@@ -15,3 +15,7 @@ func NewPostgresDatabase(dsn string) *bun.DB {
 
 	return db
 }
+
+func Init(db *bun.DB) {
+	db.RegisterModel((*benchToTagsModel)(nil))
+}

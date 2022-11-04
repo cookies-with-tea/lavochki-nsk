@@ -5,11 +5,13 @@ import (
 	"benches/internal/config"
 	"benches/internal/handlers/benches"
 	"benches/internal/handlers/bot"
+	"benches/internal/handlers/tags"
 	"benches/internal/handlers/users"
 	"benches/internal/repository/postgres"
 	benchesService "benches/internal/service/benches"
 	botService "benches/internal/service/bot"
 	notificationsService "benches/internal/service/notifications"
+	tagsService "benches/internal/service/tags"
 	usersService "benches/internal/service/users"
 	minioStorage "benches/internal/storage/minio"
 	redisStorage "benches/internal/storage/redis"
@@ -50,6 +52,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	logger.Info("database initializing")
 	db := postgres.NewPostgresDatabase(database.DatabaseParametersToDSN("postgres", cfg.PostgreSQL.Host,
 		cfg.PostgreSQL.Database, cfg.PostgreSQL.Username, cfg.PostgreSQL.Password, false))
+	postgres.Init(db)
 
 	logger.Info("minio initializing")
 	minioClient, err := minio.New(cfg.Minio.Endpoint, &minio.Options{
@@ -112,6 +115,13 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appBotService := botService.NewService(cfg.Telegram.Login, cfg.Telegram.Password, logger, authManager, appUsersRedisStorage)
 	appBotHandler := bot.NewBotHandler(appBotService)
 	appBotHandler.Register(appBotRouter)
+
+	// Теги
+	appTagsRouter := router.PathPrefix("/api/v1/tags").Subrouter()
+	appTagsRepository := postgres.NewTagsRepository(db)
+	appTagsService := tagsService.NewService(appTagsRepository, logger)
+	appHandlerTags := tags.NewTagsHandler(appTagsService)
+	appHandlerTags.Register(appTagsRouter)
 
 	return &App{cfg: cfg, logger: logger, router: router}, nil
 }

@@ -27,7 +27,10 @@ func NewBenchesRepository(db *bun.DB) BenchesRepository {
 
 func (b *benchesRepository) GetBenches(ctx context.Context, isActive bool) ([]domain.Bench, error) {
 	benchesModel := make([]benchModel, 0)
-	err := b.db.NewSelect().Model(&benchesModel).Where("is_active = ?", isActive).Relation("Owner").Scan(ctx)
+	err := b.db.NewSelect().Model(&benchesModel).Where("is_active = ?", isActive).
+		Relation("Owner").
+		Relation("Tags").
+		Scan(ctx)
 	if err != nil {
 		return nil, err
 	}
