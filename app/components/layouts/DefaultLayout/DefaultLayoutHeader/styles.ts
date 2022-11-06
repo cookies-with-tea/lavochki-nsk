@@ -6,6 +6,7 @@ import TelegramLoginButton from 'react-telegram-login';
 export const StyledHeader = styled.header`
   background-color: var(--color--primary);
   margin-bottom: 62px;
+  padding: 15px 0;
 `
 
 export const StyledTelegram = styled(Button)`

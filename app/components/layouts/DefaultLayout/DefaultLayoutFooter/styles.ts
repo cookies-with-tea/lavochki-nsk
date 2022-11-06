@@ -3,14 +3,12 @@ import styled from "@emotion/styled";
 export const StyledFooter = styled.div`
   display: flex;
   background-color: var(--color--primary-dark);
-  padding: 35px 0;
+  padding: 36px 0 22px;
 `
 
 export const StyledFooterWrapper = styled.div`
   font-size: 16px;
   line-height: 32px;
-  display: flex;
-  justify-content: space-between;
   font-weight: 500;
   width: 100%;
   color: var(--color--background);
@@ -28,5 +26,52 @@ export const StyledLink = styled.a`
     line-height: 32px;
     color: var(--color--background);
     text-decoration: underline;
- 
+    display: inline-block;
+    position: relative;
+    margin-bottom: -1px;
+`
+
+export const StyledFlexEnd = styled.div`
+  align-self: flex-end;
+`
+
+export const StyledCopyright = styled.div`
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 32px;
+  color: #9E8567;
+  align-self: flex-end;
+`
+
+export const StyledAuthorsMenu = styled.ul`
+  display: flex;
+  flex-direction: column;
+  align-self: flex-end;
+`
+
+export const StyledAuthorLink = styled.a`
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 20px;
+  text-align: right;
+  color: #FFFCF7;
+  padding: 0;
+  
+  span {
+    text-decoration: underline;
+  }
+`
+
+export const StyledDeveloped = styled.div`
+  position: absolute;
+  right: 101px;
+  pointer-events: none;
+  display: inline;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 20px;
+  text-align: right;
+  color: #FFFCF7;
+  padding: 0;
+  width: 77px;
 `

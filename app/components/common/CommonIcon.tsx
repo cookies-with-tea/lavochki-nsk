@@ -17,13 +17,17 @@ interface IProps {
      * Height - Width of icon. Default - 32
      */
     height: number
+    /*
+    * className - Class name
+    * */
+    className?: string
 }
 
-const CommonIcon: FC<IProps> = ({ name, fillColor='#000', width=32, height=32 }) => {
+const CommonIcon: FC<IProps> = ({ className, name, fillColor='#000', width=32, height=32 }) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
-            className={`app-icon ${name}--icon`}
+            className={`app-icon ${name}--icon ${className}`}
             fill={fillColor}
             width={width}
             height={height}
