@@ -1,15 +1,13 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import Link from "next/link";
 import Image from "next/image";
 import Profile from '@/public/Avatar.png'
-import { Avatar, Menu } from "@mui/material";
-import TelegramIcon from '@/app/assets/icons/telegram.svg'
+import {Avatar, Menu} from "@mui/material";
 import {
-    StyledHeaderWrapper,
+    StyledAvatarButton,
     StyledHeader,
-    StyledTelegram,
+    StyledHeaderWrapper,
     StyledHomeLink,
-    StyledAvatarButton
 } from '@/app/components/layouts/DefaultLayout/DefaultLayoutHeader/styles'
 import {menuItems} from "@/app/components/layouts/DefaultLayout/DefaultLayoutMenu/menu.constants";
 import {
@@ -18,10 +16,14 @@ import {
     StyledMenuItem
 } from '@/app/components/layouts/DefaultLayout/DefaultLayoutMenu/styles'
 import CommonIcon from "@/app/components/common/CommonIcon";
+// @ts-ignore
+import TelegramLoginButton from 'react-telegram-login';
+import usersApi from "@/app/api/users/users.api";
 
 const DefaultLayoutHeader: FC = (): JSX.Element => {
-    const [isAuth, setIsAuth] = useState(true)
+    const [isAuth, setIsAuth] = useState(false)
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const telegramWidget = useRef<any>(null)
 
     const open = Boolean(anchorEl);
 
@@ -33,16 +35,45 @@ const DefaultLayoutHeader: FC = (): JSX.Element => {
         setAnchorEl(null);
     };
 
+    const handleTelegramResponse = async (response: any): Promise<void> => {
+        const [error, data] = await usersApi.loginViaTelegram(response)
+
+        if (!error && data) {
+            localStorage.setItem('token', data.access)
+
+            location.reload()
+        }
+    };
+
+    const handleLogout = (): void => {
+        localStorage.clear()
+
+        location.reload()
+    }
+
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+
+        if (token) {
+            setIsAuth(true)
+        }
+    }, [])
+
+
     return (
         <StyledHeader className="default-layout-header">
             <StyledHeaderWrapper className="container">
-                <Link href='/' passHref>
-                    <StyledHomeLink>
-                        <CommonIcon name="logo" width={58} height={22} fillColor="#f90" />
-                    </StyledHomeLink>
-                </Link>
                 <div className="d-flex ai-center">
-                    <Link href="/benches">Все лавочки</Link>
+                    <Link href='/' passHref>
+                        <StyledHomeLink>
+                            <CommonIcon name="logo" width={260} height={32} />
+                        </StyledHomeLink>
+                    </Link>
+                    <Link href="/benches" passHref>
+                        <a>Все лавочки</a>
+                    </Link>
+                </div>
+                <div className="d-flex ai-center">
                     <div className="d-flex ai-center ml-36">
                         { isAuth ? (
                             <>
@@ -100,7 +131,7 @@ const DefaultLayoutHeader: FC = (): JSX.Element => {
                                         </StyledMenuItem>
                                     )) }
                                     <StyledMenuItem>
-                                        <StyledLogoutButton className="menu__link">
+                                        <StyledLogoutButton className="menu__link" onClick={handleLogout}>
                                             <div>
                                                 Выйти
                                             </div>
@@ -116,12 +147,7 @@ const DefaultLayoutHeader: FC = (): JSX.Element => {
                             </>
                         ) : (
                             <>
-                                {/*<Button className="default-layout-header__login-button mr-16">*/}
-                                {/*    Войти*/}
-                                {/*</Button>*/}
-                                <StyledTelegram className="default-layout-header__telegram">
-                                    <Image src={TelegramIcon} alt="telegram" />
-                                </StyledTelegram>
+                                <TelegramLoginButton ref={telegramWidget} dataOnauth={handleTelegramResponse} botName={process.env.BOT_USERNAME}/>
                             </>
                         )}
 

@@ -1,5 +1,11 @@
 import styled from "@emotion/styled";
 import {Button} from "@mui/material";
+import LatestBenchSlider from "@/app/components/LatestBench/LatestBenchSlider";
+
+export const StyledLatestBenchSlider = styled(LatestBenchSlider)`
+  max-width: 740px;
+  position: relative;
+`
 
 export const StyledLatestBench = styled.div`
   display: flex;
@@ -7,6 +13,7 @@ export const StyledLatestBench = styled.div`
   background-color: var(--color--primary-light);
   padding: 30px 0 26px 30px;
   margin-bottom: 40px;
+  border-radius: 20px;
 `
 
 export const StyledLatestBenchInfoTitle = styled.div`
@@ -22,7 +29,11 @@ export const StyledLocationButton = styled(Button)`
   border: none !important;
   padding: 0 !important;
   transition: none !important;
-  
+  margin: 0;
+  text-align: left !important;
+  width: 24px !important;
+  justify-content: flex-start;
+
   .MuiTouchRipple-root {
     display: none;
   }
@@ -46,5 +57,8 @@ export const StyledLatestBenchInfoLocationTitle = styled.div`
 `
 
 export const StyledLink = styled.a`
+  padding: 14px 25px;
+  font-size: 22px;
+  line-height: 26px;
   width: 154px;
 `

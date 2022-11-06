@@ -1,59 +1,42 @@
-import React, {FC, useRef} from 'react';
-import { Swiper } from 'swiper/react';
+import React, {createRef, FC, useRef} from 'react';
+import {Swiper, SwiperSlide} from 'swiper/react';
 import { Swiper as SwiperType, Navigation } from 'swiper';
 import {StyledNavigation, StyledSlide} from "@/app/components/LatestBench/LatestBenchSlider/styles";
-import Slide1 from '@/public/benches/1.png'
-import Slide2 from '@/public/benches/2.png'
-import Slide3 from '@/public/benches/3.png'
-import Slide4 from '@/public/benches/1.png'
 import Image from "next/image";
-import Arrow from '@/app/assets/icons/arrow.svg'
 import CommonIcon from "@/app/components/common/CommonIcon";
 
-// TODO: Может быть слайдеры будут связаны друг с другом. При интеграции надо проверить.
-const LatestBenchSlider: FC<any> = ({ className }) => {
+const LatestBenchSlider: FC<any> = ({ images, className }) => {
     const swiperRef = useRef<SwiperType | null>(null)
+    const swiperNavPrevRef = useRef(null)
+    const swiperNavNextRef = useRef(null)
 
     return (
         <div className={className}>
             <Swiper
                 modules={[Navigation]}
                 navigation={{
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
+                    nextEl: swiperNavNextRef.current,
+                    prevEl: swiperNavPrevRef.current
                 }}
                 spaceBetween={22}
                 slidesPerView={3.5}
-                onBeforeInit={(swiper) => {
+                onBeforeInit={(swiper: any) => {
                     if (swiperRef) {
-                        swiperRef.current = swiper;
+                        swiperRef.current = swiper
                     }
                 }}
             >
-                <StyledSlide>
-                    <Image src={Slide1} alt="Bench" />
-                </StyledSlide>
-                <StyledSlide>
-                    <Image src={Slide2} alt="Bench" />
-                </StyledSlide>
-                <StyledSlide>
-                    <Image src={Slide3} alt="Bench" />
-                </StyledSlide>
-                <StyledSlide>
-                    <Image src={Slide4} alt="Bench" />
-                </StyledSlide>
-                <StyledSlide>
-                    <Image src={Slide3} alt="Bench" />
-                </StyledSlide>
-                <StyledSlide>
-                    <Image src={Slide2} alt="Bench" />
-                </StyledSlide>
+                { images && images.map((image: string) => (
+                    <StyledSlide key={image}>
+                        <Image src={image} alt="image" width={240} height={240} />
+                    </StyledSlide>
+                ))}
             </Swiper>
             <StyledNavigation>
-                <button className="swiper-button-prev" onClick={() => swiperRef.current?.slidePrev()}>
+                <button className="swiper-button-prev" ref={swiperNavPrevRef}>
                     <CommonIcon name="arrow" width={27} height={22} />
                 </button>
-                <button className="swiper-button-next" onClick={() => swiperRef.current?.slideNext()}>
+                <button className="swiper-button-next" ref={swiperNavNextRef}>
                     <CommonIcon name="arrow" width={27} height={22} />
                 </button>
             </StyledNavigation>
