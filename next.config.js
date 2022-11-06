@@ -15,6 +15,9 @@ const nextConfig = {
     includePaths: [path.join(__dirname, './app/styles')],
     prependData: `@import "@/app/styles/resources/variables/index.scss";`,
   },
+  images : {
+    domains : ['localhost']
+  },
   webpack: (
       config,
       { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }
@@ -28,23 +31,10 @@ const nextConfig = {
 
     return config
   },
-  async redirects() {
-    return [
-      {
-        source: '/auth',
-        destination: 'https://oauth.telegram.org/auth',
-        permanent: true,
-      },
-    ]
-  },
   async rewrites() {
     return [
       {
-        source: '/auth/get',
-        destination: 'https://oauth.telegram.org/auth/get'
-      },
-      {
-        source: '/benches',
+        source: '/api/benches/',
         destination: 'http://localhost:8000/api/v1/benches/',
       },
       {

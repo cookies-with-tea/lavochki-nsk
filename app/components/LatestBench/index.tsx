@@ -1,9 +1,9 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import {
     StyledLatestBench,
     StyledLatestBenchInfoLocation,
     StyledLatestBenchInfoLocationTitle,
-    StyledLatestBenchInfoTitle,
+    StyledLatestBenchInfoTitle, StyledLatestBenchSlider,
     StyledLink,
     StyledLocationButton
 } from "@/app/components/LatestBench/styles";
@@ -13,22 +13,25 @@ import Link from "next/link";
 import LatestBenchSlider from "@/app/components/LatestBench/LatestBenchSlider";
 import CommonIcon from "@/app/components/common/CommonIcon";
 
-const LatestBench: FC<any> = ({ id }): JSX.Element => {
+const LatestBench: FC<any> = ({ bench }): JSX.Element => {
+    // useEffect(() => {
+    //     console.log(bench)
+    // }, [])
     return (
         <StyledLatestBench>
-            <div className="w-50">
-                <StyledLatestBenchInfoTitle>Лавочка №1</StyledLatestBenchInfoTitle>
+            <div>
+                <StyledLatestBenchInfoTitle>Лавочка №{bench.id}</StyledLatestBenchInfoTitle>
                 <StyledLatestBenchInfoLocation>
                     <StyledLatestBenchInfoLocationTitle>Г. Новосибирск, ул. Зыряновская</StyledLatestBenchInfoLocationTitle>
                     <StyledLocationButton>
-                       <CommonIcon name="location" width={32} height={24} />
+                       <CommonIcon name="location" width={24} height={32} />
                     </StyledLocationButton>
                 </StyledLatestBenchInfoLocation>
                 <Link href='/benches/1' passHref>
                     <StyledLink>Смотреть</StyledLink>
                 </Link>
             </div>
-            <LatestBenchSlider className="w-50 p-relative latest-bench-slider"/>
+            <StyledLatestBenchSlider images={bench.images} />
         </StyledLatestBench>
     );
 };

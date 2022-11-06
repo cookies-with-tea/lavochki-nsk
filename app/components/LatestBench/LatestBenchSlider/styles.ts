@@ -2,24 +2,21 @@ import styled from "@emotion/styled";
 import {SwiperSlide} from "swiper/react";
 
 export const StyledSlide = styled(SwiperSlide)`
-  width: 190px;
-  height: 190px;
+  width: 190px !important;
+  height: 190px !important;
   text-align: center;
   
   img {
+    border-radius: 20px;
     width: 100%;
     object-fit: cover;
   }
 `
 
 export const StyledNavigation = styled.div`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   width: 100%;
   display: flex;
   justify-content: space-between;
-  z-index: 2;
 
   .swiper-button-prev,
   .swiper-button-next {
@@ -30,16 +27,21 @@ export const StyledNavigation = styled.div`
   }
   
   .swiper-button-prev {
-    position: relative;
+    position: absolute;
     cursor: pointer;
     left: -32px;
-    transform: rotate(180deg);
+    transform: rotate(180deg) translateY(75%);
+    z-index: 10;
+    top: 50%;
   }
 
   .swiper-button-next {
-    position: relative;
+    position: absolute;
     cursor: pointer;
     right: -32px;
+    transform: translateY(-75%);
+    z-index: 10;
+    top: 50%;
   }
   
   .swiper-button-disabled {

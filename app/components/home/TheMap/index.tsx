@@ -1,5 +1,6 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {YMaps, Map, ObjectManager, ObjectManagerFeatures, Placemark, Clusterer} from "react-yandex-maps";
+import benchesApi from "@/app/api/benches/benches.api";
 
 const getPointData = (index: any) => {
     return {
@@ -21,29 +22,7 @@ const mapState = {
     behaviors: ["default", "scrollZoom"]
 };
 
-const benches = [
-    {
-        lat: 55.020115,
-        lng: 82.939382,
-        id: 0,
-        image: '',
-    },
-    {
-        lat: 55.019771,
-        lng: 82.942968,
-        id: 1,
-        image: '',
-    },
-    {
-        lat: 55.046036,
-        lng: 82.930116,
-        id: 1,
-        image: '',
-    },
-]
-
-
-const TheMap: FC<any> = () => {
+const TheMap: FC<any> = ({benches}) => {
     return (
         <div className="mb-52">
             <h2>Расположение лавочек</h2>
@@ -63,7 +42,7 @@ const TheMap: FC<any> = () => {
                             geoObjectHideIconOnBalloonOpen: false
                         }}
                     >
-                        {benches?.map((coordinates: any, idx: number) => {
+                        {benches && benches?.map((coordinates: any, idx: number) => {
                             return (
                                 <Placemark
                                     key={idx}

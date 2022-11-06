@@ -8,8 +8,6 @@ import {
     StyledHeader,
     StyledHeaderWrapper,
     StyledHomeLink,
-    StyledTelegram,
-    StyledHuitaTelegramButton
 } from '@/app/components/layouts/DefaultLayout/DefaultLayoutHeader/styles'
 import {menuItems} from "@/app/components/layouts/DefaultLayout/DefaultLayoutMenu/menu.constants";
 import {
@@ -21,14 +19,11 @@ import CommonIcon from "@/app/components/common/CommonIcon";
 // @ts-ignore
 import TelegramLoginButton from 'react-telegram-login';
 import usersApi from "@/app/api/users/users.api";
-import TgButton from "@/app/components/layouts/DefaultLayout/TgButton";
 
 const DefaultLayoutHeader: FC = (): JSX.Element => {
     const [isAuth, setIsAuth] = useState(false)
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const telegramWidget = useRef<any>(null)
-    const button = useRef(null)
-    const [widget, setWidget] = useState<any>(null)
 
     const open = Boolean(anchorEl);
 
@@ -56,17 +51,29 @@ const DefaultLayoutHeader: FC = (): JSX.Element => {
         location.reload()
     }
 
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+
+        if (token) {
+            setIsAuth(true)
+        }
+    }, [])
+
 
     return (
         <StyledHeader className="default-layout-header">
             <StyledHeaderWrapper className="container">
-                <Link href='/' passHref>
-                    <StyledHomeLink>
-                        <CommonIcon name="logo" width={58} height={22} />
-                    </StyledHomeLink>
-                </Link>
                 <div className="d-flex ai-center">
-                    <Link href="/benches">Все лавочки</Link>
+                    <Link href='/' passHref>
+                        <StyledHomeLink>
+                            <CommonIcon name="logo" width={260} height={32} />
+                        </StyledHomeLink>
+                    </Link>
+                    <Link href="/benches" passHref>
+                        <a>Все лавочки</a>
+                    </Link>
+                </div>
+                <div className="d-flex ai-center">
                     <div className="d-flex ai-center ml-36">
                         { isAuth ? (
                             <>
@@ -124,7 +131,7 @@ const DefaultLayoutHeader: FC = (): JSX.Element => {
                                         </StyledMenuItem>
                                     )) }
                                     <StyledMenuItem>
-                                        <StyledLogoutButton className="menu__link">
+                                        <StyledLogoutButton className="menu__link" onClick={handleLogout}>
                                             <div>
                                                 Выйти
                                             </div>
@@ -140,10 +147,7 @@ const DefaultLayoutHeader: FC = (): JSX.Element => {
                             </>
                         ) : (
                             <>
-                                <StyledHuitaTelegramButton>
-                                    <TelegramLoginButton ref={telegramWidget} dataOnauth={handleTelegramResponse} botName={process.env.BOT_USERNAME}/>
-                                </StyledHuitaTelegramButton>
-                                <TgButton />
+                                <TelegramLoginButton ref={telegramWidget} dataOnauth={handleTelegramResponse} botName={process.env.BOT_USERNAME}/>
                             </>
                         )}
 

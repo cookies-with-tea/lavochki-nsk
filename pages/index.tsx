@@ -1,12 +1,27 @@
 import type { NextPage } from 'next'
 import LatestBenches from "../app/components/home/LatestBenches";
 import TheMap from "@/app/components/home/TheMap";
+import benchesApi from "@/app/api/benches/benches.api";
+import {useEffect} from "react";
+import axios from "axios";
 
-const Home: NextPage = (): JSX.Element => {
+export const getStaticProps = async () => {
+    const response = await axios.get('http://localhost:8000/api/v1/benches/')
+    const benches = await response.data
+
+    if (benches) {
+        return {
+            props: { benches }
+        }
+
+    }
+}
+
+const Home: NextPage<any> = ({ benches }): JSX.Element => {
   return (
    <div>
-       <TheMap />
-       <LatestBenches />
+       <TheMap benches={benches} />
+       <LatestBenches benches={benches} />
    </div>
   )
 }

@@ -1,7 +1,8 @@
 import Link from 'next/link';
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import LatestBench from '@/app/components/LatestBench'
 import styled from "@emotion/styled";
+import benchesApi from "@/app/api/benches/benches.api";
 
 const StyledLatestBenchesLink = styled.a`
   font-size: 22px;
@@ -11,7 +12,7 @@ const StyledLatestBenchesLink = styled.a`
   background-color: var(--color--primary-dark);
 `
 
-const LatestBenches: FC = (): JSX.Element => {
+const LatestBenches: FC<any> = ({benches}): JSX.Element => {
     return (
         <div className="latest-benches">
             <div className="d-flex ai-center jc-between mb-40">
@@ -20,9 +21,7 @@ const LatestBenches: FC = (): JSX.Element => {
                     <StyledLatestBenchesLink>Смотреть все</StyledLatestBenchesLink>
                 </Link>
             </div>
-            <LatestBench />
-            <LatestBench />
-            <LatestBench />
+            { benches && benches.map((bench: any) => <LatestBench key={bench.id} bench={bench} />) }
         </div>
     );
 };
