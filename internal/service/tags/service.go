@@ -2,6 +2,7 @@ package tags
 
 import (
 	"benches/internal/domain"
+	"benches/internal/dto"
 	"benches/internal/repository/postgres"
 	"context"
 	"go.uber.org/zap"
@@ -9,6 +10,7 @@ import (
 
 type Service interface {
 	GetAllTags(ctx context.Context) ([]domain.Tag, error)
+	CreateTag(ctx context.Context, tag dto.CreateTag) error
 }
 
 type service struct {
@@ -29,4 +31,15 @@ func (s *service) GetAllTags(ctx context.Context) ([]domain.Tag, error) {
 		return []domain.Tag{}, err
 	}
 	return tags, nil
+}
+
+// CreateTag TODO: Добавить permissions
+func (s *service) CreateTag(ctx context.Context, dto dto.CreateTag) error {
+	tag := domain.Tag{
+		Title: dto.Title,
+	}
+	if err := s.db.CreateTag(ctx, tag); err != nil {
+		return err
+	}
+	return nil
 }
