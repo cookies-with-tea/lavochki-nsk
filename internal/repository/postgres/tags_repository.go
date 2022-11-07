@@ -3,11 +3,13 @@ package postgres
 import (
 	"benches/internal/domain"
 	"context"
+	"github.com/oklog/ulid/v2"
 	"github.com/uptrace/bun"
 )
 
 type TagsRepository interface {
 	GetAllTags(ctx context.Context) ([]domain.Tag, error)
+	CreateTag(ctx context.Context, tag domain.Tag) error
 }
 
 type tagsRepository struct {
@@ -28,4 +30,15 @@ func (t *tagsRepository) GetAllTags(ctx context.Context) ([]domain.Tag, error) {
 	}
 	tags := tagModelsToDomain(tagsModel)
 	return tags, nil
+}
+
+func (t *tagsRepository) CreateTag(ctx context.Context, tag domain.Tag) error {
+	model := tagModel{}
+	model.FromDomain(tag)
+	model.ID = ulid.Make().String()
+	_, err := t.db.NewInsert().Model(&model).Exec(ctx)
+	if err != nil {
+		return err
+	}
+	return nil
 }
