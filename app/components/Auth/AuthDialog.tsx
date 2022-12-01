@@ -12,7 +12,6 @@ const AuthDialog = (props: SimpleDialogProps) => {
     const { onClose, open } = props;
 
     const handleClose = () => {
-        // onClose(selectedValue);
         console.log('close')
     };
 

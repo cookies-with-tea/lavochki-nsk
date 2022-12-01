@@ -11,7 +11,7 @@ import Location from '@/app/assets/icons/location.svg'
 import Image from "next/image";
 import Link from "next/link";
 import LatestBenchSlider from "@/app/components/LatestBench/LatestBenchSlider";
-import CommonIcon from "@/app/components/common/CommonIcon";
+import CommonIcon from "@/app/components/Common/CommonIcon";
 
 const LatestBench: FC<any> = ({ bench }): JSX.Element => {
     // useEffect(() => {

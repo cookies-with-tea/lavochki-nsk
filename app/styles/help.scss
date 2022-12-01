@@ -4,6 +4,19 @@
   display: flex !important;
 }
 
+.fd-column {
+  flex-direction: column !important;
+}
+
+.flex-end {
+  display: flex;
+  align-items: flex-end;
+}
+
+.fw-no-w {
+ flex-wrap: nowrap;
+}
+
 .ai-center {
   align-items: center !important;
 }
@@ -14,18 +27,6 @@
 
 .jc-center {
   justify-content: center !important;
-}
-
-.fd-column {
-  flex-direction: column !important;
-}
-
-.w-100 {
-  width: 100% !important;
-}
-
-.w-50 {
-  width: 50% !important;
 }
 
 .p-relative {
@@ -44,5 +45,12 @@ h3, .h3 {
   font-weight: 600;
   font-size: $size--34;
   line-height: $size--44;
+  color: $color--primary-dark;
+}
+
+h4, .h4 {
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 30px;
   color: $color--primary-dark;
 }

@@ -15,7 +15,7 @@ import {
     StyledLogoutButton,
     StyledMenuItem
 } from '@/app/components/layouts/DefaultLayout/DefaultLayoutMenu/styles'
-import CommonIcon from "@/app/components/common/CommonIcon";
+import CommonIcon from "@/app/components/Common/CommonIcon";
 // @ts-ignore
 import TelegramLoginButton from 'react-telegram-login';
 import usersApi from "@/app/api/users/users.api";

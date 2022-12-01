@@ -6,7 +6,7 @@ import {
     StyledMenuItem
 } from "@/app/components/layouts/DefaultLayout/DefaultLayoutMenu/styles";
 import Link from "next/link";
-import CommonIcon from "@/app/components/common/CommonIcon";
+import CommonIcon from "@/app/components/Common/CommonIcon";
 import {Menu} from "@mui/material";
 
 const DefaultLayoutMenu: FC<any> = (): JSX.Element => {

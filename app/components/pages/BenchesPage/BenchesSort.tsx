@@ -1,14 +1,17 @@
 import React from 'react';
+import {StyledSortItem, StyledSortTitle} from "@/app/components/pages/BenchesPage/styles";
 
-const BenchesSort = () => {
+const BenchesSort = (): JSX.Element => {
     return (
         <div className="d-flex ai-center">
-            Сортировать по
+            <StyledSortTitle>
+                Сортировать по:
+            </StyledSortTitle>
             <nav>
-                <ul>
-                    <li>Дате добавления</li>
-                    <li>Рейтингу</li>
-                    <li>Количеству отзывов</li>
+                <ul className="d-flex">
+                    <StyledSortItem>Дате добавления</StyledSortItem>
+                    <StyledSortItem>Рейтингу</StyledSortItem>
+                    <StyledSortItem>Количеству отзывов</StyledSortItem>
                 </ul>
             </nav>
         </div>
