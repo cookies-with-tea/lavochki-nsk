@@ -22,6 +22,17 @@ definitions:
         type: number
       lng:
         type: number
+      tags:
+        items:
+          $ref: '#/definitions/domain.Tag'
+        type: array
+    type: object
+  domain.Tag:
+    properties:
+      id:
+        type: string
+      title:
+        type: string
     type: object
   dto.AuthorizationBot:
     properties:
@@ -44,6 +55,11 @@ definitions:
         type: number
       user_telegram_id:
         type: integer
+    type: object
+  dto.CreateTag:
+    properties:
+      title:
+        type: string
     type: object
   dto.CreateUser:
     properties:
@@ -85,6 +101,21 @@ paths:
           schema:
             $ref: '#/definitions/apperror.AppError'
       summary: List benches
+      tags:
+      - Benches
+  /api/v1/benches/{id}:
+    get:
+      description: Get detail active bench
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Bench'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/apperror.AppError'
+      summary: Detail bench
       tags:
       - Benches
   /api/v1/benches/moderation:
@@ -168,6 +199,44 @@ paths:
       summary: Bot refresh token
       tags:
       - Bot
+  /api/v1/tags:
+    get:
+      description: Get list tags
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Tag'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/apperror.AppError'
+      summary: List tags
+      tags:
+      - Tags
+    post:
+      description: Create tag
+      parameters:
+      - description: tag data
+        in: body
+        name: CreateTag
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateTag'
+      responses:
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/apperror.AppError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/apperror.AppError'
+      summary: Create tag
+      tags:
+      - Tags
   /api/v1/users:
     post:
       parameters:
