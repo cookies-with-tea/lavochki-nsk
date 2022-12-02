@@ -6,7 +6,9 @@ import (
 	"benches/internal/dto"
 	benchesService "benches/internal/service/benches"
 	"benches/pkg/auth"
+	"database/sql"
 	"encoding/json"
+	"errors"
 	"github.com/gorilla/mux"
 	"net/http"
 )
@@ -22,10 +24,11 @@ func NewBenchesHandler(benches benchesService.Service) *Handler {
 
 func (h *Handler) Register(router *mux.Router, authManager *auth.Manager) {
 	router.HandleFunc("/", apperror.Middleware(h.listBenches)).Methods("GET")
+	router.HandleFunc("/{id}", apperror.Middleware(h.detailBench)).Methods("GET")
 
 	// Создание лавочки через telegram
 	routerCreateBenches := router.NewRoute().Subrouter()
-	routerCreateBenches.Use(authManager.JWTRoleMiddleware("admin"))
+	routerCreateBenches.Use(authManager.JWTRoleMiddleware("bot"))
 	routerCreateBenches.HandleFunc("/telegram", apperror.Middleware(h.addBenchViaTelegram)).Methods("POST")
 
 	// Роутер для функционала модерации
@@ -52,6 +55,28 @@ func (h *Handler) listBenches(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
+// @Summary Detail bench
+// @Description Get detail active bench
+// @Tags Benches
+// @Success 200 {object} domain.Bench
+// @Failure 400 {object} apperror.AppError
+// @Router /api/v1/benches/{id} [get]
+func (h *Handler) detailBench(w http.ResponseWriter, r *http.Request) error {
+	id := mux.Vars(r)["id"]
+	bench, err := h.benches.GetBenchByID(r.Context(), id)
+	if !bench.IsActive {
+		return apperror.ErrNotFound
+	}
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return apperror.ErrNotFound
+		}
+		return err
+	}
+	h.ResponseJson(w, bench, http.StatusOK)
+	return nil
+}
+
 // @Summary Create bench via telegram
 // @Tags Benches Moderation
 // @Produce json
@@ -60,9 +85,6 @@ func (h *Handler) listBenches(w http.ResponseWriter, r *http.Request) error {
 // @Failure 400
 // @Router /api/v1/benches/telegram [post]
 func (h *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Request) error {
-	if role := r.Context().Value("userRole"); role != "bot" {
-		return apperror.ErrNotEnoughRights
-	}
 	var bench dto.CreateBenchViaTelegram
 	if err := json.NewDecoder(r.Body).Decode(&bench); err != nil {
 		return apperror.ErrDecodeData
@@ -90,10 +112,6 @@ func (h *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Request) er
 // @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches/moderation [get]
 func (h *Handler) listModerationBench(w http.ResponseWriter, r *http.Request) error {
-	role := r.Context().Value("userRole")
-	if role != "admin" {
-		return apperror.ErrNotEnoughRights
-	}
 	benches, err := h.benches.GetListBenches(r.Context(), false)
 	if err != nil {
 		return err
@@ -110,11 +128,6 @@ func (h *Handler) listModerationBench(w http.ResponseWriter, r *http.Request) er
 // @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches/moderation [get]
 func (h *Handler) decisionBench(w http.ResponseWriter, r *http.Request) error {
-	role := r.Context().Value("userRole")
-	if role != "admin" {
-		h.ResponseErrorJson(w, "not enough rights", http.StatusForbidden)
-		return apperror.ErrNotEnoughRights
-	}
 	var decisionBench dto.DecisionBench
 	if err := json.NewDecoder(r.Body).Decode(&decisionBench); err != nil {
 		return apperror.ErrDecodeData
