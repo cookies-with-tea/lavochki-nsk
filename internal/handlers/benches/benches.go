@@ -25,12 +25,12 @@ func (h *Handler) Register(router *mux.Router, authManager *auth.Manager) {
 
 	// Создание лавочки через telegram
 	routerCreateBenches := router.NewRoute().Subrouter()
-	routerCreateBenches.Use(authManager.JWTMiddleware)
+	routerCreateBenches.Use(authManager.JWTRoleMiddleware("admin"))
 	routerCreateBenches.HandleFunc("/telegram", apperror.Middleware(h.addBenchViaTelegram)).Methods("POST")
 
 	// Роутер для функционала модерации
 	routerModeration := router.NewRoute().Subrouter()
-	routerModeration.Use(authManager.JWTMiddleware)
+	routerModeration.Use(authManager.JWTRoleMiddleware("admin"))
 	// Получение списка всех лавочек на модерации
 	routerModeration.HandleFunc("/moderation", apperror.Middleware(h.listModerationBench)).Methods("GET")
 	// Одобрение или отказ лавочки
