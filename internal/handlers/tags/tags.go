@@ -7,6 +7,8 @@ import (
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"net/http"
+
+	_ "benches/internal/domain"
 )
 
 type Handler struct {
@@ -59,7 +61,7 @@ func (h *Handler) createTag(w http.ResponseWriter, r *http.Request) error {
 		return apperror.NewAppError(err, "validation error", details)
 	}
 
-	err := h.service.CreateTag(r.Context(), tag)
+	err := h.service.CreateTag(r.Context(), tag.ToDomain())
 	if err != nil {
 		return err
 	}
