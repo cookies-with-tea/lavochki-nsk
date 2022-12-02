@@ -19,6 +19,7 @@ type Service interface {
 	CreateBench(ctx context.Context, bench dto.CreateBench) error
 	CreateBenchViaTelegram(ctx context.Context, bench dto.CreateBenchViaTelegram) error
 	DecisionBench(ctx context.Context, decisionBench dto.DecisionBench) error
+	GetBenchByID(ctx context.Context, id string) (domain.Bench, error)
 }
 
 type service struct {
@@ -106,4 +107,12 @@ func (s *service) DecisionBench(ctx context.Context, dto dto.DecisionBench) erro
 		return err
 	}
 	return nil
+}
+
+func (s *service) GetBenchByID(ctx context.Context, id string) (domain.Bench, error) {
+	bench, err := s.db.GetBenchByID(ctx, id)
+	if err != nil {
+		return bench, err
+	}
+	return bench, nil
 }
