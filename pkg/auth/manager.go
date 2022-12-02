@@ -82,39 +82,67 @@ func (m *Manager) NewRefreshToken() (string, error) {
 
 func (m *Manager) JWTMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		authHeader := strings.Split(r.Header.Get("Authorization"), "Bearer ")
-		if len(authHeader) != 2 {
-			w.WriteHeader(http.StatusUnauthorized)
-			_, err := w.Write([]byte("Malformed Token"))
-			if err != nil {
-				w.WriteHeader(http.StatusUnauthorized)
-			}
-		} else {
-			jwtToken := authHeader[1]
-			token, err := jwt.Parse(jwtToken, func(token *jwt.Token) (interface{}, error) {
-				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-					return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-				}
-				return []byte(m.signingKey), nil
-			})
+		ctx, err := m.checkJWT(w, r)
+		if err != nil {
+			return
+		}
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
+}
 
+func (m *Manager) JWTRoleMiddleware(role string) func(next http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			ctx, err := m.checkJWT(w, r)
 			if err != nil {
-				w.WriteHeader(http.StatusUnauthorized)
-				_, err = w.Write([]byte("Unauthorized"))
 				return
 			}
 
-			if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-				ctx := context.WithValue(r.Context(), "userID", claims["user_id"])
-				ctx = context.WithValue(ctx, "userRole", claims["role"])
-				next.ServeHTTP(w, r.WithContext(ctx))
-			} else {
-				w.WriteHeader(http.StatusUnauthorized)
-				_, err2 := w.Write([]byte("Unauthorized"))
-				if err2 != nil {
-					return
-				}
+			userRole := ctx.Value("userRole")
+			if userRole != role {
+				w.WriteHeader(http.StatusForbidden)
 			}
+
+			next.ServeHTTP(w, r.WithContext(ctx))
+		})
+	}
+}
+
+func (m *Manager) checkJWT(w http.ResponseWriter, r *http.Request) (context.Context, error) {
+	authHeader := strings.Split(r.Header.Get("Authorization"), "Bearer ")
+	if len(authHeader) != 2 {
+		w.WriteHeader(http.StatusUnauthorized)
+		_, err := w.Write([]byte("Malformed Token"))
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
 		}
+		return nil, err
+	}
+	jwtToken := authHeader[1]
+	token, err := jwt.Parse(jwtToken, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(m.signingKey), nil
 	})
+
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		_, _ = w.Write([]byte("Unauthorized"))
+		return nil, err
+	}
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		ctx := context.WithValue(r.Context(), "userID", claims["user_id"])
+		ctx = context.WithValue(ctx, "userRole", claims["role"])
+		return ctx, nil
+	} else {
+		w.WriteHeader(http.StatusUnauthorized)
+		_, err2 := w.Write([]byte("Unauthorized"))
+
+		if err2 != nil {
+			return nil, err
+		}
+	}
+	return nil, nil
 }
