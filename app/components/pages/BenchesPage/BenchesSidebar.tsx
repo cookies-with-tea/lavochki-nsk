@@ -1,56 +1,113 @@
 import React, {useState} from 'react';
 import {
-    StyledAside,
-    StyledFilterTitle,
-    StyledFormControlRadioLabel, StyledList,
+    StyledAside, StyledCheckbox, StyledCheckedIcon, StyledCheckedIconWrapper, StyledChip,
+    StyledFilterTitle, StyledFormControlLabel,
+    StyledFormControlRadioLabel, StyledIcon, StyledList,
     StyledResetButton, StyledShowAllButton
 } from "@/app/components/pages/BenchesPage/styles";
-import {Checkbox, Chip, FormControl, FormControlLabel, FormGroup, FormLabel, Radio, RadioGroup} from "@mui/material";
-import {data} from "dom7";
+import {
+    Checkbox,
+    fabClasses,
+    FormControl,
+    FormControlLabel,
+    FormGroup,
+    FormLabel,
+    Radio,
+    RadioGroup
+} from "@mui/material";
+import CommonIcon from "@/app/components/Common/CommonIcon";
 
 const BenchesSidebar = () => {
     const [dateValue, setDateValue] = useState('today')
     const [allDistrictsShow, setAllDistrictsShow] = useState(false)
-    const [chipData, setChipData] = React.useState<any>([
-        { key: 0, label: 'Angular' },
-        { key: 1, label: 'jQuery' },
-        { key: 2, label: 'Polymer' },
-        { key: 3, label: 'React' },
-        { key: 4, label: 'Vue.js' },
-    ]);
+    const [allTagsShow, setAllTagsShowShow] = useState(false)
+    const [sliceDistrictValue, setSliceDistrictValue] = useState(4)
+    const [sliceTagValue, setSliceTagValue] = useState(5)
 
+    const [chipData, setChipData] = useState([
+        { id: 0, label: 'Магазин рядом', active: false, },
+        { id: 1, label: 'Новая', active: false, },
+        { id: 2, label: 'Освещённое место', active: false, },
+        { id: 3, label: 'Тихое место', active: false, },
+        { id: 4, label: 'Есть мусорная урна', active: false, },
+        { id: 5, label: 'Какой-то тег 001', active: false, },
+        { id: 6, label: 'Какой-то тег 002', active: false, },
+        { id: 7, label: 'Какой-то тег 003', active: false, },
+    ])
+    const [district, setDistrict] = useState([
+        { id: 0, label: 'Дзержинский', value: 'dz', checked: false, },
+        { id: 1, label: 'Железнодорожный', value: 'jd', checked: false, },
+        { id: 2, label: 'Заельцовский', value: 'za', checked: false, },
+        { id: 3, label: 'Калининский', value: 'ka', checked: false, },
+        { id: 4, label: 'q', value: 'ka', checked: false, },
+        { id: 5, label: 'w', value: 'ka', checked: false, },
+        { id: 6, label: 'e', value: 'ka', checked: false, },
+    ])
 
     const handleDateValueChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setDateValue((event.target as HTMLInputElement).value)
     }
 
-    const [state, setState] = React.useState({
-        gilad: true,
-        jason: false,
-        antoine: false,
-    });
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setState({
-            ...state,
-            [event.target.name]: event.target.checked,
-        });
-    };
+    const handleDistrictChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newDistrictData = district.map((item) => {
+            if (item.label === event.target.name) {
+                return { ...item, checked: event.target.checked }
+            }
 
-    const handleAllDistricts = (): void => {
+            return item
+        })
+
+        setDistrict(newDistrictData)
+    }
+
+    const handleDistrictsVisibleToggle = (): void => {
+        allDistrictsShow ? setSliceDistrictValue(4) : setSliceDistrictValue(district.length)
+
         setAllDistrictsShow(!allDistrictsShow)
     }
 
-    const { gilad, jason, antoine } = state;
-    const error = [gilad, jason, antoine].filter((v) => v).length !== 2;
+    const handleTagsVisibleToggle = (): void => {
+        allTagsShow ? setSliceTagValue(5) : setSliceTagValue(chipData.length)
+
+        setAllTagsShowShow(!allTagsShow)
+    }
+
+    const handleActiveTagSet = (tagId: number): void => {
+        const newChipData = chipData.map((chip) => {
+            if (chip.id === tagId) {
+                return { ...chip, active: !chip.active }
+            }
+
+            return chip
+        })
+
+        setChipData(newChipData)
+    }
+
+    const handleDateFilterReset = (): void => {
+        setDateValue('today')
+    }
+
+    const handleDistrictFilterReset = (): void => {
+        const newDistrictData = district.map((item) => ( { ...item, checked: false } ))
+
+        setDistrict(newDistrictData.splice(0))
+    }
+
+    const handleTagsFilterReset = (): void => {
+        const newChipData = chipData.map((chip) => ( { ...chip, active: false } ))
+
+        setChipData(newChipData.splice(0))
+    }
 
     return (
         <StyledAside>
-            <div className="mb-52">
+            <div className="mb-52 pr-20">
                 <FormControl>
                     <FormLabel id="add-date" className="flex-end mb-22">
                         <StyledFilterTitle className="mr-12">Дата добавления</StyledFilterTitle>
-                        <StyledResetButton>Сбросить</StyledResetButton>
+                        <StyledResetButton onClick={handleDateFilterReset}>Сбросить</StyledResetButton>
                     </FormLabel>
                     <RadioGroup
                         aria-labelledby="add-date"
@@ -66,115 +123,61 @@ const BenchesSidebar = () => {
                     </RadioGroup>
                 </FormControl>
             </div>
-            <div className="mb-54">
+            <div className="mb-52">
                 <FormControl>
                     <FormLabel id="district" className="flex-end mb-22">
                         <StyledFilterTitle className="mr-12">Район</StyledFilterTitle>
-                        <StyledResetButton>Сбросить</StyledResetButton>
+                        <StyledResetButton onClick={handleDistrictFilterReset}>Сбросить</StyledResetButton>
                     </FormLabel>
                     <FormGroup>
-                        <FormControlLabel
-                            control={
-                                <Checkbox checked={gilad} onChange={handleChange} name="gilad" />
-                            }
-                            label="Дзержинский"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox checked={jason} onChange={handleChange} name="jason" />
-                            }
-                            label="Железнодорожный"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox checked={gilad} onChange={handleChange} name="jason" />
-                            }
-                            label="Заельцовский"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox checked={jason} onChange={handleChange} name="jason" />
-                            }
-                            label="Калининский"
-                        />
-                        { !allDistrictsShow && ( <StyledShowAllButton onClick={handleAllDistricts}>Показать все</StyledShowAllButton>) }
-
-                        {
-                            allDistrictsShow && (
-                                <div className="d-flex fd-column fw-no-w">
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox checked={gilad} onChange={handleChange} name="gilad" />
-                                        }
-                                        label="Дзержинский"
-                                    />
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox checked={jason} onChange={handleChange} name="jason" />
-                                        }
-                                        label="Железнодорожный"
-                                    />
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox checked={gilad} onChange={handleChange} name="jason" />
-                                        }
-                                        label="Заельцовский"
-                                    />
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox checked={jason} onChange={handleChange} name="jason" />
-                                        }
-                                        label="Калининский"
-                                    />
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox checked={gilad} onChange={handleChange} name="gilad" />
-                                        }
-                                        label="Дзержинский"
-                                    />
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox checked={jason} onChange={handleChange} name="jason" />
-                                        }
-                                        label="Железнодорожный"
-                                    />
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox checked={gilad} onChange={handleChange} name="jason" />
-                                        }
-                                        label="Заельцовский"
-                                    />
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox checked={jason} onChange={handleChange} name="jason" />
-                                        }
-                                        label="Калининский"
-                                    />
-                                    { allDistrictsShow && ( <StyledShowAllButton onClick={handleAllDistricts}>Скрыть</StyledShowAllButton>) }
-                                </div>
-                            )
+                        { district && district.map((item) =>
+                            (
+                                <StyledFormControlLabel
+                                    key={item.id}
+                                    control={
+                                        <StyledCheckbox
+                                            icon={<StyledIcon />}
+                                            checkedIcon={
+                                                <StyledCheckedIconWrapper>
+                                                    <CommonIcon name="check" width={17} height={12} />
+                                                </StyledCheckedIconWrapper>
+                                            }
+                                            checked={item.checked}
+                                            onChange={handleDistrictChange}
+                                            name={item.label}
+                                        />
+                                    }
+                                    label={item.label}
+                                />
+                            )).splice(0, sliceDistrictValue) }
+                        { !allDistrictsShow
+                            ? ( <StyledShowAllButton onClick={handleDistrictsVisibleToggle}>Показать все</StyledShowAllButton>)
+                            : ( <StyledShowAllButton onClick={handleDistrictsVisibleToggle}>Скрыть</StyledShowAllButton> )
                         }
-
                     </FormGroup>
                 </FormControl>
             </div>
             <div>
                 <div className="flex-end mb-22">
                     <StyledFilterTitle className="mr-12">Теги</StyledFilterTitle>
-                    <StyledResetButton>Сбросить</StyledResetButton>
+                    <StyledResetButton onClick={handleTagsFilterReset}>Сбросить</StyledResetButton>
                 </div>
                 <StyledList>
-                    { chipData.map((data: any) => (
-                        <>
-                            <li className="mr-12 mb-12">
-                                <Chip
-                                    label={data.label}
-                                    clickable
-                                />
-                            </li>
-                        </>
-                    )) }
+                    { chipData.map((data: any, index: number) => (
+                        <li className="mr-12 mb-12" key={index}>
+                            <StyledChip
+                                label={data.label}
+                                clickable
+                                variant={data.active ? 'filled' : 'outlined'}
+                                onClick={() => handleActiveTagSet(data.id)}
+                            />
+                        </li>
+                    )).splice(0, sliceTagValue) }
                 </StyledList>
+                { !allTagsShow
+                    ? ( <StyledShowAllButton onClick={handleTagsVisibleToggle}>Показать все</StyledShowAllButton>)
+                    : ( <StyledShowAllButton onClick={handleTagsVisibleToggle}>Скрыть</StyledShowAllButton> )
+                }
             </div>
         </StyledAside>
     );

@@ -26,23 +26,27 @@ const DefaultLayoutFooter = () => {
                         </Link>
                         <div className="d-flex ai-center">
                             <Link href='#' passHref>
-                                <CommonIcon name="vk" width={48} height={48} className="mr-22"/>
+                                <a>
+                                    <CommonIcon name="vk" width={48} height={48} className="mr-22"/>
+                                </a>
                             </Link>
                             <Link href='#' passHref>
-                                <CommonIcon name="telegram-rect" width={48} height={48} />
+                                <a>
+                                    <CommonIcon name="telegram-rect" width={48} height={48} />
+                                </a>
                             </Link>
                         </div>
                     </div>
-                    <div className="d-flex ai-center jc-between">
-                        <StyledFlexEnd>
-                            <span>Ознакомиться с&nbsp;</span>
-                            <Link href="/pdf" passHref>
-                                <StyledLink target="_blank" rel="noreferrer">Политикой сайта</StyledLink>
-                            </Link>
-                        </StyledFlexEnd>
-                        <StyledCopyright>
-                            Copyright © 2022 Lavochki NSK
-                        </StyledCopyright>
+                     <div className="d-flex ai-center jc-between">
+                         <StyledFlexEnd>
+                             <span>Ознакомиться с&nbsp;</span>
+                             <Link href="/pdf" passHref>
+                                 <StyledLink target="_blank" rel="noreferrer">Политикой сайта</StyledLink>
+                             </Link>
+                         </StyledFlexEnd>
+                         <StyledCopyright>
+                             Copyright © 2022 Lavochki NSK
+                         </StyledCopyright>
                         <nav className="d-flex p-relative">
                             <StyledDeveloped>Developed by</StyledDeveloped>
                             <StyledAuthorsMenu>
