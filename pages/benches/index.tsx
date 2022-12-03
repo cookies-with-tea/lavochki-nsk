@@ -18,7 +18,7 @@ const BenchesPage = () => {
                 </Link>
             </div>
             <div className="d-flex">
-                <BenchesSidebar/>
+                <BenchesSidebar />
                 <div>
                     <BenchesSort />
                     <StyledContent>

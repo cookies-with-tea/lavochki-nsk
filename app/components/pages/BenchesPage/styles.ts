@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
-import {Button, FormControlLabel} from "@mui/material";
+import {Button, Checkbox, Chip, FormControlLabel} from "@mui/material";
+import CommonIcon from "@/app/components/Common/CommonIcon";
 
 export const StyledBenchesPage = styled.div`
   min-height: calc(100vh - 22rem);
@@ -73,7 +74,7 @@ export const StyledFormControlRadioLabel = styled(FormControlLabel)`
     width: 26px;
     height: 26px;
     
-    &:first-child {
+    &:first-of-type {
       outline: 1px solid var(--color--primary-dark);
       border-radius: 50%;
       
@@ -98,11 +99,69 @@ export const StyledShowAllButton = styled(Button)`
   padding: 0 !important;
   display: block;
   text-align: left !important;
-  margin-bottom: 54px !important;
 `
 
 export const StyledList = styled.ul`
   display: flex;
   flex-wrap: wrap;
   max-width: 100%;
+`
+
+export const StyledChip = styled(Chip)`
+  border-radius: 20px;
+  font-size: 14px !important;
+  line-height: 18px !important;
+  color: #49260A;
+  padding: 7px 13px !important;
+  
+  .MuiChip-label {
+    padding: 0 !important;
+  }
+
+  &.MuiChip-outlinedDefault {
+    border: 1px solid var(--color--primary-dark);
+  }
+  
+  &.MuiChip-filled {
+    background-color: var(--color--primary-dark);
+    color: #FFFCF7;
+  }
+`
+
+export const StyledIcon = styled.div`
+    border: 1px solid var(--color--primary-dark);
+    border-radius: 10px;
+    width: 32px;
+    height: 32px;
+`
+
+export const StyledCheckedIconWrapper = styled.div`
+  border: 1px solid var(--color--primary-dark);
+  border-radius: 10px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const StyledCheckedIcon = styled(CommonIcon)`
+  border: 1px solid var(--color--primary-dark);
+  border-radius: 10px;
+`
+
+export const StyledCheckbox = styled(Checkbox)`
+padding: 0 !important;
+`
+
+export const StyledFormControlLabel = styled(FormControlLabel)`
+margin-bottom: 12px;
+  padding-left: 10px;
+  
+  .MuiTypography-root {
+    font-size: 22px;
+    line-height: 30px;
+    color: var(--color--primary-dark);
+    margin-left: 14px;
+  }
 `
