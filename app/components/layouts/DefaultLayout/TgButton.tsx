@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useRef} from 'react';
-import CommonIcon from "@/app/components/common/CommonIcon";
+import CommonIcon from "@/app/components/Common/CommonIcon";
 import {StyledTelegram} from "@/app/components/layouts/DefaultLayout/DefaultLayoutHeader/styles";
 
 const TgButton: FC<any> = ({ dataOnauth }): JSX.Element => {

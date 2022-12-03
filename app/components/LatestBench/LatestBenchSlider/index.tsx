@@ -3,7 +3,7 @@ import {Swiper, SwiperSlide} from 'swiper/react';
 import { Swiper as SwiperType, Navigation } from 'swiper';
 import {StyledNavigation, StyledSlide} from "@/app/components/LatestBench/LatestBenchSlider/styles";
 import Image from "next/image";
-import CommonIcon from "@/app/components/common/CommonIcon";
+import CommonIcon from "@/app/components/Common/CommonIcon";
 
 const LatestBenchSlider: FC<any> = ({ images, className }) => {
     const swiperRef = useRef<SwiperType | null>(null)

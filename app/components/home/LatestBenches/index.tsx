@@ -1,8 +1,7 @@
 import Link from 'next/link';
-import React, {FC, useEffect, useState} from 'react';
+import React, { FC } from 'react';
 import LatestBench from '@/app/components/LatestBench'
 import styled from "@emotion/styled";
-import benchesApi from "@/app/api/benches/benches.api";
 
 const StyledLatestBenchesLink = styled.a`
   font-size: 22px;
@@ -10,6 +9,7 @@ const StyledLatestBenchesLink = styled.a`
   font-weight: 500;
   color: var(--color--background);
   background-color: var(--color--primary-dark);
+  cursor: pointer;
 `
 
 const LatestBenches: FC<any> = ({benches}): JSX.Element => {

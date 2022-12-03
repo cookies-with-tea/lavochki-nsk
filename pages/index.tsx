@@ -1,8 +1,6 @@
 import type { NextPage } from 'next'
 import LatestBenches from "../app/components/home/LatestBenches";
 import TheMap from "@/app/components/home/TheMap";
-import benchesApi from "@/app/api/benches/benches.api";
-import {useEffect} from "react";
 import axios from "axios";
 
 export const getStaticProps = async () => {
@@ -13,7 +11,6 @@ export const getStaticProps = async () => {
         return {
             props: { benches }
         }
-
     }
 }
 
