@@ -42,7 +42,7 @@ const TheMap: FC<any> = ({benches}) => {
                             geoObjectHideIconOnBalloonOpen: false
                         }}
                     >
-                        {benches && benches?.map((coordinates: any, idx: number) => {
+                        {benches && benches.map((coordinates: any, idx: number) => {
                             return (
                                 <Placemark
                                     key={idx}

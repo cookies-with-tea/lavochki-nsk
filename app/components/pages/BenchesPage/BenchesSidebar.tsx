@@ -15,7 +15,7 @@ import {
     Radio,
     RadioGroup
 } from "@mui/material";
-import CommonIcon from "@/app/components/Common/CommonIcon";
+import CommonIcon from "@/app/components/Common/CommonIcon/CommonIcon";
 
 const BenchesSidebar = () => {
     const [dateValue, setDateValue] = useState('today')
@@ -47,7 +47,6 @@ const BenchesSidebar = () => {
     const handleDateValueChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setDateValue((event.target as HTMLInputElement).value)
     }
-
 
     const handleDistrictChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newDistrictData = district.map((item) => {

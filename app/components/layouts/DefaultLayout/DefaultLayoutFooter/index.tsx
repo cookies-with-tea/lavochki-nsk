@@ -11,7 +11,7 @@ import {
 } from '@/app/components/layouts/DefaultLayout/DefaultLayoutFooter/styles'
 import Link from "next/link";
 import {StyledHomeLink} from "@/app/components/layouts/DefaultLayout/DefaultLayoutHeader/styles";
-import CommonIcon from "@/app/components/Common/CommonIcon";
+import CommonIcon from "@/app/components/Common/CommonIcon/CommonIcon";
 
 const DefaultLayoutFooter = () => {
     return (

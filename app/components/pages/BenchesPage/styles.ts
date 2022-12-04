@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import {Button, Checkbox, Chip, FormControlLabel} from "@mui/material";
-import CommonIcon from "@/app/components/Common/CommonIcon";
+import CommonIcon from "@/app/components/Common/CommonIcon/CommonIcon";
 
 export const StyledBenchesPage = styled.div`
   min-height: calc(100vh - 22rem);
@@ -25,6 +25,9 @@ export const StyledSortItem = styled.li`
   position: relative;
   border-bottom: 1px dashed var(--color--primary-dark);
   cursor: pointer;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
   
   &:not(:last-child) {
     margin-right: 53px;
