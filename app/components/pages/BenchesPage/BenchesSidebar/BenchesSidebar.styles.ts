@@ -36,6 +36,7 @@ export const StyledSortItem = styled.li`
 
 export const StyledAside = styled.aside`
     width: 350px;
+    margin-top: 114px;
 `
 
 export const StyledResetButton = styled(Button)`

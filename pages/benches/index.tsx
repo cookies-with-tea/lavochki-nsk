@@ -1,12 +1,28 @@
 import React from 'react';
 import BenchesSort from "@/app/components/pages/BenchesPage/BenchesSort/BenchesSort";
-import BenchesSidebar from "@/app/components/pages/BenchesPage/BenchesSidebar";
-import {StyledBenchesPage, StyledContent} from "@/app/components/pages/BenchesPage/styles";
-import BenchCard from "@/app/components/pages/BenchesPage/BenchCard";
+import BenchesSidebar from "@/app/components/pages/BenchesPage/BenchesSidebar/BenchesSidebar";
+import {StyledBenchesPage, StyledContent} from "@/app/components/pages/BenchesPage/BenchesSidebar/BenchesSidebar.styles";
+import BenchCard from "@/app/components/pages/BenchesPage/BenchCard/BenchCard";
 import {StyledOnTheMap} from "@/pages/benches/styles";
-import Link from 'next/link';
+import axios from "axios";
+import {NextPage} from "next";
 
-const BenchesPage = () => {
+
+export const getStaticProps = async () => {
+    const response = await axios.get('http://localhost:8000/api/v1/benches/')
+    const benches = await response.data
+
+    console.log(benches)
+
+    if (benches) {
+        return {
+            props: { benches }
+        }
+    }
+}
+
+
+const BenchesPage: NextPage<any> = ({ benches }): JSX.Element => {
     return (
         <StyledBenchesPage>
             <div className="flex-end mb-40">
@@ -19,10 +35,12 @@ const BenchesPage = () => {
             </div>
             <div className="d-flex">
                 <BenchesSidebar />
-                <div>
+                <div className={'mt-42'}>
                     <BenchesSort />
                     <StyledContent>
-                        <BenchCard />
+                        {
+                            benches && benches.map((bench: any) => ( <BenchCard key={bench.id} bench={bench} />))
+                        }
                     </StyledContent>
                 </div>
 

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {StyledSortItem, StyledSortTitle} from "@/app/components/pages/BenchesPage/styles";
+import {StyledSortItem, StyledSortTitle} from "@/app/components/pages/BenchesPage/BenchesSidebar/BenchesSidebar.styles";
 import CommonIcon from "@/app/components/Common/CommonIcon/CommonIcon";
-import {StyledOrderIcon} from "@/app/components/pages/BenchesPage/BenchesSort/BenchesSort.types";
+import {StyledOrderIcon} from "@/app/components/pages/BenchesPage/BenchesSort/BenchesSort.styles";
 
 const setOrder = (currentSort: string): string => {
     switch (currentSort) {
@@ -41,7 +41,7 @@ const BenchesSort = (): JSX.Element => {
     }
 
     return (
-        <div className="d-flex ai-center">
+        <div className="d-flex ai-center mb-42">
             <StyledSortTitle>
                 Сортировать по:
             </StyledSortTitle>

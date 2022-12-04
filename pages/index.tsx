@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
-import LatestBenches from "../app/components/home/LatestBenches";
-import TheMap from "@/app/components/home/TheMap";
+import LatestBenches from "../app/components/pages/HomePage/LatestBenches";
+import TheMap from "@/app/components/pages/HomePage/TheMap";
 import axios from "axios";
 
 export const getStaticProps = async () => {

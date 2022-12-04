@@ -4,7 +4,7 @@ import {
     StyledFilterTitle, StyledFormControlLabel,
     StyledFormControlRadioLabel, StyledIcon, StyledList,
     StyledResetButton, StyledShowAllButton
-} from "@/app/components/pages/BenchesPage/styles";
+} from "@/app/components/pages/BenchesPage/BenchesSidebar/BenchesSidebar.styles";
 import {
     Checkbox,
     fabClasses,
