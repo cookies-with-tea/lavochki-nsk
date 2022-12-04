@@ -32,7 +32,7 @@ export const StyledNavigation = styled.div`
     left: -32px;
     transform: rotate(180deg) translateY(75%);
     z-index: 10;
-    top: 50%;
+    top: 58%;
   }
 
   .swiper-button-next {
@@ -41,7 +41,7 @@ export const StyledNavigation = styled.div`
     right: -32px;
     transform: translateY(-75%);
     z-index: 10;
-    top: 50%;
+    top: 58%;
   }
   
   .swiper-button-disabled {
