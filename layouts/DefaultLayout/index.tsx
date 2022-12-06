@@ -1,7 +1,8 @@
 import React, {ReactNode} from 'react';
 import {NextPage} from "next";
-import DefaultLayoutHeader from "../app/components/layouts/DefaultLayout/DefaultLayoutHeader";
+import DefaultLayoutHeader from "../../app/components/layouts/DefaultLayout/DefaultLayoutHeader";
 import DefaultLayoutFooter from "@/app/components/layouts/DefaultLayout/DefaultLayoutFooter";
+import {StyledContainer} from "@/layouts/DefaultLayout/DefaultLayouts.styles";
 
 interface IProps {
     children: ReactNode
@@ -11,9 +12,9 @@ const DefaultLayout: NextPage<IProps> = ({ children }): JSX.Element => {
     return (
         <div>
             <DefaultLayoutHeader />
-            <div className="container">
+            <StyledContainer className="container">
                 { children }
-            </div>
+            </StyledContainer>
             <DefaultLayoutFooter />
         </div>
     )

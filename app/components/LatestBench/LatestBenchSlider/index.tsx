@@ -26,8 +26,8 @@ const LatestBenchSlider: FC<any> = ({ images, className }) => {
                     }
                 }}
             >
-                { images && images.map((image: string) => (
-                    <StyledSlide key={image}>
+                { images && images.map((image: string, index: number) => (
+                    <StyledSlide key={index}>
                         <Image src={image} alt="image" width={240} height={240} />
                     </StyledSlide>
                 ))}

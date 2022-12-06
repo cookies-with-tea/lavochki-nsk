@@ -24,7 +24,7 @@ const LatestBench: FC<any> = ({ bench }): JSX.Element => {
                        <CommonIcon name="location" width={24} height={32} />
                     </StyledLocationButton>
                 </StyledLatestBenchInfoLocation>
-                <Link href='/benches/1' passHref>
+                <Link href={`/benches/${bench.id}`} passHref>
                     <StyledLink>Смотреть</StyledLink>
                 </Link>
             </div>
