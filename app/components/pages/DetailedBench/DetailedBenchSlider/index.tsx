@@ -1,11 +1,19 @@
-import React, { FC, useRef } from 'react'
-import { Swiper } from 'swiper/react';
-import { Swiper as SwiperType, Navigation } from 'swiper';
-import { StyledNavigation, StyledSlide } from "@/app/components/LatestBench/LatestBenchSlider/styles";
+import React, {FC, useRef} from 'react';
+import {Navigation, Swiper as SwiperType} from "swiper";
+import {Swiper} from "swiper/react";
+import {StyledNavigation} from "@/app/components/LatestBench/LatestBenchSlider/styles";
 import Image from "next/image";
 import CommonIcon from "@/app/components/Common/CommonIcon/CommonIcon";
+import {StyledSLide} from "@/app/components/pages/DetailedBench/DetailedBenchSlider/DetailedBenchSlier.styles";
 
-const LatestBenchSlider: FC<any> = ({ images, className }) => {
+import img from '@/app/assets/images/image.png'
+
+const images = [
+    img,
+    img
+]
+
+const DetailedBenchSlider: FC<any> = ({ className }) => {
     const swiperRef = useRef<SwiperType | null>(null)
     const swiperNavPrevRef = useRef(null)
     const swiperNavNextRef = useRef(null)
@@ -18,30 +26,30 @@ const LatestBenchSlider: FC<any> = ({ images, className }) => {
                     nextEl: swiperNavNextRef.current,
                     prevEl: swiperNavPrevRef.current
                 }}
-                spaceBetween={22}
-                slidesPerView={3.5}
+                spaceBetween={36}
+                slidesPerView={1.5}
                 onBeforeInit={(swiper: any) => {
                     if (swiperRef) {
                         swiperRef.current = swiper
                     }
                 }}
             >
-                { images && images.map((image: string, index: number) => (
-                    <StyledSlide key={index}>
-                        <Image src={image} alt="image" width={240} height={240} />
-                    </StyledSlide>
+                { images && images.map((image: any, index: number) => (
+                    <StyledSLide key={index}>
+                        <Image src={img} alt="image" width="100%" height="100%" objectFit={"cover"} />
+                    </StyledSLide>
                 ))}
             </Swiper>
             <StyledNavigation>
                 <button className="swiper-button-prev" ref={swiperNavPrevRef}>
-                    <CommonIcon name="arrow" width={27} height={22} />
+                    <CommonIcon name="arrow-light" width={32} height={32} />
                 </button>
                 <button className="swiper-button-next" ref={swiperNavNextRef}>
-                    <CommonIcon name="arrow" width={27} height={22} />
+                    <CommonIcon name="arrow-light" width={32} height={32} />
                 </button>
             </StyledNavigation>
         </div>
     );
 };
 
-export default LatestBenchSlider;
+export default DetailedBenchSlider;

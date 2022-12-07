@@ -1,6 +1,5 @@
-import React, {FC, useEffect, useState} from 'react';
-import {YMaps, Map, ObjectManager, ObjectManagerFeatures, Placemark, Clusterer} from "react-yandex-maps";
-import benchesApi from "@/app/api/benches/benches.api";
+import React, {FC} from 'react';
+import {YMaps, Map, Placemark, Clusterer} from "react-yandex-maps";
 
 const getPointData = (index: any) => {
     return {
