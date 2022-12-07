@@ -3,18 +3,20 @@ package initiator
 import (
 	_ "benches/docs"
 	"benches/internal/config"
-	"benches/internal/handlers/benches"
-	"benches/internal/handlers/bot"
-	"benches/internal/handlers/tags"
-	"benches/internal/handlers/users"
 	"benches/internal/repository/postgres"
 	benchesService "benches/internal/service/benches"
 	botService "benches/internal/service/bot"
+	commentsService "benches/internal/service/comments"
 	notificationsService "benches/internal/service/notifications"
 	tagsService "benches/internal/service/tags"
 	usersService "benches/internal/service/users"
 	minioStorage "benches/internal/storage/minio"
 	redisStorage "benches/internal/storage/redis"
+	"benches/internal/transport/httpv1/benches"
+	"benches/internal/transport/httpv1/bot"
+	"benches/internal/transport/httpv1/comments"
+	"benches/internal/transport/httpv1/tags"
+	"benches/internal/transport/httpv1/users"
 	"benches/pkg/auth"
 	"benches/pkg/database"
 	"benches/pkg/telegram"
@@ -122,6 +124,13 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appTagsService := tagsService.NewService(appTagsRepository, logger)
 	appHandlerTags := tags.NewTagsHandler(appTagsService)
 	appHandlerTags.Register(appTagsRouter)
+
+	// Комментарии
+	appCommentsRouter := router.PathPrefix("/api/v1/comments").Subrouter()
+	appCommentsRepository := postgres.NewCommentsRepository(db)
+	appCommentsService := commentsService.NewService(appCommentsRepository, logger)
+	appHandlerComments := comments.NewCommentsHandler(appCommentsService)
+	appHandlerComments.Register(appCommentsRouter)
 
 	return &App{cfg: cfg, logger: logger, router: router}, nil
 }
