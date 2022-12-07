@@ -110,9 +110,15 @@ func (s *service) DecisionBench(ctx context.Context, dto dto.DecisionBench) erro
 }
 
 func (s *service) GetBenchByID(ctx context.Context, id string) (domain.Bench, error) {
+	// Получаем все лавочки из базы данных
 	bench, err := s.db.GetBenchByID(ctx, id)
 	if err != nil {
 		return bench, err
+	}
+
+	// Получаем картинки для этой лавочки из Minio
+	for idxImage := range bench.Images {
+		bench.Images[idxImage] = s.storage.GetImageURL(bench.Images[idxImage])
 	}
 	return bench, nil
 }
