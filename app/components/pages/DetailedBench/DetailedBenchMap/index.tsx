@@ -1,10 +1,12 @@
-import React, {FC} from 'react';
+import {FC} from 'react';
 import {YMaps, Map, Placemark} from "react-yandex-maps";
 import {
     StyledCoords,
     StyledWatchOnTheMap
 } from "@/app/components/pages/DetailedBench/DetailedBenchMap/DetailedBenchMap.styles";
+
 import {IBench} from "@/app/interfaces/benches.interfaces";
+
 const getPointData = (bench: IBench) => {
     return {
         hintContent: "Лавочка <strong>#" + bench.bench.id + "</strong>",

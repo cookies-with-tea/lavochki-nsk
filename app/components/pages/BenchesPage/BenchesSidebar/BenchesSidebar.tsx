@@ -1,4 +1,12 @@
-import React, {useState} from 'react';
+import {FC, useEffect, useState} from 'react';
+import {
+    FormControl,
+    FormGroup,
+    FormLabel,
+    Radio,
+    RadioGroup
+} from "@mui/material";
+
 import {
     StyledAside,
     StyledCheckbox,
@@ -12,32 +20,18 @@ import {
     StyledResetButton,
     StyledShowAllButton
 } from "@/app/components/pages/BenchesPage/BenchesSidebar/BenchesSidebar.styles";
-import {
-    FormControl,
-    FormGroup,
-    FormLabel,
-    Radio,
-    RadioGroup
-} from "@mui/material";
 import CommonIcon from "@/app/components/Common/CommonIcon/CommonIcon";
+import {ITag} from "@/app/interfaces/tags.interface";
+import {ChipType} from "@/app/types/tags.types";
 
-const BenchesSidebar = () => {
+const BenchesSidebar: FC<ITag> = ({tags}) => {
     const [dateValue, setDateValue] = useState('today')
     const [allDistrictsShow, setAllDistrictsShow] = useState(false)
     const [allTagsShow, setAllTagsShowShow] = useState(false)
+    const [tagsButtonShow, setTagsButtonShow] = useState(false)
     const [sliceDistrictValue, setSliceDistrictValue] = useState(4)
     const [sliceTagValue, setSliceTagValue] = useState(5)
 
-    const [chipData, setChipData] = useState([
-        { id: 0, label: 'Магазин рядом', active: false, },
-        { id: 1, label: 'Новая', active: false, },
-        { id: 2, label: 'Освещённое место', active: false, },
-        { id: 3, label: 'Тихое место', active: false, },
-        { id: 4, label: 'Есть мусорная урна', active: false, },
-        { id: 5, label: 'Какой-то тег 001', active: false, },
-        { id: 6, label: 'Какой-то тег 002', active: false, },
-        { id: 7, label: 'Какой-то тег 003', active: false, },
-    ])
     const [district, setDistrict] = useState([
         { id: 0, label: 'Дзержинский', value: 'dz', checked: false, },
         { id: 1, label: 'Железнодорожный', value: 'jd', checked: false, },
@@ -47,6 +41,14 @@ const BenchesSidebar = () => {
         { id: 5, label: 'w', value: 'ka', checked: false, },
         { id: 6, label: 'e', value: 'ka', checked: false, },
     ])
+
+    const [chipData, setChipData] = useState<ChipType[]>([])
+
+    const setChips = (): void => {
+        const newChips = tags.map((tag) => ({ id: tag.id, label: tag.title, active: false }))
+
+        setChipData(newChips)
+    }
 
     const handleDateValueChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setDateValue((event.target as HTMLInputElement).value)
@@ -76,7 +78,7 @@ const BenchesSidebar = () => {
         setAllTagsShowShow(!allTagsShow)
     }
 
-    const handleActiveTagSet = (tagId: number): void => {
+    const handleActiveTagSet = (tagId: string): void => {
         const newChipData = chipData.map((chip) => {
             if (chip.id === tagId) {
                 return { ...chip, active: !chip.active }
@@ -103,6 +105,12 @@ const BenchesSidebar = () => {
 
         setChipData(newChipData.splice(0))
     }
+
+    useEffect(() => {
+        setChips()
+
+        setTagsButtonShow(chipData.length >= sliceDistrictValue)
+    }, [])
 
     return (
         <StyledAside>
@@ -177,9 +185,15 @@ const BenchesSidebar = () => {
                         </li>
                     )).splice(0, sliceTagValue) }
                 </StyledList>
-                { !allTagsShow
-                    ? ( <StyledShowAllButton onClick={handleTagsVisibleToggle}>Показать все</StyledShowAllButton>)
-                    : ( <StyledShowAllButton onClick={handleTagsVisibleToggle}>Скрыть</StyledShowAllButton> )
+                {
+                    tagsButtonShow && (
+                        <>
+                            { !allTagsShow
+                                ? ( <StyledShowAllButton onClick={handleTagsVisibleToggle}>Показать все</StyledShowAllButton>)
+                                : ( <StyledShowAllButton onClick={handleTagsVisibleToggle}>Скрыть</StyledShowAllButton> )
+                            }
+                        </>
+                    )
                 }
             </div>
         </StyledAside>

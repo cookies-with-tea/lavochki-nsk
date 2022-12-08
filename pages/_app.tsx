@@ -1,12 +1,12 @@
 import type { AppProps } from 'next/app'
 
-import 'swiper/css';
-import '../app/styles/index.scss'
-import '@/app/styles/resources/variables/_colors-base.scss'
-
-import DefaultLayout from "../layouts/DefaultLayout";
+import DefaultLayout from "@/layouts/DefaultLayout";
 
 import { requireSvg } from "@/app/utils/svg";
+
+import 'swiper/css';
+import '@/app/styles/index.scss'
+import '@/app/styles/resources/variables/_colors-base.scss'
 
 requireSvg()
 

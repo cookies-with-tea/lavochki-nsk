@@ -1,6 +1,7 @@
-import React, {FC} from 'react';
-import {IProps} from "@/app/components/pages/BenchesPage/BenchCard/BenchesCard.interface";
+import {FC} from 'react';
 import Image from "next/image";
+
+import {IProps} from "@/app/components/pages/BenchesPage/BenchCard/BenchesCard.interface";
 import {
     StyledBenchCard,
     StyledBenchTitle,
@@ -11,6 +12,7 @@ import {
     StyledTag,
     StyledTags
 } from "@/app/components/pages/BenchesPage/BenchCard/BenchesCard.styles";
+
 import CommonIcon from "@/app/components/Common/CommonIcon/CommonIcon";
 
 const BenchCard: FC<IProps> = ({ bench }): JSX.Element => {

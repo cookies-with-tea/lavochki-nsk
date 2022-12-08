@@ -1,10 +1,13 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import axios from "axios";
 import {GetStaticPaths, GetStaticProps, NextPage} from "next";
-import {IBench} from "@/app/interfaces/benches.interfaces";
+
 import {StyledSubtitle, StyledSubtitleAuthor, StyledTag} from "@/pages/benches/[id]/DetailedBench.styles";
+
 import DetailedBenchMap from '@/app/components/pages/DetailedBench/DetailedBenchMap'
 import DetailedBenchSlider from "@/app/components/pages/DetailedBench/DetailedBenchSlider";
+
+import {IBench} from "@/app/interfaces/benches.interfaces";
 import {BenchType} from "@/app/types/benches.types";
 
 const PostDetailed: NextPage<IBench> = ({bench}) => {
@@ -15,7 +18,7 @@ const PostDetailed: NextPage<IBench> = ({bench}) => {
     ])
 
     return (
-        <div>
+        <>
             <h2>Лавочка на Октябрьской</h2>
             <div className="d-flex ai-center mb-30">
                 <StyledSubtitle>Добавлено: 15 октября 2022</StyledSubtitle>
@@ -28,7 +31,7 @@ const PostDetailed: NextPage<IBench> = ({bench}) => {
             </div>
             <DetailedBenchSlider images={bench.images} />
             <DetailedBenchMap bench={bench} />
-        </div>
+        </>
     );
 };
 
@@ -46,13 +49,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (context) => {
     const benchId = context?.params?.id as string
 
-    const response = await axios.get<BenchType>(`http://localhost:8000/api/v1/benches/${benchId}`)
-    const bench = await response.data
+    const benches = await axios.get<BenchType>(`http://localhost:8000/api/v1/benches/${benchId}`)
+
+    const bench = await benches.data
 
     if (bench) {
         return {
             props: {
-                bench
+                bench,
             },
             revalidate: 10
         }

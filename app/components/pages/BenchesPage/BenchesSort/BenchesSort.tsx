@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
-import {StyledSortItem, StyledSortTitle} from "@/app/components/pages/BenchesPage/BenchesSidebar/BenchesSidebar.styles";
-import CommonIcon from "@/app/components/Common/CommonIcon/CommonIcon";
+import {useState} from 'react';
+
 import {StyledOrderIcon} from "@/app/components/pages/BenchesPage/BenchesSort/BenchesSort.styles";
+
+import {StyledSortItem, StyledSortTitle} from "@/app/components/pages/BenchesPage/BenchesSidebar/BenchesSidebar.styles";
 
 const setOrder = (currentSort: string): string => {
     switch (currentSort) {

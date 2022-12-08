@@ -1,15 +1,17 @@
-import React, { FC, useRef } from 'react'
+import { FC, useRef } from 'react'
 import { Swiper } from 'swiper/react';
 import { Swiper as SwiperType, Navigation } from 'swiper';
 import Image from "next/image";
-import CommonIcon from "@/app/components/Common/CommonIcon/CommonIcon";
+
 import {
     StyledSlide,
     StyledNavigation,
     StyledGradient
 } from "@/app/components/pages/DetailedBench/DetailedBenchSlider/DetailedBenchSlier.styles";
 
-const DetailedBenchSlider: FC<any> = ({ images }) => {
+import CommonIcon from "@/app/components/Common/CommonIcon/CommonIcon";
+
+const DetailedBenchSlider: FC<{ images: string[] }> = ({ images }) => {
     const swiperRef = useRef<SwiperType | null>(null)
     const swiperNavPrevRef = useRef(null)
     const swiperNavNextRef = useRef(null)
