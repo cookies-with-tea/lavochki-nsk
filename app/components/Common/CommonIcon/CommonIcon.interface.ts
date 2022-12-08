@@ -17,10 +17,10 @@ export interface IProps {
     height: number
     /**
      * className - Class name
-     * */
+     */
     className?: string
     /**
      * reverse - reverse image
-     * */
+     */
     reverse?: boolean
 }

@@ -1,14 +1,15 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {YMaps, Map, Placemark} from "react-yandex-maps";
 import {
     StyledCoords,
     StyledWatchOnTheMap
 } from "@/app/components/pages/DetailedBench/DetailedBenchMap/DetailedBenchMap.styles";
-const getPointData = (index: any) => {
+import {IBench} from "@/app/interfaces/benches.interfaces";
+const getPointData = (bench: IBench) => {
     return {
-        hintContent: "Лавочка <strong>#" + index.id + "</strong>",
-        balloonContentBody: `<div class="the-map__balloon-image"><img src=${index.image} alt="123"/></div>`,
-        clusterCaption: "placemark <strong>" + index + "</strong>"
+        hintContent: "Лавочка <strong>#" + bench.bench.id + "</strong>",
+        balloonContentBody: `<div class="the-map__balloon-image"><img src=${bench.bench.images[0]} alt="123"/></div>`,
+        clusterCaption: "placemark <strong>" + bench.bench + "</strong>"
     };
 };
 
@@ -24,7 +25,7 @@ const mapState = {
     behaviors: ["default", "scrollZoom"]
 };
 
-const DetailedBenchMap = () => {
+const DetailedBenchMap: FC<IBench> = ({bench}) => {
     return (
         <div className={"mb-40"}>
             <StyledWatchOnTheMap>Смотреть на карте</StyledWatchOnTheMap>
@@ -35,14 +36,14 @@ const DetailedBenchMap = () => {
                     height={400}
                 >
                     <Placemark
-                        geometry={[55.025170, 82.929700]}
-                        properties={getPointData(1)}
+                        geometry={[bench.lat, bench.lng]}
+                        properties={getPointData({bench})}
                         options={getPointOptions()}
                         modules={['geoObject.addon.balloon', 'geoObject.addon.hint']}
                     />
                 </Map>
             </YMaps>
-            <StyledCoords>55.025170, 82.929700</StyledCoords>
+            <StyledCoords>{bench.lat}, {bench.lng}</StyledCoords>
         </div>
     );
 };

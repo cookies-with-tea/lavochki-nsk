@@ -20,7 +20,7 @@ const LatestBenchSlider: FC<any> = ({ images, className }) => {
                 }}
                 spaceBetween={22}
                 slidesPerView={3.5}
-                onBeforeInit={(swiper: any) => {
+                onBeforeInit={(swiper) => {
                     if (swiperRef) {
                         swiperRef.current = swiper
                     }
@@ -34,7 +34,7 @@ const LatestBenchSlider: FC<any> = ({ images, className }) => {
             </Swiper>
             <StyledNavigation>
                 <button className="swiper-button-prev" ref={swiperNavPrevRef}>
-                    <CommonIcon name="arrow" width={27} height={22} />
+                    <CommonIcon name="arrow" width={27} height={22} reverse={true} />
                 </button>
                 <button className="swiper-button-next" ref={swiperNavNextRef}>
                     <CommonIcon name="arrow" width={27} height={22} />

@@ -7,3 +7,18 @@
     border-radius: 50%;
   }
 }
+
+.detailed-bench-slider {
+  position: relative;
+  margin-bottom: 60px;
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    background: none;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+}

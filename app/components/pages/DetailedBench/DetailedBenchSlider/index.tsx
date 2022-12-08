@@ -1,31 +1,29 @@
-import React, {FC, useRef} from 'react';
-import {Navigation, Swiper as SwiperType} from "swiper";
-import {Swiper} from "swiper/react";
-import {StyledNavigation} from "@/app/components/LatestBench/LatestBenchSlider/styles";
+import React, { FC, useRef } from 'react'
+import { Swiper } from 'swiper/react';
+import { Swiper as SwiperType, Navigation } from 'swiper';
 import Image from "next/image";
 import CommonIcon from "@/app/components/Common/CommonIcon/CommonIcon";
-import {StyledSLide} from "@/app/components/pages/DetailedBench/DetailedBenchSlider/DetailedBenchSlier.styles";
+import {
+    StyledSlide,
+    StyledNavigation,
+    StyledGradient
+} from "@/app/components/pages/DetailedBench/DetailedBenchSlider/DetailedBenchSlier.styles";
 
-import img from '@/app/assets/images/image.png'
-
-const images = [
-    img,
-    img
-]
-
-const DetailedBenchSlider: FC<any> = ({ className }) => {
+const DetailedBenchSlider: FC<any> = ({ images }) => {
     const swiperRef = useRef<SwiperType | null>(null)
     const swiperNavPrevRef = useRef(null)
     const swiperNavNextRef = useRef(null)
 
     return (
-        <div className={className}>
+        <div className={"detailed-bench-slider"}>
             <Swiper
                 modules={[Navigation]}
                 navigation={{
                     nextEl: swiperNavNextRef.current,
                     prevEl: swiperNavPrevRef.current
                 }}
+                centeredSlides={true}
+                loop={true}
                 spaceBetween={36}
                 slidesPerView={1.5}
                 onBeforeInit={(swiper: any) => {
@@ -34,22 +32,28 @@ const DetailedBenchSlider: FC<any> = ({ className }) => {
                     }
                 }}
             >
-                { images && images.map((image: any, index: number) => (
-                    <StyledSLide key={index}>
-                        <Image src={img} alt="image" width="100%" height="100%" objectFit={"cover"} />
-                    </StyledSLide>
+                { images && images.map((image: string, index: number) => (
+                    <StyledSlide key={index}>
+                        <div className={"w-100 h-100"}>
+                            <Image src={image} alt="image" layout='fill' objectFit='cover' />
+                        </div>
+                    </StyledSlide>
                 ))}
             </Swiper>
+            <div>
+                <StyledGradient />
+                <StyledGradient />
+            </div>
             <StyledNavigation>
                 <button className="swiper-button-prev" ref={swiperNavPrevRef}>
-                    <CommonIcon name="arrow-light" width={32} height={32} />
+                    <CommonIcon name="arrow-light" width={27} height={22} />
                 </button>
                 <button className="swiper-button-next" ref={swiperNavNextRef}>
-                    <CommonIcon name="arrow-light" width={32} height={32} />
+                    <CommonIcon name="arrow-light" width={27} height={22} reverse />
                 </button>
             </StyledNavigation>
         </div>
-    );
-};
+    )
+}
 
-export default DetailedBenchSlider;
+export default DetailedBenchSlider
