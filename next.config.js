@@ -30,18 +30,6 @@ const nextConfig = {
     config.plugins.push(new SpriteLoaderPlugin())
 
     return config
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/api/benches/',
-        destination: 'http://localhost:8000/api/v1/benches/',
-      },
-      {
-        source: '/:path*',
-        destination: 'http://localhost:8000/api/v1/:path*',
-      },
-    ]
   }
 }
 

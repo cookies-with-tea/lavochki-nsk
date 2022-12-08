@@ -30,7 +30,7 @@ export const StyledNavigation = styled.div`
     position: absolute;
     cursor: pointer;
     left: -32px;
-    transform: rotate(180deg) translateY(75%);
+    transform: translateY(-75%);
     z-index: 10;
     top: 58%;
   }

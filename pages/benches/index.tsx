@@ -12,15 +12,12 @@ export const getStaticProps = async () => {
     const response = await axios.get('http://localhost:8000/api/v1/benches/')
     const benches = await response.data
 
-    console.log(benches)
-
     if (benches) {
         return {
             props: { benches }
         }
     }
 }
-
 
 const BenchesPage: NextPage<any> = ({ benches }): JSX.Element => {
     return (

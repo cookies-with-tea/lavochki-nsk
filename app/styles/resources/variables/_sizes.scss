@@ -15,6 +15,7 @@ $sizes: (
   22: 22px,
   24: 24px,
   28: 28px,
+  30: 30px,
   32: 32px,
   34: 34px,
   36: 36px,
@@ -24,6 +25,7 @@ $sizes: (
   44: 44px,
   46: 46px,
   48: 48px,
+  50: 50px,
   52: 52px,
   60: 60px,
   80: 80px,
@@ -42,6 +44,7 @@ $size--20: map.get($sizes, 20);
 $size--22: map.get($sizes, 22);
 $size--24: map.get($sizes, 24);
 $size--28: map.get($sizes, 28);
+$size--30: map.get($sizes, 30);
 $size--32: map.get($sizes, 32);
 $size--34: map.get($sizes, 34);
 $size--36: map.get($sizes, 36);
@@ -51,6 +54,7 @@ $size--42: map.get($sizes, 42);
 $size--44: map.get($sizes, 44);
 $size--46: map.get($sizes, 46);
 $size--48: map.get($sizes, 48);
+$size--50: map.get($sizes, 50);
 $size--52: map.get($sizes, 52);
 $size--60: map.get($sizes, 60);
 $size--80: map.get($sizes, 80);

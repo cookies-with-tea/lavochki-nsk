@@ -1,15 +1,19 @@
 import React, {useState} from 'react';
 import {
-    StyledAside, StyledCheckbox, StyledCheckedIcon, StyledCheckedIconWrapper, StyledChip,
-    StyledFilterTitle, StyledFormControlLabel,
-    StyledFormControlRadioLabel, StyledIcon, StyledList,
-    StyledResetButton, StyledShowAllButton
+    StyledAside,
+    StyledCheckbox,
+    StyledCheckedIconWrapper,
+    StyledChip,
+    StyledFilterTitle,
+    StyledFormControlLabel,
+    StyledFormControlRadioLabel,
+    StyledIcon,
+    StyledList,
+    StyledResetButton,
+    StyledShowAllButton
 } from "@/app/components/pages/BenchesPage/BenchesSidebar/BenchesSidebar.styles";
 import {
-    Checkbox,
-    fabClasses,
     FormControl,
-    FormControlLabel,
     FormGroup,
     FormLabel,
     Radio,
