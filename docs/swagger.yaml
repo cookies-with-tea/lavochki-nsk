@@ -10,6 +10,10 @@ definitions:
     type: object
   domain.Bench:
     properties:
+      comments:
+        items:
+          $ref: '#/definitions/domain.Comment'
+        type: array
       id:
         type: string
       images:
@@ -26,6 +30,23 @@ definitions:
         items:
           $ref: '#/definitions/domain.Tag'
         type: array
+    type: object
+  domain.Comment:
+    properties:
+      author_id:
+        type: string
+      bench_id:
+        type: string
+      content:
+        type: string
+      id:
+        type: string
+      nested_comments:
+        items:
+          $ref: '#/definitions/domain.Comment'
+        type: array
+      parent_id:
+        type: string
     type: object
   domain.Tag:
     properties:
@@ -55,6 +76,17 @@ definitions:
         type: number
       user_telegram_id:
         type: integer
+    type: object
+  dto.CreateComment:
+    properties:
+      author_id:
+        type: string
+      bench_id:
+        type: string
+      content:
+        type: string
+      parent_id:
+        type: string
     type: object
   dto.CreateTag:
     properties:
@@ -199,6 +231,48 @@ paths:
       summary: Bot refresh token
       tags:
       - Bot
+  /api/v1/comments:
+    post:
+      parameters:
+      - description: comment data
+        in: body
+        name: CreateComment
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateComment'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+      summary: Create comment
+      tags:
+      - Comments
+  /api/v1/comments/{id}:
+    get:
+      description: Get list comments by bench
+      parameters:
+      - description: Bench ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Comment'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/apperror.AppError'
+      summary: List comments by bench
+      tags:
+      - Comments
   /api/v1/tags:
     get:
       description: Get list tags
