@@ -12,7 +12,17 @@ type commentModel struct {
 	BenchID  string      `bun:"bench_id"`
 	Bench    *benchModel `bun:"rel:belongs-to,join:bench_id=id"`
 	ParentID string      `bun:"parent_id"`
+	AuthorID string      `bun:"author_id"`
+	Author   *userModel  `bun:"rel:belongs-to,join:author_id=id"`
 	Content  string      `bun:"content"`
+}
+
+func (commentModel *commentModel) FromDomain(comment domain.Comment) {
+	commentModel.ID = comment.ID
+	commentModel.BenchID = comment.BenchID
+	commentModel.ParentID = comment.ParentID
+	commentModel.AuthorID = comment.AuthorID
+	commentModel.Content = comment.Content
 }
 
 func commentModelToDomain(model commentModel) domain.Comment {
