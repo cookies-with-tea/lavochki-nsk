@@ -29,6 +29,13 @@ func (handler *Handler) Register(router *mux.Router) {
 	router.HandleFunc("/{id}", apperror.Middleware(handler.listCommentsByBench))
 }
 
+// @Summary List comments by bench
+// @Description Get list comments by bench
+// @Tags Comments
+// @Param id path string true "Bench ID"
+// @Success 200 {object} []domain.Bench
+// @Failure 400 {object} apperror.AppError
+// @Router /api/v1/comments/{id} [get]
 func (handler *Handler) listCommentsByBench(writer http.ResponseWriter, request *http.Request) error {
 	id := mux.Vars(request)["id"]
 
@@ -44,6 +51,13 @@ func (handler *Handler) listCommentsByBench(writer http.ResponseWriter, request 
 	return nil
 }
 
+// @Summary Create comment
+// @Tags Comments
+// @Produce json
+// @Param CreateComment body dto.CreateComment true "comment data"
+// @Success 201
+// @Failure 400
+// @Router /api/v1/comments [post]
 func (handler *Handler) createComment(writer http.ResponseWriter, request *http.Request) error {
 	var comment dto.CreateComment
 
