@@ -2,6 +2,7 @@ package comments
 
 import (
 	"benches/internal/apperror"
+	_ "benches/internal/domain"
 	"benches/internal/dto"
 	commentsService "benches/internal/service/comments"
 	usersService "benches/internal/service/users"
@@ -33,7 +34,7 @@ func (handler *Handler) Register(router *mux.Router) {
 // @Description Get list comments by bench
 // @Tags Comments
 // @Param id path string true "Bench ID"
-// @Success 200 {object} []domain.Bench
+// @Success 200 {object} []domain.Comment
 // @Failure 400 {object} apperror.AppError
 // @Router /api/v1/comments/{id} [get]
 func (handler *Handler) listCommentsByBench(writer http.ResponseWriter, request *http.Request) error {
