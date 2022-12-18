@@ -129,7 +129,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appCommentsRouter := router.PathPrefix("/api/v1/comments").Subrouter()
 	appCommentsRepository := postgres.NewCommentsRepository(db)
 	appCommentsService := commentsService.NewService(appCommentsRepository, logger)
-	appHandlerComments := comments.NewCommentsHandler(appCommentsService)
+	appHandlerComments := comments.NewCommentsHandler(appCommentsService, appUsersService)
 	appHandlerComments.Register(appCommentsRouter)
 
 	return &App{cfg: cfg, logger: logger, router: router}, nil
