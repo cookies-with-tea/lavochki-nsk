@@ -191,6 +191,71 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/comments": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Create comment",
+                "parameters": [
+                    {
+                        "description": "comment data",
+                        "name": "CreateComment",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateComment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/api/v1/comments/{id}": {
+            "get": {
+                "description": "Get list comments by bench",
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "List comments by bench",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bench ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Comment"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apperror.AppError"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/tags": {
             "get": {
                 "description": "Get list tags",
@@ -335,6 +400,12 @@ const docTemplate = `{
         "domain.Bench": {
             "type": "object",
             "properties": {
+                "comments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Comment"
+                    }
+                },
                 "id": {
                     "type": "string"
                 },
@@ -358,6 +429,32 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/domain.Tag"
                     }
+                }
+            }
+        },
+        "domain.Comment": {
+            "type": "object",
+            "properties": {
+                "author_id": {
+                    "type": "string"
+                },
+                "bench_id": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "nested_comments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Comment"
+                    }
+                },
+                "parent_id": {
+                    "type": "string"
                 }
             }
         },
@@ -403,6 +500,23 @@ const docTemplate = `{
                 },
                 "user_telegram_id": {
                     "type": "integer"
+                }
+            }
+        },
+        "dto.CreateComment": {
+            "type": "object",
+            "properties": {
+                "author_id": {
+                    "type": "string"
+                },
+                "bench_id": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "parent_id": {
+                    "type": "string"
                 }
             }
         },

@@ -18,6 +18,7 @@ import (
 type Service interface {
 	LoginViaTelegram(ctx context.Context, dto dto.CreateUser) (string, string, error)
 	RefreshToken(ctx context.Context, token string) (string, string, error)
+	GetUserByID(ctx context.Context, userID string) (domain.User, error)
 }
 
 type service struct {
@@ -32,15 +33,15 @@ func NewService(db postgres.UsersRepository, redisStorage redisStorage.Storage, 
 	return &service{db: db, redisStorage: redisStorage, tokenManager: tokenManager, telegram: telegram, log: log}
 }
 
-func (s *service) LoginViaTelegram(ctx context.Context, dto dto.CreateUser) (string, string, error) {
+func (service *service) LoginViaTelegram(ctx context.Context, dto dto.CreateUser) (string, string, error) {
 	user := domain.User{
 		Username:   dto.Username,
 		TelegramID: dto.ID,
 	}
-	dbUser, err := s.db.GetUserByTelegramID(ctx, dto.ID)
+	dbUser, err := service.db.GetUserByTelegramID(ctx, dto.ID)
 	if err == sql.ErrNoRows {
 		var errCreate error
-		dbUser, errCreate = s.db.CreateUser(ctx, user)
+		dbUser, errCreate = service.db.CreateUser(ctx, user)
 		if errCreate != nil {
 			return "", "", errCreate
 		}
@@ -49,7 +50,7 @@ func (s *service) LoginViaTelegram(ctx context.Context, dto dto.CreateUser) (str
 			return "", "", err
 		}
 	}
-	isTelegramAuth := s.telegram.CheckTelegramAuthorization(map[string]string{
+	isTelegramAuth := service.telegram.CheckTelegramAuthorization(map[string]string{
 		"id":         fmt.Sprintf("%d", dto.ID),
 		"first_name": fmt.Sprintf("%s", dto.FirstName),
 		"last_name":  fmt.Sprintf("%s", dto.LastName),
@@ -62,49 +63,59 @@ func (s *service) LoginViaTelegram(ctx context.Context, dto dto.CreateUser) (str
 		return "", "", errors.New("not is auth")
 	}
 	var token string
-	token, err = s.tokenManager.NewJWT(dbUser.ID, dbUser.Role, 15*time.Minute)
+	token, err = service.tokenManager.NewJWT(dbUser.ID, dbUser.Role, 60*time.Minute)
 	if err != nil {
 		return "", "", err
 	}
 	var refreshToken string
-	refreshToken, err = s.tokenManager.NewRefreshToken()
+	refreshToken, err = service.tokenManager.NewRefreshToken()
 	if err != nil {
 		return "", "", err
 	}
-	err = s.redisStorage.WriteRefreshToken(ctx, refreshToken, dbUser.ID, 15*time.Minute)
+	err = service.redisStorage.WriteRefreshToken(ctx, refreshToken, dbUser.ID, 60*time.Minute)
 	if err != nil {
 		return "", "", err
 	}
 	return token, refreshToken, nil
 }
 
-func (s *service) RefreshToken(ctx context.Context, token string) (string, string, error) {
-	userID, err := s.redisStorage.GetUserIDByRefreshToken(ctx, token)
+func (service *service) RefreshToken(ctx context.Context, token string) (string, string, error) {
+	userID, err := service.redisStorage.GetUserIDByRefreshToken(ctx, token)
 	if err != nil {
 		return "", "", err
 	}
 
 	var user domain.User
-	user, err = s.db.GetUserByID(ctx, userID)
+	user, err = service.db.GetUserByID(ctx, userID)
 	if err != nil {
 		return "", "", err
 	}
 
 	var newAccessToken string
-	newAccessToken, err = s.tokenManager.NewJWT(user.ID, user.Role, 15*time.Minute)
+	newAccessToken, err = service.tokenManager.NewJWT(user.ID, user.Role, 15*time.Minute)
 	if err != nil {
 		return "", "", err
 	}
 
-	newRefreshToken, err := s.tokenManager.NewRefreshToken()
+	newRefreshToken, err := service.tokenManager.NewRefreshToken()
 	if err != nil {
 		return "", "", err
 	}
 
-	err = s.redisStorage.WriteRefreshToken(ctx, newRefreshToken, user.ID, 15*time.Minute)
+	err = service.redisStorage.WriteRefreshToken(ctx, newRefreshToken, user.ID, 15*time.Minute)
 	if err != nil {
 		return "", "", err
 	}
 
 	return newAccessToken, newRefreshToken, nil
+}
+
+func (service *service) GetUserByID(ctx context.Context, userID string) (domain.User, error) {
+	user, err := service.db.GetUserByID(ctx, userID)
+
+	if err != nil {
+		return user, err
+	}
+
+	return user, nil
 }

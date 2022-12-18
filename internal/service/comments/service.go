@@ -1,6 +1,7 @@
 package comments
 
 import (
+	"benches/internal/apperror"
 	"benches/internal/domain"
 	"benches/internal/repository/postgres"
 	"context"
@@ -9,6 +10,7 @@ import (
 
 type Service interface {
 	GetAllCommentByBench(ctx context.Context, id string) ([]domain.Comment, error)
+	CreateComment(ctx context.Context, comment domain.Comment) error
 }
 
 type service struct {
@@ -39,4 +41,12 @@ func (service *service) GetAllCommentByBench(ctx context.Context, benchID string
 	}
 
 	return comments, nil
+}
+
+func (service *service) CreateComment(ctx context.Context, comment domain.Comment) error {
+	err := service.db.CreateComment(ctx, comment)
+	if err != nil {
+		return apperror.ErrFailedToCreate
+	}
+	return nil
 }
