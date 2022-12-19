@@ -12,6 +12,11 @@ type CreateComment struct {
 	Content  string `json:"content"`
 }
 
+type UpdateComment struct {
+	ID      string `json:"id"`
+	Content string `json:"content"`
+}
+
 func (comment *CreateComment) Validate() error {
 	return validation.ValidateStruct(comment,
 		validation.Field(&comment.BenchID, validation.Required),
@@ -25,5 +30,17 @@ func (comment *CreateComment) ToDomain() domain.Comment {
 		ParentID: comment.ParentID,
 		AuthorID: comment.AuthorID,
 		Content:  comment.Content,
+	}
+}
+
+func (comment *UpdateComment) Validate() error {
+	return validation.ValidateStruct(comment,
+		validation.Field(&comment.ID, validation.Required))
+}
+
+func (comment *UpdateComment) ToDomain() domain.Comment {
+	return domain.Comment{
+		ID:      comment.ID,
+		Content: comment.Content,
 	}
 }
