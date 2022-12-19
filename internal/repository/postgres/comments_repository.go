@@ -11,6 +11,8 @@ type CommentsRepository interface {
 	GetByBenchID(ctx context.Context, id string) ([]domain.Comment, error)
 	GetByParentID(ctx context.Context, id string) ([]domain.Comment, error)
 	CreateComment(ctx context.Context, bench domain.Comment) error
+	Update(ctx context.Context, comment domain.Comment) error
+	GetByID(ctx context.Context, id string) (domain.Comment, error)
 }
 
 type commentsRepository struct {
@@ -43,6 +45,17 @@ func (repository *commentsRepository) GetByParentID(ctx context.Context, id stri
 	return comments, nil
 }
 
+// GetByID Получение комментария по ID
+func (repository *commentsRepository) GetByID(ctx context.Context, id string) (domain.Comment, error) {
+	comment := commentModel{}
+	err := repository.db.NewSelect().Model(&comment).Where("comments.id = ?", id).Scan(ctx)
+	if err != nil {
+		return domain.Comment{}, err
+	}
+	return commentModelToDomain(comment), nil
+}
+
+// CreateComment Создание комментария
 func (repository *commentsRepository) CreateComment(ctx context.Context, comment domain.Comment) error {
 	model := commentModel{}
 	model.FromDomain(comment)
@@ -51,5 +64,23 @@ func (repository *commentsRepository) CreateComment(ctx context.Context, comment
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+// Update Обновление комментария
+func (repository *commentsRepository) Update(ctx context.Context, comment domain.Comment) error {
+	model := commentModel{}
+	model.FromDomain(comment)
+
+	_, err := repository.db.NewUpdate().
+		Model(&model).
+		OmitZero().
+		WherePK().
+		Exec(ctx)
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
