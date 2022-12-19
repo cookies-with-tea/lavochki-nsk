@@ -11,6 +11,7 @@ import (
 type Service interface {
 	GetAllCommentByBench(ctx context.Context, id string) ([]domain.Comment, error)
 	CreateComment(ctx context.Context, comment domain.Comment) error
+	UpdateComment(ctx context.Context, comment domain.Comment) error
 }
 
 type service struct {
@@ -48,5 +49,25 @@ func (service *service) CreateComment(ctx context.Context, comment domain.Commen
 	if err != nil {
 		return apperror.ErrFailedToCreate
 	}
+	return nil
+}
+
+func (service *service) UpdateComment(ctx context.Context, comment domain.Comment) error {
+	oldComment, errGetComment := service.db.GetByID(ctx, comment.ID)
+	if errGetComment != nil {
+		return errGetComment
+	}
+
+	userID := ctx.Value("userID").(string)
+	if oldComment.AuthorID != userID {
+		return apperror.ErrNotEnoughRights
+	}
+
+	err := service.db.Update(ctx, comment)
+	if err != nil {
+		service.log.Error("error update comment", zap.Error(err))
+		return err
+	}
+
 	return nil
 }
