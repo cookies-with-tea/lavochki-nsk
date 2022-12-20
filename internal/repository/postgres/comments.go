@@ -30,6 +30,7 @@ func commentModelToDomain(model commentModel) domain.Comment {
 		ID:       model.ID,
 		BenchID:  model.BenchID,
 		ParentID: model.ParentID,
+		AuthorID: model.AuthorID,
 		Content:  model.Content,
 	}
 }

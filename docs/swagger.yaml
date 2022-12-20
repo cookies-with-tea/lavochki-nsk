@@ -115,6 +115,13 @@ definitions:
       token:
         type: string
     type: object
+  dto.UpdateComment:
+    properties:
+      content:
+        type: string
+      id:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -232,6 +239,24 @@ paths:
       tags:
       - Bot
   /api/v1/comments:
+    patch:
+      parameters:
+      - description: comment data
+        in: body
+        name: UpdateComment
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateComment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+      summary: Update comment
+      tags:
+      - Comments
     post:
       parameters:
       - description: comment data

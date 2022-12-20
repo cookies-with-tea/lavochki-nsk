@@ -6,6 +6,7 @@ import (
 	"benches/internal/dto"
 	commentsService "benches/internal/service/comments"
 	usersService "benches/internal/service/users"
+	"benches/pkg/auth"
 	"database/sql"
 	"encoding/json"
 	"errors"
@@ -26,8 +27,13 @@ func NewCommentsHandler(comments commentsService.Service, usersService usersServ
 	}
 }
 
-func (handler *Handler) Register(router *mux.Router) {
+func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) {
 	router.HandleFunc("/{id}", apperror.Middleware(handler.listCommentsByBench))
+
+	interactionCommentRouter := router.NewRoute().Subrouter()
+	interactionCommentRouter.Use(authManager.JWTMiddleware)
+	interactionCommentRouter.HandleFunc("", apperror.Middleware(handler.createComment)).Methods("POST")
+	interactionCommentRouter.HandleFunc("", apperror.Middleware(handler.updateComment)).Methods("PATCH")
 }
 
 // @Summary List comments by bench
@@ -89,5 +95,45 @@ func (handler *Handler) createComment(writer http.ResponseWriter, request *http.
 	}
 
 	writer.WriteHeader(http.StatusCreated)
+	return nil
+}
+
+// @Summary Update comment
+// @Tags Comments
+// @Produce json
+// @Param UpdateComment body dto.UpdateComment true "comment data"
+// @Success 200
+// @Failure 400
+// @Router /api/v1/comments [patch]
+func (handler *Handler) updateComment(writer http.ResponseWriter, request *http.Request) error {
+	var comment dto.UpdateComment
+	if err := json.NewDecoder(request.Body).Decode(&comment); err != nil {
+		return apperror.ErrDecodeData
+	}
+
+	// Валидация
+	if errValidate := comment.Validate(); errValidate != nil {
+		details, _ := json.Marshal(errValidate)
+		return apperror.NewAppError(errValidate, "validation error", details)
+	}
+
+	// Проверка на владельца комментария
+	isOwner, errIsOwner := handler.comments.IsOwner(
+		request.Context(), comment.ID, request.Context().Value("userID").(string))
+	if errIsOwner != nil {
+		return errIsOwner
+	}
+
+	if !isOwner {
+		return apperror.ErrNotEnoughRights
+	}
+
+	// Обновление комментария
+	errUpdate := handler.comments.UpdateComment(request.Context(), comment.ToDomain())
+	if errUpdate != nil {
+		return errUpdate
+	}
+
+	writer.WriteHeader(http.StatusOK)
 	return nil
 }

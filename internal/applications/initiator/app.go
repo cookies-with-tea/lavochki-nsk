@@ -130,7 +130,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appCommentsRepository := postgres.NewCommentsRepository(db)
 	appCommentsService := commentsService.NewService(appCommentsRepository, logger)
 	appHandlerComments := comments.NewCommentsHandler(appCommentsService, appUsersService)
-	appHandlerComments.Register(appCommentsRouter)
+	appHandlerComments.Register(appCommentsRouter, authManager)
 
 	return &App{cfg: cfg, logger: logger, router: router}, nil
 }
