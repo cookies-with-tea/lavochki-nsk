@@ -117,6 +117,17 @@ func (handler *Handler) updateComment(writer http.ResponseWriter, request *http.
 		return apperror.NewAppError(errValidate, "validation error", details)
 	}
 
+	// Проверка на владельца комментария
+	isOwner, errIsOwner := handler.comments.IsOwner(
+		request.Context(), comment.ID, request.Context().Value("userID").(string))
+	if errIsOwner != nil {
+		return errIsOwner
+	}
+
+	if !isOwner {
+		return apperror.ErrNotEnoughRights
+	}
+
 	// Обновление комментария
 	errUpdate := handler.comments.UpdateComment(request.Context(), comment.ToDomain())
 	if errUpdate != nil {
