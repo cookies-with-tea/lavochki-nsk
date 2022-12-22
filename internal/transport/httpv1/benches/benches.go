@@ -24,7 +24,6 @@ func NewBenchesHandler(benches benchesService.Service) *Handler {
 
 func (h *Handler) Register(router *mux.Router, authManager *auth.Manager) {
 	router.HandleFunc("/", apperror.Middleware(h.listBenches)).Methods("GET")
-	router.HandleFunc("/{id}", apperror.Middleware(h.detailBench)).Methods("GET")
 
 	// Создание лавочки через telegram
 	routerCreateBenches := router.NewRoute().Subrouter()
@@ -38,6 +37,8 @@ func (h *Handler) Register(router *mux.Router, authManager *auth.Manager) {
 	routerModeration.HandleFunc("/moderation", apperror.Middleware(h.listModerationBench)).Methods("GET")
 	// Одобрение или отказ лавочки
 	routerModeration.HandleFunc("/moderation", apperror.Middleware(h.decisionBench)).Methods("POST")
+
+	router.HandleFunc("/{id}", apperror.Middleware(h.detailBench)).Methods("GET")
 }
 
 // @Summary List benches
