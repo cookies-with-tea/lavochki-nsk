@@ -18,6 +18,7 @@ type CreateBenchViaTelegram struct {
 type DecisionBench struct {
 	ID       string `json:"id"`
 	Decision bool   `json:"decision"`
+	Message  string `json:"message"`
 }
 
 func (bench *CreateBench) Validate() error {
@@ -38,5 +39,5 @@ func (bench *CreateBenchViaTelegram) Validate() error {
 func (bench *DecisionBench) Validate() error {
 	return validation.ValidateStruct(bench,
 		validation.Field(&bench.ID, validation.Required),
-		validation.Field(&bench.Decision, validation.Required))
+	)
 }
