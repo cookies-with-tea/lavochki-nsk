@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "baseUrl": "./",                                /* Base directory to resolve non-absolute module names. */
+    "paths": {                                      /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
+      "@/*": ["./src/*"],
+      "~/*": ["./src/*"],
+      "@core/*": ["./core/*"],
+      "@root/*": [ "./*"]
+    },
+    "types": [
+      "node",
+      "webpack-env" // here
+    ]
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}
