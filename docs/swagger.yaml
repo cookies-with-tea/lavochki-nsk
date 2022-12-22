@@ -110,6 +110,13 @@ definitions:
       username:
         type: string
     type: object
+  dto.DecisionBench:
+    properties:
+      decision:
+        type: boolean
+      id:
+        type: string
+    type: object
   dto.RefreshToken:
     properties:
       token:
@@ -159,8 +166,36 @@ paths:
       - Benches
   /api/v1/benches/moderation:
     get:
+      description: Get list moderation benches
+      parameters:
+      - description: Bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Bench'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/apperror.AppError'
+      summary: Moderation list benches
+      tags:
+      - Benches Moderation
+    post:
       description: Accept or reject a bench
       parameters:
+      - description: decision bench data
+        in: body
+        name: Decision
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DecisionBench'
       - description: Bearer
         in: header
         name: Authorization

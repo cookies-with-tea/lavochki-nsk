@@ -44,12 +44,54 @@ const docTemplate = `{
         },
         "/api/v1/benches/moderation": {
             "get": {
+                "description": "Get list moderation benches",
+                "tags": [
+                    "Benches Moderation"
+                ],
+                "summary": "Moderation list benches",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Bench"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apperror.AppError"
+                        }
+                    }
+                }
+            },
+            "post": {
                 "description": "Accept or reject a bench",
                 "tags": [
                     "Benches Moderation"
                 ],
                 "summary": "Decision bench",
                 "parameters": [
+                    {
+                        "description": "decision bench data",
+                        "name": "Decision",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.DecisionBench"
+                        }
+                    },
                     {
                         "type": "string",
                         "description": "Bearer",
@@ -578,6 +620,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.DecisionBench": {
+            "type": "object",
+            "properties": {
+                "decision": {
+                    "type": "boolean"
+                },
+                "id": {
                     "type": "string"
                 }
             }

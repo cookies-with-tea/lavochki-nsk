@@ -124,10 +124,11 @@ func (h *Handler) listModerationBench(w http.ResponseWriter, r *http.Request) er
 // @Summary Decision bench
 // @Description Accept or reject a bench
 // @Tags Benches Moderation
+// @Param Decision body dto.DecisionBench true "decision bench data"
 // @Param Authorization header string true "Bearer"
 // @Success 200
 // @Failure 400 {object} apperror.AppError
-// @Router /api/v1/benches/moderation [get]
+// @Router /api/v1/benches/moderation [post]
 func (h *Handler) decisionBench(w http.ResponseWriter, r *http.Request) error {
 	var decisionBench dto.DecisionBench
 	if err := json.NewDecoder(r.Body).Decode(&decisionBench); err != nil {
