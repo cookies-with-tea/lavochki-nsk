@@ -88,6 +88,15 @@ definitions:
       parent_id:
         type: string
     type: object
+  dto.CreateReportComment:
+    properties:
+      cause:
+        type: string
+      comment_id:
+        type: string
+      id:
+        type: string
+    type: object
   dto.CreateTag:
     properties:
       title:
@@ -115,6 +124,8 @@ definitions:
       decision:
         type: boolean
       id:
+        type: string
+      message:
         type: string
     type: object
   dto.RefreshToken:
@@ -300,6 +311,11 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/dto.CreateComment'
+      - description: Bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -333,6 +349,44 @@ paths:
       summary: List comments by bench
       tags:
       - Comments
+  /api/v1/reports/comments:
+    post:
+      parameters:
+      - description: report comment data
+        in: body
+        name: CreateComment
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateReportComment'
+      - description: Bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+        "409":
+          description: Conflict
+      summary: Create report comment
+      tags:
+      - Reports
+  /api/v1/reports/comments/moderation:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "418":
+          description: I'm a teapot
+      summary: List moderation report comments
+      tags:
+      - Reports
   /api/v1/tags:
     get:
       description: Get list tags

@@ -251,6 +251,13 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/dto.CreateComment"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -322,6 +329,65 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/apperror.AppError"
                         }
+                    }
+                }
+            }
+        },
+        "/api/v1/reports/comments": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Create report comment",
+                "parameters": [
+                    {
+                        "description": "report comment data",
+                        "name": "CreateComment",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateReportComment"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "409": {
+                        "description": "Conflict"
+                    }
+                }
+            }
+        },
+        "/api/v1/reports/comments/moderation": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "List moderation report comments",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "418": {
+                        "description": "I'm a teapot"
                     }
                 }
             }
@@ -590,6 +656,20 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.CreateReportComment": {
+            "type": "object",
+            "properties": {
+                "cause": {
+                    "type": "string"
+                },
+                "comment_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.CreateTag": {
             "type": "object",
             "properties": {
@@ -631,6 +711,9 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "id": {
+                    "type": "string"
+                },
+                "message": {
                     "type": "string"
                 }
             }
