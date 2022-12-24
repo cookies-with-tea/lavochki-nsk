@@ -16,7 +16,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/benches/": {
+        "/api/v1/benches": {
             "get": {
                 "description": "Get list active benches",
                 "tags": [
