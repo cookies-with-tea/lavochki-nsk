@@ -8,6 +8,7 @@ import (
 	botService "benches/internal/service/bot"
 	commentsService "benches/internal/service/comments"
 	notificationsService "benches/internal/service/notifications"
+	reportsService "benches/internal/service/reports"
 	tagsService "benches/internal/service/tags"
 	usersService "benches/internal/service/users"
 	minioStorage "benches/internal/storage/minio"
@@ -15,6 +16,7 @@ import (
 	"benches/internal/transport/httpv1/benches"
 	"benches/internal/transport/httpv1/bot"
 	"benches/internal/transport/httpv1/comments"
+	"benches/internal/transport/httpv1/reports"
 	"benches/internal/transport/httpv1/tags"
 	"benches/internal/transport/httpv1/users"
 	"benches/pkg/auth"
@@ -131,6 +133,13 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appCommentsService := commentsService.NewService(appCommentsRepository, logger)
 	appHandlerComments := comments.NewCommentsHandler(appCommentsService, appUsersService)
 	appHandlerComments.Register(appCommentsRouter, authManager)
+
+	// Жалобы
+	appReportsRouter := router.PathPrefix("/api/v1/reports").Subrouter()
+	appReportsRepository := postgres.NewReportsRepository(db)
+	appReportsService := reportsService.NewService(appReportsRepository, logger)
+	appHandlerReports := reports.NewReportsHandler(appReportsService)
+	appHandlerReports.Register(appReportsRouter, authManager)
 
 	return &App{cfg: cfg, logger: logger, router: router}, nil
 }
