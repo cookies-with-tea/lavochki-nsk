@@ -10,10 +10,6 @@ definitions:
     type: object
   domain.Bench:
     properties:
-      comments:
-        items:
-          $ref: '#/definitions/domain.Comment'
-        type: array
       id:
         type: string
       images:
@@ -442,6 +438,24 @@ paths:
         "400":
           description: Bad Request
       summary: User registration
+      tags:
+      - Users
+  /api/v1/users/me:
+    get:
+      parameters:
+      - description: Bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "418":
+          description: I'm a teapot
+      summary: Get Me
       tags:
       - Users
   /api/v1/users/refresh:
