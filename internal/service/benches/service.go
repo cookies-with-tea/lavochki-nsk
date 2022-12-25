@@ -36,30 +36,32 @@ func NewService(db postgres.BenchesRepository, storage *storage.Storage, log *za
 		usersRepository: usersRepository}
 }
 
-func (s *service) GetListBenches(ctx context.Context, isActive bool) ([]domain.Bench, error) {
+func (service *service) GetListBenches(ctx context.Context, isActive bool) ([]domain.Bench, error) {
 	// Получаем все лавочки из базы данных
-	benches, err := s.db.GetBenches(ctx, isActive)
+	benches, err := service.db.GetBenches(ctx, isActive)
 	if err != nil {
-		s.log.Error("error get all benches", zap.Error(err))
+		service.log.Error("error get all benches", zap.Error(err))
 		return nil, err
 	}
+
 	// Получаем картинки из Minio
 	for idx := range benches {
 		for idxImage := range benches[idx].Images {
-			benches[idx].Images[idxImage] = s.storage.GetImageURL(benches[idx].Images[idxImage])
+			benches[idx].Images[idxImage] = service.storage.GetImageURL(benches[idx].Images[idxImage])
 		}
 	}
+
 	return benches, nil
 }
 
-func (s *service) CreateBench(ctx context.Context, bench dto.CreateBench) error {
+func (service *service) CreateBench(ctx context.Context, bench dto.CreateBench) error {
 	panic("implement me")
 }
 
-func (s *service) CreateBenchViaTelegram(ctx context.Context, dto dto.CreateBenchViaTelegram) error {
+func (service *service) CreateBenchViaTelegram(ctx context.Context, dto dto.CreateBenchViaTelegram) error {
 	var imagesName []string
 
-	user, err := s.usersRepository.GetUserByTelegramID(ctx, dto.UserTelegramID)
+	user, err := service.usersRepository.GetUserByTelegramID(ctx, dto.UserTelegramID)
 	if err != nil {
 		return apperror.ErrNotEnoughRights
 	}
@@ -67,7 +69,7 @@ func (s *service) CreateBenchViaTelegram(ctx context.Context, dto dto.CreateBenc
 	// Генерируем ULID и сохраняем каждую картинку в Minio
 	for image := range dto.Images {
 		imageName := fmt.Sprintf("%s%s", ulid.Make(), ".jpg")
-		err := s.storage.CreateImageFromBytes(ctx, imageName, dto.Images[image])
+		err := service.storage.CreateImageFromBytes(ctx, imageName, dto.Images[image])
 		if err != nil {
 			return err
 		}
@@ -75,50 +77,50 @@ func (s *service) CreateBenchViaTelegram(ctx context.Context, dto dto.CreateBenc
 	}
 
 	model := domain.Bench{Lng: dto.Lng, Lat: dto.Lat, Images: imagesName, Owner: &user}
-	err = s.db.CreateBench(ctx, model)
+	err = service.db.CreateBench(ctx, model)
 	if err != nil {
 		return apperror.ErrFailedToCreate
 	}
 	return nil
 }
 
-func (s *service) DecisionBench(ctx context.Context, dto dto.DecisionBench) error {
+func (service *service) DecisionBench(ctx context.Context, dto dto.DecisionBench) error {
 	var err error
 	var notification *notifications.TelegramNotification
 
 	var bench domain.Bench
-	bench, err = s.db.GetBenchByID(ctx, dto.ID)
+	bench, err = service.db.GetBenchByID(ctx, dto.ID)
 	if err != nil {
 		return err
 	}
 	if dto.Decision {
-		err = s.db.UpdateActiveBench(ctx, dto.ID, dto.Decision)
+		err = service.db.UpdateActiveBench(ctx, dto.ID, dto.Decision)
 		notification = notifications.BenchSuccessfullyAccepted.ToNotification(bench.Owner.TelegramID, bench.ID)
 	} else {
-		err = s.db.DeleteBench(ctx, dto.ID)
+		err = service.db.DeleteBench(ctx, dto.ID)
 		notification = notifications.BenchDenied.ToNotification(bench.Owner.TelegramID, bench.ID)
 	}
 	if err != nil {
 		return err
 	}
 
-	err = s.notificationsService.SendNotificationInTelegram(ctx, notification)
+	err = service.notificationsService.SendNotificationInTelegram(ctx, notification)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *service) GetBenchByID(ctx context.Context, id string) (domain.Bench, error) {
+func (service *service) GetBenchByID(ctx context.Context, id string) (domain.Bench, error) {
 	// Получаем все лавочки из базы данных
-	bench, err := s.db.GetBenchByID(ctx, id)
+	bench, err := service.db.GetBenchByID(ctx, id)
 	if err != nil {
 		return bench, err
 	}
 
 	// Получаем картинки для этой лавочки из Minio
 	for idxImage := range bench.Images {
-		bench.Images[idxImage] = s.storage.GetImageURL(bench.Images[idxImage])
+		bench.Images[idxImage] = service.storage.GetImageURL(bench.Images[idxImage])
 	}
 	return bench, nil
 }
