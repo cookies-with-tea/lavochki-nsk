@@ -104,7 +104,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appUsersService := usersService.NewService(appUsersRepository,
 		appUsersRedisStorage, authManager, appUsersTelegramManager, logger)
 	appHandlerUsers := users.NewUsersHandler(appUsersService)
-	appHandlerUsers.Register(router)
+	appHandlerUsers.Register(router, authManager)
 
 	// Лавочки
 	appBenchesRouter := router.PathPrefix("/api/v1/benches").Subrouter()
