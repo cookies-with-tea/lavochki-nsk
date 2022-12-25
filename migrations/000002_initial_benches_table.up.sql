@@ -7,11 +7,11 @@ CREATE TABLE tags (
 
 CREATE TABLE benches (
     id TEXT NOT NULL PRIMARY KEY,
-    lat decimal,
-    lng decimal,
-    images TEXT[],
-    owner_id TEXT,
-    is_active BOOLEAN DEFAULT false,
+    lat DECIMAL NOT NULL,
+    lng DECIMAL NOT NULL,
+    images TEXT[] NOT NULL,
+    owner_id TEXT NOT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT false,
     CONSTRAINT fk_owner
     FOREIGN KEY(owner_id)
     REFERENCES users(id)
