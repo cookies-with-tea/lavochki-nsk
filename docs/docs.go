@@ -480,6 +480,34 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/users/me": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get Me",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "418": {
+                        "description": "I'm a teapot"
+                    }
+                }
+            }
+        },
         "/api/v1/users/refresh": {
             "post": {
                 "produces": [
@@ -536,12 +564,6 @@ const docTemplate = `{
         "domain.Bench": {
             "type": "object",
             "properties": {
-                "comments": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.Comment"
-                    }
-                },
                 "id": {
                     "type": "string"
                 },

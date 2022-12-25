@@ -4,6 +4,7 @@ import (
 	"benches/internal/apperror"
 	"benches/internal/dto"
 	usersService "benches/internal/service/users"
+	"benches/pkg/auth"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"net/http"
@@ -18,9 +19,13 @@ func NewUsersHandler(users usersService.Service) *Handler {
 	return &Handler{users: users}
 }
 
-func (h *Handler) Register(router *mux.Router) {
-	router.HandleFunc("/api/v1/users", apperror.Middleware(h.registerUser))
-	router.HandleFunc("/api/v1/users/refresh", apperror.Middleware(h.refreshToken))
+func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) {
+	router.HandleFunc("/api/v1/users", apperror.Middleware(handler.registerUser))
+	router.HandleFunc("/api/v1/users/refresh", apperror.Middleware(handler.refreshToken))
+
+	meUsersRouter := router.NewRoute().Subrouter()
+	meUsersRouter.Use(authManager.JWTMiddleware)
+	meUsersRouter.HandleFunc("/api/v1/users/me", apperror.Middleware(handler.me))
 }
 
 // RegisterUser
@@ -31,9 +36,9 @@ func (h *Handler) Register(router *mux.Router) {
 // @Success 200
 // @Failure 400
 // @Router /api/v1/users [post]
-func (h *Handler) registerUser(w http.ResponseWriter, r *http.Request) error {
+func (handler *Handler) registerUser(writer http.ResponseWriter, request *http.Request) error {
 	var user dto.CreateUser
-	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+	if err := json.NewDecoder(request.Body).Decode(&user); err != nil {
 		return apperror.ErrIncorrectDataAuth
 	}
 
@@ -43,11 +48,11 @@ func (h *Handler) registerUser(w http.ResponseWriter, r *http.Request) error {
 		return apperror.NewAppError(err, "validation error", details)
 	}
 
-	token, refreshToken, err := h.users.LoginViaTelegram(r.Context(), user)
+	token, refreshToken, err := handler.users.LoginViaTelegram(request.Context(), user)
 	if err != nil {
 		return apperror.ErrIncorrectDataAuth
 	}
-	h.ResponseJson(w, map[string]string{"access": token, "refresh": refreshToken}, 200)
+	handler.ResponseJson(writer, map[string]string{"access": token, "refresh": refreshToken}, 200)
 	return nil
 }
 
@@ -60,9 +65,9 @@ func (h *Handler) registerUser(w http.ResponseWriter, r *http.Request) error {
 // @Success 200
 // @Failure 400
 // @Router /api/v1/users/refresh [post]
-func (h *Handler) refreshToken(w http.ResponseWriter, r *http.Request) error {
+func (handler *Handler) refreshToken(writer http.ResponseWriter, request *http.Request) error {
 	var token dto.RefreshToken
-	if err := json.NewDecoder(r.Body).Decode(&token); err != nil {
+	if err := json.NewDecoder(request.Body).Decode(&token); err != nil {
 		return apperror.ErrIncorrectDataToken
 	}
 
@@ -72,10 +77,29 @@ func (h *Handler) refreshToken(w http.ResponseWriter, r *http.Request) error {
 		return apperror.NewAppError(err, "validation error", details)
 	}
 
-	accessToken, refreshToken, err := h.users.RefreshToken(r.Context(), token.Token)
+	accessToken, refreshToken, err := handler.users.RefreshToken(request.Context(), token.Token)
 	if err != nil {
 		return apperror.ErrIncorrectDataToken
 	}
-	h.ResponseJson(w, map[string]string{"access": accessToken, "refresh": refreshToken}, 200)
+	handler.ResponseJson(writer, map[string]string{"access": accessToken, "refresh": refreshToken}, 200)
+	return nil
+}
+
+// @Summary Get Me
+// @Tags Users
+// @Produce json
+// @Param Authorization header string true "Bearer"
+// @Success 200
+// @Failure 418
+// @Router /api/v1/users/me [get]
+func (handler *Handler) me(writer http.ResponseWriter, request *http.Request) error {
+	userID := request.Context().Value("userID").(string)
+
+	user, errGetUser := handler.users.GetUserByID(request.Context(), userID)
+	if errGetUser != nil {
+		return errGetUser
+	}
+
+	handler.ResponseJson(writer, user, http.StatusOK)
 	return nil
 }
