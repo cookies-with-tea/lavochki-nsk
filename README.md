@@ -16,3 +16,10 @@
     ```console
     $ docker-compose up --build -d
     ```
+
+# Режим разработки
+- Запустить watcher
+  ```console
+  $ go get -u github.com/radovskyb/watcher
+  $ watcher -cmd="go run ./cmd/initiator/main.go" -ignore "./migrations,./docs,./.idea" -pipe=true
+  ```
