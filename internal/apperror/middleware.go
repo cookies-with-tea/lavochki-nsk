@@ -21,7 +21,7 @@ func Middleware(h appHandler) http.HandlerFunc {
 					return
 				}
 				if errors.Is(err, ErrIncorrectDataAuth) {
-					w.WriteHeader(http.StatusNotFound)
+					w.WriteHeader(http.StatusBadRequest)
 					w.Write(ErrIncorrectDataAuth.Marshal())
 					return
 				}
