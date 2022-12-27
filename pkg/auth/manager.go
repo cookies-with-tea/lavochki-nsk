@@ -112,7 +112,11 @@ func (m *Manager) checkJWT(w http.ResponseWriter, r *http.Request) (context.Cont
 	authHeader := strings.Split(r.Header.Get("Authorization"), "Bearer ")
 	if len(authHeader) != 2 {
 		w.WriteHeader(http.StatusUnauthorized)
-		_, err := w.Write([]byte("Malformed Token"))
+		errorResponse := ErrorResponse{
+			Message: "malformed token",
+			Details: nil,
+		}
+		_, err := w.Write(errorResponse.Marshal()) // nolint: errcheck
 		if err != nil {
 			w.WriteHeader(http.StatusUnauthorized)
 		}
@@ -128,7 +132,11 @@ func (m *Manager) checkJWT(w http.ResponseWriter, r *http.Request) (context.Cont
 
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
-		_, _ = w.Write([]byte("Unauthorized"))
+		errorResponse := ErrorResponse{
+			Message: "Unauthorized",
+			Details: nil,
+		}
+		_, _ = w.Write(errorResponse.Marshal())
 		return nil, err
 	}
 
@@ -137,8 +145,12 @@ func (m *Manager) checkJWT(w http.ResponseWriter, r *http.Request) (context.Cont
 		ctx = context.WithValue(ctx, "userRole", claims["role"])
 		return ctx, nil
 	} else {
+		errorResponse := ErrorResponse{
+			Message: "Unauthorized",
+			Details: nil,
+		}
 		w.WriteHeader(http.StatusUnauthorized)
-		_, err2 := w.Write([]byte("Unauthorized"))
+		_, err2 := w.Write(errorResponse.Marshal())
 
 		if err2 != nil {
 			return nil, err
