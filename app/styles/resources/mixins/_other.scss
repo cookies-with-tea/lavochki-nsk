@@ -1,0 +1,267 @@
+@import '../variables';
+
+@mixin color($name, $color) {
+  .bg-#{$name} {
+    background-color: $color !important; // stylelint-disable-line declaration-no-important
+  }
+
+  .color-#{$name} {
+    color: $color !important; // stylelint-disable-line declaration-no-important
+  }
+}
+
+// Margins | Paddings
+
+// stylelint-disable declaration-no-important
+// Нужно перекрывать всевозможные стили, поэтому important
+@mixin sizes-classes($screen-name: '') {
+  .mt#{$screen-name}-auto {
+    margin-top: auto !important;
+  }
+  .mr#{$screen-name}-auto {
+    margin-right: auto !important;
+  }
+  .mb#{$screen-name}-auto {
+    margin-bottom: auto !important;
+  }
+  .ml#{$screen-name}-auto {
+    margin-left: auto !important;
+  }
+  .mx#{$screen-name}-auto {
+    margin-right: auto !important;
+    margin-left: auto !important;
+  }
+  .my#{$screen-name}-auto {
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+  }
+
+  @each $index, $size in $sizes {
+    .m#{$screen-name}-#{$index} {
+      margin: $size !important;
+    }
+    .mx#{$screen-name}-#{$index} {
+      margin-right: $size !important;
+      margin-left: $size !important;
+    }
+    .my#{$screen-name}-#{$index} {
+      margin-top: $size !important;
+      margin-bottom: $size !important;
+    }
+    .ml#{$screen-name}-#{$index} {
+      margin-left: $size !important;
+    }
+    .mr#{$screen-name}-#{$index} {
+      margin-right: $size !important;
+    }
+    .mt#{$screen-name}-#{$index} {
+      margin-top: $size !important;
+    }
+    .mb#{$screen-name}-#{$index} {
+      margin-bottom: $size !important;
+    }
+
+    .m#{$screen-name}-#{$index}-n {
+      margin: -$size !important;
+    }
+    .mx#{$screen-name}-#{$index}-n {
+      margin-right: -$size !important;
+      margin-left: -$size !important;
+    }
+    .my#{$screen-name}-#{$index}-n {
+      margin-top: -$size !important;
+      margin-bottom: -$size !important;
+    }
+    .ml#{$screen-name}-#{$index}-n {
+      margin-left: -$size !important;
+    }
+    .mr#{$screen-name}-#{$index}-n {
+      margin-right: -$size !important;
+    }
+    .mt#{$screen-name}-#{$index}-n {
+      margin-top: -$size !important;
+    }
+    .mb#{$screen-name}-#{$index}-n {
+      margin-bottom: -$size !important;
+    }
+
+    .p#{$screen-name}-#{$index} {
+      padding: $size !important;
+    }
+    .px#{$screen-name}-#{$index} {
+      padding-right: $size !important;
+      padding-left: $size !important;
+    }
+    .py#{$screen-name}-#{$index} {
+      padding-top: $size !important;
+      padding-bottom: $size !important;
+    }
+    .pl#{$screen-name}-#{$index} {
+      padding-left: $size !important;
+    }
+    .pr#{$screen-name}-#{$index} {
+      padding-right: $size !important;
+    }
+    .pt#{$screen-name}-#{$index} {
+      padding-top: $size !important;
+    }
+    .pb#{$screen-name}-#{$index} {
+      padding-bottom: $size !important;
+    }
+  }
+}
+
+// Global classes
+@mixin project-classes($screen-name: '') {
+  .d#{$screen-name}-b {
+    display: block !important;
+  }
+  .d#{$screen-name}-n {
+    display: none !important;
+  }
+  .d#{$screen-name}-f {
+    display: flex !important;
+  }
+  .d#{$screen-name}-if {
+    display: inline-flex !important;
+  }
+  .d#{$screen-name}-ib {
+    display: inline-block !important;
+  }
+
+  .fw#{$screen-name}-w {
+    flex-wrap: wrap !important;
+  }
+  .fw#{$screen-name}-n {
+    flex-wrap: nowrap !important;
+  }
+
+  .fd#{$screen-name}-c {
+    flex-direction: column !important;
+  }
+  .fd#{$screen-name}-r {
+    flex-direction: row !important;
+  }
+
+  .fb#{$screen-name}-100 {
+    flex-basis: 100% !important;
+  }
+  .fb#{$screen-name}-50 {
+    flex-basis: 50% !important;
+  }
+  .fb#{$screen-name}-33 {
+    flex-basis: 33.33333% !important;
+  }
+
+  .fg#{$screen-name}-0 {
+    flex-grow: 0 !important;
+  }
+  .fg#{$screen-name}-1 {
+    flex-grow: 1 !important;
+  }
+
+  .fs#{$screen-name}-0 {
+    flex-shrink: 0 !important;
+  }
+
+  .ai#{$screen-name}-c {
+    align-items: center !important;
+  }
+  .ai#{$screen-name}-fs {
+    align-items: flex-start !important;
+  }
+  .ai#{$screen-name}-fe {
+    align-items: flex-end !important;
+  }
+
+  .as#{$screen-name}-ss {
+    align-self: self-start !important;
+  }
+  .as#{$screen-name}-se {
+    align-self: self-end !important;
+  }
+  .as#{$screen-name}-fs {
+    align-self: flex-start !important;
+  }
+  .as#{$screen-name}-fe {
+    align-self: flex-end !important;
+  }
+  .as#{$screen-name}-c {
+    align-self: center !important;
+  }
+
+  .jc#{$screen-name}-fs {
+    justify-content: flex-start !important;
+  }
+  .jc#{$screen-name}-fe {
+    justify-content: flex-end !important;
+  }
+  .jc#{$screen-name}-c {
+    justify-content: center !important;
+  }
+  .jc#{$screen-name}-sb {
+    justify-content: space-between !important;
+  }
+
+  .bg#{$screen-name}-n {
+    background: none !important;
+  }
+
+  .br#{$screen-name}-n {
+    border: none !important;
+  }
+
+  .w#{$screen-name}-25 {
+    width: 25% !important;
+  }
+  .w#{$screen-name}-50 {
+    width: 50% !important;
+  }
+  .w#{$screen-name}-100 {
+    width: 100% !important;
+  }
+
+  .h#{$screen-name}-25 {
+    height: 25% !important;
+  }
+  .h#{$screen-name}-50 {
+    height: 50% !important;
+  }
+  .h#{$screen-name}-100 {
+    height: 100% !important;
+  }
+
+  .td#{$screen-name}-lt {
+    text-decoration: line-through !important;
+  }
+  .td#{$screen-name}-ul {
+    text-decoration: underline !important;
+  }
+  .td#{$screen-name}-n {
+    text-decoration: none !important;
+  }
+
+  .ta#{$screen-name}-r {
+    text-align: right !important;
+  }
+  .ta#{$screen-name}-l {
+    text-align: left !important;
+  }
+  .ta#{$screen-name}-c {
+    text-align: center !important;
+  }
+
+  .wb#{$screen-name}-bw {
+    word-break: break-word !important;
+  }
+  .wb#{$screen-name}-ba {
+    word-break: break-all !important;
+  }
+  .wb#{$screen-name}-ka {
+    word-break: keep-all !important;
+  }
+  .wb#{$screen-name}-n {
+    word-break: normal !important;
+  }
+}
+// stylelint-enable declaration-no-important

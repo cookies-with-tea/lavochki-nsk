@@ -1,0 +1,15 @@
+@use "sass:color";
+
+/**
+* description: This mixin is needed to darken or lighten the color
+*
+* usage:
+* @inlude colorChange('color', $color--primary, 10%, 0.1);
+* @inlude colorChange('background-color', $color--primary, -10%, -0.9);
+*
+* docs: https://sass-lang.com/documentation/modules/color
+*/
+
+@mixin colorChange($prop, $color, $amount, $alpha: 1) {
+  #{$prop}: color.adjust($color, $lightness: $amount, $alpha: $alpha) !important;
+}
