@@ -133,7 +133,7 @@ func (m *Manager) checkJWT(w http.ResponseWriter, r *http.Request) (context.Cont
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		errorResponse := ErrorResponse{
-			Message: "Unauthorized",
+			Message: "unauthorized",
 			Details: nil,
 		}
 		_, _ = w.Write(errorResponse.Marshal())
@@ -146,7 +146,7 @@ func (m *Manager) checkJWT(w http.ResponseWriter, r *http.Request) (context.Cont
 		return ctx, nil
 	} else {
 		errorResponse := ErrorResponse{
-			Message: "Unauthorized",
+			Message: "unauthorized",
 			Details: nil,
 		}
 		w.WriteHeader(http.StatusUnauthorized)
