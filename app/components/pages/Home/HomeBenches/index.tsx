@@ -7,7 +7,7 @@ import {StyledAllBenchesLink} from "@/app/components/pages/Home/HomeBenches/Home
 const HomeBenches: FC<{ benches?: IBench[]} > = ({benches}): ReactElement => {
     return (
         <div className={'home-benches'}>
-            <div className="d-f ai-center jc-sb mb-40">
+            <div className="d-f ai-c jc-sb mb-40">
                 <h3>Последние добавленные</h3>
                 <Link href="/benches" passHref>
                     <StyledAllBenchesLink>

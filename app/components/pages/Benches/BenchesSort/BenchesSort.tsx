@@ -42,7 +42,7 @@ const BenchesSort = (): JSX.Element => {
     }
 
     return (
-        <div className="d-f ai-center mb-42">
+        <div className="d-f ai-c mb-42">
             <StyledSortTitle>
                 Сортировать по:
             </StyledSortTitle>

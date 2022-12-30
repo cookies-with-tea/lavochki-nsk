@@ -5,9 +5,10 @@ import {StyledContainer} from "@/app/layouts/DefaultLayout/DefaultLayout.style"
 import DefaultLayoutFooter from "@/app/components/Layouts/DefaultLayout/DefaultLayoutFooter";
 import {useSnackbar} from "notistack";
 import {dehydrate, QueryClient, useQuery} from "react-query";
-import {UserMeType} from "@/app/types/User";
+import {UserMeType, UserType} from "@/app/types/user";
 import {ErrorType} from "@/app/types/common.type";
 import UserService from "@/app/services/User/UserService";
+import {UserContext} from "@/app/contexts/userContext";
 
 interface IProps {
     children: ReactNode
@@ -16,31 +17,25 @@ interface IProps {
 const getMe = async (): Promise<UserMeType> => await UserService.getMe()
 
 const DefaultLayout: NextPage<IProps> = ({ children }): ReactElement => {
-    useQuery<UserMeType>('get user', getMe, {
-        // onError: (error: ErrorType | unknown) => {
-        //     const errorData = error as ErrorType
-        //
-        //     enqueueSnackbar(errorData.message,
-        //         {
-        //             variant: 'error',
-        //             anchorOrigin: {
-        //                 vertical: 'top',
-        //                 horizontal: 'right'
-        //             }
-        //         }
-        //     )
-        // }
+    const [user, setUser] = useState<UserMeType>({
+        id: "", role: "", telegram_id: 0, username: ""
     })
 
+    useQuery<UserMeType>('get user', getMe, {
+        onSuccess: (response) => {
+            setUser(response)
+        }
+    })
 
     return (
         <>
-            <DefaultLayoutHeader />
+            <UserContext.Provider value={user}>
+                <DefaultLayoutHeader />
                 <StyledContainer className="container">
                     { children }
                 </StyledContainer>
-            <DefaultLayoutFooter />
-
+                <DefaultLayoutFooter />
+            </UserContext.Provider>
         </>
     )
 }
@@ -58,3 +53,7 @@ export const getStaticProps: GetStaticProps = async () => {
 }
 
 export default DefaultLayout
+
+function useMemo() {
+    throw new Error("Function not implemented.");
+}

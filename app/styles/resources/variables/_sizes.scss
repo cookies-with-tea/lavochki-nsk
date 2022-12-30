@@ -29,6 +29,7 @@ $sizes: (
   52: 52px,
   60: 60px,
   80: 80px,
+  84: 84px,
 );
 
 $size--0: 0px; // stylelint-disable-line
@@ -58,3 +59,4 @@ $size--50: map.get($sizes, 50);
 $size--52: map.get($sizes, 52);
 $size--60: map.get($sizes, 60);
 $size--80: map.get($sizes, 80);
+$size--84: map.get($sizes, 84);

@@ -12,7 +12,6 @@ import BenchService from "@/app/services/Bench/BenchService";
 import TagService from "@/app/services/Tag/TagService";
 import {ErrorType} from "@/app/types/common.type";
 
-
 const getBenches = async (): Promise<IBench[]> => await BenchService.getAll()
 const getTags = async (): Promise<ITag[]> => await TagService.getAll()
 

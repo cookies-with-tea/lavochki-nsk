@@ -13,11 +13,10 @@ import {StyledLogoutButton, StyledMenuItem } from '@/app/components/Layouts/Defa
 import Image from "next/image";
 // @ts-ignore
 import TelegramLoginButton from 'react-telegram-login';
-import {LoginResponseType, UserType} from "@/app/types/User";
+import {LoginResponseType, UserType} from "@/app/types/user";
 import UserService from "@/app/services/User/UserService";
 import {useMutation} from "react-query";
 import {ErrorType} from "@/app/types/common.type";
-// import {useSnackbar} from "notistack";
 import DefaultLayoutMenu from "@/app/components/Layouts/DefaultLayout/DefaultLayoutMenu";
 
 const DefaultLayoutHeader: FC = (): ReactElement => {
@@ -32,17 +31,6 @@ const DefaultLayoutHeader: FC = (): ReactElement => {
 
     const { mutateAsync } = useMutation('registration user',
         async (data: UserType) => await UserService.create(data), {
-        // onError: (error: ErrorType) => {
-        //     enqueueSnackbar(error.message,
-        //         {
-        //             variant: 'error',
-        //             anchorOrigin: {
-        //                 vertical: 'top',
-        //                 horizontal: 'right'
-        //             }
-        //         }
-        //     )
-        // },
         onSuccess: (response) => {
             localStorage.setItem('token', response.access)
 
@@ -87,8 +75,8 @@ const DefaultLayoutHeader: FC = (): ReactElement => {
                         <a>Все лавочки</a>
                     </Link>
                 </div>
-                <div className="d-f ai-center">
-                    <div className="d-f ai-center ml-36">
+                <div className="d-f ai-c">
+                    <div className="d-f ai-c ml-36">
                         { isAuth ? (
                             <>
                                 <span className="text mr-12">Никита</span>
@@ -100,7 +88,7 @@ const DefaultLayoutHeader: FC = (): ReactElement => {
                                     onClick={handleAnchorSet}
                                 >
                                     <Avatar sx={{ width: 62, height: 62 }}>
-                                        <Image src={Profile} alt={'123'} />
+                                        <Image src={Profile} alt={'profile'} />
                                     </Avatar>
                                 </StyledAvatarButton>
 

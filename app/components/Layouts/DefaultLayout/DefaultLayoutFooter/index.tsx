@@ -17,13 +17,13 @@ const DefaultLayoutFooter: FC = (): ReactElement => {
         <>
             <StyledFooter>
                 <StyledFooterWrapper className="container">
-                    <div className="d-f ai-center jc-sb mb-34">
+                    <div className="d-f ai-c jc-sb mb-34">
                         <BaseLink href='/' passHref>
                             <a className={'default-default-footer__home'}>
                                 <CommonIcon name="logo" width={260} height={32} />
                             </a>
                         </BaseLink>
-                        <div className="d-f ai-center">
+                        <div className="d-f ai-c">
                             <Link href='#' passHref>
                                 <a>
                                     <CommonIcon name="vk" width={48} height={48} className="mr-22"/>
@@ -36,7 +36,7 @@ const DefaultLayoutFooter: FC = (): ReactElement => {
                             </Link>
                         </div>
                     </div>
-                     <div className="d-f ai-center jc-sb">
+                     <div className="d-f ai-c jc-sb">
                          <div className={'ai-fe'}>
                              <span>Ознакомиться с&nbsp;</span>
                              <Link href="/pdf" passHref>

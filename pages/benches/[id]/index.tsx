@@ -6,8 +6,17 @@ import BenchService from "@/app/services/Bench/BenchService";
 import {ErrorType} from "@/app/types/common.type";
 import {useRouter} from "next/router";
 import Image from "next/image";
+import {StyledSubtitle, StyledSubtitleAuthor, StyledTag} from '@/pages/benches/[id]/BenchDetail.styles';
+import BenchDetailSlider from "@/app/components/pages/BenchDetail/BenchDetailSlider";
+import BenchDetailMap from "@/app/components/pages/BenchDetail/BenchDetailMap";
+import BenchDetailComments from "@/app/components/pages/BenchDetail/BenchDetailComments";
+import {IComment} from "@/app/interfaces/comment.interface";
+import CommentService from "@/app/services/Comment/CommentService";
+import {CommentType} from "@/app/types/comment";
 
 const getBench = async (id: string): Promise<IBench> => await BenchService.getById(id)
+const getComments = async (id: string): Promise<IComment[]> => await CommentService.getById(id)
+
 
 const BenchDetail: NextPage = (): ReactElement => {
     const router = useRouter()
@@ -23,7 +32,20 @@ const BenchDetail: NextPage = (): ReactElement => {
         tags: []
     })
 
-    useQuery<IBench, ErrorType>(['get bench', benchId], getBench.bind(null, benchId), {
+    const [comments, setComments] = useState<IComment[]>([{
+        author_id: "", bench_id: "", content: "", nested_comments: [], parent_id: "",
+        id: ''
+    }
+    ])
+
+    const [chipData, setChipData] = useState([
+        { id: 0, label: 'Магазин рядом', active: false, },
+        { id: 1, label: 'Новая', active: false, },
+        { id: 2, label: 'Освещённое место', active: false, },
+    ])
+
+
+    const benchQuery = useQuery<IBench, ErrorType>(['get bench', benchId], getBench.bind(null, benchId), {
         onSuccess: (response) => {
             if (response) {
                 setBench(response)
@@ -33,15 +55,38 @@ const BenchDetail: NextPage = (): ReactElement => {
         staleTime: Infinity
     })
 
+    const commentQuery = useQuery<IComment[], ErrorType>(['get comments', benchId], getComments.bind(null, benchId), {
+        onSuccess: (response) => {
+            setComments(response)
+        },
+        enabled: benchId.length > 0,
+        staleTime: Infinity
+    })
+
+    const handleUpdateData = async (): Promise<void> => {
+        await benchQuery.refetch()
+        await commentQuery.refetch()
+    }
+
 
     return (
-        <div>
-           <h1>Лавочка</h1>
-            <div>{bench.id}</div>
-            <div>
-                <Image src={bench.images[0]} alt={'bench'} width={300} height={200} />
-            </div>
-        </div>
+       <>
+           <h2>Лавочка на Октябрьской</h2>
+           <div className="d-f ai-c mb-30">
+               <StyledSubtitle>Добавлено: 15 октября 2022</StyledSubtitle>
+               <StyledSubtitle>Автор: <StyledSubtitleAuthor>Дмитрий</StyledSubtitleAuthor></StyledSubtitle>
+           </div>
+
+           <div className="d-f ai-c fw-w mb-50">
+               {
+                   chipData && chipData.map((chip) => ( <StyledTag key={chip.id}>{chip.label}</StyledTag> ))
+               }
+           </div>
+
+           <BenchDetailSlider images={bench.images} />
+           <BenchDetailMap bench={bench} />
+           <BenchDetailComments benchId={bench.id} comments={comments}  updateData={handleUpdateData} />
+       </>
     );
 };
 
@@ -50,6 +95,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const queryClient = new QueryClient()
 
     await queryClient.prefetchQuery(['get bench', id], getBench.bind(null, id))
+    await queryClient.prefetchQuery(['get comments', id], getComments.bind(null, id))
 
     return {
         props: {
