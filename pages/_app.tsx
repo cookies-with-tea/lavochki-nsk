@@ -17,10 +17,10 @@ import {
     QueryClientConfig, MutationCache
 } from "react-query";
 import {useRef, useState} from "react";
-import {SnackbarProvider} from 'notistack';
 import {ErrorType} from "@/app/types/common.type";
 import CommonSnackbar from "@/app/components/Common/CommonSnackbar";
 import {ReactQueryDevtools} from "react-query/devtools";
+
 requireSvg()
 
 const queryClientOptions: QueryClientConfig = {
@@ -41,13 +41,12 @@ const BenchesApp = ({ Component, pageProps }: AppProps<{ dehydratedState: Dehydr
         message: '',
         details: ['']
     })
+
     const mutationCache = new MutationCache({
         onError: (error) => {
             const errorData = error as ErrorType
 
             setSnackbarOptions({...errorData, isVisible: true})
-
-            return
         }
     });
 
@@ -67,8 +66,6 @@ const BenchesApp = ({ Component, pageProps }: AppProps<{ dehydratedState: Dehydr
                 const errorData = error as ErrorType
 
                 setSnackbarOptions({...errorData, isVisible: true})
-
-                return
             }
         }),
     }))
@@ -76,6 +73,7 @@ const BenchesApp = ({ Component, pageProps }: AppProps<{ dehydratedState: Dehydr
   return (
           <QueryClientProvider client={queryClient.current}>
               <Hydrate state={pageProps.dehydratedState}>
+
                   <DefaultLayout>
                       <Component {...pageProps} />
                   </DefaultLayout>
