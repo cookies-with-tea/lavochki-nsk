@@ -664,9 +664,6 @@ const docTemplate = `{
         "dto.CreateComment": {
             "type": "object",
             "properties": {
-                "author_id": {
-                    "type": "string"
-                },
                 "bench_id": {
                     "type": "string"
                 },

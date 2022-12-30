@@ -75,8 +75,6 @@ definitions:
     type: object
   dto.CreateComment:
     properties:
-      author_id:
-        type: string
       bench_id:
         type: string
       content:
