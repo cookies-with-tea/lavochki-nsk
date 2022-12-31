@@ -5,6 +5,7 @@ import (
 	_ "benches/internal/domain"
 	"benches/internal/dto"
 	benchesService "benches/internal/service/benches"
+	"benches/pkg/api/sort"
 	"benches/pkg/auth"
 	"database/sql"
 	"encoding/json"
@@ -23,7 +24,7 @@ func NewBenchesHandler(benches benchesService.Service) *Handler {
 }
 
 func (h *Handler) Register(router *mux.Router, authManager *auth.Manager) {
-	router.HandleFunc("", apperror.Middleware(h.listBenches)).Methods("GET")
+	router.HandleFunc("", sort.Middleware(apperror.Middleware(h.listBenches), "id", sort.ASC)).Methods("GET")
 
 	// Создание лавочки через telegram
 	routerCreateBenches := router.NewRoute().Subrouter()
@@ -44,11 +45,18 @@ func (h *Handler) Register(router *mux.Router, authManager *auth.Manager) {
 // @Summary List benches
 // @Description Get list active benches
 // @Tags Benches
+// @Param sort_by query string false "sort field"
+// @Param sort_order query string false "sort order"
 // @Success 200 {object} []domain.Bench
 // @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches [get]
 func (h *Handler) listBenches(w http.ResponseWriter, r *http.Request) error {
-	benches, err := h.benches.GetListBenches(r.Context(), true)
+	var sortOptions sort.Options
+	if options, ok := r.Context().Value(sort.OptionsContextKey).(sort.Options); ok {
+		sortOptions = options
+	}
+
+	benches, err := h.benches.GetListBenches(r.Context(), true, sortOptions)
 	if err != nil {
 		return err
 	}
@@ -113,7 +121,7 @@ func (h *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Request) er
 // @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches/moderation [get]
 func (h *Handler) listModerationBench(w http.ResponseWriter, r *http.Request) error {
-	benches, err := h.benches.GetListBenches(r.Context(), false)
+	benches, err := h.benches.GetListBenches(r.Context(), false, sort.Options{})
 	if err != nil {
 		return err
 	}
