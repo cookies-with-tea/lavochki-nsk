@@ -23,6 +23,20 @@ const docTemplate = `{
                     "Benches"
                 ],
                 "summary": "List benches",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "sort field",
+                        "name": "sort_by",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "sort order",
+                        "name": "sort_order",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",

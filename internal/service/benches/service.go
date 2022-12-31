@@ -5,9 +5,11 @@ import (
 	"benches/internal/domain"
 	"benches/internal/dto"
 	"benches/internal/notifications"
+	"benches/internal/repository/model"
 	"benches/internal/repository/postgres"
 	notificationService "benches/internal/service/notifications"
 	storage "benches/internal/storage/minio"
+	"benches/pkg/api/sort"
 	"context"
 	"fmt"
 	"github.com/oklog/ulid/v2"
@@ -15,7 +17,7 @@ import (
 )
 
 type Service interface {
-	GetListBenches(ctx context.Context, isActive bool) ([]domain.Bench, error)
+	GetListBenches(ctx context.Context, isActive bool, sortOptions sort.Options) ([]domain.Bench, error)
 	CreateBench(ctx context.Context, bench dto.CreateBench) error
 	CreateBenchViaTelegram(ctx context.Context, bench dto.CreateBenchViaTelegram) error
 	DecisionBench(ctx context.Context, decisionBench dto.DecisionBench) error
@@ -36,9 +38,12 @@ func NewService(db postgres.BenchesRepository, storage *storage.Storage, log *za
 		usersRepository: usersRepository}
 }
 
-func (service *service) GetListBenches(ctx context.Context, isActive bool) ([]domain.Bench, error) {
+func (service *service) GetListBenches(ctx context.Context, isActive bool, sortOptions sort.Options) ([]domain.Bench, error) {
+	// Создаём параметры для сортировки
+	options := model.NewSortOptions(sortOptions.Field, sortOptions.Order)
+
 	// Получаем все лавочки из базы данных
-	benches, err := service.db.GetBenches(ctx, isActive)
+	benches, err := service.db.GetBenches(ctx, isActive, options)
 	if err != nil {
 		service.log.Error("error get all benches", zap.Error(err))
 		return nil, err

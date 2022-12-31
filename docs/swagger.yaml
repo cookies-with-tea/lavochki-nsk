@@ -140,6 +140,15 @@ paths:
   /api/v1/benches:
     get:
       description: Get list active benches
+      parameters:
+      - description: sort field
+        in: query
+        name: sort_by
+        type: string
+      - description: sort order
+        in: query
+        name: sort_order
+        type: string
       responses:
         "200":
           description: OK
