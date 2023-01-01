@@ -43,7 +43,7 @@ func (service *service) GetListBenches(ctx context.Context, isActive bool, sortO
 	options := model.NewSortOptions(sortOptions.Field, sortOptions.Order)
 
 	// Получаем все лавочки из базы данных
-	benches, err := service.db.GetBenches(ctx, isActive, options)
+	benches, err := service.db.All(ctx, isActive, options)
 	if err != nil {
 		service.log.Error("error get all benches", zap.Error(err))
 		return nil, err
@@ -66,7 +66,7 @@ func (service *service) CreateBench(ctx context.Context, bench dto.CreateBench) 
 func (service *service) CreateBenchViaTelegram(ctx context.Context, dto dto.CreateBenchViaTelegram) error {
 	var imagesName []string
 
-	user, err := service.usersRepository.GetUserByTelegramID(ctx, dto.UserTelegramID)
+	user, err := service.usersRepository.ByTelegramID(ctx, dto.UserTelegramID)
 	if err != nil {
 		return apperror.ErrNotEnoughRights
 	}
@@ -82,7 +82,7 @@ func (service *service) CreateBenchViaTelegram(ctx context.Context, dto dto.Crea
 	}
 
 	model := domain.Bench{Lng: dto.Lng, Lat: dto.Lat, Images: imagesName, Owner: &user}
-	err = service.db.CreateBench(ctx, model)
+	err = service.db.Create(ctx, model)
 	if err != nil {
 		return apperror.ErrFailedToCreate
 	}
@@ -94,15 +94,15 @@ func (service *service) DecisionBench(ctx context.Context, dto dto.DecisionBench
 	var notification *notifications.TelegramNotification
 
 	var bench domain.Bench
-	bench, err = service.db.GetBenchByID(ctx, dto.ID)
+	bench, err = service.db.ByID(ctx, dto.ID)
 	if err != nil {
 		return err
 	}
 	if dto.Decision {
-		err = service.db.UpdateActiveBench(ctx, dto.ID, dto.Decision)
+		err = service.db.Update(ctx, dto.ID, dto.Decision)
 		notification = notifications.BenchSuccessfullyAccepted.ToNotification(bench.Owner.TelegramID, bench.ID)
 	} else {
-		err = service.db.DeleteBench(ctx, dto.ID)
+		err = service.db.Delete(ctx, dto.ID)
 		notification = notifications.BenchDenied.ToNotification(bench.Owner.TelegramID, bench.ID)
 	}
 	if err != nil {
@@ -117,8 +117,8 @@ func (service *service) DecisionBench(ctx context.Context, dto dto.DecisionBench
 }
 
 func (service *service) GetBenchByID(ctx context.Context, id string) (domain.Bench, error) {
-	// Получаем все лавочки из базы данных
-	bench, err := service.db.GetBenchByID(ctx, id)
+	// Получаем лавочку по ID из базы данных
+	bench, err := service.db.ByID(ctx, id)
 	if err != nil {
 		return bench, err
 	}

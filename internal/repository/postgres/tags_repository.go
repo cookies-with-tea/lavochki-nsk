@@ -8,8 +8,8 @@ import (
 )
 
 type TagsRepository interface {
-	GetAllTags(ctx context.Context) ([]domain.Tag, error)
-	CreateTag(ctx context.Context, tag domain.Tag) error
+	All(ctx context.Context) ([]domain.Tag, error)
+	Create(ctx context.Context, tag domain.Tag) error
 }
 
 type tagsRepository struct {
@@ -22,7 +22,7 @@ func NewTagsRepository(db *bun.DB) TagsRepository {
 	}
 }
 
-func (t *tagsRepository) GetAllTags(ctx context.Context) ([]domain.Tag, error) {
+func (t *tagsRepository) All(ctx context.Context) ([]domain.Tag, error) {
 	tagsModel := make([]tagModel, 0)
 	err := t.db.NewSelect().Model(&tagsModel).Scan(ctx)
 	if err != nil {
@@ -32,7 +32,7 @@ func (t *tagsRepository) GetAllTags(ctx context.Context) ([]domain.Tag, error) {
 	return tags, nil
 }
 
-func (t *tagsRepository) CreateTag(ctx context.Context, tag domain.Tag) error {
+func (t *tagsRepository) Create(ctx context.Context, tag domain.Tag) error {
 	model := tagModel{}
 	model.FromDomain(tag)
 	model.ID = ulid.Make().String()

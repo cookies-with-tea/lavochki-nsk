@@ -8,9 +8,9 @@ import (
 )
 
 type UsersRepository interface {
-	GetUserByTelegramID(ctx context.Context, telegramID int) (domain.User, error)
-	CreateUser(ctx context.Context, user domain.User) (domain.User, error)
-	GetUserByID(ctx context.Context, id string) (domain.User, error)
+	ByTelegramID(ctx context.Context, telegramID int) (domain.User, error)
+	Create(ctx context.Context, user domain.User) (domain.User, error)
+	ByID(ctx context.Context, id string) (domain.User, error)
 }
 
 type usersRepository struct {
@@ -23,7 +23,7 @@ func NewUsersRepository(db *bun.DB) UsersRepository {
 	}
 }
 
-func (u *usersRepository) GetUserByTelegramID(ctx context.Context, telegramID int) (domain.User, error) {
+func (u *usersRepository) ByTelegramID(ctx context.Context, telegramID int) (domain.User, error) {
 	model := userModel{}
 	err := u.db.NewSelect().Model(&model).Where("telegram_id = ?", telegramID).Scan(ctx)
 	if err != nil {
@@ -32,7 +32,7 @@ func (u *usersRepository) GetUserByTelegramID(ctx context.Context, telegramID in
 	return userModelToDomain(model), nil
 }
 
-func (u *usersRepository) CreateUser(ctx context.Context, user domain.User) (domain.User, error) {
+func (u *usersRepository) Create(ctx context.Context, user domain.User) (domain.User, error) {
 	model := userModel{}
 	model.FromDomain(user)
 	model.ID = ulid.Make().String()
@@ -43,7 +43,7 @@ func (u *usersRepository) CreateUser(ctx context.Context, user domain.User) (dom
 	return userModelToDomain(model), nil
 }
 
-func (u *usersRepository) GetUserByID(ctx context.Context, id string) (domain.User, error) {
+func (u *usersRepository) ByID(ctx context.Context, id string) (domain.User, error) {
 	model := userModel{}
 	err := u.db.NewSelect().Model(&model).Where("id = ?", id).Scan(ctx)
 	if err != nil {

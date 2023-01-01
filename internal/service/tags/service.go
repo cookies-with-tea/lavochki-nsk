@@ -25,7 +25,7 @@ func NewService(db postgres.TagsRepository, log *zap.Logger) Service {
 }
 
 func (s *service) GetAllTags(ctx context.Context) ([]domain.Tag, error) {
-	tags, err := s.db.GetAllTags(ctx)
+	tags, err := s.db.All(ctx)
 	if err != nil {
 		return []domain.Tag{}, err
 	}
@@ -33,7 +33,7 @@ func (s *service) GetAllTags(ctx context.Context) ([]domain.Tag, error) {
 }
 
 func (s *service) CreateTag(ctx context.Context, tag domain.Tag) error {
-	if err := s.db.CreateTag(ctx, tag); err != nil {
+	if err := s.db.Create(ctx, tag); err != nil {
 		return err
 	}
 	return nil

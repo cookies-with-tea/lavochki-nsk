@@ -9,11 +9,11 @@ import (
 )
 
 type BenchesRepository interface {
-	GetBenches(ctx context.Context, isActive bool, sortOptions model.SortOptions) ([]domain.Bench, error)
-	CreateBench(ctx context.Context, bench domain.Bench) error
-	UpdateActiveBench(ctx context.Context, id string, decision bool) error
-	DeleteBench(ctx context.Context, id string) error
-	GetBenchByID(ctx context.Context, id string) (domain.Bench, error)
+	All(ctx context.Context, isActive bool, sortOptions model.SortOptions) ([]domain.Bench, error)
+	Create(ctx context.Context, bench domain.Bench) error
+	Update(ctx context.Context, id string, decision bool) error
+	Delete(ctx context.Context, id string) error
+	ByID(ctx context.Context, id string) (domain.Bench, error)
 }
 
 type benchesRepository struct {
@@ -26,7 +26,7 @@ func NewBenchesRepository(db *bun.DB) BenchesRepository {
 	}
 }
 
-func (b *benchesRepository) GetBenches(ctx context.Context, isActive bool, sortOptions model.SortOptions) ([]domain.Bench, error) {
+func (b *benchesRepository) All(ctx context.Context, isActive bool, sortOptions model.SortOptions) ([]domain.Bench, error) {
 	benchesModel := make([]benchModel, 0)
 	err := b.db.NewSelect().Model(&benchesModel).Where("is_active = ?", isActive).
 		Order(sortOptions.GetOrderBy()).
@@ -40,43 +40,43 @@ func (b *benchesRepository) GetBenches(ctx context.Context, isActive bool, sortO
 	return benches, nil
 }
 
-func (b *benchesRepository) CreateBench(ctx context.Context, bench domain.Bench) error {
-	model := benchModel{}
-	model.FromDomain(bench)
-	model.ID = ulid.Make().String()
-	_, err := b.db.NewInsert().Model(&model).Exec(ctx)
+func (b *benchesRepository) Create(ctx context.Context, bench domain.Bench) error {
+	mBench := benchModel{}
+	mBench.FromDomain(bench)
+	mBench.ID = ulid.Make().String()
+	_, err := b.db.NewInsert().Model(&mBench).Exec(ctx)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *benchesRepository) UpdateActiveBench(ctx context.Context, id string, active bool) error {
-	model := &benchModel{}
-	_, err := b.db.NewUpdate().Model(model).Set("is_active = ?", active).Where("id = ?", id).Exec(ctx)
+func (b *benchesRepository) Update(ctx context.Context, id string, active bool) error {
+	mBench := &benchModel{}
+	_, err := b.db.NewUpdate().Model(mBench).Set("is_active = ?", active).Where("id = ?", id).Exec(ctx)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *benchesRepository) DeleteBench(ctx context.Context, id string) error {
-	model := &benchModel{}
-	_, err := b.db.NewDelete().Model(model).Where("id = ?", id).Exec(ctx)
+func (b *benchesRepository) Delete(ctx context.Context, id string) error {
+	mBench := &benchModel{}
+	_, err := b.db.NewDelete().Model(mBench).Where("id = ?", id).Exec(ctx)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *benchesRepository) GetBenchByID(ctx context.Context, id string) (domain.Bench, error) {
-	model := benchModel{}
-	err := b.db.NewSelect().Model(&model).Where("benches.id = ?", id).
+func (b *benchesRepository) ByID(ctx context.Context, id string) (domain.Bench, error) {
+	mBench := benchModel{}
+	err := b.db.NewSelect().Model(&mBench).Where("benches.id = ?", id).
 		Relation("Owner").
 		Relation("Tags").
 		Scan(ctx)
 	if err != nil {
 		return domain.Bench{}, err
 	}
-	return benchModelToDomain(model), nil
+	return benchModelToDomain(mBench), nil
 }

@@ -38,10 +38,10 @@ func (service *service) LoginViaTelegram(ctx context.Context, dto dto.CreateUser
 		Username:   dto.Username,
 		TelegramID: dto.ID,
 	}
-	dbUser, err := service.db.GetUserByTelegramID(ctx, dto.ID)
+	dbUser, err := service.db.ByTelegramID(ctx, dto.ID)
 	if err == sql.ErrNoRows {
 		var errCreate error
-		dbUser, errCreate = service.db.CreateUser(ctx, user)
+		dbUser, errCreate = service.db.Create(ctx, user)
 		if errCreate != nil {
 			return "", "", errCreate
 		}
@@ -86,7 +86,7 @@ func (service *service) RefreshToken(ctx context.Context, token string) (string,
 	}
 
 	var user domain.User
-	user, err = service.db.GetUserByID(ctx, userID)
+	user, err = service.db.ByID(ctx, userID)
 	if err != nil {
 		return "", "", err
 	}
@@ -111,7 +111,7 @@ func (service *service) RefreshToken(ctx context.Context, token string) (string,
 }
 
 func (service *service) GetUserByID(ctx context.Context, userID string) (domain.User, error) {
-	user, err := service.db.GetUserByID(ctx, userID)
+	user, err := service.db.ByID(ctx, userID)
 
 	if err != nil {
 		return user, err

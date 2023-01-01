@@ -8,11 +8,11 @@ import (
 )
 
 type CommentsRepository interface {
-	GetByBenchID(ctx context.Context, id string) ([]domain.Comment, error)
-	GetByParentID(ctx context.Context, id string) ([]domain.Comment, error)
-	CreateComment(ctx context.Context, bench domain.Comment) error
+	ByBenchID(ctx context.Context, id string) ([]domain.Comment, error)
+	ByParentID(ctx context.Context, id string) ([]domain.Comment, error)
+	Create(ctx context.Context, bench domain.Comment) error
 	Update(ctx context.Context, comment domain.Comment) error
-	GetByID(ctx context.Context, id string) (domain.Comment, error)
+	ByID(ctx context.Context, id string) (domain.Comment, error)
 }
 
 type commentsRepository struct {
@@ -23,8 +23,8 @@ func NewCommentsRepository(db *bun.DB) CommentsRepository {
 	return &commentsRepository{db: db}
 }
 
-// GetByBenchID Получение всех комментариев по ID лавочки
-func (repository *commentsRepository) GetByBenchID(ctx context.Context, id string) ([]domain.Comment, error) {
+// ByBenchID Получение всех комментариев по ID лавочки
+func (repository *commentsRepository) ByBenchID(ctx context.Context, id string) ([]domain.Comment, error) {
 	commentsModel := make([]commentModel, 0)
 	err := repository.db.NewSelect().Model(&commentsModel).Where("bench_id = ? AND parent_id is ?", id, nil).Scan(ctx)
 	if err != nil {
@@ -34,8 +34,8 @@ func (repository *commentsRepository) GetByBenchID(ctx context.Context, id strin
 	return comments, nil
 }
 
-// GetByParentID Получение всех комментариев по ID родители
-func (repository *commentsRepository) GetByParentID(ctx context.Context, id string) ([]domain.Comment, error) {
+// ByParentID Получение всех комментариев по ID родители
+func (repository *commentsRepository) ByParentID(ctx context.Context, id string) ([]domain.Comment, error) {
 	commentsModel := make([]commentModel, 0)
 	err := repository.db.NewSelect().Model(&commentsModel).Where("parent_id = ?", id).Scan(ctx)
 	if err != nil {
@@ -45,8 +45,8 @@ func (repository *commentsRepository) GetByParentID(ctx context.Context, id stri
 	return comments, nil
 }
 
-// GetByID Получение комментария по ID
-func (repository *commentsRepository) GetByID(ctx context.Context, id string) (domain.Comment, error) {
+// ByID Получение комментария по ID
+func (repository *commentsRepository) ByID(ctx context.Context, id string) (domain.Comment, error) {
 	comment := commentModel{}
 	err := repository.db.NewSelect().Model(&comment).Where("comments.id = ?", id).Scan(ctx)
 	if err != nil {
@@ -55,8 +55,8 @@ func (repository *commentsRepository) GetByID(ctx context.Context, id string) (d
 	return commentModelToDomain(comment), nil
 }
 
-// CreateComment Создание комментария
-func (repository *commentsRepository) CreateComment(ctx context.Context, comment domain.Comment) error {
+// Create Создание комментария
+func (repository *commentsRepository) Create(ctx context.Context, comment domain.Comment) error {
 	model := commentModel{}
 	model.FromDomain(comment)
 	model.ID = ulid.Make().String()
