@@ -28,14 +28,14 @@ func NewService(db postgres.CommentsRepository, log *zap.Logger) Service {
 }
 
 func (service *service) GetAllCommentByBench(ctx context.Context, benchID string) ([]domain.Comment, error) {
-	comments, err := service.db.GetByBenchID(ctx, benchID)
+	comments, err := service.db.ByBenchID(ctx, benchID)
 	if err != nil {
 		return comments, err
 	}
 
 	var nestedComments []domain.Comment
 	for idx := range comments {
-		nestedComments, err = service.db.GetByParentID(ctx, comments[idx].ID)
+		nestedComments, err = service.db.ByParentID(ctx, comments[idx].ID)
 		if err != nil {
 			return comments, err
 		}
@@ -46,7 +46,7 @@ func (service *service) GetAllCommentByBench(ctx context.Context, benchID string
 }
 
 func (service *service) CreateComment(ctx context.Context, comment domain.Comment) error {
-	err := service.db.CreateComment(ctx, comment)
+	err := service.db.Create(ctx, comment)
 	if err != nil {
 		return apperror.ErrFailedToCreate
 	}
@@ -64,7 +64,7 @@ func (service *service) UpdateComment(ctx context.Context, comment domain.Commen
 }
 
 func (service *service) IsOwner(ctx context.Context, commentID string, userID string) (bool, error) {
-	comment, errGetComment := service.db.GetByID(ctx, commentID)
+	comment, errGetComment := service.db.ByID(ctx, commentID)
 	if errGetComment != nil {
 		service.log.Error("error get comment", zap.Error(errGetComment))
 		return false, errGetComment

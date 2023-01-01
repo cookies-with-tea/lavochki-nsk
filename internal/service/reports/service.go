@@ -26,7 +26,7 @@ func NewService(db postgres.ReportsRepository, log *zap.Logger) Service {
 }
 
 func (service *service) GetCommentsReports(ctx context.Context, isActive bool) ([]domain.CommentReport, error) {
-	reports, errGetAll := service.db.AllComments(ctx, isActive)
+	reports, errGetAll := service.db.All(ctx, isActive)
 	if errGetAll != nil {
 		service.log.Error("get all comments", zap.Error(errGetAll))
 		return reports, errGetAll
