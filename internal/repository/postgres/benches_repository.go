@@ -71,7 +71,10 @@ func (b *benchesRepository) DeleteBench(ctx context.Context, id string) error {
 
 func (b *benchesRepository) GetBenchByID(ctx context.Context, id string) (domain.Bench, error) {
 	model := benchModel{}
-	err := b.db.NewSelect().Model(&model).Where("benches.id = ?", id).Relation("Owner").Scan(ctx)
+	err := b.db.NewSelect().Model(&model).Where("benches.id = ?", id).
+		Relation("Owner").
+		Relation("Tags").
+		Scan(ctx)
 	if err != nil {
 		return domain.Bench{}, err
 	}
