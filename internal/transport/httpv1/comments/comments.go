@@ -62,6 +62,7 @@ func (handler *Handler) listCommentsByBench(writer http.ResponseWriter, request 
 // @Tags Comments
 // @Produce json
 // @Param CreateComment body dto.CreateComment true "comment data"
+// @Param Authorization header string true "Bearer"
 // @Success 201
 // @Failure 400
 // @Router /api/v1/comments [post]
