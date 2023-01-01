@@ -1,5 +1,5 @@
 import {AxiosRequestConfig} from "axios";
-import {LoginResponseType, UserMeType, UserType} from "@/app/types/user";
+import {LoginResponseType, UserMeType, UserType} from "@/app/types/user.type";
 import {AxiosService} from "@/app/services/Axios/AxiosService";
 
 class UserService extends AxiosService {

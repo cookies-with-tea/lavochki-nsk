@@ -1,3 +1,5 @@
+import {BenchTagType} from "@/app/types/bench.type";
+
 export interface IBench {
     id: string
     lat: number
@@ -5,5 +7,5 @@ export interface IBench {
     images: string[]
     owner_id: string
     is_active: boolean
-    tags: string[]
+    tags: BenchTagType[]
 }

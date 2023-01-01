@@ -13,7 +13,7 @@ import {StyledLogoutButton, StyledMenuItem } from '@/app/components/Layouts/Defa
 import Image from "next/image";
 // @ts-ignore
 import TelegramLoginButton from 'react-telegram-login';
-import {LoginResponseType, UserType} from "@/app/types/user";
+import {LoginResponseType, UserType} from "@/app/types/user.type";
 import UserService from "@/app/services/User/UserService";
 import {useMutation} from "react-query";
 import {ErrorType} from "@/app/types/common.type";

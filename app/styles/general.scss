@@ -72,6 +72,12 @@ h4, .h4 {
   position: relative !important;
 }
 
+fieldset {
+  &.MuiOutlinedInput-notchedOutline {
+    border-color: $color--light-secondary !important;
+  }
+}
+
 // Colors
 @each $_class-name,
 $_color

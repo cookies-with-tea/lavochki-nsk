@@ -8,11 +8,11 @@ import {
 import BenchDetailSendComment from "@/app/components/pages/BenchDetail/BenchDetailSendComment";
 import BenchDetailComment from "@/app/components/pages/BenchDetail/BenchDetailComment";
 import { UserContext } from "@/app/contexts/userContext";
-import {CreateCommentType} from "@/app/types/comment";
+import {CreateCommentType} from "@/app/types/comment.type";
 import CommentService from "@/app/services/Comment/CommentService";
 import {useMutation, useQuery} from "react-query";
 import {ErrorType} from "@/app/types/common.type";
-import {UserType} from "@/app/types/user";
+import {UserType} from "@/app/types/user.type";
 import {IComment} from "@/app/interfaces/comment.interface";
 
 interface IProps {

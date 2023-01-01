@@ -15,7 +15,7 @@ import {IBench} from "@/app/interfaces/bench.interface";
 const HomeBench: FC<{ bench: IBench }> = ({ bench }): JSX.Element => {
     return (
         <StyledLatestBench>
-            <div>
+            <div className={'d-f fd-c'}>
                 <StyledLatestBenchInfoTitle>Лавочка №{bench.id}</StyledLatestBenchInfoTitle>
                 <StyledLatestBenchInfoLocation>
                     <StyledLatestBenchInfoLocationTitle>Г. Новосибирск, ул. Зыряновская</StyledLatestBenchInfoLocationTitle>
@@ -27,7 +27,9 @@ const HomeBench: FC<{ bench: IBench }> = ({ bench }): JSX.Element => {
                     <StyledLink>Смотреть</StyledLink>
                 </Link>
             </div>
-            <StyledHomeBenchesSlider images={bench.images} />
+
+            { bench.images && bench.images.length ? <StyledHomeBenchesSlider images={bench.images} /> : <></> }
+
         </StyledLatestBench>
     );
 };

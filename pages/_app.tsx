@@ -11,8 +11,6 @@ import {
     QueryClientProvider,
     Hydrate,
     DehydratedState,
-    useQuery,
-    dehydrate,
     QueryCache,
     QueryClientConfig, MutationCache
 } from "react-query";

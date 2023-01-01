@@ -1,6 +1,6 @@
 import {AxiosService} from "@/app/services/Axios/AxiosService";
 import {AxiosRequestConfig} from "axios";
-import {CreateCommentType} from "@/app/types/comment";
+import {CreateCommentType} from "@/app/types/comment.type";
 
 class CommentService extends AxiosService {
     constructor(config?: AxiosRequestConfig) {
