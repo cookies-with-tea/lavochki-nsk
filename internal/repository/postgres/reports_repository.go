@@ -8,7 +8,7 @@ import (
 )
 
 type ReportsRepository interface {
-	AllComments(ctx context.Context, isActive bool) ([]domain.CommentReport, error)
+	All(ctx context.Context, isActive bool) ([]domain.CommentReport, error)
 	CreateReportComment(ctx context.Context, report domain.CommentReport) error
 	IsExistsReportComment(ctx context.Context, reportID string, userID string) (bool, error)
 }
@@ -21,8 +21,8 @@ func NewReportsRepository(db *bun.DB) ReportsRepository {
 	return &reportsRepository{db: db}
 }
 
-// AllComments Получение всех жалоб на комментарии
-func (repository *reportsRepository) AllComments(ctx context.Context, isActive bool) ([]domain.CommentReport, error) {
+// All Получение всех жалоб на комментарии
+func (repository *reportsRepository) All(ctx context.Context, isActive bool) ([]domain.CommentReport, error) {
 	reportsModel := make([]reportCommentModel, 0)
 	err := repository.db.NewSelect().Model(&reportsModel).Where("is_active = ?", isActive).Scan(ctx)
 	if err != nil {
