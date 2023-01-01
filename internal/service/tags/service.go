@@ -8,8 +8,8 @@ import (
 )
 
 type Service interface {
-	All(ctx context.Context) ([]domain.Tag, error)
-	Create(ctx context.Context, tag domain.Tag) error
+	GetAllTags(ctx context.Context) ([]domain.Tag, error)
+	CreateTag(ctx context.Context, tag domain.Tag) error
 }
 
 type service struct {
@@ -24,7 +24,7 @@ func NewService(db postgres.TagsRepository, log *zap.Logger) Service {
 	}
 }
 
-func (s *service) All(ctx context.Context) ([]domain.Tag, error) {
+func (s *service) GetAllTags(ctx context.Context) ([]domain.Tag, error) {
 	tags, err := s.db.All(ctx)
 	if err != nil {
 		return []domain.Tag{}, err
@@ -32,7 +32,7 @@ func (s *service) All(ctx context.Context) ([]domain.Tag, error) {
 	return tags, nil
 }
 
-func (s *service) Create(ctx context.Context, tag domain.Tag) error {
+func (s *service) CreateTag(ctx context.Context, tag domain.Tag) error {
 	if err := s.db.Create(ctx, tag); err != nil {
 		return err
 	}
