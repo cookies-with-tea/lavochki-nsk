@@ -5,7 +5,7 @@ import {StyledContainer} from "@/app/layouts/DefaultLayout/DefaultLayout.style"
 import DefaultLayoutFooter from "@/app/components/Layouts/DefaultLayout/DefaultLayoutFooter";
 import {useSnackbar} from "notistack";
 import {dehydrate, QueryClient, useQuery} from "react-query";
-import {UserMeType, UserType} from "@/app/types/user";
+import {UserMeType, UserType} from "@/app/types/user.type";
 import {ErrorType} from "@/app/types/common.type";
 import UserService from "@/app/services/User/UserService";
 import {UserContext} from "@/app/contexts/userContext";

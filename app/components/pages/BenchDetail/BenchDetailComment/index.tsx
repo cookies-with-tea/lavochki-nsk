@@ -10,7 +10,7 @@ import Image from "next/image";
 import Profile from "@/public/Avatar.png";
 import BenchDetailSendComment from "@/app/components/pages/BenchDetail/BenchDetailSendComment";
 import {IComment} from "@/app/interfaces/comment.interface";
-import {CreateCommentType} from "@/app/types/comment";
+import {CreateCommentType} from "@/app/types/comment.type";
 import CommentService from "@/app/services/Comment/CommentService";
 import {useMutation} from "react-query";
 
@@ -53,14 +53,14 @@ const BenchDetailComment: FC<IProps> = ({benchId, comment, updateData}): ReactEl
         })
     }
 
-
-
     const handleAnswerSend = async (): Promise<void> => {
-        await mutateAsync({
+        const payload = {
             bench_id: benchId,
             content: answer.content,
             parent_id: comment.id
-        })
+        }
+
+        await mutateAsync(payload)
     }
 
     return (
@@ -91,11 +91,11 @@ const BenchDetailComment: FC<IProps> = ({benchId, comment, updateData}): ReactEl
             </div>
 
             {
-                comment.nested_comments  && comment.nested_comments.map((comment) => <BenchDetailComment key={comment.id} benchId={benchId} comment={comment} updateData={updateData} />)
+                answer.visible && <BenchDetailSendComment commentChange={handleAnswerChange} commentSend={handleAnswerSend} authorId={comment.author_id }/>
             }
 
             {
-                answer.visible && <BenchDetailSendComment commentChange={handleAnswerChange} commentSend={handleAnswerSend} authorId={comment.author_id }/>
+                comment.nested_comments  && comment.nested_comments.map((comment) => <BenchDetailComment key={comment.id} benchId={benchId} comment={comment} updateData={updateData} />)
             }
 
         </div>

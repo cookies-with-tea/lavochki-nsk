@@ -7,14 +7,15 @@ import {Box, Button, FormControl} from "@mui/material";
 import CommonIcon from "@/app/components/Common/CommonIcon/CommonIcon";
 
 interface IProps {
+    className?: string
     authorId?: string
     commentChange: (event: ChangeEvent<HTMLInputElement>) => void
     commentSend: () => void
 }
 
-const BenchDetailSendComment: FC<IProps> = ({commentChange, commentSend, authorId}): ReactElement => {
+const BenchDetailSendComment: FC<IProps> = ({commentChange, commentSend, authorId, className}): ReactElement => {
     return (
-        <StyledSendCommentWrapper className={authorId ? 'benchDetail-send-answer' : 'benchDetail-send-comment'}>
+        <StyledSendCommentWrapper className={`${authorId ? 'benchDetail-send-answer' : 'benchDetail-send-comment'} ${className}`}>
             <Box component={'form'} autoComplete="off">
                 <FormControl className={'w-100 mb-12'}>
                     <StyledCommentInput focused multiline rows={4} onChange={commentChange} />

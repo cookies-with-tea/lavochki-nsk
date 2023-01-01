@@ -1,5 +1,3 @@
-
-
 export type CommentType = {
     author_id: string
     bench_id: string

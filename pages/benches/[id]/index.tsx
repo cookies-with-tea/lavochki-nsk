@@ -12,14 +12,14 @@ import BenchDetailMap from "@/app/components/pages/BenchDetail/BenchDetailMap";
 import BenchDetailComments from "@/app/components/pages/BenchDetail/BenchDetailComments";
 import {IComment} from "@/app/interfaces/comment.interface";
 import CommentService from "@/app/services/Comment/CommentService";
-import {CommentType} from "@/app/types/comment";
+import {BenchTagType} from "@/app/types/bench.type";
 
 const getBench = async (id: string): Promise<IBench> => await BenchService.getById(id)
 const getComments = async (id: string): Promise<IComment[]> => await CommentService.getById(id)
 
-
 const BenchDetail: NextPage = (): ReactElement => {
     const router = useRouter()
+
     const benchId = typeof router.query?.id === 'string' ? router.query.id : ''
 
     const [bench, setBench] = useState<IBench>({
@@ -38,17 +38,14 @@ const BenchDetail: NextPage = (): ReactElement => {
     }
     ])
 
-    const [chipData, setChipData] = useState([
-        { id: 0, label: 'Магазин рядом', active: false, },
-        { id: 1, label: 'Новая', active: false, },
-        { id: 2, label: 'Освещённое место', active: false, },
-    ])
-
+    const [chipData, setChipData] = useState<BenchTagType[] | []>([])
 
     const benchQuery = useQuery<IBench, ErrorType>(['get bench', benchId], getBench.bind(null, benchId), {
-        onSuccess: (response) => {
+        onSuccess: (response: IBench) => {
             if (response) {
                 setBench(response)
+
+                setChipData(response.tags)
             }
         },
         enabled: benchId.length > 0,
@@ -68,7 +65,6 @@ const BenchDetail: NextPage = (): ReactElement => {
         await commentQuery.refetch()
     }
 
-
     return (
        <>
            <h2>Лавочка на Октябрьской</h2>
@@ -79,13 +75,16 @@ const BenchDetail: NextPage = (): ReactElement => {
 
            <div className="d-f ai-c fw-w mb-50">
                {
-                   chipData && chipData.map((chip) => ( <StyledTag key={chip.id}>{chip.label}</StyledTag> ))
+                   chipData && chipData.map((chip) => ( <StyledTag key={chip.id}>{chip.title}</StyledTag> ))
                }
            </div>
 
-           <BenchDetailSlider images={bench.images} />
+           {
+               bench.images && bench.images.length ? <BenchDetailSlider images={bench.images} /> : <></>
+           }
+
            <BenchDetailMap bench={bench} />
-           <BenchDetailComments benchId={bench.id} comments={comments}  updateData={handleUpdateData} />
+           <BenchDetailComments benchId={bench.id} comments={comments} updateData={handleUpdateData} />
        </>
     );
 };
