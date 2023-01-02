@@ -1,7 +1,6 @@
 import React, { ReactElement, useState } from 'react'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { dehydrate, QueryClient, useQuery } from 'react-query'
-import { IBench } from '@/app/interfaces/bench.interface'
 import BenchService from '@/app/services/Bench/BenchService'
 import { ErrorType } from '@/app/types/common.type'
 import { useRouter } from 'next/router'
@@ -12,15 +11,21 @@ import BenchDetailSlider
 import BenchDetailMap from '@/app/components/pages/BenchDetail/BenchDetailMap'
 import BenchDetailComments
   from '@/app/components/pages/BenchDetail/BenchDetailComments'
-import { IComment } from '@/app/interfaces/comment.interface'
 import CommentService from '@/app/services/Comment/CommentService'
-import { BenchTagType } from '@/app/types/bench.type'
+import { BenchTagType, BenchType } from '@/app/types/bench.type'
+import BenchDetailNear from '@/app/components/pages/BenchDetail/BenchDetailNear'
+import { CommentType } from '@/app/types/comment.type'
+import { CircularProgress, Fade } from '@mui/material'
 
-const getBench = async (id: string): Promise<IBench> => (
+const getBenches = async (): Promise<BenchType[]> => (
+  await BenchService.getAll()
+)
+
+const getBench = async (id: string): Promise<BenchType> => (
   await BenchService.getById(id)
 )
 
-const getComments = async (id: string): Promise<IComment[]> => (
+const getComments = async (id: string): Promise<CommentType[]> => (
   await CommentService.getById(id)
 )
 
@@ -29,7 +34,7 @@ const BenchDetail: NextPage = (): ReactElement => {
 
   const benchId = typeof router.query?.id === 'string' ? router.query.id : ''
 
-  const [bench, setBench] = useState<IBench>({
+  const [bench, setBench] = useState<BenchType>({
     id: '',
     images: [],
     is_active: false,
@@ -39,7 +44,7 @@ const BenchDetail: NextPage = (): ReactElement => {
     tags: []
   })
 
-  const [comments, setComments] = useState<IComment[]>([{
+  const [comments, setComments] = useState<CommentType[]>([{
     author_id: '',
     bench_id: '',
     content: '',
@@ -48,12 +53,14 @@ const BenchDetail: NextPage = (): ReactElement => {
     id: ''
   }])
 
+  const [benches, setBenches] = useState<BenchType[] | []>([])
+
   const [chipData, setChipData] = useState<BenchTagType[] | []>([])
 
-  const benchQuery = useQuery<IBench, ErrorType>(
+  const benchQuery = useQuery<BenchType, ErrorType>(
     ['get bench', benchId],
     getBench.bind(null, benchId), {
-      onSuccess: (response: IBench) => {
+      onSuccess: (response) => {
         if (response) {
           setBench(response)
 
@@ -64,7 +71,7 @@ const BenchDetail: NextPage = (): ReactElement => {
       staleTime: Infinity
     })
 
-  const commentQuery = useQuery<IComment[], ErrorType>(
+  const commentQuery = useQuery<CommentType[], ErrorType>(
     ['get comments', benchId],
     getComments.bind(null, benchId), 
     {
@@ -72,12 +79,44 @@ const BenchDetail: NextPage = (): ReactElement => {
         setComments(response)
       },
       enabled: benchId.length > 0,
-      staleTime: Infinity
+    })
+
+  useQuery<BenchType[], ErrorType>(
+    'get benches',
+    getBenches.bind(null),
+    {
+      onSuccess: (response) => {
+        setBenches(response)
+      },
     })
 
   const handleUpdateData = async (): Promise<void> => {
     await benchQuery.refetch()
     await commentQuery.refetch()
+  }
+
+  const renderComments = (): ReactElement => {
+    if (commentQuery.isLoading) {
+      return (
+        <Fade
+          in={commentQuery.isLoading}
+          style={{
+            transitionDelay: commentQuery.isLoading ? '800ms' : '0ms',
+          }}
+          unmountOnExit
+        >
+          <CircularProgress />
+        </Fade>
+      )
+    }
+
+    return (
+      <BenchDetailComments
+        benchId={bench.id}
+        comments={comments}
+        updateData={handleUpdateData}
+      />
+    )
   }
 
   return (
@@ -107,11 +146,8 @@ const BenchDetail: NextPage = (): ReactElement => {
       }
 
       <BenchDetailMap bench={bench} />
-      <BenchDetailComments
-        benchId={bench.id}
-        comments={comments}
-        updateData={handleUpdateData}
-      />
+      {renderComments()}
+      <BenchDetailNear benches={benches} />
     </>
   )
 }
@@ -125,6 +161,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     ['get comments', id],
     getComments.bind(null, id)
   )
+  await queryClient.prefetchQuery('get benches', getBenches.bind(null))
 
   return {
     props: {

@@ -70,9 +70,11 @@ const DefaultLayoutHeader: FC = (): ReactElement => {
     <StyledHeader>
       <StyledHeaderWrapper>
         <div className="d-f ai-c">
-          <StyledHomeLink href={'/'}>
-            <CommonIcon name="logo" width={260} height={32} />
-          </StyledHomeLink>
+          <Link href={'/'} passHref>
+            <StyledHomeLink href={'/'}>
+              <CommonIcon name="logo" width={260} height={32} />
+            </StyledHomeLink>
+          </Link>
           <Link href="/benches" passHref>
             <a>Все лавочки</a>
           </Link>
@@ -90,7 +92,13 @@ const DefaultLayoutHeader: FC = (): ReactElement => {
                   onClick={handleAnchorSet}
                 >
                   <Avatar sx={{ width: 62, height: 62 }}>
-                    <Image src={Profile} alt={'profile'} />
+                    <Image
+                      src={Profile}
+                      alt={'profile'}
+                      width={'100%'}
+                      height={'100%'}
+                      objectFit={'cover'}
+                    />
                   </Avatar>
                 </StyledAvatarButton>
 

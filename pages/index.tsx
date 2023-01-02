@@ -1,4 +1,3 @@
-import { IBench } from '@/app/interfaces/bench.interface'
 import { GetStaticProps, NextPage } from 'next'
 import { ReactElement, useState } from 'react'
 import HomeMap from '@/app/components/pages/Home/HomeMap'
@@ -6,13 +5,14 @@ import { dehydrate, QueryClient, useQuery } from 'react-query'
 import BenchService from '@/app/services/Bench/BenchService'
 import HomeBenches from '@/app/components/pages/Home/HomeBenches'
 import { ErrorType } from '@/app/types/common.type'
+import { BenchType } from '@/app/types/bench.type'
 
-const getBenches = async (): Promise<IBench[]> => await BenchService.getAll()
+const getBenches = async (): Promise<BenchType[]> => await BenchService.getAll()
 
 const HomePage: NextPage = (): ReactElement => {
-  const [benches, setBenches] = useState<IBench[] | []>([])
+  const [benches, setBenches] = useState<BenchType[] | []>([])
 
-  useQuery<IBench[], ErrorType>('get benches', getBenches, {
+  useQuery<BenchType[], ErrorType>('get benches', getBenches, {
     onSuccess: (response) => {
       setBenches(response)
     }
@@ -29,7 +29,7 @@ const HomePage: NextPage = (): ReactElement => {
 export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient()
 
-  await queryClient.prefetchQuery<IBench[]>('get benches', getBenches)
+  await queryClient.prefetchQuery<BenchType[]>('get benches', getBenches)
 
   return {
     props: {
