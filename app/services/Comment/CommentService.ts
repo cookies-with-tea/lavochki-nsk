@@ -1,28 +1,29 @@
-import {AxiosService} from "@/app/services/Axios/AxiosService";
-import {AxiosRequestConfig} from "axios";
-import {CreateCommentType} from "@/app/types/comment.type";
+import { AxiosService } from '@/app/services/Axios/AxiosService'
+import { AxiosRequestConfig } from 'axios'
+import { CreateCommentType } from '@/app/types/comment.type'
+import { IComment } from '@/app/interfaces/comment.interface'
 
 class CommentService extends AxiosService {
-    constructor(config?: AxiosRequestConfig) {
-        super(config);
-    }
+  constructor(config?: AxiosRequestConfig) {
+    super(config)
+  }
 
-    public getById = async (benchId: string) => {
-        return this.axiosCall({
-            method: 'get',
-            url: `/${benchId}`,
-        })
-}
-    public create = async (data: CreateCommentType) => {
-        return this.axiosCall({
-            method: 'post',
-            url: '',
-            data,
-        })
-    }
+  public getById = async (benchId: string): Promise<IComment[]> => {
+    return this.axiosCall({
+      method: 'get',
+      url: `/${benchId}`,
+    })
+  }
+  public create = async (data: CreateCommentType): Promise<unknown> => {
+    return this.axiosCall({
+      method: 'post',
+      url: '',
+      data,
+    })
+  }
 }
 
 export default new CommentService({
-    baseURL: '/api/v1/comments',
-    withCredentials: false
+  baseURL: '/api/v1/comments',
+  withCredentials: false
 })

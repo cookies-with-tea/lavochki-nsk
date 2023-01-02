@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled'
 
 export const StyledContainer = styled.div`
     min-height: calc(100vh - 392px);

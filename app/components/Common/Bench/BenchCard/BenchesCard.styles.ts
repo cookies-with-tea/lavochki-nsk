@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import {Button} from "@mui/material";
+import styled from '@emotion/styled'
+import { Button } from '@mui/material'
 
 export const StyledBenchCard = styled.div`
   width: 300px;

@@ -1,4 +1,4 @@
-import {BenchTagType} from "@/app/types/bench.type";
+import { BenchTagType } from '@/app/types/bench.type'
 
 export interface IBench {
     id: string
