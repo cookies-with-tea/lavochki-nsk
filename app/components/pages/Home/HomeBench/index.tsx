@@ -10,9 +10,13 @@ import {
 } from '@/app/components/pages/Home/HomeBench/HomeBench.style'
 import Link from 'next/link'
 import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
-import { IBench } from '@/app/interfaces/bench.interface'
+import { BenchType } from '@/app/types/bench.type'
 
-const HomeBench: FC<{ bench: IBench }> = ({ bench }): ReactElement => {
+interface IProps {
+  bench: BenchType
+}
+
+const HomeBench: FC<IProps> = ({ bench }): ReactElement => {
   return (
     <StyledLatestBench>
       <div className={'d-f fd-c'}>

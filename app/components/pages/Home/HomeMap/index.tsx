@@ -2,6 +2,7 @@ import { FC, ReactElement } from 'react'
 import { YMaps, Map, Placemark, Clusterer } from 'react-yandex-maps'
 import { IBench } from '@/app/interfaces/bench.interface'
 import { MapBalloonType, MapPointOptions } from '@/app/types/map.type'
+import { BenchType } from '@/app/types/bench.type'
 
 const getPointData = (bench: Partial<IBench>): MapBalloonType => {
   const balloonBody = bench.images && bench.images.length
@@ -33,7 +34,11 @@ const mapState = {
   behaviors: ['default', 'scrollZoom']
 }
 
-const HomeMap: FC<{ benches?: IBench[] }> = ({ benches }): ReactElement => {
+interface IProps {
+  benches?: BenchType[]
+}
+
+const HomeMap: FC<IProps> = ({ benches }): ReactElement => {
   return (
     <div className="mb-52">
       <h2>Расположение лавочек</h2>

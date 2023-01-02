@@ -12,10 +12,14 @@ import {
   StyledTags
 } from '@/app/components/Common/Bench/BenchCard/BenchesCard.styles'
 import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
-import { IBench } from '@/app/interfaces/bench.interface'
 import Link from 'next/link'
+import { BenchType } from '@/app/types/bench.type'
 
-const BenchCard: FC<{ bench: IBench }> = ({ bench }): ReactElement => {
+interface IProps {
+  bench: BenchType
+}
+
+const BenchCard: FC<IProps> = ({ bench }): ReactElement => {
   return (
     <StyledBenchCard>
       <StyledImageWrapper>

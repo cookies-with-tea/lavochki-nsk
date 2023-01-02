@@ -11,9 +11,11 @@ import {
 
 import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
 
-const BenchDetailSlider: FC<{ images: string[] }> = ({
-  images
-}): ReactElement => {
+interface IProps {
+  images: string[]
+}
+
+const BenchDetailSlider: FC<IProps> = ({ images }): ReactElement => {
   const swiperRef = useRef<SwiperType | null>(null)
   const swiperNavPrevRef = useRef<HTMLDivElement | null>(null)
   const swiperNavNextRef = useRef<HTMLDivElement | null>(null)

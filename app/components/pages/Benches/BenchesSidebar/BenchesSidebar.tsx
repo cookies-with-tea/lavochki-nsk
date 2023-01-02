@@ -20,9 +20,13 @@ import {
   StyledShowAllButton
 } from '@/app/components/pages/Benches/BenchesSidebar/BenchesSidebar.styles'
 import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
-import { ChipType, ITag } from '@/app/interfaces/tag.interface'
+import { BenchTagType } from '@/app/types/bench.type'
 
-const BenchesSidebar: FC<{ tags: ITag[] }> = ({ tags }): ReactElement => {
+interface IProps {
+  tags: BenchTagType[]
+}
+
+const BenchesSidebar: FC<IProps> = ({ tags }): ReactElement => {
   const [dateValue, setDateValue] = useState('today')
   const [allDistrictsShow, setAllDistrictsShow] = useState(false)
   const [allTagsShow, setAllTagsShowShow] = useState(false)
@@ -40,11 +44,11 @@ const BenchesSidebar: FC<{ tags: ITag[] }> = ({ tags }): ReactElement => {
     { id: 6, label: 'e', value: 'ka', checked: false, },
   ])
 
-  const [chipData, setChipData] = useState<ChipType[]>([])
+  const [chipData, setChipData] = useState<BenchTagType[]>([])
 
   const setChips = (): void => {
     const newChips = tags.map((tag) => (
-      { id: tag.id, label: tag.title, active: false }
+      { id: tag.id, title: tag.title, active: false }
     ))
 
     setChipData(newChips)
@@ -220,7 +224,7 @@ const BenchesSidebar: FC<{ tags: ITag[] }> = ({ tags }): ReactElement => {
           { chipData.map((data, index: number) => (
             <li className="mr-12 mb-12" key={index}>
               <StyledChip
-                label={data.label}
+                label={data.title}
                 variant={data.active ? 'filled' : 'outlined'}
                 onClick={handleActiveTagSet.bind(null, data.id)}
                 clickable

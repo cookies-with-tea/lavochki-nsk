@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react'
+import { FC, ReactElement, useState } from 'react'
 
 import { StyledOrderIcon }
   from '@/app/components/pages/Benches/BenchesSort/BenchesSort.styles'
@@ -22,7 +22,7 @@ const setOrder = (currentSort: string): string => {
   }
 }
 
-const BenchesSort = (): ReactElement => {
+const BenchesSort: FC = (): ReactElement => {
   const [sort, setSort] = useState([
     { id: 1, label: 'Дате добавления', value: 'date', order: '' },
     { id: 2, label: 'Рейтингу', value: 'raring', order: '' },

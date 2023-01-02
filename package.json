@@ -9,7 +9,8 @@
     "lint": "next lint --no-cache",
     "lint:fix": "next lint --fix",
     "test": "jest --watchAll",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "pre-commit": "lint-staged"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",

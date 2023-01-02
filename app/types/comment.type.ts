@@ -3,7 +3,7 @@ export type CommentType = {
     bench_id: string
     content: string
     id: string
-    nested_comments: Omit<CommentType, 'nested_comments'>
+    nested_comments: CommentType[] | null
     parent_id?: string
 
 }

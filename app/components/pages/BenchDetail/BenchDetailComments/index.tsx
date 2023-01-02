@@ -8,14 +8,13 @@ import BenchDetailSendComment
   from '@/app/components/pages/BenchDetail/BenchDetailSendComment'
 import BenchDetailComment
   from '@/app/components/pages/BenchDetail/BenchDetailComment'
-import { CreateCommentType } from '@/app/types/comment.type'
+import { CommentType, CreateCommentType } from '@/app/types/comment.type'
 import CommentService from '@/app/services/Comment/CommentService'
 import { useMutation } from 'react-query'
-import { IComment } from '@/app/interfaces/comment.interface'
 
 interface IProps {
     benchId: string
-    comments: IComment[]
+    comments: CommentType[]
     updateData: () => void
 }
 
