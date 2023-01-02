@@ -1,6 +1,7 @@
-import styled from "@emotion/styled";
-import {Button} from "@mui/material";
-import HomeBenchSlider from "@/app/components/pages/Home/HomeBench/HomeBenchSlider";
+import styled from '@emotion/styled'
+import { Button } from '@mui/material'
+import HomeBenchSlider
+  from '@/app/components/pages/Home/HomeBench/HomeBenchSlider'
 
 export const StyledHomeBenchesSlider = styled(HomeBenchSlider)`
   max-width: 740px;

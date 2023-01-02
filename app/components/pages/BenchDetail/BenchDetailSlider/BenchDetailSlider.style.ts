@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import {Swiper, SwiperSlide} from "swiper/react";
+import styled from '@emotion/styled'
+import { SwiperSlide } from 'swiper/react'
 
 export const StyledSlide = styled(SwiperSlide)`
   height: 450px !important;
@@ -47,11 +47,21 @@ export const StyledGradient = styled.div`
   
   &:first-of-type {
     right: -6px;
-    background: linear-gradient(-90deg, rgba(255,255,255,0) -50%, rgba(255,252,247,1) 4%, rgba(255,255,255,0) 23%);
+    background: linear-gradient(
+            -90deg,
+            rgba(255,255,255,0) -50%,
+            rgba(255,252,247,1) 4%,
+            rgba(255,255,255,0) 23%
+    );
   }
   
   &:last-of-type {
     left: -6px;
-    background: linear-gradient(90deg, rgba(255,255,255,0) -50%, rgba(255,252,247,1) 4%, rgba(255,255,255,0) 23%);
+    background: linear-gradient(
+            90deg,
+            rgba(255,255,255,0) -50%,
+            rgba(255,252,247,1) 4%,
+            rgba(255,255,255,0) 23%
+    );
   }
 `

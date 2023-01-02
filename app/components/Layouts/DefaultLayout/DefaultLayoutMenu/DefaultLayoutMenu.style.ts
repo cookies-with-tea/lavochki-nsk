@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import {Button, MenuItem} from "@mui/material";
+import styled from '@emotion/styled'
+import { Button, MenuItem } from '@mui/material'
 
 export const StyledLink = styled.div`
   border: none;

@@ -1,4 +1,4 @@
-import {CommentType} from "@/app/types/comment.type";
+import { CommentType } from '@/app/types/comment.type'
 
 export interface IComment {
     author_id: string

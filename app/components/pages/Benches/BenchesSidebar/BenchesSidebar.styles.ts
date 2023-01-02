@@ -1,6 +1,6 @@
-import styled from "@emotion/styled";
-import {Button, Checkbox, Chip, FormControlLabel} from "@mui/material";
-import CommonIcon from "@/app/components/Common/CommonIcon/CommonIcon";
+import styled from '@emotion/styled'
+import { Button, Checkbox, Chip, FormControlLabel } from '@mui/material'
+import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
 
 export const StyledBenchesPage = styled.div`
   min-height: calc(100vh - 22rem);

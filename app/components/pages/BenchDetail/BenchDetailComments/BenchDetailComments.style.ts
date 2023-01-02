@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import {Button, TextField} from "@mui/material";
+import styled from '@emotion/styled'
+import { Button, TextField } from '@mui/material'
 
 export const StyledOpenCommentInputButton = styled(Button)`
   background-color: var(--color--primary-secondary);
