@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, ReactElement, useState } from 'react'
+import { ChangeEvent, FC, ReactElement, useState } from 'react'
 import { Avatar } from '@mui/material'
 import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
 import {
@@ -6,20 +6,18 @@ import {
   StyledHeart, StyledHeartWrapper, StyledInfo,
   StyledText
 } from
-  // eslint-disable-next-line max-len
   '@/app/components/pages/BenchDetail/BenchDetailComment/BenchDetailComment.style'
 import Image from 'next/image'
 import Profile from '@/public/Avatar.png'
 import BenchDetailSendComment
   from '@/app/components/pages/BenchDetail/BenchDetailSendComment'
-import { IComment } from '@/app/interfaces/comment.interface'
-import { CreateCommentType } from '@/app/types/comment.type'
+import { CommentType, CreateCommentType } from '@/app/types/comment.type'
 import CommentService from '@/app/services/Comment/CommentService'
 import { useMutation } from 'react-query'
 
 interface IProps {
     benchId: string
-    comment: IComment
+    comment: CommentType
     updateData: () => void
 }
 

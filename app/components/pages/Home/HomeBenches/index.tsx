@@ -1,11 +1,15 @@
 import React, { FC, ReactElement } from 'react'
-import { IBench } from '@/app/interfaces/bench.interface'
 import Link from 'next/link'
 import HomeBench from '@/app/components/pages/Home/HomeBench'
 import { StyledAllBenchesLink }
   from '@/app/components/pages/Home/HomeBenches/HomeBenches.style'
+import { BenchType } from '@/app/types/bench.type'
 
-const HomeBenches: FC<{ benches?: IBench[]} > = ({ benches }): ReactElement => {
+interface IProps {
+  benches?: BenchType[]
+}
+
+const HomeBenches: FC<IProps> = ({ benches }): ReactElement => {
   return (
     <div className={'home-benches'}>
       <div className="d-f ai-c jc-sb mb-40">

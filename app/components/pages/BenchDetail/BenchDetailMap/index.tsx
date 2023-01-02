@@ -7,6 +7,7 @@ import {
   '@/app/components/pages/BenchDetail/BenchDetailMap/DetailedBenchMap.styles'
 import { IBench } from '@/app/interfaces/bench.interface'
 import { MapBalloonType, MapPointOptions } from '@/app/types/map.type'
+import { BenchType } from '@/app/types/bench.type'
 
 
 const getPointData = (bench: IBench): MapBalloonType => {
@@ -39,7 +40,11 @@ const mapState = {
   behaviors: ['default', 'scrollZoom']
 }
 
-const BenchDetailMap: FC<{ bench: IBench }> = ({ bench }): ReactElement => {
+interface IProps {
+  bench: BenchType
+}
+
+const BenchDetailMap: FC<IProps> = ({ bench }): ReactElement => {
   return (
     <div className={'mb-40'}>
       <StyledWatchOnTheMap>Смотреть на карте</StyledWatchOnTheMap>
