@@ -47,3 +47,13 @@ export const StyledAnswerButton = styled(Button)`
   padding: 0 !important;
   border: none !important;
 `
+
+export const StyledReportButton = styled(Button)`
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--color--light-secondary);
+  background-color: #F0E7DF;
+  border: 1px solid var(--color--light-secondary);
+  border-radius: 6px !important;
+`
