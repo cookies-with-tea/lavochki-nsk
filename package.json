@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "prepare": "husky install",
     "dev": "next dev --hostname 127.0.0.1 --port 80",
     "build": "next build",
     "start": "next start",
     "lint": "next lint --no-cache",
     "lint:fix": "next lint --fix",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
