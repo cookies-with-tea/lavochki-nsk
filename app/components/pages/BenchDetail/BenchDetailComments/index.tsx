@@ -5,7 +5,7 @@ import {
   StyledOpenCommentInputButton
 } from '@/app/components/pages/BenchDetail/BenchDetailComments/BenchDetailComments.style'
 import BenchDetailSendComment
-  from '@/app/components/pages/BenchDetail/BenchDetailSendComment'
+  from '@/app/components/pages/BenchDetail/BenchDetailComment/BenchDetailCommentSend'
 import BenchDetailComment
   from '@/app/components/pages/BenchDetail/BenchDetailComment'
 import { CommentType, CreateCommentType } from '@/app/types/comment.type'
@@ -16,6 +16,7 @@ interface IProps {
     benchId: string
     comments: CommentType[]
     updateData: () => void
+    reportDialogToggleVisible: (commentId: string) => void
 }
 
 const createComment = async (payload: CreateCommentType): Promise<unknown> => 
@@ -24,7 +25,8 @@ const createComment = async (payload: CreateCommentType): Promise<unknown> =>
 const BenchDetailComments: FC<IProps> = ({
   benchId,
   comments,
-  updateData
+  updateData,
+  reportDialogToggleVisible
 }): ReactElement => {
   const [inputCommentVisible, setInputCommentVisible] = useState(false)
 
@@ -92,6 +94,9 @@ const BenchDetailComments: FC<IProps> = ({
               benchId={benchId}
               comment={comment}
               updateData={updateData}
+              reportDialogToggleVisible={
+                reportDialogToggleVisible.bind(null, comment.id)
+              }
             />
           )
         }

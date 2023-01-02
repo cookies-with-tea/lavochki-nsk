@@ -13,7 +13,7 @@ interface IProps {
     commentSend: () => void
 }
 
-const BenchDetailSendComment: FC<IProps> = (
+const BenchDetailCommentSend: FC<IProps> = (
   { commentChange, commentSend, authorId, className }
 ): ReactElement => {
   const stylesWrapper = `
@@ -42,4 +42,4 @@ const BenchDetailSendComment: FC<IProps> = (
   )
 }
 
-export default BenchDetailSendComment
+export default BenchDetailCommentSend

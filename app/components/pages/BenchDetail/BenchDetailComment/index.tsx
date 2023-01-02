@@ -1,16 +1,16 @@
-import { ChangeEvent, FC, ReactElement, useState } from 'react'
-import { Avatar } from '@mui/material'
+import React, { ChangeEvent, FC, ReactElement, useState } from 'react'
+import { Avatar, Button, Popover } from '@mui/material'
 import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
 import {
   StyledAnswerButton,
-  StyledHeart, StyledHeartWrapper, StyledInfo,
+  StyledHeart, StyledHeartWrapper, StyledInfo, StyledReportButton,
   StyledText
 } from
   '@/app/components/pages/BenchDetail/BenchDetailComment/BenchDetailComment.style'
 import Image from 'next/image'
 import Profile from '@/public/Avatar.png'
 import BenchDetailSendComment
-  from '@/app/components/pages/BenchDetail/BenchDetailSendComment'
+  from '@/app/components/pages/BenchDetail/BenchDetailComment/BenchDetailCommentSend'
 import { CommentType, CreateCommentType } from '@/app/types/comment.type'
 import CommentService from '@/app/services/Comment/CommentService'
 import { useMutation } from 'react-query'
@@ -19,16 +19,21 @@ interface IProps {
     benchId: string
     comment: CommentType
     updateData: () => void
+    reportDialogToggleVisible: () => void
 }
 
 const createComment = async (payload: CreateCommentType): Promise<unknown> =>
   await CommentService.create(payload)
 
-const BenchDetailComment: FC<IProps> = (
-  { benchId,
-    comment,
-    updateData }
-): ReactElement => {
+const BenchDetailComment: FC<IProps> = ({ 
+  benchId,
+  comment,
+  updateData,
+  reportDialogToggleVisible
+}): ReactElement => {
+  const [reportElement, setReportElement] =
+    useState<HTMLButtonElement | null>(null)
+
   const [answer, setAnswer] = useState({
     visible: false,
     content: '',
@@ -45,6 +50,9 @@ const BenchDetailComment: FC<IProps> = (
     }
   )
 
+  const isReportPopoverVisible = Boolean(reportElement)
+  const reportId = isReportPopoverVisible ? 'report-popover' : undefined
+
   const handleAnswerVisibleToggle = (): void => {
     setAnswer({
       ...answer,
@@ -57,6 +65,20 @@ const BenchDetailComment: FC<IProps> = (
       ...answer,
       content: event.target.value
     })
+  }
+
+  const handleReportPopoverShow = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ): void => {
+    setReportElement(event.currentTarget)
+  }
+  
+  const handleReportDialogVisibleToggle = (): void => {
+    reportDialogToggleVisible()
+  }
+
+  const handleReportPopoverClose = (): void => {
+    setReportElement(null)
   }
 
   const handleAnswerSend = async (): Promise<void> => {
@@ -90,7 +112,7 @@ const BenchDetailComment: FC<IProps> = (
         { comment.content }
       </StyledText>
       <div className="d-f ai-c jc-sb w-100 mb-16">
-        <div className={'d-f ai-c'}>
+        <div className={'d-f ai-c p-relative'}>
           <StyledAnswerButton
             className={'mr-16'}
             color={'primary'}
@@ -98,7 +120,40 @@ const BenchDetailComment: FC<IProps> = (
           >
             Ответить
           </StyledAnswerButton>
-          <CommonIcon name={'more'} width={24} height={24} />
+          <Button
+            sx={{
+              padding: 0,
+              border: 'none !important',
+              marginRight: '10px'
+            }}
+            color={'primary'}
+            aria-describedby={reportId}
+            onClick={handleReportPopoverShow}
+          >
+            <CommonIcon name={'more'} width={24} height={24} />
+          </Button>
+
+          <Popover
+            id={reportId}
+            open={isReportPopoverVisible}
+            anchorEl={reportElement}
+            onClose={handleReportPopoverClose}
+            anchorOrigin={{
+              vertical: 'center',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'center',
+              horizontal: 'left',
+            }}
+          >
+            <StyledReportButton
+              color={'primary'}
+              onClick={handleReportDialogVisibleToggle}
+            >
+              Пожаловаться
+            </StyledReportButton>
+          </Popover>
         </div>
         <StyledHeartWrapper className="d-f ai-c">
           <StyledHeart color={'primary'} disableRipple>
@@ -125,7 +180,9 @@ const BenchDetailComment: FC<IProps> = (
             benchId={benchId}
             comment={comment}
             updateData={updateData}
-          />)
+            reportDialogToggleVisible={handleReportDialogVisibleToggle}
+          />
+        )
       }
 
     </div>

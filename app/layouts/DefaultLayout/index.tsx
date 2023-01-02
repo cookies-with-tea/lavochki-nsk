@@ -32,17 +32,15 @@ const DefaultLayout: NextPage<IProps> = ({ children }): ReactElement => {
   })
 
   return (
-    <>
-      <UserContext.Provider value={user}>
-        <DefaultLayoutHeader />
+    <UserContext.Provider value={user}>
+      <DefaultLayoutHeader />
 
-        <StyledContainer className="container">
-          { children }
-        </StyledContainer>
+      <StyledContainer className="container">
+        { children }
+      </StyledContainer>
 
-        <DefaultLayoutFooter />
-      </UserContext.Provider>
-    </>
+      <DefaultLayoutFooter />
+    </UserContext.Provider>
   )
 }
 

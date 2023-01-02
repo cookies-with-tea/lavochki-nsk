@@ -16,6 +16,8 @@ import { BenchTagType, BenchType } from '@/app/types/bench.type'
 import BenchDetailNear from '@/app/components/pages/BenchDetail/BenchDetailNear'
 import { CommentType } from '@/app/types/comment.type'
 import { CircularProgress, Fade } from '@mui/material'
+import BenchDetailCommentReport
+  from '@/app/components/pages/BenchDetail/BenchDetailComment/BenchDetailCommentReport'
 
 const getBenches = async (): Promise<BenchType[]> => (
   await BenchService.getAll()
@@ -33,6 +35,8 @@ const BenchDetail: NextPage = (): ReactElement => {
   const router = useRouter()
 
   const benchId = typeof router.query?.id === 'string' ? router.query.id : ''
+
+  const [isReportDialogVisible, setIsReportDialogVisible] = useState(false)
 
   const [bench, setBench] = useState<BenchType>({
     id: '',
@@ -52,6 +56,8 @@ const BenchDetail: NextPage = (): ReactElement => {
     parent_id: '',
     id: ''
   }])
+
+  const [currentCommentId, setCurrentCommentId] = useState('')
 
   const [benches, setBenches] = useState<BenchType[] | []>([])
 
@@ -90,6 +96,16 @@ const BenchDetail: NextPage = (): ReactElement => {
       },
     })
 
+  const handleReportDialogVisibleToggle = (id: string): void => {
+    setCurrentCommentId(id)
+
+    setIsReportDialogVisible(!isReportDialogVisible)
+  }
+
+  const handleReportDialogVisibleClose = (): void => {
+    setIsReportDialogVisible(false)
+  }
+
   const handleUpdateData = async (): Promise<void> => {
     await benchQuery.refetch()
     await commentQuery.refetch()
@@ -115,6 +131,7 @@ const BenchDetail: NextPage = (): ReactElement => {
         benchId={bench.id}
         comments={comments}
         updateData={handleUpdateData}
+        reportDialogToggleVisible={handleReportDialogVisibleToggle}
       />
     )
   }
@@ -148,6 +165,12 @@ const BenchDetail: NextPage = (): ReactElement => {
       <BenchDetailMap bench={bench} />
       {renderComments()}
       <BenchDetailNear benches={benches} />
+
+      <BenchDetailCommentReport
+        isOpen={isReportDialogVisible}
+        onClose={handleReportDialogVisibleClose}
+        commentId={currentCommentId}
+      />
     </>
   )
 }
