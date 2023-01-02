@@ -31,7 +31,7 @@ const HomeBench: FC<IProps> = ({ bench }): ReactElement => {
             <CommonIcon name="location" width={24} height={32} />
           </StyledLocationButton>
         </StyledLatestBenchInfoLocation>
-        <Link href={`/benches/${bench.id}`} passHref>
+        <Link href={`/benches/${bench.id}`} passHref shallow>
           <StyledLink>Смотреть</StyledLink>
         </Link>
       </div>

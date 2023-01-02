@@ -4,10 +4,10 @@ import SwiperCore, { Swiper as SwiperType, Navigation } from 'swiper'
 import Image from 'next/image'
 import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
 import {
-  StyledNavigation,
   StyledSlide
 } from 
   '@/app/components/pages/Home/HomeBench/HomeBenchSlider/HomeBenchSlider.style'
+import { StyledNavigation } from '@/app/styles/vendor/swiper/_swiper'
 
 interface IProps {
   images: string[]
@@ -30,8 +30,6 @@ const HomeBenchSlider: FC<IProps> = ({ images, className }) => {
         }}
         spaceBetween={22}
         slidesPerView={3.5}
-        observer={true}
-        observeParents={true}
         onInit={(swiper) => {
           swiperRef.current = swiper
           swiper.navigation.nextEl =

@@ -3,32 +3,31 @@ import { StyledBenchesPage } from '@/pages/benches/BenchesPage.style'
 import BenchesSidebar from
   '@/app/components/pages/Benches/BenchesSidebar/BenchesSidebar'
 import { GetStaticProps, NextPage } from 'next'
-import { IBench } from '@/app/interfaces/bench.interface'
-import { ITag } from '@/app/interfaces/tag.interface'
 import BenchesSort from '@/app/components/pages/Benches/BenchesSort/BenchesSort'
 import { StyledContent }
   from '@/app/components/pages/Benches/BenchesSidebar/BenchesSidebar.styles'
 import BenchCard
-  from '@/app/components/Common/Bench/BenchCard/BenchCard'
+  from '@/app/components/ui/Bench/BenchCard/BenchCard'
 import { dehydrate, QueryClient, useQuery } from 'react-query'
 import BenchService from '@/app/services/Bench/BenchService'
 import TagService from '@/app/services/Tag/TagService'
 import { ErrorType } from '@/app/types/common.type'
+import { BenchTagType, BenchType } from '@/app/types/bench.type'
 
-const getBenches = async (): Promise<IBench[]> => await BenchService.getAll()
-const getTags = async (): Promise<ITag[]> => await TagService.getAll()
+const getBenches = async (): Promise<BenchType[]> => await BenchService.getAll()
+const getTags = async (): Promise<BenchTagType[]> => await TagService.getAll()
 
 const BenchesPage: NextPage = (): ReactElement => {
-  const [benches, setBenches] = useState<IBench[]>([])
-  const [tags, setTags] = useState<ITag[]>([])
+  const [benches, setBenches] = useState<BenchType[]>([])
+  const [tags, setTags] = useState<BenchTagType[]>([])
 
-  useQuery<IBench[]>('get benches', getBenches, {
+  useQuery<BenchType[]>('get benches', getBenches, {
     onSuccess: (response) => {
       setBenches(response)
     }
   })
 
-  useQuery<ITag[]>('get tags', getTags, {
+  useQuery<BenchTagType[]>('get tags', getTags, {
     onSuccess: (response) => {
       setTags(response)
     }
@@ -62,8 +61,8 @@ export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient()
 
   await queryClient
-    .prefetchQuery<IBench[], ErrorType>('get benches', getBenches)
-  await queryClient.prefetchQuery<ITag[], ErrorType>('get tags', getTags)
+    .prefetchQuery<BenchType[], ErrorType>('get benches', getBenches)
+  await queryClient.prefetchQuery<BenchTagType[], ErrorType>('get tags', getTags)
 
   return {
     props: {

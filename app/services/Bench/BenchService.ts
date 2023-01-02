@@ -1,21 +1,21 @@
 import { AxiosService } from '@/app/services/Axios/AxiosService'
 import { AxiosRequestConfig } from 'axios'
-import { IBench } from '@/app/interfaces/bench.interface'
+import { BenchType } from '@/app/types/bench.type'
 
 class BenchService extends AxiosService {
   constructor(config?: AxiosRequestConfig) {
     super(config)
   }
 
-  public getAll = async (): Promise<IBench[]> => {
-    return this.axiosCall<IBench[]>({
+  public getAll = async (): Promise<BenchType[]> => {
+    return this.axiosCall<BenchType[]>({
       method: 'get',
       url: ''
     })
   }
 
-  public getById = async (id: string): Promise<IBench> => {
-    return this.axiosCall<IBench>({
+  public getById = async (id: string): Promise<BenchType> => {
+    return this.axiosCall<BenchType>({
       method: 'get',
       url: `/${id}`
     })

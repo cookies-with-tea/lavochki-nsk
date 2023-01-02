@@ -36,6 +36,7 @@ export const StyledBenchTitle = styled.div`
   line-height: 22px;
   color: var(--color--primary-dark);
   margin-bottom: 34px;
+  text-align: left;
 `
 
 export const StyledTags = styled.div`

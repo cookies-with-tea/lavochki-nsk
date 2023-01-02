@@ -14,7 +14,7 @@ const HomeBenches: FC<IProps> = ({ benches }): ReactElement => {
     <div className={'home-benches'}>
       <div className="d-f ai-c jc-sb mb-40">
         <h3>Последние добавленные</h3>
-        <Link href="/benches" passHref>
+        <Link href="/benches" passHref shallow>
           <StyledAllBenchesLink>
             Смотреть все
           </StyledAllBenchesLink>
