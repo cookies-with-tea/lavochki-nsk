@@ -41,7 +41,7 @@ const HomeBenchSlider: FC<IProps> = ({ images, className }) => {
           swiper.navigation.update()
         }}
       >
-        { images && images.map((image: string, index: number) => (
+        { images && images.map((image, index) => (
           <StyledSlide key={index}>
             <Image src={image} alt="image" width={240} height={240} />
           </StyledSlide>
