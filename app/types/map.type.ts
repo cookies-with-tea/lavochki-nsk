@@ -5,5 +5,15 @@ export type MapBalloonType = {
 }
 
 export type MapPointOptions = {
-  preset: string
+  preset?: string
+  iconLayout?: string
+  iconImageHref?: string
+  iconImageSize?: number[]
+  iconImageOffset?: number[]
+  balloonOffset?: number[]
+  iconShape?: {
+    type?: string
+    coordinates?: number[]
+    radius?: number
+  },
 }

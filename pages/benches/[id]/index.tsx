@@ -74,7 +74,7 @@ const BenchDetail: NextPage = (): ReactElement => {
         }
       },
       enabled: benchId.length > 0,
-      staleTime: Infinity
+      staleTime: 1000
     })
 
   const commentQuery = useQuery<CommentType[], ErrorType>(
@@ -112,10 +112,10 @@ const BenchDetail: NextPage = (): ReactElement => {
   }
 
   const renderComments = (): ReactElement => {
-    if (commentQuery.isLoading) {
+    if (commentQuery.isFetching) {
       return (
         <Fade
-          in={commentQuery.isLoading}
+          in={commentQuery.isFetched}
           style={{
             transitionDelay: commentQuery.isLoading ? '800ms' : '0ms',
           }}
