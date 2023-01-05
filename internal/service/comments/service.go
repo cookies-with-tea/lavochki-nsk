@@ -3,46 +3,46 @@ package comments
 import (
 	"benches/internal/apperror"
 	"benches/internal/domain"
-	"benches/internal/repository/postgres"
+	"benches/internal/repository/postgres/comments"
 	"context"
 	"go.uber.org/zap"
 )
 
 type Service interface {
-	GetAllCommentByBench(ctx context.Context, id string) ([]domain.Comment, error)
+	GetAllCommentByBench(ctx context.Context, id string) ([]*domain.Comment, error)
 	CreateComment(ctx context.Context, comment domain.Comment) error
 	UpdateComment(ctx context.Context, comment domain.Comment) error
 	IsOwner(ctx context.Context, commentID string, userID string) (bool, error)
 }
 
 type service struct {
-	db  postgres.CommentsRepository
+	db  comments.Repository
 	log *zap.Logger
 }
 
-func NewService(db postgres.CommentsRepository, log *zap.Logger) Service {
+func NewService(db comments.Repository, log *zap.Logger) Service {
 	return &service{
 		db:  db,
 		log: log,
 	}
 }
 
-func (service *service) GetAllCommentByBench(ctx context.Context, benchID string) ([]domain.Comment, error) {
-	comments, err := service.db.ByBenchID(ctx, benchID)
+func (service *service) GetAllCommentByBench(ctx context.Context, benchID string) ([]*domain.Comment, error) {
+	all, err := service.db.ByBenchID(ctx, benchID)
 	if err != nil {
-		return comments, err
+		return all, err
 	}
 
-	var nestedComments []domain.Comment
-	for idx := range comments {
-		nestedComments, err = service.db.ByParentID(ctx, comments[idx].ID)
+	var nestedComments []*domain.Comment
+	for idx := range all {
+		nestedComments, err = service.db.ByParentID(ctx, all[idx].ID)
 		if err != nil {
-			return comments, err
+			return nil, err
 		}
-		comments[idx].NestedComments = nestedComments
+		all[idx].NestedComments = nestedComments
 	}
 
-	return comments, nil
+	return all, nil
 }
 
 func (service *service) CreateComment(ctx context.Context, comment domain.Comment) error {
@@ -54,7 +54,7 @@ func (service *service) CreateComment(ctx context.Context, comment domain.Commen
 }
 
 func (service *service) UpdateComment(ctx context.Context, comment domain.Comment) error {
-	err := service.db.Update(ctx, comment)
+	err := service.db.Update(ctx, comment.ID, comment)
 	if err != nil {
 		service.log.Error("error update comment", zap.Error(err))
 		return err
