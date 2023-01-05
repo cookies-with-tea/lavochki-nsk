@@ -1,18 +1,16 @@
-package postgres
+package reports
 
 import (
 	"benches/internal/domain"
-	"github.com/uptrace/bun"
+	"github.com/mitchellh/mapstructure"
 )
 
 type reportCommentModel struct {
-	bun.BaseModel `bun:"table:reports,alias:reports,select:reports"`
-
-	ID        string `bun:"id,pk"`
-	Cause     string `bun:"cause"`
-	CommentID string `bun:"comment_id"`
-	UserID    string `bun:"user_id"`
-	IsActive  bool   `bun:"is_active"`
+	ID        string
+	Cause     string
+	CommentID string
+	UserID    string
+	IsActive  bool
 }
 
 func (report *reportCommentModel) FromDomain(reportDomain domain.CommentReport) {
@@ -40,4 +38,14 @@ func reportsCommentModelsToDomain(models []reportCommentModel) []domain.CommentR
 		reports = append(reports, reportsCommentModelToDomain(model))
 	}
 	return reports
+}
+
+func (report *reportCommentModel) ToMap() (map[string]interface{}, error) {
+	var updateReportCommentMap map[string]interface{}
+	err := mapstructure.Decode(report, &updateReportCommentMap)
+	if err != nil {
+		return updateReportCommentMap, err
+	}
+
+	return updateReportCommentMap, nil
 }
