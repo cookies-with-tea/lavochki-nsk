@@ -3,7 +3,6 @@ package main
 import (
 	"benches/internal/applications/initiator"
 	"benches/internal/config"
-	"benches/pkg/database"
 	"benches/pkg/logging"
 	"benches/pkg/migrations"
 	"fmt"
@@ -20,8 +19,12 @@ func main() {
 	appLogger := logging.NewLogger(logger, "benches")
 	logger.Info("config initializing")
 	cfg := config.GetConfig()
-	migrateManager := migrations.NewManager(database.DatabaseParametersToDSN("postgres", cfg.PostgreSQL.Host,
-		cfg.PostgreSQL.Database, cfg.PostgreSQL.Username, cfg.PostgreSQL.Password, false))
+	migrateManager := migrations.NewManager(fmt.Sprintf(
+		"postgresql://%s:%s@%s:%s/%s?sslmode=%s",
+		cfg.PostgreSQL.Username, cfg.PostgreSQL.Password,
+		cfg.PostgreSQL.Host, cfg.PostgreSQL.Port, cfg.PostgreSQL.Database, "disable",
+	))
+
 	err = migrateManager.Migrate()
 	if err != nil {
 		logger.Fatal("migrate: ", zap.Error(err))
