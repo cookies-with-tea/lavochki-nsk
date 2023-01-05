@@ -3,7 +3,12 @@ package initiator
 import (
 	_ "benches/docs"
 	"benches/internal/config"
-	"benches/internal/repository/postgres"
+	benchesPolicy "benches/internal/policy/benches"
+	benchesRepository "benches/internal/repository/postgres/benches"
+	commentsRepository "benches/internal/repository/postgres/comments"
+	reportsRepository "benches/internal/repository/postgres/reports"
+	tagsRepository "benches/internal/repository/postgres/tags"
+	usersRepository "benches/internal/repository/postgres/users"
 	benchesService "benches/internal/service/benches"
 	botService "benches/internal/service/bot"
 	commentsService "benches/internal/service/comments"
@@ -20,7 +25,7 @@ import (
 	"benches/internal/transport/httpv1/tags"
 	"benches/internal/transport/httpv1/users"
 	"benches/pkg/auth"
-	"benches/pkg/database"
+	postgresClient "benches/pkg/client/postgres"
 	"benches/pkg/telegram"
 	"context"
 	"errors"
@@ -54,9 +59,13 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
 	logger.Info("database initializing")
-	db := postgres.NewPostgresDatabase(database.DatabaseParametersToDSN("postgres", cfg.PostgreSQL.Host,
-		cfg.PostgreSQL.Database, cfg.PostgreSQL.Username, cfg.PostgreSQL.Password, false))
-	postgres.Init(db)
+	postgresConfig := postgresClient.NewConfig(
+		cfg.PostgreSQL.Username, cfg.PostgreSQL.Password,
+		cfg.PostgreSQL.Host, cfg.PostgreSQL.Port, cfg.PostgreSQL.Database)
+	db, errInitPostgres := postgresClient.NewClient(context.Background(), 5, time.Second*5, postgresConfig)
+	if errInitPostgres != nil {
+		logger.Fatal("create postgres client", zap.Error(errInitPostgres))
+	}
 
 	logger.Info("minio initializing")
 	minioClient, err := minio.New(cfg.Minio.Endpoint, &minio.Options{
@@ -100,7 +109,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	// Пользователи
 	appUsersRedisStorage := redisStorage.NewRedisStorage(redisClient)
 	appUsersTelegramManager := telegram.NewTelegramManager(cfg.Telegram.Token)
-	appUsersRepository := postgres.NewUsersRepository(db)
+	appUsersRepository := usersRepository.NewUsersRepository(db)
 	appUsersService := usersService.NewService(appUsersRepository,
 		appUsersRedisStorage, authManager, appUsersTelegramManager, logger)
 	appHandlerUsers := users.NewUsersHandler(appUsersService)
@@ -109,9 +118,10 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	// Лавочки
 	appBenchesRouter := router.PathPrefix("/api/v1/benches").Subrouter()
 	appBenchesStorage := minioStorage.NewMinioStorage(minioClient, cfg.Minio.Bucket, cfg.Images.PublicEndpoint)
-	appBenchesRepository := postgres.NewBenchesRepository(db)
-	appBenchesService := benchesService.NewService(appBenchesRepository, appBenchesStorage, logger, appNotificationsService, appUsersRepository)
-	appHandlerBenches := benches.NewBenchesHandler(appBenchesService)
+	appBenchesRepository := benchesRepository.NewBenchesRepository(db)
+	appBenchesService := benchesService.NewService(appBenchesRepository, appBenchesStorage, logger)
+	appBenchesPolicy := benchesPolicy.NewBenchesPolicy(appBenchesService, appUsersService, appNotificationsService)
+	appHandlerBenches := benches.NewBenchesHandler(appBenchesPolicy)
 	appHandlerBenches.Register(appBenchesRouter, authManager)
 
 	// Бот
@@ -122,21 +132,21 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 
 	// Теги
 	appTagsRouter := router.PathPrefix("/api/v1/tags").Subrouter()
-	appTagsRepository := postgres.NewTagsRepository(db)
+	appTagsRepository := tagsRepository.NewTagsRepository(db)
 	appTagsService := tagsService.NewService(appTagsRepository, logger)
 	appHandlerTags := tags.NewTagsHandler(appTagsService)
 	appHandlerTags.Register(appTagsRouter)
 
 	// Комментарии
 	appCommentsRouter := router.PathPrefix("/api/v1/comments").Subrouter()
-	appCommentsRepository := postgres.NewCommentsRepository(db)
+	appCommentsRepository := commentsRepository.NewCommentsRepository(db)
 	appCommentsService := commentsService.NewService(appCommentsRepository, logger)
 	appHandlerComments := comments.NewCommentsHandler(appCommentsService, appUsersService)
 	appHandlerComments.Register(appCommentsRouter, authManager)
 
 	// Жалобы
 	appReportsRouter := router.PathPrefix("/api/v1/reports").Subrouter()
-	appReportsRepository := postgres.NewReportsRepository(db)
+	appReportsRepository := reportsRepository.NewReportsRepository(db)
 	appReportsService := reportsService.NewService(appReportsRepository, logger)
 	appHandlerReports := reports.NewReportsHandler(appReportsService)
 	appHandlerReports.Register(appReportsRouter, authManager)
