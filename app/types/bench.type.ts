@@ -6,6 +6,7 @@ export type BenchType = {
     owner_id: string
     is_active: boolean
     tags: BenchTagType[]
+    address?: string
 }
 
 export type BenchTagType = {

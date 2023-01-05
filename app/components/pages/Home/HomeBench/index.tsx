@@ -25,7 +25,7 @@ const HomeBench: FC<IProps> = ({ bench }): ReactElement => {
         </StyledLatestBenchInfoTitle>
         <StyledLatestBenchInfoLocation>
           <StyledLatestBenchInfoLocationTitle>
-            Г. Новосибирск, ул. Зыряновская
+            { bench.address }
           </StyledLatestBenchInfoLocationTitle>
           <StyledLocationButton>
             <CommonIcon name="location" width={24} height={32} />
