@@ -2,36 +2,36 @@ package reports
 
 import (
 	"benches/internal/domain"
-	"benches/internal/repository/postgres"
+	"benches/internal/repository/postgres/reports"
 	"context"
 	"go.uber.org/zap"
 )
 
 type Service interface {
-	GetCommentsReports(ctx context.Context, isActive bool) ([]domain.CommentReport, error)
+	GetCommentsReports(ctx context.Context, isActive bool) ([]*domain.CommentReport, error)
 	CreateReportComment(ctx context.Context, report domain.CommentReport) error
 	IsExistsReportComment(ctx context.Context, reportID, userID string) (bool, error)
 }
 
 type service struct {
 	log *zap.Logger
-	db  postgres.ReportsRepository
+	db  reports.Repository
 }
 
-func NewService(db postgres.ReportsRepository, log *zap.Logger) Service {
+func NewService(db reports.Repository, log *zap.Logger) Service {
 	return &service{
 		log: log,
 		db:  db,
 	}
 }
 
-func (service *service) GetCommentsReports(ctx context.Context, isActive bool) ([]domain.CommentReport, error) {
-	reports, errGetAll := service.db.All(ctx, isActive)
+func (service *service) GetCommentsReports(ctx context.Context, isActive bool) ([]*domain.CommentReport, error) {
+	all, errGetAll := service.db.All(ctx, isActive)
 	if errGetAll != nil {
 		service.log.Error("get all comments", zap.Error(errGetAll))
-		return reports, errGetAll
+		return nil, errGetAll
 	}
-	return reports, nil
+	return all, nil
 }
 
 func (service *service) CreateReportComment(ctx context.Context, report domain.CommentReport) error {
