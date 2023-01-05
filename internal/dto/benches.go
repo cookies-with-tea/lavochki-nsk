@@ -1,6 +1,10 @@
 package dto
 
-import validation "github.com/go-ozzo/ozzo-validation"
+import (
+	"benches/internal/domain"
+	validation "github.com/go-ozzo/ozzo-validation"
+	"strconv"
+)
 
 type CreateBench struct {
 	Lat   float64 `json:"lat"`
@@ -28,12 +32,27 @@ func (bench *CreateBench) Validate() error {
 		validation.Field(&bench.Image, validation.Required))
 }
 
+func (bench *CreateBench) ToDomain() domain.Bench {
+	return domain.Bench{
+		Lat: bench.Lat,
+		Lng: bench.Lng,
+	}
+}
+
 func (bench *CreateBenchViaTelegram) Validate() error {
 	return validation.ValidateStruct(bench,
 		validation.Field(&bench.Lat, validation.Required),
 		validation.Field(&bench.Lng, validation.Required),
 		validation.Field(&bench.Images, validation.Required),
 		validation.Field(&bench.UserTelegramID, validation.Required))
+}
+
+func (bench *CreateBenchViaTelegram) ToDomain() domain.Bench {
+	return domain.Bench{
+		Lat:   bench.Lat,
+		Lng:   bench.Lng,
+		Owner: strconv.Itoa(bench.UserTelegramID),
+	}
 }
 
 func (bench *DecisionBench) Validate() error {
