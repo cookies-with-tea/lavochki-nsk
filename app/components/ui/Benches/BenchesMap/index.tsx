@@ -1,6 +1,6 @@
-import { FC, ReactElement } from 'react'
+import { FC, ReactElement, useEffect, useState } from 'react'
 import { BenchType } from '@/app/types/bench.type'
-import { YMaps, Map } from 'react-yandex-maps'
+import { YMaps, Map, YMapsApi } from 'react-yandex-maps'
 import BenchesMapPlacemarks
   from '@/app/components/ui/Benches/BenchesMap/BenchesMapPlacemarks'
 
@@ -14,15 +14,34 @@ interface IProps {
   height: number
   bench?: BenchType
   benches?: BenchType[]
+  setMapInstance: (mapInstance: YMapsApi | null) => void
 }
 
-const BenchesMap: FC<IProps> = ({ height, bench, benches }): ReactElement => {
+const BenchesMap: FC<IProps> = ({ height, bench, benches, setMapInstance }): ReactElement => {
+  const [map, setMap] = useState<YMapsApi | null>(null)
+
+  useEffect(() => {
+    if (map) {
+      setMapInstance(map)
+    }
+  }, [map])
+
   return (
-    <YMaps>
+    <YMaps  
+      query={{
+        ns: 'use-load-option',
+        load: 'package.full',
+        apikey: process.env.YANDEX_KEY
+      }}>
       <Map
         defaultState={mapState}
         width='100%'
         height={height}
+        instanceRef={setMap}
+        onLoad={(ymaps) => {
+          setMap(ymaps)
+        }}
+        modules={['geolocation', 'geocode']}
       >
         <BenchesMapPlacemarks benches={benches} bench={bench} />
       </Map>

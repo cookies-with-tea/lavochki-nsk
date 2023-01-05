@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { dehydrate, QueryClient, useQuery } from 'react-query'
 import BenchService from '@/app/services/Bench/BenchService'
@@ -18,6 +18,7 @@ import { CommentType } from '@/app/types/comment.type'
 import { CircularProgress, Fade } from '@mui/material'
 import BenchDetailCommentReport
   from '@/app/components/pages/BenchDetail/BenchDetailComment/BenchDetailCommentReport'
+import { YMapsApi } from 'react-yandex-maps'
 
 const getBenches = async (): Promise<BenchType[]> => (
   await BenchService.getAll()
@@ -58,10 +59,9 @@ const BenchDetail: NextPage = (): ReactElement => {
   }])
 
   const [currentCommentId, setCurrentCommentId] = useState('')
-
   const [benches, setBenches] = useState<BenchType[] | []>([])
-
   const [chipData, setChipData] = useState<BenchTagType[] | []>([])
+  const [map, setMap] = useState<YMapsApi | null>(null)
 
   const benchQuery = useQuery<BenchType, ErrorType>(
     ['get bench', benchId],
@@ -111,6 +111,7 @@ const BenchDetail: NextPage = (): ReactElement => {
     await commentQuery.refetch()
   }
 
+
   const renderComments = (): ReactElement => {
     if (commentQuery.isFetching) {
       return (
@@ -136,9 +137,35 @@ const BenchDetail: NextPage = (): ReactElement => {
     )
   }
 
+  const geoDecoding = (bench: BenchType, instance: YMapsApi | null): void => {
+    if (!instance) return
+
+    instance.geocode([bench.lat, bench.lng])
+      .then(({ geoObjects }: Record<string, any>) => {
+        const firstGeoObjectLocation = geoObjects
+          .get(0)
+          .getAddressLine() as string
+
+        const newBench = {
+          ...bench,
+          address: firstGeoObjectLocation
+        }
+
+        setBench(newBench)
+      })
+  }
+
+  const setMapInstance = (instance: YMapsApi | null): void => {
+    setMap(instance)
+  }
+
+  useEffect(() => {
+    geoDecoding(bench, map)
+  }, [map])
+
   return (
     <>
-      <h2>Лавочка на Октябрьской</h2>
+      <h2>Лавочка на {bench.address}</h2>
       <div className="d-f ai-c mb-30">
         <StyledSubtitle>Добавлено: 15 октября 2022</StyledSubtitle>
         <StyledSubtitle>
@@ -162,7 +189,7 @@ const BenchDetail: NextPage = (): ReactElement => {
           : <></>
       }
 
-      <BenchDetailMap bench={bench} />
+      <BenchDetailMap bench={bench} setMapInstance={setMapInstance} />
       {renderComments()}
       <BenchDetailNear benches={benches} />
 
