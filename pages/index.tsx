@@ -21,19 +21,20 @@ const HomePage: NextPage = (): ReactElement => {
     if (!instance) return
 
     benches.forEach((bench, index) => {
-      instance.geocode([bench.lat, bench.lng]).then(({ geoObjects }: Record<string, any>) => {
-        const firstGeoObjectLocation = geoObjects
-          .get(0)
-          .getAddressLine() as string
+      instance.geocode([bench.lat, bench.lng])
+        .then(({ geoObjects }: Record<string, any>) => {
+          const firstGeoObjectLocation = geoObjects
+            .get(0)
+            .getAddressLine() as string
 
-        const newBenches = [...benches]
+          const newBenches = [...benches]
 
-        newBenches[index] = Object.assign(bench,
-          { address: firstGeoObjectLocation }
-        )
+          newBenches[index] = Object.assign(bench,
+            { address: firstGeoObjectLocation }
+          )
 
-        setBenches(newBenches)
-      })
+          setBenches(newBenches)
+        })
     })
   }
 
