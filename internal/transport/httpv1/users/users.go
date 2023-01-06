@@ -3,7 +3,7 @@ package users
 import (
 	"benches/internal/apperror"
 	"benches/internal/dto"
-	usersService "benches/internal/service/users"
+	"benches/internal/policy/users"
 	"benches/pkg/auth"
 	"encoding/json"
 	"github.com/gorilla/mux"
@@ -12,11 +12,11 @@ import (
 
 type Handler struct {
 	baseHandler
-	users usersService.Service
+	policy *users.Policy
 }
 
-func NewUsersHandler(users usersService.Service) *Handler {
-	return &Handler{users: users}
+func NewUsersHandler(policy *users.Policy) *Handler {
+	return &Handler{policy: policy}
 }
 
 func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) {
@@ -48,7 +48,7 @@ func (handler *Handler) registerUser(writer http.ResponseWriter, request *http.R
 		return apperror.NewAppError(err, "validation error", details)
 	}
 
-	token, refreshToken, err := handler.users.LoginViaTelegram(request.Context(), user)
+	token, refreshToken, err := handler.policy.LoginViaTelegram(request.Context(), user.ToDomain())
 	if err != nil {
 		return apperror.ErrIncorrectDataAuth
 	}
@@ -77,7 +77,7 @@ func (handler *Handler) refreshToken(writer http.ResponseWriter, request *http.R
 		return apperror.NewAppError(err, "validation error", details)
 	}
 
-	accessToken, refreshToken, err := handler.users.RefreshToken(request.Context(), token.Token)
+	accessToken, refreshToken, err := handler.policy.RefreshToken(request.Context(), token.Token)
 	if err != nil {
 		return apperror.ErrIncorrectDataToken
 	}
@@ -95,7 +95,7 @@ func (handler *Handler) refreshToken(writer http.ResponseWriter, request *http.R
 func (handler *Handler) me(writer http.ResponseWriter, request *http.Request) error {
 	userID := request.Context().Value("userID").(string)
 
-	user, errGetUser := handler.users.GetUserByID(request.Context(), userID)
+	user, errGetUser := handler.policy.GetUserByID(request.Context(), userID)
 	if errGetUser != nil {
 		return errGetUser
 	}
