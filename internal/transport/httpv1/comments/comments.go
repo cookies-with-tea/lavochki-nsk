@@ -4,8 +4,7 @@ import (
 	"benches/internal/apperror"
 	_ "benches/internal/domain"
 	"benches/internal/dto"
-	commentsService "benches/internal/service/comments"
-	usersService "benches/internal/service/users"
+	commentsPolicy "benches/internal/policy/comments"
 	"benches/pkg/auth"
 	"database/sql"
 	"encoding/json"
@@ -16,14 +15,12 @@ import (
 
 type Handler struct {
 	baseHandler
-	comments     commentsService.Service
-	usersService usersService.Service
+	policy *commentsPolicy.Policy
 }
 
-func NewCommentsHandler(comments commentsService.Service, usersService usersService.Service) *Handler {
+func NewCommentsHandler(policy *commentsPolicy.Policy) *Handler {
 	return &Handler{
-		comments:     comments,
-		usersService: usersService,
+		policy: policy,
 	}
 }
 
@@ -46,7 +43,7 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 func (handler *Handler) listCommentsByBench(writer http.ResponseWriter, request *http.Request) error {
 	id := mux.Vars(request)["id"]
 
-	comments, err := handler.comments.GetAllCommentByBench(request.Context(), id)
+	comments, err := handler.policy.GetAllCommentByBench(request.Context(), id)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return apperror.ErrNotFound
@@ -69,13 +66,6 @@ func (handler *Handler) listCommentsByBench(writer http.ResponseWriter, request 
 func (handler *Handler) createComment(writer http.ResponseWriter, request *http.Request) error {
 	var comment dto.CreateComment
 
-	// Получение пользователя, который хочет создать комментарий
-	userID := request.Context().Value("userID")
-	user, errGetUser := handler.usersService.GetUserByID(request.Context(), userID.(string))
-	if errGetUser != nil {
-		return errGetUser
-	}
-
 	if err := json.NewDecoder(request.Body).Decode(&comment); err != nil {
 		return apperror.ErrDecodeData
 	}
@@ -86,11 +76,11 @@ func (handler *Handler) createComment(writer http.ResponseWriter, request *http.
 		return apperror.NewAppError(errValidate, "validation error", details)
 	}
 
-	// Создание нового комментария
-	commentDomain := comment.ToDomain()
-	commentDomain.AuthorID = user.ID
+	// Получаем ID пользователя из JWT
+	userID := request.Context().Value("userID").(string)
 
-	errCreateComment := handler.comments.CreateComment(request.Context(), commentDomain)
+	// Создание нового комментария
+	errCreateComment := handler.policy.CreateComment(request.Context(), userID, comment.ToDomain())
 	if errCreateComment != nil {
 		return errCreateComment
 	}
@@ -119,7 +109,7 @@ func (handler *Handler) updateComment(writer http.ResponseWriter, request *http.
 	}
 
 	// Проверка на владельца комментария
-	isOwner, errIsOwner := handler.comments.IsOwner(
+	isOwner, errIsOwner := handler.policy.IsOwner(
 		request.Context(), comment.ID, request.Context().Value("userID").(string))
 	if errIsOwner != nil {
 		return errIsOwner
@@ -130,7 +120,7 @@ func (handler *Handler) updateComment(writer http.ResponseWriter, request *http.
 	}
 
 	// Обновление комментария
-	errUpdate := handler.comments.UpdateComment(request.Context(), comment.ToDomain())
+	errUpdate := handler.policy.UpdateComment(request.Context(), comment.ToDomain())
 	if errUpdate != nil {
 		return errUpdate
 	}
