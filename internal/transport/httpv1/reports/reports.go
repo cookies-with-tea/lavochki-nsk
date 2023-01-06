@@ -25,7 +25,7 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 		Methods("GET")
 }
 
-func NewReportsHandler(policy *reportsPolicy.Policy) *Handler {
+func NewHandler(policy *reportsPolicy.Policy) *Handler {
 	return &Handler{
 		policy: policy,
 	}

@@ -15,7 +15,7 @@ type Handler struct {
 	policy *users.Policy
 }
 
-func NewUsersHandler(policy *users.Policy) *Handler {
+func NewHandler(policy *users.Policy) *Handler {
 	return &Handler{policy: policy}
 }
 
