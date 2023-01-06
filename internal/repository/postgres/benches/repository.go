@@ -59,8 +59,8 @@ func (repository *repository) All(ctx context.Context, isActive bool, sortOption
 		bench := domain.Bench{}
 		if err = rows.Scan(
 			&bench.ID,
-			&bench.Lng,
 			&bench.Lat,
+			&bench.Lng,
 			&bench.IsActive,
 			&bench.Images,
 			&bench.Owner,
