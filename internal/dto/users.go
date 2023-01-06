@@ -1,6 +1,9 @@
 package dto
 
-import validation "github.com/go-ozzo/ozzo-validation"
+import (
+	"benches/internal/domain"
+	validation "github.com/go-ozzo/ozzo-validation"
+)
 
 type CreateUser struct {
 	ID        int    `json:"id"`
@@ -17,20 +20,32 @@ type AuthorizationBot struct {
 	Password string
 }
 
-func (u *CreateUser) Validate() error {
-	return validation.ValidateStruct(u,
-		validation.Field(&u.ID, validation.Required),
-		validation.Field(&u.FirstName, validation.Required),
-		validation.Field(&u.LastName),
-		validation.Field(&u.Username),
-		validation.Field(&u.PhotoUrl, validation.Required),
-		validation.Field(&u.AuthDate, validation.Required),
-		validation.Field(&u.Hash, validation.Required))
+func (user *CreateUser) Validate() error {
+	return validation.ValidateStruct(user,
+		validation.Field(&user.ID, validation.Required),
+		validation.Field(&user.FirstName, validation.Required),
+		validation.Field(&user.LastName),
+		validation.Field(&user.Username),
+		validation.Field(&user.PhotoUrl, validation.Required),
+		validation.Field(&user.AuthDate, validation.Required),
+		validation.Field(&user.Hash, validation.Required))
 }
 
-func (u *AuthorizationBot) Validate() error {
-	return validation.ValidateStruct(u,
-		validation.Field(&u.Login, validation.Required),
-		validation.Field(&u.Password, validation.Required),
+func (user *CreateUser) ToDomain() domain.TelegramUser {
+	return domain.TelegramUser{
+		ID:        user.ID,
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
+		Username:  user.Username,
+		PhotoUrl:  user.PhotoUrl,
+		AuthDate:  user.AuthDate,
+		Hash:      user.Hash,
+	}
+}
+
+func (user *AuthorizationBot) Validate() error {
+	return validation.ValidateStruct(user,
+		validation.Field(&user.Login, validation.Required),
+		validation.Field(&user.Password, validation.Required),
 	)
 }
