@@ -118,7 +118,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appUsersService := usersService.NewService(appUsersRepository,
 		appUsersRedisStorage, authManager, appUsersTelegramManager, logger)
 	appUsersPolicy := usersPolicy.NewPolicy(appUsersService)
-	appHandlerUsers := users.NewUsersHandler(appUsersPolicy)
+	appHandlerUsers := users.NewHandler(appUsersPolicy)
 	appHandlerUsers.Register(router, authManager)
 
 	// Лавочки
@@ -127,7 +127,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appBenchesRepository := benchesRepository.NewBenchesRepository(db)
 	appBenchesService := benchesService.NewService(appBenchesRepository, appBenchesStorage, logger)
 	appBenchesPolicy := benchesPolicy.NewPolicy(appBenchesService, appUsersService, appNotificationsService)
-	appHandlerBenches := benches.NewBenchesHandler(appBenchesPolicy)
+	appHandlerBenches := benches.NewHandler(appBenchesPolicy)
 	appHandlerBenches.Register(appBenchesRouter, authManager)
 
 	// Бот
@@ -135,7 +135,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appBotService := botService.NewService(cfg.Telegram.Login, cfg.Telegram.Password,
 		logger, authManager, appUsersRedisStorage)
 	appBotPolicy := botPolicy.NewPolicy(appBotService)
-	appBotHandler := bot.NewBotHandler(appBotPolicy)
+	appBotHandler := bot.NewHandler(appBotPolicy)
 	appBotHandler.Register(appBotRouter)
 
 	// Теги
@@ -143,7 +143,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appTagsRepository := tagsRepository.NewTagsRepository(db)
 	appTagsService := tagsService.NewService(appTagsRepository, logger)
 	appTagsPolicy := tagsPolicy.NewPolicy(appTagsService)
-	appHandlerTags := tags.NewTagsHandler(appTagsPolicy)
+	appHandlerTags := tags.NewHandler(appTagsPolicy)
 	appHandlerTags.Register(appTagsRouter)
 
 	// Комментарии
@@ -151,7 +151,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appCommentsRepository := commentsRepository.NewCommentsRepository(db)
 	appCommentsService := commentsService.NewService(appCommentsRepository, logger)
 	appCommentsPolicy := commentsPolicy.NewPolicy(appCommentsService, appUsersService)
-	appHandlerComments := comments.NewCommentsHandler(appCommentsPolicy)
+	appHandlerComments := comments.NewHandler(appCommentsPolicy)
 	appHandlerComments.Register(appCommentsRouter, authManager)
 
 	// Жалобы
@@ -159,7 +159,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appReportsRepository := reportsRepository.NewReportsRepository(db)
 	appReportsService := reportsService.NewService(appReportsRepository, logger)
 	appReportsPolicy := reportsPolicy.NewPolicy(appReportsService)
-	appHandlerReports := reports.NewReportsHandler(appReportsPolicy)
+	appHandlerReports := reports.NewHandler(appReportsPolicy)
 	appHandlerReports.Register(appReportsRouter, authManager)
 
 	return &App{cfg: cfg, logger: logger, router: router}, nil
