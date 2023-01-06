@@ -19,7 +19,7 @@ type Handler struct {
 	policy *benches.Policy
 }
 
-func NewBenchesHandler(benches *benches.Policy) *Handler {
+func NewHandler(benches *benches.Policy) *Handler {
 	return &Handler{policy: benches}
 }
 

@@ -16,7 +16,7 @@ type Handler struct {
 	policy *tagsPolicy.Policy
 }
 
-func NewTagsHandler(policy *tagsPolicy.Policy) *Handler {
+func NewHandler(policy *tagsPolicy.Policy) *Handler {
 	return &Handler{
 		policy: policy,
 	}

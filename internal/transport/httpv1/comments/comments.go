@@ -18,7 +18,7 @@ type Handler struct {
 	policy *commentsPolicy.Policy
 }
 
-func NewCommentsHandler(policy *commentsPolicy.Policy) *Handler {
+func NewHandler(policy *commentsPolicy.Policy) *Handler {
 	return &Handler{
 		policy: policy,
 	}
