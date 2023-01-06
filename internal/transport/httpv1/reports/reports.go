@@ -3,7 +3,7 @@ package reports
 import (
 	"benches/internal/apperror"
 	"benches/internal/dto"
-	"benches/internal/service/reports"
+	reportsPolicy "benches/internal/policy/reports"
 	"benches/pkg/auth"
 	"encoding/json"
 	"github.com/gorilla/mux"
@@ -12,7 +12,7 @@ import (
 
 type Handler struct {
 	baseHandler
-	reports reports.Service
+	policy *reportsPolicy.Policy
 }
 
 func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) {
@@ -25,9 +25,9 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 		Methods("GET")
 }
 
-func NewReportsHandler(reports reports.Service) *Handler {
+func NewReportsHandler(policy *reportsPolicy.Policy) *Handler {
 	return &Handler{
-		reports: reports,
+		policy: policy,
 	}
 }
 
@@ -57,7 +57,7 @@ func (handler *Handler) createReportComment(writer http.ResponseWriter, request 
 	userID := request.Context().Value("userID").(string)
 
 	// Проверка на то, существует ли уже жалоба от такого пользователя на этот комментарий
-	isExists, errIsExists := handler.reports.IsExistsReportComment(request.Context(), report.CommentID, userID)
+	isExists, errIsExists := handler.policy.IsExistsReportComment(request.Context(), report.CommentID, userID)
 	if errIsExists != nil {
 		return errIsExists
 	}
@@ -69,7 +69,7 @@ func (handler *Handler) createReportComment(writer http.ResponseWriter, request 
 	reportDomain := report.ToDomain()
 	reportDomain.UserID = userID
 
-	errCreateReport := handler.reports.CreateReportComment(request.Context(), reportDomain)
+	errCreateReport := handler.policy.CreateReportComment(request.Context(), reportDomain)
 	if errCreateReport != nil {
 		return errCreateReport
 	}
@@ -85,7 +85,7 @@ func (handler *Handler) createReportComment(writer http.ResponseWriter, request 
 // @Failure 418
 // @Router /api/v1/reports/comments/moderation [get]
 func (handler *Handler) listReportsComments(writer http.ResponseWriter, request *http.Request) error {
-	commentsReports, errGetComments := handler.reports.GetCommentsReports(request.Context(), true)
+	commentsReports, errGetComments := handler.policy.GetCommentsReports(request.Context(), true)
 	if errGetComments != nil {
 		return errGetComments
 	}

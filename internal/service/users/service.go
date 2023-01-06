@@ -2,8 +2,7 @@ package users
 
 import (
 	"benches/internal/domain"
-	"benches/internal/dto"
-	"benches/internal/repository/postgres"
+	"benches/internal/repository/postgres/users"
 	redisStorage "benches/internal/storage/redis"
 	"benches/pkg/auth"
 	"benches/pkg/telegram"
@@ -16,32 +15,34 @@ import (
 )
 
 type Service interface {
-	LoginViaTelegram(ctx context.Context, dto dto.CreateUser) (string, string, error)
+	LoginViaTelegram(ctx context.Context, user domain.TelegramUser) (string, string, error)
 	RefreshToken(ctx context.Context, token string) (string, string, error)
-	GetUserByID(ctx context.Context, userID string) (domain.User, error)
+	GetUserByID(ctx context.Context, userID string) (*domain.User, error)
+	ByTelegramID(ctx context.Context, telegramID int) (*domain.User, error)
 }
 
 type service struct {
-	db           postgres.UsersRepository
+	db           users.Repository
 	log          *zap.Logger
 	telegram     *telegram.Manager
 	tokenManager *auth.Manager
 	redisStorage redisStorage.Storage
 }
 
-func NewService(db postgres.UsersRepository, redisStorage redisStorage.Storage, tokenManager *auth.Manager, telegram *telegram.Manager, log *zap.Logger) Service {
+func NewService(db users.Repository, redisStorage redisStorage.Storage, tokenManager *auth.Manager, telegram *telegram.Manager, log *zap.Logger) Service {
 	return &service{db: db, redisStorage: redisStorage, tokenManager: tokenManager, telegram: telegram, log: log}
 }
 
-func (service *service) LoginViaTelegram(ctx context.Context, dto dto.CreateUser) (string, string, error) {
+func (service *service) LoginViaTelegram(ctx context.Context, telegramUser domain.TelegramUser) (string, string, error) {
 	user := domain.User{
-		Username:   dto.Username,
-		TelegramID: dto.ID,
+		Username:   telegramUser.Username,
+		TelegramID: telegramUser.ID,
 	}
-	dbUser, err := service.db.ByTelegramID(ctx, dto.ID)
+
+	dbUser, err := service.db.ByTelegramID(ctx, telegramUser.ID)
 	if err == sql.ErrNoRows {
 		var errCreate error
-		dbUser, errCreate = service.db.Create(ctx, user)
+		errCreate = service.db.Create(ctx, user)
 		if errCreate != nil {
 			return "", "", errCreate
 		}
@@ -50,32 +51,37 @@ func (service *service) LoginViaTelegram(ctx context.Context, dto dto.CreateUser
 			return "", "", err
 		}
 	}
+
 	isTelegramAuth := service.telegram.CheckTelegramAuthorization(map[string]string{
-		"id":         fmt.Sprintf("%d", dto.ID),
-		"first_name": fmt.Sprintf("%s", dto.FirstName),
-		"last_name":  fmt.Sprintf("%s", dto.LastName),
-		"username":   fmt.Sprintf("%s", dto.Username),
-		"photo_url":  fmt.Sprintf("%s", dto.PhotoUrl),
-		"auth_date":  fmt.Sprintf("%d", dto.AuthDate),
-		"hash":       fmt.Sprintf("%s", dto.Hash),
+		"id":         fmt.Sprintf("%d", telegramUser.ID),
+		"first_name": fmt.Sprintf("%s", telegramUser.FirstName),
+		"last_name":  fmt.Sprintf("%s", telegramUser.LastName),
+		"username":   fmt.Sprintf("%s", telegramUser.Username),
+		"photo_url":  fmt.Sprintf("%s", telegramUser.PhotoUrl),
+		"auth_date":  fmt.Sprintf("%d", telegramUser.AuthDate),
+		"hash":       fmt.Sprintf("%s", telegramUser.Hash),
 	})
 	if !isTelegramAuth {
 		return "", "", errors.New("not is auth")
 	}
+
 	var token string
 	token, err = service.tokenManager.NewJWT(dbUser.ID, dbUser.Role, 60*time.Minute)
 	if err != nil {
 		return "", "", err
 	}
+
 	var refreshToken string
 	refreshToken, err = service.tokenManager.NewRefreshToken()
 	if err != nil {
 		return "", "", err
 	}
+
 	err = service.redisStorage.WriteRefreshToken(ctx, refreshToken, dbUser.ID, 60*time.Minute)
 	if err != nil {
 		return "", "", err
 	}
+
 	return token, refreshToken, nil
 }
 
@@ -85,7 +91,7 @@ func (service *service) RefreshToken(ctx context.Context, token string) (string,
 		return "", "", err
 	}
 
-	var user domain.User
+	var user *domain.User
 	user, err = service.db.ByID(ctx, userID)
 	if err != nil {
 		return "", "", err
@@ -110,11 +116,21 @@ func (service *service) RefreshToken(ctx context.Context, token string) (string,
 	return newAccessToken, newRefreshToken, nil
 }
 
-func (service *service) GetUserByID(ctx context.Context, userID string) (domain.User, error) {
+func (service *service) GetUserByID(ctx context.Context, userID string) (*domain.User, error) {
 	user, err := service.db.ByID(ctx, userID)
 
 	if err != nil {
 		return user, err
+	}
+
+	return user, nil
+}
+
+func (service *service) ByTelegramID(ctx context.Context, telegramID int) (*domain.User, error) {
+	user, err := service.db.ByTelegramID(ctx, telegramID)
+	if err != nil {
+		service.log.Error("get user by telegram id", zap.Error(err))
+		return nil, err
 	}
 
 	return user, nil

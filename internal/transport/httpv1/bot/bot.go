@@ -3,7 +3,7 @@ package bot
 import (
 	"benches/internal/apperror"
 	"benches/internal/dto"
-	"benches/internal/service/bot"
+	botPolicy "benches/internal/policy/bot"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"net/http"
@@ -11,19 +11,19 @@ import (
 
 type Handler struct {
 	baseHandler
-	botService bot.Service
+	policy *botPolicy.Policy
 }
 
-func NewBotHandler(botService bot.Service) *Handler {
+func NewBotHandler(policy *botPolicy.Policy) *Handler {
 	return &Handler{
-		botService: botService,
+		policy: policy,
 	}
 }
 
-func (h *Handler) Register(router *mux.Router) {
+func (handler *Handler) Register(router *mux.Router) {
 	// Авторизация бота
-	router.HandleFunc("/auth", apperror.Middleware(h.authorization))
-	router.HandleFunc("/refresh", apperror.Middleware(h.refreshToken))
+	router.HandleFunc("/auth", apperror.Middleware(handler.authorization))
+	router.HandleFunc("/refresh", apperror.Middleware(handler.refreshToken))
 }
 
 // @Summary Authorization bot
@@ -33,7 +33,7 @@ func (h *Handler) Register(router *mux.Router) {
 // @Success 200
 // @Failure 403
 // @Router /api/v1/bot/auth [post]
-func (h *Handler) authorization(w http.ResponseWriter, r *http.Request) error {
+func (handler *Handler) authorization(w http.ResponseWriter, r *http.Request) error {
 	var bot dto.AuthorizationBot
 	if err := json.NewDecoder(r.Body).Decode(&bot); err != nil {
 		return apperror.ErrIncorrectDataAuth
@@ -45,11 +45,11 @@ func (h *Handler) authorization(w http.ResponseWriter, r *http.Request) error {
 		return apperror.NewAppError(err, "validation error", details)
 	}
 
-	token, refreshToken, err := h.botService.AuthorizationBot(r.Context(), bot)
+	token, refreshToken, err := handler.policy.AuthorizationBot(r.Context(), bot)
 	if err != nil {
 		return apperror.ErrIncorrectDataAuth
 	}
-	h.ResponseJson(w, map[string]string{"access": token, "refresh": refreshToken}, 200)
+	handler.ResponseJson(w, map[string]string{"access": token, "refresh": refreshToken}, 200)
 	return nil
 }
 
@@ -61,7 +61,7 @@ func (h *Handler) authorization(w http.ResponseWriter, r *http.Request) error {
 // @Success 200
 // @Failure 400
 // @Router /api/v1/bot/refresh [post]
-func (h *Handler) refreshToken(w http.ResponseWriter, r *http.Request) error {
+func (handler *Handler) refreshToken(w http.ResponseWriter, r *http.Request) error {
 	var token dto.RefreshToken
 	if err := json.NewDecoder(r.Body).Decode(&token); err != nil {
 		return apperror.ErrIncorrectDataToken
@@ -73,10 +73,10 @@ func (h *Handler) refreshToken(w http.ResponseWriter, r *http.Request) error {
 		return apperror.NewAppError(err, "validation error", details)
 	}
 
-	accessToken, refreshToken, err := h.botService.RefreshToken(r.Context(), token.Token)
+	accessToken, refreshToken, err := handler.policy.RefreshToken(r.Context(), token.Token)
 	if err != nil {
 		return apperror.ErrIncorrectDataToken
 	}
-	h.ResponseJson(w, map[string]string{"access": accessToken, "refresh": refreshToken}, 200)
+	handler.ResponseJson(w, map[string]string{"access": accessToken, "refresh": refreshToken}, 200)
 	return nil
 }

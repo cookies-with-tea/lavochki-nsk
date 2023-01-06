@@ -2,38 +2,38 @@ package tags
 
 import (
 	"benches/internal/domain"
-	"benches/internal/repository/postgres"
+	"benches/internal/repository/postgres/tags"
 	"context"
 	"go.uber.org/zap"
 )
 
 type Service interface {
-	GetAllTags(ctx context.Context) ([]domain.Tag, error)
+	GetAllTags(ctx context.Context) ([]*domain.Tag, error)
 	CreateTag(ctx context.Context, tag domain.Tag) error
 }
 
 type service struct {
-	db  postgres.TagsRepository
+	db  tags.Repository
 	log *zap.Logger
 }
 
-func NewService(db postgres.TagsRepository, log *zap.Logger) Service {
+func NewService(db tags.Repository, log *zap.Logger) Service {
 	return &service{
 		db:  db,
 		log: log,
 	}
 }
 
-func (s *service) GetAllTags(ctx context.Context) ([]domain.Tag, error) {
-	tags, err := s.db.All(ctx)
+func (service *service) GetAllTags(ctx context.Context) ([]*domain.Tag, error) {
+	all, err := service.db.All(ctx)
 	if err != nil {
-		return []domain.Tag{}, err
+		return nil, err
 	}
-	return tags, nil
+	return all, nil
 }
 
-func (s *service) CreateTag(ctx context.Context, tag domain.Tag) error {
-	if err := s.db.Create(ctx, tag); err != nil {
+func (service *service) CreateTag(ctx context.Context, tag domain.Tag) error {
+	if err := service.db.Create(ctx, tag); err != nil {
 		return err
 	}
 	return nil

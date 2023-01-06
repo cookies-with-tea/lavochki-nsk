@@ -3,11 +3,8 @@ package benches
 import (
 	"benches/internal/apperror"
 	"benches/internal/domain"
-	"benches/internal/dto"
-	"benches/internal/notifications"
 	"benches/internal/repository/model"
-	"benches/internal/repository/postgres"
-	notificationService "benches/internal/service/notifications"
+	"benches/internal/repository/postgres/benches"
 	storage "benches/internal/storage/minio"
 	"benches/pkg/api/sort"
 	"context"
@@ -17,106 +14,71 @@ import (
 )
 
 type Service interface {
-	GetListBenches(ctx context.Context, isActive bool, sortOptions sort.Options) ([]domain.Bench, error)
-	CreateBench(ctx context.Context, bench dto.CreateBench) error
-	CreateBenchViaTelegram(ctx context.Context, bench dto.CreateBenchViaTelegram) error
-	DecisionBench(ctx context.Context, decisionBench dto.DecisionBench) error
-	GetBenchByID(ctx context.Context, id string) (domain.Bench, error)
+	GetListBenches(ctx context.Context, isActive bool, sortOptions sort.Options) ([]*domain.Bench, error)
+	CreateBench(ctx context.Context, bench domain.Bench) error
+	DecisionBench(ctx context.Context, benchID string, decision bool) error
+	GetBenchByID(ctx context.Context, id string) (*domain.Bench, error)
+	SaveImages(ctx context.Context, images [][]byte) ([]string, error)
 }
 
 type service struct {
-	db                   postgres.BenchesRepository
-	log                  *zap.Logger
-	storage              *storage.Storage
-	notificationsService notificationService.Service
-	usersRepository      postgres.UsersRepository
+	db      benches.Repository
+	log     *zap.Logger
+	storage *storage.Storage
 }
 
-func NewService(db postgres.BenchesRepository, storage *storage.Storage, log *zap.Logger,
-	notificationsService notificationService.Service, usersRepository postgres.UsersRepository) Service {
-	return &service{db: db, storage: storage, log: log, notificationsService: notificationsService,
-		usersRepository: usersRepository}
+func NewService(db benches.Repository, storage *storage.Storage, log *zap.Logger) Service {
+	return &service{db: db, storage: storage, log: log}
 }
 
-func (service *service) GetListBenches(ctx context.Context, isActive bool, sortOptions sort.Options) ([]domain.Bench, error) {
+func (service *service) GetListBenches(ctx context.Context, isActive bool, sortOptions sort.Options) ([]*domain.Bench, error) {
 	// Создаём параметры для сортировки
 	options := model.NewSortOptions(sortOptions.Field, sortOptions.Order)
 
 	// Получаем все лавочки из базы данных
-	benches, err := service.db.All(ctx, isActive, options)
+	all, err := service.db.All(ctx, isActive, options)
 	if err != nil {
 		service.log.Error("error get all benches", zap.Error(err))
 		return nil, err
 	}
 
 	// Получаем картинки из Minio
-	for idx := range benches {
-		for idxImage := range benches[idx].Images {
-			benches[idx].Images[idxImage] = service.storage.GetImageURL(benches[idx].Images[idxImage])
+	for idx := range all {
+		for idxImage := range all[idx].Images {
+			all[idx].Images[idxImage] = service.storage.GetImageURL(all[idx].Images[idxImage])
 		}
 	}
 
-	return benches, nil
+	return all, nil
 }
 
-func (service *service) CreateBench(ctx context.Context, bench dto.CreateBench) error {
-	panic("implement me")
-}
-
-func (service *service) CreateBenchViaTelegram(ctx context.Context, dto dto.CreateBenchViaTelegram) error {
-	var imagesName []string
-
-	user, err := service.usersRepository.ByTelegramID(ctx, dto.UserTelegramID)
+func (service *service) CreateBench(ctx context.Context, bench domain.Bench) error {
+	err := service.db.Create(ctx, bench)
 	if err != nil {
-		return apperror.ErrNotEnoughRights
-	}
-
-	// Генерируем ULID и сохраняем каждую картинку в Minio
-	for image := range dto.Images {
-		imageName := fmt.Sprintf("%s%s", ulid.Make(), ".jpg")
-		err := service.storage.CreateImageFromBytes(ctx, imageName, dto.Images[image])
-		if err != nil {
-			return err
-		}
-		imagesName = append(imagesName, imageName)
-	}
-
-	model := domain.Bench{Lng: dto.Lng, Lat: dto.Lat, Images: imagesName, Owner: &user}
-	err = service.db.Create(ctx, model)
-	if err != nil {
+		service.log.Error("failed create bench", zap.Error(err))
 		return apperror.ErrFailedToCreate
 	}
 	return nil
 }
 
-func (service *service) DecisionBench(ctx context.Context, dto dto.DecisionBench) error {
-	var err error
-	var notification *notifications.TelegramNotification
+func (service *service) DecisionBench(ctx context.Context, benchID string, decision bool) error {
+	var errChangeBench error
 
-	var bench domain.Bench
-	bench, err = service.db.ByID(ctx, dto.ID)
-	if err != nil {
-		return err
-	}
-	if dto.Decision {
-		err = service.db.Update(ctx, dto.ID, dto.Decision)
-		notification = notifications.BenchSuccessfullyAccepted.ToNotification(bench.Owner.TelegramID, bench.ID)
+	// Делаем лавочку активной, либо удаляем её из БД
+	if decision {
+		errChangeBench = service.db.Update(ctx, benchID, domain.Bench{IsActive: true})
 	} else {
-		err = service.db.Delete(ctx, dto.ID)
-		notification = notifications.BenchDenied.ToNotification(bench.Owner.TelegramID, bench.ID)
-	}
-	if err != nil {
-		return err
+		errChangeBench = service.db.Delete(ctx, benchID)
 	}
 
-	err = service.notificationsService.SendNotificationInTelegram(ctx, notification)
-	if err != nil {
-		return err
+	if errChangeBench != nil {
+		return errChangeBench
 	}
+
 	return nil
 }
 
-func (service *service) GetBenchByID(ctx context.Context, id string) (domain.Bench, error) {
+func (service *service) GetBenchByID(ctx context.Context, id string) (*domain.Bench, error) {
 	// Получаем лавочку по ID из базы данных
 	bench, err := service.db.ByID(ctx, id)
 	if err != nil {
@@ -128,4 +90,19 @@ func (service *service) GetBenchByID(ctx context.Context, id string) (domain.Ben
 		bench.Images[idxImage] = service.storage.GetImageURL(bench.Images[idxImage])
 	}
 	return bench, nil
+}
+
+func (service *service) SaveImages(ctx context.Context, images [][]byte) ([]string, error) {
+	var imagesName []string
+
+	// Генерируем ULID и сохраняем каждую картинку в Minio
+	for image := range images {
+		imageName := fmt.Sprintf("%s%s", ulid.Make(), ".jpg")
+		err := service.storage.CreateImageFromBytes(ctx, imageName, images[image])
+		if err != nil {
+			return []string{}, nil
+		}
+		imagesName = append(imagesName, imageName)
+	}
+	return imagesName, nil
 }

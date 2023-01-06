@@ -4,7 +4,7 @@ import (
 	"benches/internal/apperror"
 	_ "benches/internal/domain"
 	"benches/internal/dto"
-	benchesService "benches/internal/service/benches"
+	"benches/internal/policy/benches"
 	"benches/pkg/api/sort"
 	"benches/pkg/auth"
 	"database/sql"
@@ -16,30 +16,30 @@ import (
 
 type Handler struct {
 	baseHandler
-	benches benchesService.Service
+	policy *benches.Policy
 }
 
-func NewBenchesHandler(benches benchesService.Service) *Handler {
-	return &Handler{benches: benches}
+func NewBenchesHandler(benches *benches.Policy) *Handler {
+	return &Handler{policy: benches}
 }
 
-func (h *Handler) Register(router *mux.Router, authManager *auth.Manager) {
-	router.HandleFunc("", sort.Middleware(apperror.Middleware(h.listBenches), "id", sort.ASC)).Methods("GET")
+func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) {
+	router.HandleFunc("", sort.Middleware(apperror.Middleware(handler.listBenches), "id", sort.ASC)).Methods("GET")
 
 	// Создание лавочки через telegram
 	routerCreateBenches := router.NewRoute().Subrouter()
 	routerCreateBenches.Use(authManager.JWTRoleMiddleware("bot"))
-	routerCreateBenches.HandleFunc("/telegram", apperror.Middleware(h.addBenchViaTelegram)).Methods("POST")
+	routerCreateBenches.HandleFunc("/telegram", apperror.Middleware(handler.addBenchViaTelegram)).Methods("POST")
 
 	// Роутер для функционала модерации
 	routerModeration := router.NewRoute().Subrouter()
 	routerModeration.Use(authManager.JWTRoleMiddleware("admin"))
 	// Получение списка всех лавочек на модерации
-	routerModeration.HandleFunc("/moderation", apperror.Middleware(h.listModerationBench)).Methods("GET")
+	routerModeration.HandleFunc("/moderation", apperror.Middleware(handler.listModerationBench)).Methods("GET")
 	// Одобрение или отказ лавочки
-	routerModeration.HandleFunc("/moderation", apperror.Middleware(h.decisionBench)).Methods("POST")
+	routerModeration.HandleFunc("/moderation", apperror.Middleware(handler.decisionBench)).Methods("POST")
 
-	router.HandleFunc("/{id}", apperror.Middleware(h.detailBench)).Methods("GET")
+	router.HandleFunc("/{id}", apperror.Middleware(handler.detailBench)).Methods("GET")
 }
 
 // @Summary List benches
@@ -50,17 +50,17 @@ func (h *Handler) Register(router *mux.Router, authManager *auth.Manager) {
 // @Success 200 {object} []domain.Bench
 // @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches [get]
-func (h *Handler) listBenches(w http.ResponseWriter, r *http.Request) error {
+func (handler *Handler) listBenches(w http.ResponseWriter, r *http.Request) error {
 	var sortOptions sort.Options
 	if options, ok := r.Context().Value(sort.OptionsContextKey).(sort.Options); ok {
 		sortOptions = options
 	}
 
-	benches, err := h.benches.GetListBenches(r.Context(), true, sortOptions)
+	all, err := handler.policy.GetListBenches(r.Context(), true, sortOptions)
 	if err != nil {
 		return err
 	}
-	h.ResponseJson(w, benches, 200)
+	handler.ResponseJson(w, all, 200)
 	return nil
 }
 
@@ -70,9 +70,9 @@ func (h *Handler) listBenches(w http.ResponseWriter, r *http.Request) error {
 // @Success 200 {object} domain.Bench
 // @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches/{id} [get]
-func (h *Handler) detailBench(w http.ResponseWriter, r *http.Request) error {
+func (handler *Handler) detailBench(w http.ResponseWriter, r *http.Request) error {
 	id := mux.Vars(r)["id"]
-	bench, err := h.benches.GetBenchByID(r.Context(), id)
+	bench, err := handler.policy.GetBenchByID(r.Context(), id)
 	if !bench.IsActive {
 		return apperror.ErrNotFound
 	}
@@ -82,7 +82,7 @@ func (h *Handler) detailBench(w http.ResponseWriter, r *http.Request) error {
 		}
 		return err
 	}
-	h.ResponseJson(w, bench, http.StatusOK)
+	handler.ResponseJson(w, bench, http.StatusOK)
 	return nil
 }
 
@@ -93,7 +93,7 @@ func (h *Handler) detailBench(w http.ResponseWriter, r *http.Request) error {
 // @Success 201
 // @Failure 400
 // @Router /api/v1/benches/telegram [post]
-func (h *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Request) error {
+func (handler *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Request) error {
 	var bench dto.CreateBenchViaTelegram
 	if err := json.NewDecoder(r.Body).Decode(&bench); err != nil {
 		return apperror.ErrDecodeData
@@ -105,7 +105,7 @@ func (h *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Request) er
 		return apperror.NewAppError(err, "validation error", details)
 	}
 
-	err := h.benches.CreateBenchViaTelegram(r.Context(), bench)
+	err := handler.policy.CreateBenchViaTelegram(r.Context(), bench.UserTelegramID, bench.Images, bench.ToDomain())
 	if err != nil {
 		return err
 	}
@@ -120,12 +120,12 @@ func (h *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Request) er
 // @Success 200 {object} []domain.Bench
 // @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches/moderation [get]
-func (h *Handler) listModerationBench(w http.ResponseWriter, r *http.Request) error {
-	benches, err := h.benches.GetListBenches(r.Context(), false, sort.Options{})
+func (handler *Handler) listModerationBench(w http.ResponseWriter, r *http.Request) error {
+	all, err := handler.policy.GetListBenches(r.Context(), false, sort.Options{})
 	if err != nil {
 		return err
 	}
-	h.ResponseJson(w, benches, 200)
+	handler.ResponseJson(w, all, 200)
 	return nil
 }
 
@@ -137,9 +137,9 @@ func (h *Handler) listModerationBench(w http.ResponseWriter, r *http.Request) er
 // @Success 200
 // @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches/moderation [post]
-func (h *Handler) decisionBench(w http.ResponseWriter, r *http.Request) error {
+func (handler *Handler) decisionBench(writer http.ResponseWriter, request *http.Request) error {
 	var decisionBench dto.DecisionBench
-	if err := json.NewDecoder(r.Body).Decode(&decisionBench); err != nil {
+	if err := json.NewDecoder(request.Body).Decode(&decisionBench); err != nil {
 		return apperror.ErrDecodeData
 	}
 
@@ -149,10 +149,10 @@ func (h *Handler) decisionBench(w http.ResponseWriter, r *http.Request) error {
 		return apperror.NewAppError(err, "validation error", details)
 	}
 
-	err := h.benches.DecisionBench(r.Context(), decisionBench)
+	err := handler.policy.DecisionBench(request.Context(), decisionBench.ID, decisionBench.Decision, decisionBench.Message)
 	if err != nil {
 		return err
 	}
-	h.ResponseJson(w, map[string]string{"result": "okay"}, http.StatusAccepted)
+	handler.ResponseJson(writer, map[string]string{"result": "okay"}, http.StatusAccepted)
 	return nil
 }
