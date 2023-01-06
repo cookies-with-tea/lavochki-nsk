@@ -17,7 +17,7 @@ type Policy struct {
 	notificationsService notificationsService.Service
 }
 
-func NewBenchesPolicy(benchesService benchesService.Service, usersService usersService.Service, notificationsService notificationsService.Service) *Policy {
+func NewPolicy(benchesService benchesService.Service, usersService usersService.Service, notificationsService notificationsService.Service) *Policy {
 	return &Policy{benchesService: benchesService, usersService: usersService, notificationsService: notificationsService}
 }
 
