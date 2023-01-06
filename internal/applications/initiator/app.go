@@ -4,6 +4,11 @@ import (
 	_ "benches/docs"
 	"benches/internal/config"
 	benchesPolicy "benches/internal/policy/benches"
+	botPolicy "benches/internal/policy/bot"
+	commentsPolicy "benches/internal/policy/comments"
+	reportsPolicy "benches/internal/policy/reports"
+	tagsPolicy "benches/internal/policy/tags"
+	usersPolicy "benches/internal/policy/users"
 	benchesRepository "benches/internal/repository/postgres/benches"
 	commentsRepository "benches/internal/repository/postgres/comments"
 	reportsRepository "benches/internal/repository/postgres/reports"
@@ -112,7 +117,8 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appUsersRepository := usersRepository.NewUsersRepository(db)
 	appUsersService := usersService.NewService(appUsersRepository,
 		appUsersRedisStorage, authManager, appUsersTelegramManager, logger)
-	appHandlerUsers := users.NewUsersHandler(appUsersService)
+	appUsersPolicy := usersPolicy.NewPolicy(appUsersService)
+	appHandlerUsers := users.NewUsersHandler(appUsersPolicy)
 	appHandlerUsers.Register(router, authManager)
 
 	// Лавочки
@@ -120,35 +126,40 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appBenchesStorage := minioStorage.NewMinioStorage(minioClient, cfg.Minio.Bucket, cfg.Images.PublicEndpoint)
 	appBenchesRepository := benchesRepository.NewBenchesRepository(db)
 	appBenchesService := benchesService.NewService(appBenchesRepository, appBenchesStorage, logger)
-	appBenchesPolicy := benchesPolicy.NewBenchesPolicy(appBenchesService, appUsersService, appNotificationsService)
+	appBenchesPolicy := benchesPolicy.NewPolicy(appBenchesService, appUsersService, appNotificationsService)
 	appHandlerBenches := benches.NewBenchesHandler(appBenchesPolicy)
 	appHandlerBenches.Register(appBenchesRouter, authManager)
 
 	// Бот
 	appBotRouter := router.PathPrefix("/api/v1/bot").Subrouter()
-	appBotService := botService.NewService(cfg.Telegram.Login, cfg.Telegram.Password, logger, authManager, appUsersRedisStorage)
-	appBotHandler := bot.NewBotHandler(appBotService)
+	appBotService := botService.NewService(cfg.Telegram.Login, cfg.Telegram.Password,
+		logger, authManager, appUsersRedisStorage)
+	appBotPolicy := botPolicy.NewPolicy(appBotService)
+	appBotHandler := bot.NewBotHandler(appBotPolicy)
 	appBotHandler.Register(appBotRouter)
 
 	// Теги
 	appTagsRouter := router.PathPrefix("/api/v1/tags").Subrouter()
 	appTagsRepository := tagsRepository.NewTagsRepository(db)
 	appTagsService := tagsService.NewService(appTagsRepository, logger)
-	appHandlerTags := tags.NewTagsHandler(appTagsService)
+	appTagsPolicy := tagsPolicy.NewPolicy(appTagsService)
+	appHandlerTags := tags.NewTagsHandler(appTagsPolicy)
 	appHandlerTags.Register(appTagsRouter)
 
 	// Комментарии
 	appCommentsRouter := router.PathPrefix("/api/v1/comments").Subrouter()
 	appCommentsRepository := commentsRepository.NewCommentsRepository(db)
 	appCommentsService := commentsService.NewService(appCommentsRepository, logger)
-	appHandlerComments := comments.NewCommentsHandler(appCommentsService, appUsersService)
+	appCommentsPolicy := commentsPolicy.NewPolicy(appCommentsService, appUsersService)
+	appHandlerComments := comments.NewCommentsHandler(appCommentsPolicy)
 	appHandlerComments.Register(appCommentsRouter, authManager)
 
 	// Жалобы
 	appReportsRouter := router.PathPrefix("/api/v1/reports").Subrouter()
 	appReportsRepository := reportsRepository.NewReportsRepository(db)
 	appReportsService := reportsService.NewService(appReportsRepository, logger)
-	appHandlerReports := reports.NewReportsHandler(appReportsService)
+	appReportsPolicy := reportsPolicy.NewPolicy(appReportsService)
+	appHandlerReports := reports.NewReportsHandler(appReportsPolicy)
 	appHandlerReports.Register(appReportsRouter, authManager)
 
 	return &App{cfg: cfg, logger: logger, router: router}, nil
