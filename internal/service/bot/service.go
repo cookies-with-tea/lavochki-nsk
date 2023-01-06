@@ -35,45 +35,45 @@ func NewService(login, password string, log *zap.Logger, tokenManager *auth.Mana
 }
 
 // AuthorizationBot Сервис для авторизации бота
-func (s *service) AuthorizationBot(ctx context.Context, bot dto.AuthorizationBot) (string, string, error) {
-	if s.login != bot.Login || s.password != bot.Password {
+func (service *service) AuthorizationBot(ctx context.Context, bot dto.AuthorizationBot) (string, string, error) {
+	if service.login != bot.Login || service.password != bot.Password {
 		return "", "", apperror.ErrNotEnoughRights
 	}
 	var token string
-	token, err := s.tokenManager.NewJWT(s.login, "bot", 15*time.Minute)
+	token, err := service.tokenManager.NewJWT(service.login, "bot", 15*time.Minute)
 	if err != nil {
 		return "", "", err
 	}
 	var refreshToken string
-	refreshToken, err = s.tokenManager.NewRefreshToken()
+	refreshToken, err = service.tokenManager.NewRefreshToken()
 	if err != nil {
 		return "", "", err
 	}
-	err = s.redisStorage.WriteRefreshToken(ctx, refreshToken, s.login, 20*time.Minute)
+	err = service.redisStorage.WriteRefreshToken(ctx, refreshToken, service.login, 20*time.Minute)
 	if err != nil {
 		return "", "", err
 	}
 	return token, refreshToken, nil
 }
 
-func (s *service) RefreshToken(ctx context.Context, token string) (string, string, error) {
-	botLogin, err := s.redisStorage.GetUserIDByRefreshToken(ctx, token)
+func (service *service) RefreshToken(ctx context.Context, token string) (string, string, error) {
+	botLogin, err := service.redisStorage.GetUserIDByRefreshToken(ctx, token)
 	if err != nil {
 		return "", "", err
 	}
 
 	var newAccessToken string
-	newAccessToken, err = s.tokenManager.NewJWT(botLogin, "bot", 15*time.Minute)
+	newAccessToken, err = service.tokenManager.NewJWT(botLogin, "bot", 15*time.Minute)
 	if err != nil {
 		return "", "", err
 	}
 
-	newRefreshToken, err := s.tokenManager.NewRefreshToken()
+	newRefreshToken, err := service.tokenManager.NewRefreshToken()
 	if err != nil {
 		return "", "", err
 	}
 
-	err = s.redisStorage.WriteRefreshToken(ctx, newRefreshToken, botLogin, 20*time.Minute)
+	err = service.redisStorage.WriteRefreshToken(ctx, newRefreshToken, botLogin, 20*time.Minute)
 	if err != nil {
 		return "", "", err
 	}
