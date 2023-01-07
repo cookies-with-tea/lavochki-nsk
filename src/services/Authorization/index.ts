@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from 'axios'
 import { LoginUserResponseType } from './index.type'
-import { AxiosService } from '../AxiosService'
+import {AxiosService} from "@/services/Axios/AxiosService";
 
 class UsersApi extends AxiosService {
   constructor(config?: AxiosRequestConfig) {

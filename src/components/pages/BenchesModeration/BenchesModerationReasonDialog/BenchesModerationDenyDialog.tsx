@@ -10,17 +10,14 @@ import {
     RadioGroup,
     TextField
 } from "@mui/material";
-import benchesApi from "@/services/Benches";
-import {ReasonType} from "@/types/bench.type";
 
 interface IProps {
     open: boolean
-    reason: ReasonType
     onClose: () => void
     updateTable: () => void
 }
 
-const BenchesModerationDenyDialog: FC<IProps> = ({ open, reason, onClose, updateTable }) => {
+const BenchesModerationDenyDialog: FC<IProps> = ({ open, onClose, updateTable }) => {
     const [currentReason, setCurrentReason] = useState('cheats')
     const [reasonText, setReasonText] = useState('')
 
@@ -39,17 +36,17 @@ const BenchesModerationDenyDialog: FC<IProps> = ({ open, reason, onClose, update
     const handleStatusChange = async (): Promise<void> => {
         const message = reasonText.length ? reasonText : currentReason
 
-        const [error, data] = await benchesApi.changeModerationStatus({
-            id: reason.id,
-            decision: reason.decision,
-            message
-        })
-
-        if (!error && data) {
-            onClose()
-
-            updateTable()
-        }
+        // const [error, data] = await benchesApi.changeModerationStatus({
+        //     id: reason.id,
+        //     decision: reason.decision,
+        //     message
+        // })
+        //
+        // if (!error && data) {
+        //     onClose()
+        //
+        //     updateTable()
+        // }
     }
 
     return (
