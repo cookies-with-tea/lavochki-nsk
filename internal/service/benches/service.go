@@ -8,7 +8,9 @@ import (
 	storage "benches/internal/storage/minio"
 	"benches/pkg/api/sort"
 	"context"
+	"errors"
 	"fmt"
+	"github.com/jackc/pgx/v5"
 	"github.com/oklog/ulid/v2"
 	"go.uber.org/zap"
 )
@@ -82,6 +84,10 @@ func (service *service) GetBenchByID(ctx context.Context, id string) (*domain.Be
 	// Получаем лавочку по ID из базы данных
 	bench, err := service.db.ByID(ctx, id)
 	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return bench, apperror.ErrNotFound
+		}
+		service.log.Error("get bench by id", zap.Error(err))
 		return bench, err
 	}
 
