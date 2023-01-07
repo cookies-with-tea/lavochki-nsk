@@ -23,7 +23,8 @@
     },
     "types": [
       "node",
-      "webpack-env" // here
+      "vite-plugin-svg-icons/client",
+      "webpack-env" // here,
     ]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

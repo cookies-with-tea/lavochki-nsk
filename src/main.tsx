@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import 'virtual:svg-icons-register'
 
 import '@/styles/main.scss'
 import {BrowserRouter} from "react-router-dom";
