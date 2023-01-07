@@ -41,6 +41,10 @@ func (repository *repository) All(ctx context.Context, isActive bool, sortOption
 		Columns("lat", "lng", "is_active", "images", "owner_id").
 		From(tableScheme).Where(squirrel.Eq{"is_active": isActive})
 
+	if sortOptions != nil {
+		query = query.OrderBy(sortOptions.GetOrderBy())
+	}
+
 	sql, args, err := query.ToSql()
 	if err != nil {
 		return nil, err
