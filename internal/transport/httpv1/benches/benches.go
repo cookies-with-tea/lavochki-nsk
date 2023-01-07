@@ -7,9 +7,7 @@ import (
 	"benches/internal/policy/benches"
 	"benches/pkg/api/sort"
 	"benches/pkg/auth"
-	"database/sql"
 	"encoding/json"
-	"errors"
 	"github.com/gorilla/mux"
 	"net/http"
 )
@@ -73,14 +71,12 @@ func (handler *Handler) listBenches(w http.ResponseWriter, r *http.Request) erro
 func (handler *Handler) detailBench(w http.ResponseWriter, r *http.Request) error {
 	id := mux.Vars(r)["id"]
 	bench, err := handler.policy.GetBenchByID(r.Context(), id)
+	if err != nil {
+		return err
+	}
+
 	if !bench.IsActive {
 		return apperror.ErrNotFound
-	}
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return apperror.ErrNotFound
-		}
-		return err
 	}
 	handler.ResponseJson(w, bench, http.StatusOK)
 	return nil
