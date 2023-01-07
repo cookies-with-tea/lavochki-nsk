@@ -16,13 +16,13 @@ body {
   }
 }
 
-// Colors
-@each $_class-name, $_color in (('primary', $color--primary)) {
-  // @sample
-  // .bg-primary
-  // .color-primary
-  @include color($_class-name, $_color);
-}
+//// Colors
+//@each $_class-name, $_color in (('primary', $color--primary)) {
+//  // @sample
+//  // .bg-primary
+//  // .color-primary
+//  @include color($_class-name, $_color);
+//}
 
 // Margins | Paddings
 @include sizes-classes;

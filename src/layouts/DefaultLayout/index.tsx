@@ -1,6 +1,6 @@
 import React, {FC, ReactElement, ReactNode} from 'react';
-import CommonHeader from "@/components/Common/CommonHeader";
-import CommonSidebar from "@/components/Common/CommonSidebar";
+import CommonHeader from "@/components/layouts/DefaultLayout/DefaultLayoutHeader";
+import CommonSidebar from "@/components/layouts/DefaultLayout/DefaultLayoutSidebar";
 interface IProps {
     children: ReactNode
 }
