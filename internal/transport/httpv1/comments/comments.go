@@ -6,10 +6,10 @@ import (
 	"benches/internal/dto"
 	commentsPolicy "benches/internal/policy/comments"
 	"benches/pkg/auth"
-	"database/sql"
 	"encoding/json"
 	"errors"
 	"github.com/gorilla/mux"
+	"github.com/jackc/pgx/v5"
 	"net/http"
 )
 
@@ -45,7 +45,7 @@ func (handler *Handler) listCommentsByBench(writer http.ResponseWriter, request 
 
 	comments, err := handler.policy.GetAllCommentByBench(request.Context(), id)
 	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
+		if errors.Is(err, pgx.ErrNoRows) {
 			return apperror.ErrNotFound
 		}
 		return err
