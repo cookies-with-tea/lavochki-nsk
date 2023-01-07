@@ -40,9 +40,8 @@ func (service *service) LoginViaTelegram(ctx context.Context, telegramUser domai
 	}
 
 	dbUser, err := service.db.ByTelegramID(ctx, telegramUser.ID)
-	if err == sql.ErrNoRows {
-		var errCreate error
-		errCreate = service.db.Create(ctx, user)
+	if errors.Is(err, sql.ErrNoRows) {
+		errCreate := service.db.Create(ctx, user)
 		if errCreate != nil {
 			return "", "", errCreate
 		}

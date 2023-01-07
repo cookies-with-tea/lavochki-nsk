@@ -81,7 +81,7 @@ func (repository *repository) All(ctx context.Context, isActive bool, sortOption
 func (repository *repository) ByID(ctx context.Context, id string) (*domain.Bench, error) {
 	sql, args, errBuild := repository.queryBuilder.
 		Select("id").
-		Columns("lat", "lng", "is_active", "images", "owner").
+		Columns("lat", "lng", "is_active", "images", "owner_id").
 		From(tableScheme).Where(squirrel.Eq{"id": id}).ToSql()
 
 	if errBuild != nil {
