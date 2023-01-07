@@ -5,17 +5,14 @@ import {
     DialogTitle,
     TextField
 } from "@mui/material";
-import benchesApi from "@/services/Benches";
-import { ReasonType } from "@/types/bench.type";
 
 interface IProps {
     open: boolean
-    reason: ReasonType
     onClose: () => void
     updateTable: () => void
 }
 
-const BenchesModerationAcceptDialog: FC<IProps> = ({ open, reason, onClose, updateTable }) => {
+const BenchesModerationAcceptDialog: FC<IProps> = ({ open, onClose, updateTable }) => {
     const [reasonText, setReasonText] = useState('')
 
     const handleReasonTextChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
@@ -27,17 +24,7 @@ const BenchesModerationAcceptDialog: FC<IProps> = ({ open, reason, onClose, upda
     }
 
     const handleStatusChange = async (): Promise<void> => {
-        const [error, data] = await benchesApi.changeModerationStatus({
-            id: reason.id,
-            decision: reason.decision,
-            message: reasonText
-        })
-
-        if (!error && data) {
-            onClose()
-
-            updateTable()
-        }
+        console.log('123')
     }
 
     return (

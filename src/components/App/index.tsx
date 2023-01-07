@@ -1,22 +1,20 @@
 import {Route, Routes} from "react-router";
+import BenchesModeration from "@/pages/BenchesModeration";
+import DefaultLayout from "@/layouts/DefaultLayout";
+import {ReactElement} from "react";
 import Home from "@/pages/Home";
 import Benches from "@/pages/Benches";
-import BenchesModeration from "@/pages/BenchesModeration";
-import CommonSidebar from "@/components/Common/CommonSidebar";
-import CommonHeader from "@/components/Common/CommonHeader";
 
-const App = () => {
+const App = (): ReactElement => {
     return (
         <>
-            <CommonHeader />
-            <div className={'d-f'}>
-                <CommonSidebar />
+            <DefaultLayout>
                 <Routes>
                     <Route path={''} element={ <Home /> } />
                     <Route path={'/benches'} element={ <Benches /> } />
                     <Route path={'/benches-moderation'} element={ <BenchesModeration /> } />
                 </Routes>
-            </div>
+            </DefaultLayout>
         </>
 
     )
