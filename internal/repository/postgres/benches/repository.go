@@ -39,7 +39,7 @@ func (repository *repository) All(ctx context.Context, isActive bool, sortOption
 	query := repository.queryBuilder.
 		Select("id").
 		Columns("lat", "lng", "is_active", "images", "owner_id").
-		From(tableScheme)
+		From(tableScheme).Where(squirrel.Eq{"is_active": isActive})
 
 	sql, args, err := query.ToSql()
 	if err != nil {
