@@ -5,9 +5,10 @@ import {BenchType} from "@/types/bench.type";
 interface IProps {
     benches: BenchType[]
     updateDialogToggle: () => void
+    detailBenchDrawerVisible: () => void
 }
 
-const BenchesTable: FC<IProps> = ({ benches, updateDialogToggle }): ReactElement => {
+const BenchesTable: FC<IProps> = ({ benches, updateDialogToggle, detailBenchDrawerVisible }): ReactElement => {
     const [selected, setSelected] = useState<readonly string[]>([]);
     const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
@@ -81,6 +82,7 @@ const BenchesTable: FC<IProps> = ({ benches, updateDialogToggle }): ReactElement
                                     key={bench.id}
                                     sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                     selected={isItemSelected}
+                                    onClick={detailBenchDrawerVisible}
                                 >
                                     <TableCell padding="checkbox">
                                         <Checkbox

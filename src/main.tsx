@@ -52,6 +52,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
                 <App />
             </BrowserRouter>
         </ThemeProvider>
-    <ReactQueryDevtools initialIsOpen={false} />
+
+        <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
 )
