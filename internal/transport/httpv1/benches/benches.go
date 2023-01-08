@@ -33,7 +33,7 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 	routerModeration := router.NewRoute().Subrouter()
 	routerModeration.Use(authManager.JWTRoleMiddleware("admin"))
 	// Получение списка всех лавочек на модерации
-	routerModeration.HandleFunc("/moderation", apperror.Middleware(handler.listModerationBench)).Methods("GET")
+	routerModeration.HandleFunc("/moderation", sort.Middleware(apperror.Middleware(handler.listModerationBench), "id", sort.ASC)).Methods("GET")
 	// Одобрение или отказ лавочки
 	routerModeration.HandleFunc("/moderation", apperror.Middleware(handler.decisionBench)).Methods("POST")
 
@@ -117,7 +117,12 @@ func (handler *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Reque
 // @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches/moderation [get]
 func (handler *Handler) listModerationBench(w http.ResponseWriter, r *http.Request) error {
-	all, err := handler.policy.GetListBenches(r.Context(), false, sort.Options{})
+	var sortOptions sort.Options
+	if options, ok := r.Context().Value(sort.OptionsContextKey).(sort.Options); ok {
+		sortOptions = options
+	}
+
+	all, err := handler.policy.GetListBenches(r.Context(), false, sortOptions)
 	if err != nil {
 		return err
 	}
