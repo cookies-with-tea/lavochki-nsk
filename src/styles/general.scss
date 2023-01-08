@@ -3,6 +3,8 @@
 
 body {
   transition: all 0.15s ease-in;
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1;
 }
 
 .container {
@@ -14,6 +16,11 @@ body {
   @media screen and (min-width: (2400px)) {
     max-width: 80%
   }
+}
+
+h1 {
+  font-size: 36px !important;
+  color: var(--color--text);
 }
 
 //// Colors

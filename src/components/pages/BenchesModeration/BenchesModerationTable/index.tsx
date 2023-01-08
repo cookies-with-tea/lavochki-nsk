@@ -1,9 +1,9 @@
 import {Button, Table, TableBody, TableCell, TableHead, TableRow} from '@mui/material'
 import React, { FC, ReactElement } from 'react'
-import benchesApi from '@/services/Benches'
+import {BenchType} from "@/types/bench.type";
 
 interface IProps {
-    benches: any
+    benches: BenchType[]
     acceptDialogOpen: (decision: boolean, benchId: string) => void
     denyDialogOpen: (decision: boolean, benchId: string) => void
 }
@@ -25,9 +25,9 @@ const BenchesModerationTable: FC<IProps> = ({ benches, acceptDialogOpen, denyDia
                 </TableHead>
                 <TableBody>
                     {benches &&
-                        benches.map((bench: any, index: number) => (
+                        benches.map((bench) => (
                             <TableRow
-                                key={index}
+                                key={bench.id}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                                 <TableCell component='th' scope='row'>
