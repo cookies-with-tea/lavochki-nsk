@@ -14,10 +14,18 @@ class BenchService extends AxiosService {
     })
   }
 
+
   public getById = async (id: string): Promise<BenchType> => {
     return this.axiosCall<BenchType>({
       method: 'get',
       url: `/${id}`
+    })
+  }
+
+  public getModerationAll = async (): Promise<BenchType[]> => {
+    return this.axiosCall<BenchType[]>({
+      method: 'get',
+      url: '/moderation'
     })
   }
 }

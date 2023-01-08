@@ -4,12 +4,24 @@ import BenchesModerationAcceptDialog
     from "@/components/pages/BenchesModeration/BenchesModerationReasonDialog/BenchesModerationAcceptDialog";
 import BenchesModerationDenyDialog
     from "@/components/pages/BenchesModeration/BenchesModerationReasonDialog/BenchesModerationDenyDialog";
+import {BenchType} from "@/types/bench.type";
+import BenchService from "@/services/Bench/BenchService";
+import {useQuery} from "react-query";
+import {ErrorType} from "@/types/common.type";
+
+const getModerationBenches = async () => await BenchService.getModerationAll()
 
 const BenchesModeration = () => {
-    const [benches, setBenches] = useState([{}])
     const [isAcceptDialogOpen, setAcceptDialogOpen] = useState(false)
     const [isDenyDialogOpen, setDenyDialogOpen] = useState(false)
     const [currentReason, setCurrentReason] = useState<any>({decision: false, id: ""})
+    const [benches, setBenches] = useState<BenchType[]>([])
+
+    const moderationBenchesQuery = useQuery<BenchType[], ErrorType>('get benches', getModerationBenches, {
+        onSuccess: (response) => {
+            setBenches(response)
+        }
+    })
 
     const handleAcceptDialogVisibleToggle = (): void => {
         setAcceptDialogOpen(!isAcceptDialogOpen)
@@ -37,19 +49,6 @@ const BenchesModeration = () => {
         handleDenyDialogVisibleToggle()
     }
 
-    const getBenches = async (): Promise<void> => {
-        // const [error, data] = await benchesApi.getModerationAll()
-        //
-        // if (!error && data) {
-        //     setBenches(data)
-        // }
-    }
-
-    useEffect(() => {
-        getBenches()
-    }, [])
-
-
     return (
         <div className={'w-100'}>
             <BenchesModerationTable
@@ -62,14 +61,14 @@ const BenchesModeration = () => {
                 open={isAcceptDialogOpen}
                 // reason={{...currentReason}}
                 onClose={handleAcceptDialogVisibleToggle}
-                updateTable={getBenches}
+                updateTable={moderationBenchesQuery.refetch}
             />
 
             <BenchesModerationDenyDialog
                 open={isDenyDialogOpen}
-                reason={{...currentReason}}
+                // reason={{...currentReason}}
                 onClose={handleDenyDialogVisibleToggle}
-                updateTable={getBenches}
+                updateTable={moderationBenchesQuery.refetch}
             />
         </div>
     );

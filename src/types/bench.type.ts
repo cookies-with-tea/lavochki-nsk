@@ -3,7 +3,7 @@ export type BenchType = {
     lat: number
     lng: number
     images: string[]
-    owner_id: string
+    owner: string
     is_active: boolean
     tags: BenchTagType[]
     address?: string
