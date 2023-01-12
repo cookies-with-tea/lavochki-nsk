@@ -17,7 +17,7 @@ const BenchesModeration = () => {
     const [currentReason, setCurrentReason] = useState<any>({decision: false, id: ""})
     const [benches, setBenches] = useState<BenchType[]>([])
 
-    const moderationBenchesQuery = useQuery<BenchType[], ErrorType>('get benches', getModerationBenches, {
+    const moderationBenchesQuery = useQuery<BenchType[], ErrorType>('get moderation benches', getModerationBenches, {
         onSuccess: (response) => {
             setBenches(response)
         }

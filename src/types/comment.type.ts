@@ -15,3 +15,11 @@ export type CreateCommentType = Pick<CommentType,
   | 'content'
   | Partial<'parent_id'>
 >
+
+export type CommentReportType = {
+    ID: string
+    cause: string
+    commentID: string
+    is_active: boolean
+    userID: string
+}
