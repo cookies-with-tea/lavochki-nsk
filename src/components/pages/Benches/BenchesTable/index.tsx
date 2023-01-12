@@ -1,17 +1,21 @@
 import {Button, Checkbox, Table, TableBody, TableCell, TableHead, TableRow} from '@mui/material'
-import React, {ChangeEvent, FC, ReactElement, MouseEvent, useState} from 'react'
+import React, {ChangeEvent, FC, ReactElement, MouseEvent, useState, useEffect} from 'react'
 import {BenchType} from "@/types/bench.type";
 
 interface IProps {
     benches: BenchType[]
     updateDialogToggle: () => void
+    detailBenchDrawerVisible: () => void
+    getBenchById: (id: string) => void
 }
 
-const BenchesTable: FC<IProps> = ({ benches, updateDialogToggle }): ReactElement => {
+const BenchesTable: FC<IProps> = ({ benches, updateDialogToggle, detailBenchDrawerVisible, getBenchById }): ReactElement => {
     const [selected, setSelected] = useState<readonly string[]>([]);
     const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
-    const handleRowSelect = (id: string): void => {
+    const handleRowSelect = (event: MouseEvent<HTMLElement>, id: string): void => {
+        event.stopPropagation()
+
         const selectedIndex = selected.indexOf(id);
         let newSelected: readonly string[] = [];
 
@@ -39,6 +43,7 @@ const BenchesTable: FC<IProps> = ({ benches, updateDialogToggle }): ReactElement
 
             return;
         }
+
         setSelected([]);
     }
 
@@ -46,6 +51,12 @@ const BenchesTable: FC<IProps> = ({ benches, updateDialogToggle }): ReactElement
         event.stopPropagation()
 
         updateDialogToggle()
+    }
+
+    const handleDetailBenchToggle = (id: string): void => {
+        detailBenchDrawerVisible()
+
+        getBenchById(id)
     }
 
     return (
@@ -60,7 +71,7 @@ const BenchesTable: FC<IProps> = ({ benches, updateDialogToggle }): ReactElement
                                 checked={benches.length > 0 && selected.length === benches.length}
                                 onChange={handleSelectAllClick}
                                 inputProps={{
-                                    'aria-label': 'select all desserts',
+                                    'aria-label': 'select all benches',
                                 }}
                             />
                         </TableCell>
@@ -79,8 +90,9 @@ const BenchesTable: FC<IProps> = ({ benches, updateDialogToggle }): ReactElement
                             return (
                                 <TableRow
                                     key={bench.id}
-                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                     selected={isItemSelected}
+                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                                    onClick={handleDetailBenchToggle.bind(null, bench.id)}
                                 >
                                     <TableCell padding="checkbox">
                                         <Checkbox
@@ -89,7 +101,7 @@ const BenchesTable: FC<IProps> = ({ benches, updateDialogToggle }): ReactElement
                                             inputProps={{
                                                 'aria-labelledby': labelId,
                                             }}
-                                            onClick={handleRowSelect.bind(null, bench.id)}
+                                            onClick={(event) => handleRowSelect(event, bench.id)}
                                         />
                                     </TableCell>
                                     <TableCell component='th' scope='row'>
@@ -103,7 +115,6 @@ const BenchesTable: FC<IProps> = ({ benches, updateDialogToggle }): ReactElement
                                                 ? <Button>Удалить</Button>
                                                 :  `${bench.lat}, ${bench.lng}`
                                         }
-
                                     </TableCell>
                                     <TableCell>
                                         {bench.owner}
