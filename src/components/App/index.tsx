@@ -6,6 +6,7 @@ import Home from "@/pages/Home";
 import Benches from "@/pages/Benches";
 import {StyledListIcon} from "@/components/layouts/DefaultLayout/DefaultLayoutSidebar/DefaultLayoutSidebar.style";
 import CommentsModeration from "@/pages/CommentsModeration";
+import Tags from "@/pages/Tags";
 
 const App = (): ReactElement => {
     return (
@@ -16,6 +17,7 @@ const App = (): ReactElement => {
                     <Route path={'/benches'} element={ <Benches /> } />
                     <Route path={'/benches-moderation'} element={ <BenchesModeration /> }  />
                     <Route path={'/comments-moderation'} element={ <CommentsModeration /> }  />
+                    <Route path={'/tags'} element={ <Tags /> }  />
                 </Routes>
             </DefaultLayout>
         </>
