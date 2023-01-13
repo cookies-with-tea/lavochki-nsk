@@ -101,6 +101,7 @@ func (m *Manager) JWTRoleMiddleware(role string) func(next http.Handler) http.Ha
 			userRole := ctx.Value("userRole")
 			if userRole != role {
 				w.WriteHeader(http.StatusForbidden)
+				return
 			}
 
 			next.ServeHTTP(w, r.WithContext(ctx))
