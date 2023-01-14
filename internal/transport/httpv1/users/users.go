@@ -28,6 +28,10 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 	meUsersRouter := router.NewRoute().Subrouter()
 	meUsersRouter.Use(authManager.JWTMiddleware)
 	meUsersRouter.HandleFunc("/api/v1/users/me", apperror.Middleware(handler.me))
+
+	adminPanelRouter := router.NewRoute().Subrouter()
+	adminPanelRouter.Use(authManager.JWTRoleMiddleware("admin"))
+	adminPanelRouter.HandleFunc("/api/v1/users", apperror.Middleware(handler.listAllUsers))
 }
 
 // RegisterUser
