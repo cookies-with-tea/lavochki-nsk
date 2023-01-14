@@ -42,6 +42,44 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Benches Moderation"
+                ],
+                "summary": "Create bench",
+                "parameters": [
+                    {
+                        "description": "bench data",
+                        "name": "Bench",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateBench"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "418": {
+                        "description": "I'm a teapot"
+                    }
+                }
             }
         },
         "/api/v1/benches/moderation": {
@@ -164,6 +202,91 @@
                         "schema": {
                             "$ref": "#/definitions/apperror.AppError"
                         }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete bench by ID",
+                "tags": [
+                    "Benches Moderation"
+                ],
+                "summary": "Delete bench",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bench ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apperror.AppError"
+                        }
+                    },
+                    "418": {
+                        "description": "I'm a teapot"
+                    }
+                }
+            },
+            "patch": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Benches Moderation"
+                ],
+                "summary": "Update bench",
+                "parameters": [
+                    {
+                        "description": "bench data",
+                        "name": "Bench",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateBench"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bench ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apperror.AppError"
+                        }
+                    },
+                    "418": {
+                        "description": "I'm a teapot"
                     }
                 }
             }
@@ -485,7 +608,13 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.User"
+                            }
+                        }
                     },
                     "418": {
                         "description": "I'm a teapot"
@@ -713,6 +842,26 @@
                 }
             }
         },
+        "dto.CreateBench": {
+            "type": "object",
+            "properties": {
+                "images": {
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "lat": {
+                    "type": "number"
+                },
+                "lng": {
+                    "type": "number"
+                }
+            }
+        },
         "dto.CreateBenchViaTelegram": {
             "type": "object",
             "properties": {
@@ -817,6 +966,17 @@
             "properties": {
                 "token": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.UpdateBench": {
+            "type": "object",
+            "properties": {
+                "lat": {
+                    "type": "number"
+                },
+                "lng": {
+                    "type": "number"
                 }
             }
         },
