@@ -45,6 +45,16 @@ func Middleware(h appHandler) http.HandlerFunc {
 					w.Write(ErrFailedToCreate.Marshal())
 					return
 				}
+				if errors.Is(err, ErrFailedToUpdate) {
+					w.WriteHeader(http.StatusBadRequest)
+					w.Write(ErrFailedToUpdate.Marshal())
+					return
+				}
+				if errors.Is(err, ErrFailedToDelete) {
+					w.WriteHeader(http.StatusBadRequest)
+					w.Write(ErrFailedToDelete.Marshal())
+					return
+				}
 				if errors.Is(err, ErrObjectExists) {
 					w.WriteHeader(http.StatusConflict)
 					w.Write(ErrObjectExists.Marshal())
