@@ -9,6 +9,7 @@ import CommonHeader from "@/components/layouts/DefaultLayout/DefaultLayoutHeader
 import CommonSidebar from "@/components/layouts/DefaultLayout/DefaultLayoutSidebar";
 import {Box} from "@mui/material";
 import ReportComments from "@/pages/ReportComments";
+import Users from "@/pages/Users";
 
 const App = (): ReactElement => {
     return (
@@ -23,6 +24,7 @@ const App = (): ReactElement => {
                     <Route path={'/benches-moderation'} element={ <BenchesModeration /> }  />
                     <Route path={'/report-comments'} element={ <ReportComments /> }  />
                     <Route path={'/tags'} element={ <Tags /> }  />
+                    <Route path={'users'} element={<Users />} />
                 </Routes>
             </DefaultLayout>
         </Box>
