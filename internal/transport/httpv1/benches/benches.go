@@ -36,6 +36,12 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 	routerModeration.HandleFunc("/moderation", sort.Middleware(apperror.Middleware(handler.listModerationBench), "id", sort.ASC)).Methods("GET")
 	// Одобрение или отказ лавочки
 	routerModeration.HandleFunc("/moderation", apperror.Middleware(handler.decisionBench)).Methods("POST")
+	// Создание лавочки
+	routerModeration.HandleFunc("", apperror.Middleware(handler.createBench)).Methods("POST")
+	// Обновление лавочки
+	routerModeration.HandleFunc("/{id}", apperror.Middleware(handler.updateBench)).Methods("PATCH")
+	// Удаление лавочки
+	routerModeration.HandleFunc("/{id}", apperror.Middleware(handler.deleteBench)).Methods("DELETE")
 
 	router.HandleFunc("/{id}", apperror.Middleware(handler.detailBench)).Methods("GET")
 }
@@ -109,6 +115,89 @@ func (handler *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Reque
 	return nil
 }
 
+// @Summary Create bench
+// @Tags Benches Moderation
+// @Produce json
+// @Param Bench body dto.CreateBench true "bench data"
+// @Param Authorization header string true "Bearer"
+// @Success 201
+// @Failure 400
+// @Failure 418
+// @Router /api/v1/benches [post]
+func (handler *Handler) createBench(writer http.ResponseWriter, request *http.Request) error {
+	var bench dto.CreateBench
+
+	if err := json.NewDecoder(request.Body).Decode(&bench); err != nil {
+		return apperror.ErrDecodeData
+	}
+
+	// Валидация
+	if err := bench.Validate(); err != nil {
+		details, _ := json.Marshal(err)
+		return apperror.NewAppError(err, "validation error", details)
+	}
+
+	// Создаём лавочку
+	errCreate := handler.policy.CreateBench(request.Context(), bench.ToDomain())
+	if errCreate != nil {
+		return apperror.ErrFailedToCreate
+	}
+
+	writer.WriteHeader(http.StatusCreated)
+	return nil
+}
+
+// @Summary Update bench
+// @Tags Benches Moderation
+// @Produce json
+// @Param Bench body dto.UpdateBench true "bench data"
+// @Param Authorization header string true "Bearer"
+// @Param id path string true "Bench ID"
+// @Success 201
+// @Failure 400 {object} apperror.AppError
+// @Failure 418
+// @Router /api/v1/benches/{id} [patch]
+func (handler *Handler) updateBench(writer http.ResponseWriter, request *http.Request) error {
+	var bench dto.UpdateBench
+
+	if err := json.NewDecoder(request.Body).Decode(&bench); err != nil {
+		return apperror.ErrDecodeData
+	}
+
+	idBench := mux.Vars(request)["id"]
+
+	errUpdate := handler.policy.UpdateBench(request.Context(), idBench, bench.ToDomain())
+	if errUpdate != nil {
+		return errUpdate
+	}
+
+	writer.WriteHeader(http.StatusOK)
+
+	return nil
+}
+
+// @Summary Delete bench
+// @Description Delete bench by ID
+// @Tags Benches Moderation
+// @Param Authorization header string true "Bearer"
+// @Param id path string true "Bench ID"
+// @Success 200
+// @Failure 400 {object} apperror.AppError
+// @Failure 418
+// @Router /api/v1/benches/{id} [delete]
+func (handler *Handler) deleteBench(writer http.ResponseWriter, request *http.Request) error {
+	idBench := mux.Vars(request)["id"]
+
+	errDelete := handler.policy.DeleteBench(request.Context(), idBench)
+	if errDelete != nil {
+		return errDelete
+	}
+
+	writer.WriteHeader(http.StatusOK)
+
+	return nil
+}
+
 // @Summary Moderation list benches
 // @Description Get list moderation benches
 // @Tags Benches Moderation
@@ -126,7 +215,8 @@ func (handler *Handler) listModerationBench(w http.ResponseWriter, r *http.Reque
 	if err != nil {
 		return err
 	}
-	handler.ResponseJson(w, all, 200)
+
+	handler.ResponseJson(w, all, http.StatusOK)
 	return nil
 }
 
