@@ -460,6 +460,23 @@ paths:
       tags:
       - Tags
   /api/v1/users:
+    get:
+      parameters:
+      - description: Bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "418":
+          description: I'm a teapot
+      summary: Get all users
+      tags:
+      - Users
     post:
       parameters:
       - description: user info
@@ -493,7 +510,7 @@ paths:
           description: OK
         "418":
           description: I'm a teapot
-      summary: Get all users
+      summary: Get Me
       tags:
       - Users
   /api/v1/users/refresh:
