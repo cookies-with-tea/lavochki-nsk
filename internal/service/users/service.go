@@ -19,6 +19,7 @@ type Service interface {
 	RefreshToken(ctx context.Context, token string) (string, string, error)
 	GetUserByID(ctx context.Context, userID string) (*domain.User, error)
 	ByTelegramID(ctx context.Context, telegramID int) (*domain.User, error)
+	GetAllUsers(ctx context.Context) ([]*domain.User, error)
 }
 
 type service struct {
@@ -133,4 +134,14 @@ func (service *service) ByTelegramID(ctx context.Context, telegramID int) (*doma
 	}
 
 	return user, nil
+}
+
+func (service *service) GetAllUsers(ctx context.Context) ([]*domain.User, error) {
+	all, err := service.db.All(ctx)
+	if err != nil {
+		service.log.Error("get all users", zap.Error(err))
+		return nil, err
+	}
+
+	return all, nil
 }

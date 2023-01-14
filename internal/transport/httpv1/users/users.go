@@ -8,6 +8,8 @@ import (
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"net/http"
+
+	_ "benches/internal/domain"
 )
 
 type Handler struct {
@@ -26,6 +28,10 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 	meUsersRouter := router.NewRoute().Subrouter()
 	meUsersRouter.Use(authManager.JWTMiddleware)
 	meUsersRouter.HandleFunc("/api/v1/users/me", apperror.Middleware(handler.me))
+
+	adminPanelRouter := router.NewRoute().Subrouter()
+	adminPanelRouter.Use(authManager.JWTRoleMiddleware("admin"))
+	adminPanelRouter.HandleFunc("/api/v1/users", apperror.Middleware(handler.listAllUsers))
 }
 
 // RegisterUser
@@ -89,6 +95,7 @@ func (handler *Handler) refreshToken(writer http.ResponseWriter, request *http.R
 // @Tags Users
 // @Produce json
 // @Param Authorization header string true "Bearer"
+// @Success 200 {object} domain.User
 // @Success 200
 // @Failure 418
 // @Router /api/v1/users/me [get]
@@ -101,5 +108,23 @@ func (handler *Handler) me(writer http.ResponseWriter, request *http.Request) er
 	}
 
 	handler.ResponseJson(writer, user, http.StatusOK)
+	return nil
+}
+
+// @Summary Get all users
+// @Tags Users
+// @Produce json
+// @Param Authorization header string true "Bearer"
+// @Success 200 {object} []domain.User
+// @Success 200
+// @Failure 418
+// @Router /api/v1/users/me [get]
+func (handler *Handler) listAllUsers(writer http.ResponseWriter, request *http.Request) error {
+	all, errGetAllUsers := handler.policy.GetAllUsers(request.Context())
+	if errGetAllUsers != nil {
+		return errGetAllUsers
+	}
+
+	handler.ResponseJson(writer, all, http.StatusOK)
 	return nil
 }

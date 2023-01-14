@@ -29,3 +29,7 @@ func (policy *Policy) GetUserByID(ctx context.Context, userID string) (*domain.U
 func (policy *Policy) ByTelegramID(ctx context.Context, telegramID int) (*domain.User, error) {
 	return policy.usersService.ByTelegramID(ctx, telegramID)
 }
+
+func (policy *Policy) GetAllUsers(ctx context.Context) ([]*domain.User, error) {
+	return policy.usersService.GetAllUsers(ctx)
+}
