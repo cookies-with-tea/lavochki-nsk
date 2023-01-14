@@ -3,7 +3,6 @@ export type CommentType = {
     bench_id: string
     content: string
     id: string
-    nested_comments: CommentType[] | null
     parent_id?: string
 
 }
@@ -16,7 +15,7 @@ export type CreateCommentType = Pick<CommentType,
   | Partial<'parent_id'>
 >
 
-export type CommentReportType = {
+export type ReportCommentType = {
     ID: string
     cause: string
     commentID: string
