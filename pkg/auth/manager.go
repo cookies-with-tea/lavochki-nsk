@@ -100,7 +100,15 @@ func (m *Manager) JWTRoleMiddleware(role string) func(next http.Handler) http.Ha
 
 			userRole := ctx.Value("userRole")
 			if userRole != role {
-				w.WriteHeader(http.StatusForbidden)
+				errorResponse := ErrorResponse{
+					Message: "not enough rights",
+					Details: nil,
+				}
+
+				_, errToWrite := w.Write(errorResponse.Marshal()) // nolint: errcheck
+				if errToWrite != nil {
+					w.WriteHeader(http.StatusUnauthorized)
+				}
 				return
 			}
 
