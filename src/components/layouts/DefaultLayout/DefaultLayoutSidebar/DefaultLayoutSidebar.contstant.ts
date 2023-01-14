@@ -25,9 +25,9 @@ export const menuItems = [
     },
     {
         id: '5',
-        label: 'Комментарии на модерации',
+        label: 'Жалобы на комментарии',
         icon: 'user',
-        url: '/comments-moderation',
+        url: '/report-comments',
     },
     {
         id: '6',
