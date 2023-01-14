@@ -478,6 +478,32 @@ const docTemplate = `{
             }
         },
         "/api/v1/users": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get all users",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "418": {
+                        "description": "I'm a teapot"
+                    }
+                }
+            },
             "post": {
                 "produces": [
                     "application/json"
@@ -515,7 +541,7 @@ const docTemplate = `{
                 "tags": [
                     "Users"
                 ],
-                "summary": "Get all users",
+                "summary": "Get Me",
                 "parameters": [
                     {
                         "type": "string",
