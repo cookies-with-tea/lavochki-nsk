@@ -1,7 +1,7 @@
 import React, {ReactElement, useState} from 'react';
 import {useQuery} from "react-query";
 import {BenchTagType} from "@/types/bench.type";
-import CommentsModerationTable from "@/components/pages/CommentsModeration/CommentsModerationTable";
+import CommentsModerationTable from "@/components/pages/ReportComments/ReportCommentsTable";
 import {ErrorType} from "@/types/common.type";
 import TagService from "@/services/Tag/TagService";
 import TagsTable from "@/components/pages/Tags/TagsTable";

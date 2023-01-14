@@ -7,6 +7,7 @@ import {ErrorType} from "@/types/common.type";
 import {useToggle} from "@/hooks/useToggle";
 import BenchesDialogUpdate from "@/components/pages/Benches/BenchesDialog/BenchesDialogUpdate";
 import {Box, Button, Drawer, Typography} from "@mui/material";
+import BenchesDetail from "@/components/pages/Benches/BenchesDetail";
 
 const getBenches = async (): Promise<BenchType[]> => await BenchService.getAll()
 const getBenchById = async (id: string): Promise<BenchType> => await BenchService.getById(id)
@@ -60,13 +61,12 @@ const TheBenches = () => {
                 onClose={setIsUpdateDialogVisible}
             />
 
-            <Drawer
-                anchor={'right'}
-                open={isDetailBenchVisible}
-                onClose={setDetailBenchVisible}
-            >
-                Content
-            </Drawer>
+           <BenchesDetail
+               bench={bench}
+               isOpen={isDetailBenchVisible}
+               onClose={setDetailBenchVisible}
+               updateDialogToggle={setIsUpdateDialogVisible}
+           />
         </Box>
     );
 };
