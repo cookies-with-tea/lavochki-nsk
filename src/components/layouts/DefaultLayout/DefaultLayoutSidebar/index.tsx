@@ -15,7 +15,16 @@ const DefaultLayoutSidebar: FC = (): ReactElement => {
         : "page-inactive";
 
     return (
-        <List>
+        <List
+            sx={{
+                backgroundColor: '#fff',
+                marginRight: '20px',
+                height: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
+            }}
+        >
             {
                 menuItems.map((item) => (
                     <StyledListItem key={item.id} className={getNavLinkClass(item.url)}>
