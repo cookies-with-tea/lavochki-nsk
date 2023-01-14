@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from 'axios'
 import {AxiosService} from "@/services/Axios/AxiosService";
 import {CreateReportCommentType} from "@/types/report.type";
-import {CommentReportType, CommentType} from "@/types/comment.type";
+import {ReportCommentType, CommentType} from "@/types/comment.type";
 
 class ReportService extends AxiosService {
   constructor(config?: AxiosRequestConfig) {
@@ -16,7 +16,7 @@ class ReportService extends AxiosService {
     })
   }
 
-  public getModerationAll = (): Promise<CommentReportType[]> => {
+  public getModerationAll = (): Promise<ReportCommentType[]> => {
     return this.axiosCall({
       method: 'get',
       url: '/moderation'

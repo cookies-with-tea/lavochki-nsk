@@ -1,6 +1,4 @@
 import React, {FC, ReactElement, ReactNode, useState} from 'react';
-import CommonHeader from "@/components/layouts/DefaultLayout/DefaultLayoutHeader";
-import CommonSidebar from "@/components/layouts/DefaultLayout/DefaultLayoutSidebar";
 import {UserMeType} from "@/types/user.type";
 import {useQuery} from "react-query";
 import UserService from "@/services/User/UserService";
@@ -25,13 +23,9 @@ const DefaultLayout: FC<IProps> = ({ children }): ReactElement => {
     })
 
     return (
-        <>
-            <CommonHeader />
-            <div className={'d-f'}>
-                <CommonSidebar />
-                { children }
-            </div>
-        </>
+        <div className={'d-f fd-c w-100'}>
+            { children }
+        </div>
     );
 };
 

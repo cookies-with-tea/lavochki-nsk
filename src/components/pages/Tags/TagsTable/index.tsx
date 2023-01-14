@@ -18,23 +18,28 @@ const CommentsModerationTable: FC<IProps> = ({ tags }): ReactElement => {
                         <TableCell align='left'>Название</TableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody>
-                    {
-                        tags && tags.map((tag) => (
-                            <TableRow
-                                key={tag.id}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component='th' scope='row'>
-                                    {tag.id}
-                                </TableCell>
-                                <TableCell>
-                                    {tag.title}
-                                </TableCell>
-                            </TableRow>
-                        ))
-                    }
-                </TableBody>
+                {
+                    tags ? (
+                        <TableBody>
+                            {
+                                tags.map((tag) => (
+                                    <TableRow
+                                        key={tag.id}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    >
+                                        <TableCell component='th' scope='row'>
+                                            {tag.id}
+                                        </TableCell>
+                                        <TableCell>
+                                            {tag.title}
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            }
+                        </TableBody>
+                    )
+                        : <div>Нет данных</div>
+                }
             </Table>
         </>
     )
