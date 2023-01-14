@@ -10,6 +10,8 @@ var (
 	ErrNotEnoughRights    = NewAppError(nil, "not enough rights", nil)
 	ErrFailedToCreate     = NewAppError(nil, "failed to create", nil)
 	ErrObjectExists       = NewAppError(nil, "object exists", nil)
+	ErrFailedToUpdate     = NewAppError(nil, "failed to update", nil)
+	ErrFailedToDelete     = NewAppError(nil, "failed to delete", nil)
 )
 
 type JSONMarshal interface {

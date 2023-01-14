@@ -80,6 +80,19 @@ definitions:
       password:
         type: string
     type: object
+  dto.CreateBench:
+    properties:
+      images:
+        items:
+          items:
+            type: integer
+          type: array
+        type: array
+      lat:
+        type: number
+      lng:
+        type: number
+    type: object
   dto.CreateBenchViaTelegram:
     properties:
       images:
@@ -149,6 +162,13 @@ definitions:
       token:
         type: string
     type: object
+  dto.UpdateBench:
+    properties:
+      lat:
+        type: number
+      lng:
+        type: number
+    type: object
   dto.UpdateComment:
     properties:
       content:
@@ -185,7 +205,57 @@ paths:
       summary: List benches
       tags:
       - Benches
+    post:
+      parameters:
+      - description: bench data
+        in: body
+        name: Bench
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateBench'
+      - description: Bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+        "418":
+          description: I'm a teapot
+      summary: Create bench
+      tags:
+      - Benches Moderation
   /api/v1/benches/{id}:
+    delete:
+      description: Delete bench by ID
+      parameters:
+      - description: Bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Bench ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/apperror.AppError'
+        "418":
+          description: I'm a teapot
+      summary: Delete bench
+      tags:
+      - Benches Moderation
     get:
       description: Get detail active bench
       responses:
@@ -200,6 +270,38 @@ paths:
       summary: Detail bench
       tags:
       - Benches
+    patch:
+      parameters:
+      - description: bench data
+        in: body
+        name: Bench
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateBench'
+      - description: Bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Bench ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/apperror.AppError'
+        "418":
+          description: I'm a teapot
+      summary: Update bench
+      tags:
+      - Benches Moderation
   /api/v1/benches/moderation:
     get:
       description: Get list moderation benches
@@ -472,6 +574,10 @@ paths:
       responses:
         "200":
           description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.User'
+            type: array
         "418":
           description: I'm a teapot
       summary: Get all users

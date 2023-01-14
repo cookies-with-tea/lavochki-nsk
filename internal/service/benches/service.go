@@ -21,6 +21,8 @@ type Service interface {
 	DecisionBench(ctx context.Context, benchID string, decision bool) error
 	GetBenchByID(ctx context.Context, id string) (*domain.Bench, error)
 	SaveImages(ctx context.Context, images [][]byte) ([]string, error)
+	UpdateBench(ctx context.Context, id string, bench domain.Bench) error
+	DeleteBench(ctx context.Context, id string) error
 }
 
 type service struct {
@@ -60,6 +62,26 @@ func (service *service) CreateBench(ctx context.Context, bench domain.Bench) err
 		service.log.Error("failed create bench", zap.Error(err))
 		return apperror.ErrFailedToCreate
 	}
+	return nil
+}
+
+func (service *service) UpdateBench(ctx context.Context, id string, bench domain.Bench) error {
+	err := service.db.Update(ctx, id, bench)
+	if err != nil {
+		service.log.Error("failed update bench", zap.String("id", id), zap.Error(err))
+		return apperror.ErrFailedToUpdate
+	}
+
+	return nil
+}
+
+func (service *service) DeleteBench(ctx context.Context, id string) error {
+	err := service.db.Delete(ctx, id)
+	if err != nil {
+		service.log.Error("failed delete bench", zap.String("id", id), zap.Error(err))
+		return apperror.ErrFailedToDelete
+	}
+
 	return nil
 }
 

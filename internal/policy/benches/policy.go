@@ -51,6 +51,14 @@ func (policy *Policy) GetListBenches(ctx context.Context, isActive bool, sortOpt
 	return policy.benchesService.GetListBenches(ctx, isActive, sortOptions)
 }
 
+func (policy *Policy) CreateBench(ctx context.Context, bench domain.Bench) error {
+	return policy.benchesService.CreateBench(ctx, bench)
+}
+
+func (policy *Policy) UpdateBench(ctx context.Context, id string, bench domain.Bench) error {
+	return policy.benchesService.UpdateBench(ctx, id, bench)
+}
+
 func (policy *Policy) DecisionBench(ctx context.Context, benchID string, decision bool, message string) error {
 	// Получаем лавочку по ID, потому что нам нужен TelegramID создателя лавочки
 	bench, errGetBench := policy.benchesService.GetBenchByID(ctx, benchID)
@@ -89,4 +97,8 @@ func (policy *Policy) DecisionBench(ctx context.Context, benchID string, decisio
 
 func (policy *Policy) GetBenchByID(ctx context.Context, id string) (*domain.Bench, error) {
 	return policy.benchesService.GetBenchByID(ctx, id)
+}
+
+func (policy *Policy) DeleteBench(ctx context.Context, id string) error {
+	return policy.benchesService.DeleteBench(ctx, id)
 }
