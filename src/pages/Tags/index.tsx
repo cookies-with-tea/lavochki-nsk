@@ -8,7 +8,7 @@ import TagsTable from "@/components/pages/Tags/TagsTable";
 
 const getTags = async () => await TagService.getAll()
 
-const CommentsModeration = (): ReactElement => {
+const TheTags = (): ReactElement => {
     const [tags, setTags] = useState<BenchTagType[]>([])
 
     const moderationCommentsQuery = useQuery<BenchTagType[], ErrorType>('get tags', getTags,  {
@@ -24,4 +24,4 @@ const CommentsModeration = (): ReactElement => {
     );
 };
 
-export default CommentsModeration;
+export default TheTags;
