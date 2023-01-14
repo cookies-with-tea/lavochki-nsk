@@ -7,9 +7,9 @@ import (
 )
 
 type CreateBench struct {
-	Lat   float64 `json:"lat"`
-	Lng   float64 `json:"lng"`
-	Image []byte  `json:"image"`
+	Lat    float64  `json:"lat"`
+	Lng    float64  `json:"lng"`
+	Images [][]byte `json:"images"`
 }
 
 type CreateBenchViaTelegram struct {
@@ -17,6 +17,11 @@ type CreateBenchViaTelegram struct {
 	Lng            float64  `json:"lng"`
 	Images         [][]byte `json:"images"`
 	UserTelegramID int      `json:"user_telegram_id"`
+}
+
+type UpdateBench struct {
+	Lat float64 `json:"lat"`
+	Lng float64 `json:"lng"`
 }
 
 type DecisionBench struct {
@@ -29,10 +34,17 @@ func (bench *CreateBench) Validate() error {
 	return validation.ValidateStruct(bench,
 		validation.Field(&bench.Lat, validation.Required),
 		validation.Field(&bench.Lng, validation.Required),
-		validation.Field(&bench.Image, validation.Required))
+		validation.Field(&bench.Images, validation.Required))
 }
 
 func (bench *CreateBench) ToDomain() domain.Bench {
+	return domain.Bench{
+		Lat: bench.Lat,
+		Lng: bench.Lng,
+	}
+}
+
+func (bench *UpdateBench) ToDomain() domain.Bench {
 	return domain.Bench{
 		Lat: bench.Lat,
 		Lng: bench.Lng,
