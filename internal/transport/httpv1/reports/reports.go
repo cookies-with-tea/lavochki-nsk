@@ -8,6 +8,8 @@ import (
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"net/http"
+
+	_ "benches/internal/domain"
 )
 
 type Handler struct {
@@ -21,7 +23,7 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 	usersReportsRouter.HandleFunc("/comments", apperror.Middleware(handler.createReportComment)).Methods("POST")
 
 	moderationReportsRouter := router.NewRoute().Subrouter()
-	moderationReportsRouter.HandleFunc("/comments/moderation", apperror.Middleware(handler.listReportsComments)).
+	moderationReportsRouter.HandleFunc("/comments", apperror.Middleware(handler.listReportsComments)).
 		Methods("GET")
 }
 
@@ -81,9 +83,10 @@ func (handler *Handler) createReportComment(writer http.ResponseWriter, request 
 // @Summary List moderation report comments
 // @Tags Reports
 // @Produce json
-// @Success 200
+// @Param Authorization header string true "Bearer"
+// @Success 200 {object} []domain.CommentReport
 // @Failure 418
-// @Router /api/v1/reports/comments/moderation [get]
+// @Router /api/v1/reports/comments [get]
 func (handler *Handler) listReportsComments(writer http.ResponseWriter, request *http.Request) error {
 	commentsReports, errGetComments := handler.policy.GetCommentsReports(request.Context(), true)
 	if errGetComments != nil {

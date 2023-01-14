@@ -348,6 +348,38 @@ const docTemplate = `{
             }
         },
         "/api/v1/reports/comments": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "List moderation report comments",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.CommentReport"
+                            }
+                        }
+                    },
+                    "418": {
+                        "description": "I'm a teapot"
+                    }
+                }
+            },
             "post": {
                 "produces": [
                     "application/json"
@@ -383,25 +415,6 @@ const docTemplate = `{
                     },
                     "409": {
                         "description": "Conflict"
-                    }
-                }
-            }
-        },
-        "/api/v1/reports/comments/moderation": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Reports"
-                ],
-                "summary": "List moderation report comments",
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "418": {
-                        "description": "I'm a teapot"
                     }
                 }
             }
@@ -596,11 +609,8 @@ const docTemplate = `{
                 "lng": {
                     "type": "number"
                 },
-                "tags": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.Tag"
-                    }
+                "owner": {
+                    "type": "string"
                 }
             }
         },
@@ -626,6 +636,26 @@ const docTemplate = `{
                     }
                 },
                 "parent_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.CommentReport": {
+            "type": "object",
+            "properties": {
+                "ID": {
+                    "type": "string"
+                },
+                "cause": {
+                    "type": "string"
+                },
+                "commentID": {
+                    "type": "string"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "userID": {
                     "type": "string"
                 }
             }

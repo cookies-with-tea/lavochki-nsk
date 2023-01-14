@@ -22,10 +22,8 @@ definitions:
         type: number
       lng:
         type: number
-      tags:
-        items:
-          $ref: '#/definitions/domain.Tag'
-        type: array
+      owner:
+        type: string
     type: object
   domain.Comment:
     properties:
@@ -42,6 +40,19 @@ definitions:
           $ref: '#/definitions/domain.Comment'
         type: array
       parent_id:
+        type: string
+    type: object
+  domain.CommentReport:
+    properties:
+      ID:
+        type: string
+      cause:
+        type: string
+      commentID:
+        type: string
+      is_active:
+        type: boolean
+      userID:
         type: string
     type: object
   domain.Tag:
@@ -353,6 +364,27 @@ paths:
       tags:
       - Comments
   /api/v1/reports/comments:
+    get:
+      parameters:
+      - description: Bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.CommentReport'
+            type: array
+        "418":
+          description: I'm a teapot
+      summary: List moderation report comments
+      tags:
+      - Reports
     post:
       parameters:
       - description: report comment data
@@ -376,18 +408,6 @@ paths:
         "409":
           description: Conflict
       summary: Create report comment
-      tags:
-      - Reports
-  /api/v1/reports/comments/moderation:
-    get:
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-        "418":
-          description: I'm a teapot
-      summary: List moderation report comments
       tags:
       - Reports
   /api/v1/tags:
