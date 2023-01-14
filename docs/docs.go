@@ -515,7 +515,7 @@ const docTemplate = `{
                 "tags": [
                     "Users"
                 ],
-                "summary": "Get Me",
+                "summary": "Get all users",
                 "parameters": [
                     {
                         "type": "string",
@@ -649,13 +649,13 @@ const docTemplate = `{
                 "cause": {
                     "type": "string"
                 },
-                "commentID": {
+                "comment_id": {
                     "type": "string"
                 },
                 "is_active": {
                     "type": "boolean"
                 },
-                "userID": {
+                "user_id": {
                     "type": "string"
                 }
             }
@@ -667,6 +667,23 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.User": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "telegram_id": {
+                    "type": "integer"
+                },
+                "username": {
                     "type": "string"
                 }
             }

@@ -48,11 +48,11 @@ definitions:
         type: string
       cause:
         type: string
-      commentID:
+      comment_id:
         type: string
       is_active:
         type: boolean
-      userID:
+      user_id:
         type: string
     type: object
   domain.Tag:
@@ -60,6 +60,17 @@ definitions:
       id:
         type: string
       title:
+        type: string
+    type: object
+  domain.User:
+    properties:
+      id:
+        type: string
+      role:
+        type: string
+      telegram_id:
+        type: integer
+      username:
         type: string
     type: object
   dto.AuthorizationBot:
@@ -482,7 +493,7 @@ paths:
           description: OK
         "418":
           description: I'm a teapot
-      summary: Get Me
+      summary: Get all users
       tags:
       - Users
   /api/v1/users/refresh:
