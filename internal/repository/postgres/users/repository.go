@@ -18,6 +18,7 @@ type Repository interface {
 	ByTelegramID(ctx context.Context, telegramID int) (*domain.User, error)
 	ByID(ctx context.Context, id string) (*domain.User, error)
 	Create(ctx context.Context, user domain.User) error
+	All(ctx context.Context) ([]*domain.User, error)
 }
 
 type repository struct {
@@ -107,4 +108,40 @@ func (repository *repository) Create(ctx context.Context, user domain.User) erro
 		return execErr
 	}
 	return nil
+}
+
+func (repository *repository) All(ctx context.Context) ([]*domain.User, error) {
+	query := repository.queryBuilder.Select("id").
+		Columns("username", "telegram_id", "role").
+		From(tableScheme)
+
+	sql, args, err := query.ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := repository.client.Query(ctx, sql, args...)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	list := make([]*domain.User, 0)
+
+	for rows.Next() {
+		user := domain.User{}
+		if err = rows.Scan(
+			&user.ID,
+			&user.Username,
+			&user.TelegramID,
+			&user.Role,
+		); err != nil {
+			return nil, err
+		}
+
+		list = append(list, &user)
+	}
+
+	return list, nil
 }
