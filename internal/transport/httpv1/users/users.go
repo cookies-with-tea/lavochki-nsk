@@ -116,7 +116,6 @@ func (handler *Handler) me(writer http.ResponseWriter, request *http.Request) er
 // @Produce json
 // @Param Authorization header string true "Bearer"
 // @Success 200 {object} []domain.User
-// @Success 200
 // @Failure 418
 // @Router /api/v1/users [get]
 func (handler *Handler) listAllUsers(writer http.ResponseWriter, request *http.Request) error {
