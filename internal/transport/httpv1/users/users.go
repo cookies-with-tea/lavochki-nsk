@@ -22,7 +22,7 @@ func NewHandler(policy *users.Policy) *Handler {
 }
 
 func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) {
-	router.HandleFunc("/api/v1/users", apperror.Middleware(handler.registerUser))
+	router.HandleFunc("/api/v1/users", apperror.Middleware(handler.registerUser)).Methods("POST")
 	router.HandleFunc("/api/v1/users/refresh", apperror.Middleware(handler.refreshToken))
 
 	meUsersRouter := router.NewRoute().Subrouter()
@@ -31,7 +31,7 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 
 	adminPanelRouter := router.NewRoute().Subrouter()
 	adminPanelRouter.Use(authManager.JWTRoleMiddleware("admin"))
-	adminPanelRouter.HandleFunc("/api/v1/users", apperror.Middleware(handler.listAllUsers))
+	adminPanelRouter.HandleFunc("/api/v1/users", apperror.Middleware(handler.listAllUsers)).Methods("GET")
 }
 
 // RegisterUser
@@ -118,7 +118,7 @@ func (handler *Handler) me(writer http.ResponseWriter, request *http.Request) er
 // @Success 200 {object} []domain.User
 // @Success 200
 // @Failure 418
-// @Router /api/v1/users/me [get]
+// @Router /api/v1/users [get]
 func (handler *Handler) listAllUsers(writer http.ResponseWriter, request *http.Request) error {
 	all, errGetAllUsers := handler.policy.GetAllUsers(request.Context())
 	if errGetAllUsers != nil {
