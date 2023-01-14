@@ -125,11 +125,8 @@ func (m *Manager) checkJWT(w http.ResponseWriter, r *http.Request) (context.Cont
 			Message: "malformed token",
 			Details: nil,
 		}
-		_, err := w.Write(errorResponse.Marshal()) // nolint: errcheck
-		if err != nil {
-			w.WriteHeader(http.StatusUnauthorized)
-		}
-		return nil, err
+		_, _ = w.Write(errorResponse.Marshal()) // nolint: errcheck
+		return nil, errors.New("malformed token")
 	}
 	jwtToken := authHeader[1]
 	token, err := jwt.Parse(jwtToken, func(token *jwt.Token) (interface{}, error) {
