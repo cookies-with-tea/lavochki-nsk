@@ -191,6 +191,14 @@ paths:
         in: query
         name: sort_order
         type: string
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: pre page
+        in: query
+        name: pre_page
+        type: integer
       responses:
         "200":
           description: OK
@@ -229,7 +237,7 @@ paths:
           description: I'm a teapot
       summary: Create bench
       tags:
-      - Benches Moderation
+      - Benches
   /api/v1/benches/{id}:
     delete:
       description: Delete bench by ID
@@ -255,7 +263,7 @@ paths:
           description: I'm a teapot
       summary: Delete bench
       tags:
-      - Benches Moderation
+      - Benches
     get:
       description: Get detail active bench
       responses:
@@ -301,7 +309,7 @@ paths:
           description: I'm a teapot
       summary: Update bench
       tags:
-      - Benches Moderation
+      - Benches
   /api/v1/benches/moderation:
     get:
       description: Get list moderation benches
@@ -311,6 +319,22 @@ paths:
         name: Authorization
         required: true
         type: string
+      - description: sort field
+        in: query
+        name: sort_by
+        type: string
+      - description: sort order
+        in: query
+        name: sort_order
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: pre page
+        in: query
+        name: pre_page
+        type: integer
       responses:
         "200":
           description: OK
@@ -324,7 +348,7 @@ paths:
             $ref: '#/definitions/apperror.AppError'
       summary: Moderation list benches
       tags:
-      - Benches Moderation
+      - Benches
     post:
       description: Accept or reject a bench
       parameters:
@@ -348,7 +372,7 @@ paths:
             $ref: '#/definitions/apperror.AppError'
       summary: Decision bench
       tags:
-      - Benches Moderation
+      - Benches
   /api/v1/benches/telegram:
     post:
       parameters:
@@ -367,7 +391,7 @@ paths:
           description: Bad Request
       summary: Create bench via telegram
       tags:
-      - Benches Moderation
+      - Benches
   /api/v1/bot/auth:
     post:
       parameters:

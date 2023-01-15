@@ -35,6 +35,18 @@ const docTemplate = `{
                         "description": "sort order",
                         "name": "sort_order",
                         "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pre page",
+                        "name": "pre_page",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -60,7 +72,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Benches Moderation"
+                    "Benches"
                 ],
                 "summary": "Create bench",
                 "parameters": [
@@ -98,7 +110,7 @@ const docTemplate = `{
             "get": {
                 "description": "Get list moderation benches",
                 "tags": [
-                    "Benches Moderation"
+                    "Benches"
                 ],
                 "summary": "Moderation list benches",
                 "parameters": [
@@ -108,6 +120,30 @@ const docTemplate = `{
                         "name": "Authorization",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "sort field",
+                        "name": "sort_by",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "sort order",
+                        "name": "sort_order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pre page",
+                        "name": "pre_page",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -131,7 +167,7 @@ const docTemplate = `{
             "post": {
                 "description": "Accept or reject a bench",
                 "tags": [
-                    "Benches Moderation"
+                    "Benches"
                 ],
                 "summary": "Decision bench",
                 "parameters": [
@@ -171,7 +207,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Benches Moderation"
+                    "Benches"
                 ],
                 "summary": "Create bench via telegram",
                 "parameters": [
@@ -220,7 +256,7 @@ const docTemplate = `{
             "delete": {
                 "description": "Delete bench by ID",
                 "tags": [
-                    "Benches Moderation"
+                    "Benches"
                 ],
                 "summary": "Delete bench",
                 "parameters": [
@@ -259,7 +295,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Benches Moderation"
+                    "Benches"
                 ],
                 "summary": "Update bench",
                 "parameters": [
