@@ -16,7 +16,7 @@ const (
 )
 
 type Repository interface {
-	All(ctx context.Context, isActive bool, sortOptions model.SortOptions) ([]*domain.Bench, error)
+	All(ctx context.Context, isActive bool, sortOptions model.SortOptions, paginateOptions model.PaginateOptions) ([]*domain.Bench, error)
 	ByID(ctx context.Context, id string) (*domain.Bench, error)
 	Create(ctx context.Context, bench domain.Bench) error
 	Update(ctx context.Context, id string, bench domain.Bench) error
@@ -35,7 +35,8 @@ func NewBenchesRepository(client postgres.Client) Repository {
 	}
 }
 
-func (repository *repository) All(ctx context.Context, isActive bool, sortOptions model.SortOptions) ([]*domain.Bench, error) {
+func (repository *repository) All(ctx context.Context, isActive bool, sortOptions model.SortOptions,
+	paginateOptions model.PaginateOptions) ([]*domain.Bench, error) {
 	query := repository.queryBuilder.
 		Select("id").
 		Columns("lat", "lng", "is_active", "images", "owner_id").
@@ -43,6 +44,13 @@ func (repository *repository) All(ctx context.Context, isActive bool, sortOption
 
 	if sortOptions != nil {
 		query = query.OrderBy(sortOptions.GetOrderBy())
+	}
+
+	if paginateOptions != nil {
+		page := paginateOptions.GetPage()
+		perPage := paginateOptions.GetPerPage()
+
+		query = query.Limit(perPage).Offset(uint64((page - 1) * perPage))
 	}
 
 	sql, args, err := query.ToSql()
@@ -54,7 +62,6 @@ func (repository *repository) All(ctx context.Context, isActive bool, sortOption
 	if err != nil {
 		return nil, err
 	}
-
 	defer rows.Close()
 
 	list := make([]*domain.Bench, 0)
