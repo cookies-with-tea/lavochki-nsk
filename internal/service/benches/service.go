@@ -6,6 +6,7 @@ import (
 	"benches/internal/repository/model"
 	"benches/internal/repository/postgres/benches"
 	storage "benches/internal/storage/minio"
+	"benches/pkg/api/paginate"
 	"benches/pkg/api/sort"
 	"context"
 	"errors"
@@ -16,7 +17,8 @@ import (
 )
 
 type Service interface {
-	GetListBenches(ctx context.Context, isActive bool, sortOptions sort.Options) ([]*domain.Bench, error)
+	GetListBenches(ctx context.Context, isActive bool, sortOptions sort.Options,
+		paginateOptions paginate.Options) ([]*domain.Bench, error)
 	CreateBench(ctx context.Context, bench domain.Bench) error
 	DecisionBench(ctx context.Context, benchID string, decision bool) error
 	GetBenchByID(ctx context.Context, id string) (*domain.Bench, error)
@@ -35,12 +37,16 @@ func NewService(db benches.Repository, storage *storage.Storage, log *zap.Logger
 	return &service{db: db, storage: storage, log: log}
 }
 
-func (service *service) GetListBenches(ctx context.Context, isActive bool, sortOptions sort.Options) ([]*domain.Bench, error) {
+func (service *service) GetListBenches(ctx context.Context, isActive bool, sortOptions sort.Options,
+	paginateOptions paginate.Options) ([]*domain.Bench, error) {
 	// Создаём параметры для сортировки
-	options := model.NewSortOptions(sortOptions.Field, sortOptions.Order)
+	optionsForSort := model.NewSortOptions(sortOptions.Field, sortOptions.Order)
+
+	// Создаём параметры для пагинации
+	optionsForPaginate := model.NewPaginateOptions(paginateOptions.Page, paginateOptions.PerPage)
 
 	// Получаем все лавочки из базы данных
-	all, err := service.db.All(ctx, isActive, options)
+	all, err := service.db.All(ctx, isActive, optionsForSort, optionsForPaginate)
 	if err != nil {
 		service.log.Error("error get all benches", zap.Error(err))
 		return nil, err

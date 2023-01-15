@@ -23,6 +23,18 @@
                         "description": "sort order",
                         "name": "sort_order",
                         "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pre page",
+                        "name": "pre_page",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -48,7 +60,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Benches Moderation"
+                    "Benches"
                 ],
                 "summary": "Create bench",
                 "parameters": [
@@ -86,7 +98,7 @@
             "get": {
                 "description": "Get list moderation benches",
                 "tags": [
-                    "Benches Moderation"
+                    "Benches"
                 ],
                 "summary": "Moderation list benches",
                 "parameters": [
@@ -96,6 +108,30 @@
                         "name": "Authorization",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "sort field",
+                        "name": "sort_by",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "sort order",
+                        "name": "sort_order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pre page",
+                        "name": "pre_page",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -119,7 +155,7 @@
             "post": {
                 "description": "Accept or reject a bench",
                 "tags": [
-                    "Benches Moderation"
+                    "Benches"
                 ],
                 "summary": "Decision bench",
                 "parameters": [
@@ -159,7 +195,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Benches Moderation"
+                    "Benches"
                 ],
                 "summary": "Create bench via telegram",
                 "parameters": [
@@ -208,7 +244,7 @@
             "delete": {
                 "description": "Delete bench by ID",
                 "tags": [
-                    "Benches Moderation"
+                    "Benches"
                 ],
                 "summary": "Delete bench",
                 "parameters": [
@@ -247,7 +283,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Benches Moderation"
+                    "Benches"
                 ],
                 "summary": "Update bench",
                 "parameters": [

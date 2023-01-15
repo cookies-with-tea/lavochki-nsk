@@ -7,6 +7,7 @@ import (
 	benchesService "benches/internal/service/benches"
 	notificationsService "benches/internal/service/notifications"
 	usersService "benches/internal/service/users"
+	"benches/pkg/api/paginate"
 	"benches/pkg/api/sort"
 	"context"
 )
@@ -47,8 +48,9 @@ func (policy *Policy) CreateBenchViaTelegram(ctx context.Context, userTelegramID
 	return nil
 }
 
-func (policy *Policy) GetListBenches(ctx context.Context, isActive bool, sortOptions sort.Options) ([]*domain.Bench, error) {
-	return policy.benchesService.GetListBenches(ctx, isActive, sortOptions)
+func (policy *Policy) GetListBenches(ctx context.Context, isActive bool, sortOptions sort.Options,
+	paginateOptions paginate.Options) ([]*domain.Bench, error) {
+	return policy.benchesService.GetListBenches(ctx, isActive, sortOptions, paginateOptions)
 }
 
 func (policy *Policy) CreateBench(ctx context.Context, bench domain.Bench) error {

@@ -5,6 +5,7 @@ import (
 	_ "benches/internal/domain"
 	"benches/internal/dto"
 	"benches/internal/policy/benches"
+	"benches/pkg/api/paginate"
 	"benches/pkg/api/sort"
 	"benches/pkg/auth"
 	"encoding/json"
@@ -22,7 +23,8 @@ func NewHandler(benches *benches.Policy) *Handler {
 }
 
 func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) {
-	router.HandleFunc("", sort.Middleware(apperror.Middleware(handler.listBenches), "id", sort.ASC)).Methods("GET")
+	router.HandleFunc("", paginate.Middleware(sort.Middleware(
+		apperror.Middleware(handler.listBenches), "id", sort.ASC), 1, 10)).Methods("GET")
 
 	// Создание лавочки через telegram
 	routerCreateBenches := router.NewRoute().Subrouter()
@@ -33,7 +35,8 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 	routerModeration := router.NewRoute().Subrouter()
 	routerModeration.Use(authManager.JWTRoleMiddleware("admin"))
 	// Получение списка всех лавочек на модерации
-	routerModeration.HandleFunc("/moderation", sort.Middleware(apperror.Middleware(handler.listModerationBench), "id", sort.ASC)).Methods("GET")
+	routerModeration.HandleFunc("/moderation", paginate.Middleware(
+		sort.Middleware(apperror.Middleware(handler.listModerationBench), "id", sort.ASC), 1, 10)).Methods("GET")
 	// Одобрение или отказ лавочки
 	routerModeration.HandleFunc("/moderation", apperror.Middleware(handler.decisionBench)).Methods("POST")
 	// Создание лавочки
@@ -51,20 +54,29 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 // @Tags Benches
 // @Param sort_by query string false "sort field"
 // @Param sort_order query string false "sort order"
+// @Param page query int false "page"
+// @Param pre_page query int false "pre page"
 // @Success 200 {object} []domain.Bench
 // @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches [get]
-func (handler *Handler) listBenches(w http.ResponseWriter, r *http.Request) error {
+func (handler *Handler) listBenches(writer http.ResponseWriter, request *http.Request) error {
+	// Получаем параметры для сортировки
 	var sortOptions sort.Options
-	if options, ok := r.Context().Value(sort.OptionsContextKey).(sort.Options); ok {
+	if options, ok := request.Context().Value(sort.OptionsContextKey).(sort.Options); ok {
 		sortOptions = options
 	}
 
-	all, err := handler.policy.GetListBenches(r.Context(), true, sortOptions)
+	// Получаем параметры для пагинации
+	var paginateOptions paginate.Options
+	if options, ok := request.Context().Value(paginate.OptionsContextKey).(paginate.Options); ok {
+		paginateOptions = options
+	}
+
+	all, err := handler.policy.GetListBenches(request.Context(), true, sortOptions, paginateOptions)
 	if err != nil {
 		return err
 	}
-	handler.ResponseJson(w, all, 200)
+	handler.ResponseJson(writer, all, 200)
 	return nil
 }
 
@@ -89,7 +101,7 @@ func (handler *Handler) detailBench(w http.ResponseWriter, r *http.Request) erro
 }
 
 // @Summary Create bench via telegram
-// @Tags Benches Moderation
+// @Tags Benches
 // @Produce json
 // @Param CreateBenchViaTelegram body dto.CreateBenchViaTelegram true "bench data"
 // @Success 201
@@ -116,7 +128,7 @@ func (handler *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Reque
 }
 
 // @Summary Create bench
-// @Tags Benches Moderation
+// @Tags Benches
 // @Produce json
 // @Param Bench body dto.CreateBench true "bench data"
 // @Param Authorization header string true "Bearer"
@@ -148,7 +160,7 @@ func (handler *Handler) createBench(writer http.ResponseWriter, request *http.Re
 }
 
 // @Summary Update bench
-// @Tags Benches Moderation
+// @Tags Benches
 // @Produce json
 // @Param Bench body dto.UpdateBench true "bench data"
 // @Param Authorization header string true "Bearer"
@@ -178,7 +190,7 @@ func (handler *Handler) updateBench(writer http.ResponseWriter, request *http.Re
 
 // @Summary Delete bench
 // @Description Delete bench by ID
-// @Tags Benches Moderation
+// @Tags Benches
 // @Param Authorization header string true "Bearer"
 // @Param id path string true "Bench ID"
 // @Success 200
@@ -200,29 +212,40 @@ func (handler *Handler) deleteBench(writer http.ResponseWriter, request *http.Re
 
 // @Summary Moderation list benches
 // @Description Get list moderation benches
-// @Tags Benches Moderation
+// @Tags Benches
 // @Param Authorization header string true "Bearer"
+// @Param sort_by query string false "sort field"
+// @Param sort_order query string false "sort order"
+// @Param page query int false "page"
+// @Param pre_page query int false "pre page"
 // @Success 200 {object} []domain.Bench
 // @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches/moderation [get]
-func (handler *Handler) listModerationBench(w http.ResponseWriter, r *http.Request) error {
+func (handler *Handler) listModerationBench(writer http.ResponseWriter, request *http.Request) error {
+	// Получаем параметры для сортировки
 	var sortOptions sort.Options
-	if options, ok := r.Context().Value(sort.OptionsContextKey).(sort.Options); ok {
+	if options, ok := request.Context().Value(sort.OptionsContextKey).(sort.Options); ok {
 		sortOptions = options
 	}
 
-	all, err := handler.policy.GetListBenches(r.Context(), false, sortOptions)
+	// Получаем параметры для пагинации
+	var paginateOptions paginate.Options
+	if options, ok := request.Context().Value(paginate.OptionsContextKey).(paginate.Options); ok {
+		paginateOptions = options
+	}
+
+	all, err := handler.policy.GetListBenches(request.Context(), false, sortOptions, paginateOptions)
 	if err != nil {
 		return err
 	}
 
-	handler.ResponseJson(w, all, http.StatusOK)
+	handler.ResponseJson(writer, all, http.StatusOK)
 	return nil
 }
 
 // @Summary Decision bench
 // @Description Accept or reject a bench
-// @Tags Benches Moderation
+// @Tags Benches
 // @Param Decision body dto.DecisionBench true "decision bench data"
 // @Param Authorization header string true "Bearer"
 // @Success 200
