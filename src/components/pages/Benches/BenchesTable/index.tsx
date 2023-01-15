@@ -1,5 +1,5 @@
 import {Button, Checkbox, Table, TableBody, TableCell, TableHead, TableRow} from '@mui/material'
-import React, {ChangeEvent, FC, ReactElement, MouseEvent, useState, useEffect} from 'react'
+import React, {ChangeEvent, FC, ReactElement, MouseEvent, useState} from 'react'
 import {BenchType} from "@/types/bench.type";
 
 interface IProps {
@@ -47,9 +47,10 @@ const BenchesTable: FC<IProps> = ({ benches, updateDialogToggle, detailBenchDraw
         setSelected([]);
     }
 
-    const handleUpdateDialogOpen = (event: MouseEvent<HTMLButtonElement>): void => {
+    const handleUpdateDialogOpen = (event: MouseEvent<HTMLButtonElement>, benchId: string): void => {
         event.stopPropagation()
 
+        getBenchById(benchId)
         updateDialogToggle()
     }
 
@@ -106,9 +107,9 @@ const BenchesTable: FC<IProps> = ({ benches, updateDialogToggle, detailBenchDraw
                                                         onClick={(event) => handleRowSelect(event, bench.id)}
                                                     />
                                                 </TableCell>
-                                                <TableCell component='th' scope='row'>
+                                                <TableCell>
                                                     {
-                                                        isItemSelected ? <Button onClick={handleUpdateDialogOpen}>Изменить</Button> : bench.id
+                                                        isItemSelected ? <Button onClick={(event) => handleUpdateDialogOpen(event, bench.id)}>Изменить</Button> : bench.id
                                                     }
                                                 </TableCell>
                                                 <TableCell>
