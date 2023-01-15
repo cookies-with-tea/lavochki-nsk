@@ -45,7 +45,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "pre page",
-                        "name": "pre_page",
+                        "name": "per_page",
                         "in": "query"
                     }
                 ],
@@ -142,7 +142,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "pre page",
-                        "name": "pre_page",
+                        "name": "per_page",
                         "in": "query"
                     }
                 ],

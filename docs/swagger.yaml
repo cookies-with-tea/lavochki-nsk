@@ -197,7 +197,7 @@ paths:
         type: integer
       - description: pre page
         in: query
-        name: pre_page
+        name: per_page
         type: integer
       responses:
         "200":
@@ -333,7 +333,7 @@ paths:
         type: integer
       - description: pre page
         in: query
-        name: pre_page
+        name: per_page
         type: integer
       responses:
         "200":
