@@ -4,8 +4,8 @@ import {BenchType} from "@/types/bench.type";
 import CommonIcon from "@/components/Common/CommonIcon/CommonIcon";
 import BenchService from "@/services/Bench/BenchService";
 import {useMutation} from "react-query";
-import BenchesDetailImages from "@/components/pages/Benches/BenchesDetail/BenchesDetailImages";
-import {SlideType} from "@/components/pages/Benches/BenchesDetail/BenchesDetailImages/BenchesDetailImages.type";
+import BenchesDialogImages from "@/components/pages/Benches/BenchesDialog/BenchesDialogImages";
+import {SlideType} from "@/components/pages/Benches/BenchesDialog/BenchesDialogImages/BenchesDialogImages.type";
 
 interface IProps {
     isOpen: boolean
@@ -109,7 +109,7 @@ const BenchesDialogUpdate: FC<IProps> = ({isOpen, onClose, bench, updateTable}) 
                             </div>
                             <div className={'mb-12'}>
                                 <p className={'mb-8'}>Изображения</p>
-                                <BenchesDetailImages images={currentBench.images as SlideType[]} onImagesUpdate={handleImagesUpdate} />
+                                <BenchesDialogImages images={currentBench.images as SlideType[]} onImagesUpdate={handleImagesUpdate} />
                             </div>
                             <div className={'d-f jc-sb'}>
                                 <Button color={'success'} variant={'outlined'} onClick={handleBenchUpdate}>Изменить</Button>
