@@ -4,16 +4,19 @@ import {BenchType} from "@/types/bench.type";
 import CommonIcon from "@/components/Common/CommonIcon/CommonIcon";
 import BenchService from "@/services/Bench/BenchService";
 import {useMutation} from "react-query";
+import BenchesDetailImages from "@/components/pages/Benches/BenchesDetail/BenchesDetailImages";
+import {SlideType} from "@/components/pages/Benches/BenchesDetail/BenchesDetailImages/BenchesDetailImages.type";
 
 interface IProps {
     isOpen: boolean
     bench?: BenchType
     onClose: () => void
+    updateTable: () => void
 }
 
 const updateBench = async (bench: Partial<BenchType>) => await BenchService.update(bench)
 
-const BenchesDialogUpdate: FC<IProps> = ({isOpen, onClose, bench}) => {
+const BenchesDialogUpdate: FC<IProps> = ({isOpen, onClose, bench, updateTable}) => {
     const [currentBench, setCurrentBench] = useState<BenchType>({
         address: "",
         id: "",
@@ -29,12 +32,17 @@ const BenchesDialogUpdate: FC<IProps> = ({isOpen, onClose, bench}) => {
         onClose()
     }
 
-    const { mutateAsync } = useMutation('update bench', updateBench.bind(null, currentBench))
+    const { mutateAsync } = useMutation('update bench', updateBench.bind(null, currentBench), {
+        onSuccess: () => {
+            updateTable()
+
+            onClose()
+        }
+    })
 
     const onValueUpdate = (event: ChangeEvent<HTMLInputElement>): void => {
         const name = event.target.name
         const value = name === 'lat' || name === 'lng' ? +event.target.value : event.target.value
-
 
         setCurrentBench({
             ...currentBench,
@@ -46,9 +54,27 @@ const BenchesDialogUpdate: FC<IProps> = ({isOpen, onClose, bench}) => {
         await mutateAsync()
     }
 
+    const handleImagesUpdate = (imageKey: string) => {
+        const benchImages = currentBench.images as SlideType[]
+        const filteredImages = benchImages.filter((image) => image.key !== imageKey)
+
+        setCurrentBench({
+            ...currentBench,
+            images: filteredImages
+        })
+    }
+
     useEffect(() => {
         if (bench) {
-            setCurrentBench(bench)
+            const newImages: SlideType[] = []
+
+            bench.images.forEach((image) => {
+                newImages.push({
+                    url: image,
+                    key: Math.random().toString()
+                } as SlideType)
+            })
+            setCurrentBench({...bench, images: newImages})
         }
     }, [bench])
 
@@ -80,6 +106,10 @@ const BenchesDialogUpdate: FC<IProps> = ({isOpen, onClose, bench}) => {
                                     <Input required size="small" value={currentBench.lat} name={'lat'} onChange={onValueUpdate} />
                                     <Input required size="small" value={currentBench.lng} name={'lng'} onChange={onValueUpdate} />
                                 </div>
+                            </div>
+                            <div className={'mb-12'}>
+                                <p className={'mb-8'}>Изображения</p>
+                                <BenchesDetailImages images={currentBench.images as SlideType[]} onImagesUpdate={handleImagesUpdate} />
                             </div>
                             <div className={'d-f jc-sb'}>
                                 <Button color={'success'} variant={'outlined'} onClick={handleBenchUpdate}>Изменить</Button>
