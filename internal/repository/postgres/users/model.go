@@ -6,10 +6,10 @@ import (
 )
 
 type userModel struct {
-	ID         string
-	Username   string
-	TelegramID int
-	Role       string
+	ID         string `mapstructure:"id,omitempty"`
+	Username   string `mapstructure:"username,omitempty"`
+	TelegramID int    `mapstructure:"telegram_id,omitempty"`
+	Role       string `mapstructure:"role,omitempty"`
 }
 
 func (user *userModel) FromDomain(userDomain domain.User) {

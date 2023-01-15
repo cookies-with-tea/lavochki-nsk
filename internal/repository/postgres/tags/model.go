@@ -6,8 +6,8 @@ import (
 )
 
 type tagModel struct {
-	ID    string
-	Title string
+	ID    string `mapstructure:"id,omitempty"`
+	Title string `mapstructure:"title,omitempty"`
 }
 
 func (tag *tagModel) FromDomain(tagDomain domain.Tag) {
