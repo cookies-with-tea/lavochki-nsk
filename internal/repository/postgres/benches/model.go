@@ -6,12 +6,12 @@ import (
 )
 
 type benchModel struct {
-	ID       string
-	Lat      float64
-	Lng      float64
-	Images   []string
-	IsActive bool
-	OwnerID  string
+	ID       string   `mapstructure:"id,omitempty"`
+	Lat      float64  `mapstructure:"lat,omitempty"`
+	Lng      float64  `mapstructure:"lng,omitempty"`
+	Images   []string `mapstructure:"images,omitempty"`
+	IsActive bool     `mapstructure:"is_active,omitempty"`
+	OwnerID  string   `mapstructure:"owner_id,omitempty"`
 }
 
 func (b *benchModel) FromDomain(bench domain.Bench) {
