@@ -54,6 +54,8 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 // @Tags Benches
 // @Param sort_by query string false "sort field"
 // @Param sort_order query string false "sort order"
+// @Param page query int false "page"
+// @Param pre_page query int false "pre page"
 // @Success 200 {object} []domain.Bench
 // @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches [get]
@@ -99,7 +101,7 @@ func (handler *Handler) detailBench(w http.ResponseWriter, r *http.Request) erro
 }
 
 // @Summary Create bench via telegram
-// @Tags Benches Moderation
+// @Tags Benches
 // @Produce json
 // @Param CreateBenchViaTelegram body dto.CreateBenchViaTelegram true "bench data"
 // @Success 201
@@ -126,7 +128,7 @@ func (handler *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Reque
 }
 
 // @Summary Create bench
-// @Tags Benches Moderation
+// @Tags Benches
 // @Produce json
 // @Param Bench body dto.CreateBench true "bench data"
 // @Param Authorization header string true "Bearer"
@@ -158,7 +160,7 @@ func (handler *Handler) createBench(writer http.ResponseWriter, request *http.Re
 }
 
 // @Summary Update bench
-// @Tags Benches Moderation
+// @Tags Benches
 // @Produce json
 // @Param Bench body dto.UpdateBench true "bench data"
 // @Param Authorization header string true "Bearer"
@@ -188,7 +190,7 @@ func (handler *Handler) updateBench(writer http.ResponseWriter, request *http.Re
 
 // @Summary Delete bench
 // @Description Delete bench by ID
-// @Tags Benches Moderation
+// @Tags Benches
 // @Param Authorization header string true "Bearer"
 // @Param id path string true "Bench ID"
 // @Success 200
@@ -210,10 +212,12 @@ func (handler *Handler) deleteBench(writer http.ResponseWriter, request *http.Re
 
 // @Summary Moderation list benches
 // @Description Get list moderation benches
-// @Tags Benches Moderation
+// @Tags Benches
 // @Param Authorization header string true "Bearer"
 // @Param sort_by query string false "sort field"
 // @Param sort_order query string false "sort order"
+// @Param page query int false "page"
+// @Param pre_page query int false "pre page"
 // @Success 200 {object} []domain.Bench
 // @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches/moderation [get]
@@ -241,7 +245,7 @@ func (handler *Handler) listModerationBench(writer http.ResponseWriter, request 
 
 // @Summary Decision bench
 // @Description Accept or reject a bench
-// @Tags Benches Moderation
+// @Tags Benches
 // @Param Decision body dto.DecisionBench true "decision bench data"
 // @Param Authorization header string true "Bearer"
 // @Success 200
