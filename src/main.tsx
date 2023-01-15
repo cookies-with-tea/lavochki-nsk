@@ -11,6 +11,8 @@ import {createTheme, ThemeProvider} from "@mui/material";
 
 import MontserratRegular from '@/assets/fonts/Montserrat/Montserrat-Regular.ttf'
 
+import 'swiper/css';
+
 const theme = createTheme({
     typography: {
         fontFamily: 'Montserrat, Arial',

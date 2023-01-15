@@ -28,6 +28,14 @@ class BenchService extends AxiosService {
       url: '/moderation'
     })
   }
+
+  public update = async (data: Partial<BenchType>): Promise<unknown> => {
+    return this.axiosCall<unknown>({
+      method: 'patch',
+      url: `/${data.id}`,
+      data
+    })
+  }
 }
 
 export default new BenchService({
