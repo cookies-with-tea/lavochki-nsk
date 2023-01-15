@@ -16,10 +16,11 @@ const TheBenches = () => {
     const [benches, setBenches] = useState<BenchType[]>([])
     const [bench, setBench] = useState<BenchType>()
     const [id, setId] = useState('')
+
     const [isUpdateDialogVisible, setIsUpdateDialogVisible] = useToggle()
     const [isDetailBenchVisible, setDetailBenchVisible] = useToggle()
 
-    useQuery<BenchType[], ErrorType>('get benches', getBenches, {
+    const benchesQuery = useQuery<BenchType[], ErrorType>('get benches', getBenches, {
         onSuccess: (response) => {
             setBenches(response)
         }
@@ -60,6 +61,7 @@ const TheBenches = () => {
                 isOpen={isUpdateDialogVisible}
                 onClose={setIsUpdateDialogVisible}
                 bench={bench}
+                updateTable={benchesQuery.refetch}
             />
 
            <BenchesDetail
