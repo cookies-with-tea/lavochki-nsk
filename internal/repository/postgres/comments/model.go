@@ -6,11 +6,11 @@ import (
 )
 
 type commentModel struct {
-	ID       string
-	BenchID  string
-	ParentID string
-	AuthorID string
-	Content  string
+	ID       string `mapstructure:"id,omitempty"`
+	BenchID  string `mapstructure:"bench_id,omitempty"`
+	ParentID string `mapstructure:"parent_id,omitempty"`
+	AuthorID string `mapstructure:"author_id,omitempty"`
+	Content  string `mapstructure:"content,omitempty"`
 }
 
 func (comment *commentModel) FromDomain(commentDomain domain.Comment) {
