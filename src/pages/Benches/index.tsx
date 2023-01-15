@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import BenchService from "@/services/Bench/BenchService";
 import BenchesTable from "@/components/pages/Benches/BenchesTable";
 import {useQuery} from "react-query";
@@ -6,7 +6,7 @@ import {BenchType} from "@/types/bench.type";
 import {ErrorType} from "@/types/common.type";
 import {useToggle} from "@/hooks/useToggle";
 import BenchesDialogUpdate from "@/components/pages/Benches/BenchesDialog/BenchesDialogUpdate";
-import {Box, Button, Drawer, Typography} from "@mui/material";
+import {Box, Button, Typography} from "@mui/material";
 import BenchesDetail from "@/components/pages/Benches/BenchesDetail";
 
 const getBenches = async (): Promise<BenchType[]> => await BenchService.getAll()
@@ -59,6 +59,7 @@ const TheBenches = () => {
             <BenchesDialogUpdate
                 isOpen={isUpdateDialogVisible}
                 onClose={setIsUpdateDialogVisible}
+                bench={bench}
             />
 
            <BenchesDetail
