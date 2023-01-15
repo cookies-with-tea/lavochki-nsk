@@ -6,11 +6,11 @@ import (
 )
 
 type reportCommentModel struct {
-	ID        string
-	Cause     string
-	CommentID string
-	UserID    string
-	IsActive  bool
+	ID        string `mapstructure:"id,omitempty"`
+	Cause     string `mapstructure:"cause,omitempty"`
+	CommentID string `mapstructure:"comment_id,omitempty"`
+	UserID    string `mapstructure:"user_id,omitempty"`
+	IsActive  bool   `mapstructure:"is_active,omitempty"`
 }
 
 func (report *reportCommentModel) FromDomain(reportDomain domain.CommentReport) {
