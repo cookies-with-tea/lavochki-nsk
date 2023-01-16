@@ -25,6 +25,15 @@ definitions:
       owner:
         type: string
     type: object
+  domain.BenchesList:
+    properties:
+      count:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/domain.Bench'
+        type: array
+    type: object
   domain.Comment:
     properties:
       author_id:
@@ -203,9 +212,7 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/domain.Bench'
-            type: array
+            $ref: '#/definitions/domain.BenchesList'
         "400":
           description: Bad Request
           schema:

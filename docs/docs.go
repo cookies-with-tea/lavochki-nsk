@@ -53,10 +53,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/domain.Bench"
-                            }
+                            "$ref": "#/definitions/domain.BenchesList"
                         }
                     },
                     "400": {
@@ -802,6 +799,20 @@ const docTemplate = `{
                 },
                 "owner": {
                     "type": "string"
+                }
+            }
+        },
+        "domain.BenchesList": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Bench"
+                    }
                 }
             }
         },
