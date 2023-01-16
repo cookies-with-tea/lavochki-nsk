@@ -17,6 +17,7 @@ const (
 
 type Repository interface {
 	All(ctx context.Context, isActive bool, sortOptions model.SortOptions, paginateOptions model.PaginateOptions) ([]*domain.Bench, error)
+	Count(ctx context.Context, isActive bool) (int, error)
 	ByID(ctx context.Context, id string) (*domain.Bench, error)
 	Create(ctx context.Context, bench domain.Bench) error
 	Update(ctx context.Context, id string, bench domain.Bench) error
@@ -83,6 +84,23 @@ func (repository *repository) All(ctx context.Context, isActive bool, sortOption
 	}
 
 	return list, nil
+}
+
+func (repository *repository) Count(ctx context.Context, isActive bool) (int, error) {
+	query := repository.queryBuilder.Select("COUNT(*)").From(tableScheme).Where(squirrel.Eq{"is_active": isActive})
+
+	sql, args, errToSql := query.ToSql()
+	if errToSql != nil {
+		return 0, errToSql
+	}
+
+	var count int
+	err := repository.client.QueryRow(ctx, sql, args...).Scan(&count)
+	if err != nil {
+		return 0, err
+	}
+
+	return count, nil
 }
 
 func (repository *repository) ByID(ctx context.Context, id string) (*domain.Bench, error) {
