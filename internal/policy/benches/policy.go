@@ -49,8 +49,21 @@ func (policy *Policy) CreateBenchViaTelegram(ctx context.Context, userTelegramID
 }
 
 func (policy *Policy) GetListBenches(ctx context.Context, isActive bool, sortOptions sort.Options,
-	paginateOptions paginate.Options) ([]*domain.Bench, error) {
-	return policy.benchesService.GetListBenches(ctx, isActive, sortOptions, paginateOptions)
+	paginateOptions paginate.Options) (domain.BenchesList, error) {
+
+	all, errGetList := policy.benchesService.GetListBenches(ctx, isActive, sortOptions, paginateOptions)
+	if errGetList != nil {
+		return domain.BenchesList{}, errGetList
+	}
+
+	count, errGetCount := policy.benchesService.CountAllBenches(ctx, isActive)
+	if errGetCount != nil {
+		return domain.BenchesList{}, errGetCount
+	}
+
+	list := domain.NewBenchesList(all, count)
+
+	return list, nil
 }
 
 func (policy *Policy) CreateBench(ctx context.Context, bench domain.Bench) error {
