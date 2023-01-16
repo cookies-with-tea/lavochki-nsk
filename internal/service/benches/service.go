@@ -25,6 +25,7 @@ type Service interface {
 	SaveImages(ctx context.Context, images [][]byte) ([]string, error)
 	UpdateBench(ctx context.Context, id string, bench domain.Bench) error
 	DeleteBench(ctx context.Context, id string) error
+	CountAllBenches(ctx context.Context, isActive bool) (int, error)
 }
 
 type service struct {
@@ -60,6 +61,16 @@ func (service *service) GetListBenches(ctx context.Context, isActive bool, sortO
 	}
 
 	return all, nil
+}
+
+func (service *service) CountAllBenches(ctx context.Context, isActive bool) (int, error) {
+	count, err := service.db.Count(ctx, isActive)
+	if err != nil {
+		service.log.Error("get count all benches", zap.Error(err))
+		return 0, err
+	}
+
+	return count, nil
 }
 
 func (service *service) CreateBench(ctx context.Context, bench domain.Bench) error {
