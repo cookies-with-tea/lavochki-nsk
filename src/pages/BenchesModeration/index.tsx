@@ -4,7 +4,7 @@ import BenchesModerationAcceptDialog
     from "@/components/pages/BenchesModeration/BenchesModerationReasonDialog/BenchesModerationAcceptDialog";
 import BenchesModerationDenyDialog
     from "@/components/pages/BenchesModeration/BenchesModerationReasonDialog/BenchesModerationDenyDialog";
-import {BenchType} from "@/types/bench.type";
+import {BenchesResponseType} from "@/types/bench.type";
 import BenchService from "@/services/Bench/BenchService";
 import {useQuery} from "react-query";
 import {ErrorType} from "@/types/common.type";
@@ -15,9 +15,9 @@ const BenchesModeration = () => {
     const [isAcceptDialogOpen, setAcceptDialogOpen] = useState(false)
     const [isDenyDialogOpen, setDenyDialogOpen] = useState(false)
     const [currentReason, setCurrentReason] = useState<any>({decision: false, id: ""})
-    const [benches, setBenches] = useState<BenchType[]>([])
+    const [benches, setBenches] = useState<BenchesResponseType>({count: 0, items: []})
 
-    const moderationBenchesQuery = useQuery<BenchType[], ErrorType>('get moderation benches', getModerationBenches, {
+    const moderationBenchesQuery = useQuery<BenchesResponseType, ErrorType>('get moderation benches', getModerationBenches, {
         onSuccess: (response) => {
             setBenches(response)
         }
@@ -52,7 +52,7 @@ const BenchesModeration = () => {
     return (
         <div className={'w-100'}>
             <BenchesModerationTable
-                benches={benches}
+                benches={benches.items}
                 acceptDialogOpen={handleAcceptDialogReasonSet}
                 denyDialogOpen={handleDenyDialogReasonSet}
             />

@@ -6,8 +6,6 @@ interface IProps {
     comments: ReportCommentType[]
 }
 
-const setActiveStatus = (status: boolean): string => status ? 'Активна' : 'Не активна'
-
 const ReportCommentsTable: FC<IProps> = ({ comments }): ReactElement => {
     return (
         <>
@@ -17,7 +15,6 @@ const ReportCommentsTable: FC<IProps> = ({ comments }): ReactElement => {
                         <TableCell align='left'>ID</TableCell>
                         <TableCell align='left'>Причина</TableCell>
                         <TableCell align='left'>ID комментария</TableCell>
-                        <TableCell align='left'>Статус</TableCell>
                         <TableCell align='left'>ID пользователя</TableCell>
                     </TableRow>
                 </TableHead>
@@ -38,13 +35,10 @@ const ReportCommentsTable: FC<IProps> = ({ comments }): ReactElement => {
                                                 {comment.cause}
                                             </TableCell>
                                             <TableCell>
-                                                {comment.commentID}
+                                                {comment.comment_id}
                                             </TableCell>
                                             <TableCell>
-                                                { setActiveStatus(comment.is_active) }
-                                            </TableCell>
-                                            <TableCell>
-                                                {comment.userID}
+                                                {comment.user_id}
                                             </TableCell>
                                         </TableRow>
                                     ))

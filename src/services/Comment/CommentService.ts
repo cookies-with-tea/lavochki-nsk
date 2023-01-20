@@ -7,17 +7,18 @@ class CommentService extends AxiosService {
     super(config)
   }
 
-  public getById = async (benchId: string): Promise<CommentType[]> => {
-    return this.axiosCall({
-      method: 'get',
-      url: `/${benchId}`,
-    })
-  }
   public create = async (data: CreateCommentType): Promise<unknown> => {
     return this.axiosCall({
       method: 'post',
       url: '',
       data,
+    })
+  }
+
+  public getById = async (benchId: string): Promise<CommentType[]> => {
+    return this.axiosCall({
+      method: 'get',
+      url: `/${benchId}`,
     })
   }
 }
