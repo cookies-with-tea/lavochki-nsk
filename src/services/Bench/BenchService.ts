@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from 'axios'
-import {BenchType} from "@/types/bench.type";
+import {BenchesResponseType, BenchType} from "@/types/bench.type";
 import {AxiosService} from "@/services/Axios/AxiosService";
 
 class BenchService extends AxiosService {
@@ -7,8 +7,8 @@ class BenchService extends AxiosService {
     super(config)
   }
 
-  public getAll = async (): Promise<BenchType[]> => {
-    return this.axiosCall<BenchType[]>({
+  public getAll = async (): Promise<BenchesResponseType> => {
+    return this.axiosCall<BenchesResponseType>({
       method: 'get',
       url: ''
     })
@@ -22,8 +22,8 @@ class BenchService extends AxiosService {
     })
   }
 
-  public getModerationAll = async (): Promise<BenchType[]> => {
-    return this.axiosCall<BenchType[]>({
+  public getModerationAll = async (): Promise<BenchesResponseType> => {
+    return this.axiosCall<BenchesResponseType>({
       method: 'get',
       url: '/moderation'
     })

@@ -48,13 +48,16 @@ const queryClientOptions: QueryClientConfig = {
 const queryClient = new QueryClient(queryClientOptions)
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-    <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme}>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
-        </ThemeProvider>
+    <React.StrictMode>
+        <QueryClientProvider client={queryClient}>
+            <ThemeProvider theme={theme}>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </ThemeProvider>
 
-        <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+            <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+        )
+    </React.StrictMode>
 )

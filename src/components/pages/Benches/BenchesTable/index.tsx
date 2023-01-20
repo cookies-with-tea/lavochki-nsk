@@ -11,6 +11,7 @@ interface IProps {
 
 const BenchesTable: FC<IProps> = ({ benches, updateDialogToggle, detailBenchDrawerVisible, getBenchById }): ReactElement => {
     const [selected, setSelected] = useState<readonly string[]>([]);
+
     const isSelected = (id: string) => selected.indexOf(id) !== -1;
 
     const handleRowSelect = (event: MouseEvent<HTMLElement>, id: string): void => {

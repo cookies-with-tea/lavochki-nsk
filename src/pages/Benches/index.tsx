@@ -2,25 +2,25 @@ import React, {useState} from 'react';
 import BenchService from "@/services/Bench/BenchService";
 import BenchesTable from "@/components/pages/Benches/BenchesTable";
 import {useQuery} from "react-query";
-import {BenchType} from "@/types/bench.type";
+import {BenchesResponseType, BenchType} from "@/types/bench.type";
 import {ErrorType} from "@/types/common.type";
 import {useToggle} from "@/hooks/useToggle";
 import BenchesDialogUpdate from "@/components/pages/Benches/BenchesDialog/BenchesDialogUpdate";
 import {Box, Button, Typography} from "@mui/material";
 import BenchesDetail from "@/components/pages/Benches/BenchesDetail";
 
-const getBenches = async (): Promise<BenchType[]> => await BenchService.getAll()
+const getBenches = async (): Promise<BenchesResponseType> => await BenchService.getAll()
 const getBenchById = async (id: string): Promise<BenchType> => await BenchService.getById(id)
 
 const TheBenches = () => {
-    const [benches, setBenches] = useState<BenchType[]>([])
+    const [benches, setBenches] = useState<BenchesResponseType>({count: 0, items: []})
     const [bench, setBench] = useState<BenchType>()
     const [id, setId] = useState('')
 
     const [isUpdateDialogVisible, setIsUpdateDialogVisible] = useToggle()
     const [isDetailBenchVisible, setDetailBenchVisible] = useToggle()
 
-    const benchesQuery = useQuery<BenchType[], ErrorType>('get benches', getBenches, {
+    const benchesQuery = useQuery<BenchesResponseType, ErrorType>('get benches', getBenches, {
         onSuccess: (response) => {
             setBenches(response)
         }
@@ -51,7 +51,7 @@ const TheBenches = () => {
             </Box>
 
             <BenchesTable
-                benches={benches}
+                benches={benches.items}
                 updateDialogToggle={setIsUpdateDialogVisible}
                 detailBenchDrawerVisible={setDetailBenchVisible}
                 getBenchById={handleGetBenchById}

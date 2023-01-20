@@ -19,7 +19,7 @@ class ReportService extends AxiosService {
   public getModerationAll = (): Promise<ReportCommentType[]> => {
     return this.axiosCall({
       method: 'get',
-      url: '/moderation'
+      url: ''
     })
   }
 }

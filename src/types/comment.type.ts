@@ -18,7 +18,7 @@ export type CreateCommentType = Pick<CommentType,
 export type ReportCommentType = {
     ID: string
     cause: string
-    commentID: string
+    comment_id: string
     is_active: boolean
-    userID: string
+    user_id: string
 }

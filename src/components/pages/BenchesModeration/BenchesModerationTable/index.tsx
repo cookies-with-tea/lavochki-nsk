@@ -8,8 +8,6 @@ interface IProps {
     denyDialogOpen: (decision: boolean, benchId: string) => void
 }
 
-const setActiveStatus = (status: boolean): string => status ? 'Активна' : 'Не активна'
-
 const BenchesModerationTable: FC<IProps> = ({ benches, acceptDialogOpen, denyDialogOpen }): ReactElement => {
     return (
         <>
@@ -19,8 +17,7 @@ const BenchesModerationTable: FC<IProps> = ({ benches, acceptDialogOpen, denyDia
                         <TableCell align='left'>ID</TableCell>
                         <TableCell align='left'>ID владельца</TableCell>
                         <TableCell align='left'>Расположение</TableCell>
-                        <TableCell align='left'>Опубликован</TableCell>
-                        <TableCell align='left'>Статус</TableCell>
+                        <TableCell align='left'>Действия</TableCell>
                     </TableRow>
                 </TableHead>
                 {
@@ -36,12 +33,12 @@ const BenchesModerationTable: FC<IProps> = ({ benches, acceptDialogOpen, denyDia
                                         <TableCell component='th' scope='row'>
                                             {bench.id}
                                         </TableCell>
-                                        <TableCell align='right'>
-                                            {bench.lat},
-                                            {bench.lng}
+                                        <TableCell>
+                                            {bench.owner}
                                         </TableCell>
                                         <TableCell>
-                                            {setActiveStatus(bench.is_active)}
+                                            {bench.lat},
+                                            {bench.lng}
                                         </TableCell>
                                         <TableCell>
                                             <Button onClick={() => acceptDialogOpen(true, bench.id)}>
