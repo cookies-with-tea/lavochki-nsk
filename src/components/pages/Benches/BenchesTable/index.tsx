@@ -4,15 +4,15 @@ import {BenchType} from "@/types/bench.type";
 
 interface IProps {
     benches: BenchType[]
-    updateDialogToggle: () => void
+    updateDialogVisibleToggle: () => void
     detailBenchDrawerVisible: () => void
     getBenchById: (id: string) => void
 }
 
-const BenchesTable: FC<IProps> = ({ benches, updateDialogToggle, detailBenchDrawerVisible, getBenchById }): ReactElement => {
+const BenchesTable: FC<IProps> = ({ benches, updateDialogVisibleToggle, detailBenchDrawerVisible, getBenchById }): ReactElement => {
     const [selected, setSelected] = useState<readonly string[]>([]);
 
-    const isSelected = (id: string) => selected.indexOf(id) !== -1;
+    const isSelected = (id: string): boolean => selected.indexOf(id) !== -1;
 
     const handleRowSelect = (event: MouseEvent<HTMLElement>, id: string): void => {
         event.stopPropagation()
@@ -36,7 +36,7 @@ const BenchesTable: FC<IProps> = ({ benches, updateDialogToggle, detailBenchDraw
         setSelected(newSelected)
     }
 
-    const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleAllSelect = (event: ChangeEvent<HTMLInputElement>): void => {
         if (event.target.checked) {
             const newSelected = benches.map(({id}) => id);
 
@@ -52,7 +52,8 @@ const BenchesTable: FC<IProps> = ({ benches, updateDialogToggle, detailBenchDraw
         event.stopPropagation()
 
         getBenchById(benchId)
-        updateDialogToggle()
+
+        updateDialogVisibleToggle()
     }
 
     const handleDetailBenchToggle = (id: string): void => {
@@ -71,7 +72,7 @@ const BenchesTable: FC<IProps> = ({ benches, updateDialogToggle, detailBenchDraw
                                 color="primary"
                                 indeterminate={selected.length > 0 && selected.length < benches.length}
                                 checked={benches.length > 0 && selected.length === benches.length}
-                                onChange={handleSelectAllClick}
+                                onChange={handleAllSelect}
                                 inputProps={{
                                     'aria-label': 'select all benches',
                                 }}

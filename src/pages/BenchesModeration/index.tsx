@@ -58,14 +58,14 @@ const BenchesModeration = () => {
             />
 
             <BenchesModerationAcceptDialog
-                open={isAcceptDialogOpen}
+                visible={isAcceptDialogOpen}
                 // reason={{...currentReason}}
                 onClose={handleAcceptDialogVisibleToggle}
                 updateTable={moderationBenchesQuery.refetch}
             />
 
             <BenchesModerationDenyDialog
-                open={isDenyDialogOpen}
+                visible={isDenyDialogOpen}
                 // reason={{...currentReason}}
                 onClose={handleDenyDialogVisibleToggle}
                 updateTable={moderationBenchesQuery.refetch}

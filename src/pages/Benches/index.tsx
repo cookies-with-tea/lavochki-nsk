@@ -52,23 +52,23 @@ const TheBenches = () => {
 
             <BenchesTable
                 benches={benches.items}
-                updateDialogToggle={setIsUpdateDialogVisible}
+                updateDialogVisibleToggle={setIsUpdateDialogVisible}
                 detailBenchDrawerVisible={setDetailBenchVisible}
                 getBenchById={handleGetBenchById}
             />
 
             <BenchesDialogUpdate
-                isOpen={isUpdateDialogVisible}
-                onClose={setIsUpdateDialogVisible}
                 bench={bench}
+                visible={isUpdateDialogVisible}
                 updateTable={benchesQuery.refetch}
+                onClose={setIsUpdateDialogVisible}
             />
 
            <BenchesDetail
                bench={bench}
-               isOpen={isDetailBenchVisible}
+               visible={isDetailBenchVisible}
                onClose={setDetailBenchVisible}
-               updateDialogToggle={setIsUpdateDialogVisible}
+               updateDialogVisibleToggle={setIsUpdateDialogVisible}
            />
         </Box>
     );

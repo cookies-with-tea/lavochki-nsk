@@ -8,7 +8,7 @@ import BenchesDialogImages from "@/components/pages/Benches/BenchesDialog/Benche
 import {SlideType} from "@/components/pages/Benches/BenchesDialog/BenchesDialogImages/BenchesDialogImages.type";
 
 interface IProps {
-    isOpen: boolean
+    visible: boolean
     bench?: BenchType
     onClose: () => void
     updateTable: () => void
@@ -16,7 +16,7 @@ interface IProps {
 
 const updateBench = async (bench: Partial<BenchType>) => await BenchService.update(bench)
 
-const BenchesDialogUpdate: FC<IProps> = ({isOpen, onClose, bench, updateTable}) => {
+const BenchesDialogUpdate: FC<IProps> = ({visible, onClose, bench, updateTable}) => {
     const [currentBench, setCurrentBench] = useState<BenchType>({
         address: "",
         id: "",
@@ -40,7 +40,7 @@ const BenchesDialogUpdate: FC<IProps> = ({isOpen, onClose, bench, updateTable}) 
         }
     })
 
-    const onValueUpdate = (event: ChangeEvent<HTMLInputElement>): void => {
+    const onValueChange = (event: ChangeEvent<HTMLInputElement>): void => {
         const name = event.target.name
         const value = name === 'lat' || name === 'lng' ? +event.target.value : event.target.value
 
@@ -79,7 +79,7 @@ const BenchesDialogUpdate: FC<IProps> = ({isOpen, onClose, bench, updateTable}) 
     }, [bench])
 
     return (
-        <Dialog open={isOpen} onClose={handleDialogClose}>
+        <Dialog open={visible} onClose={handleDialogClose}>
             <Box sx={{ width: '500px', padding: '12px' }} component="form">
                 <div className={'d-f jc-fe'}>
                     {/* TODO: Кнопка reset, которая будет возвращать форму в исходный вид */}
@@ -103,8 +103,8 @@ const BenchesDialogUpdate: FC<IProps> = ({isOpen, onClose, bench, updateTable}) 
                                     Координаты:
                                 </p>
                                 <div>
-                                    <Input required size="small" value={currentBench.lat} name={'lat'} onChange={onValueUpdate} />
-                                    <Input required size="small" value={currentBench.lng} name={'lng'} onChange={onValueUpdate} />
+                                    <Input required size="small" value={currentBench.lat} name={'lat'} onChange={onValueChange} />
+                                    <Input required size="small" value={currentBench.lng} name={'lng'} onChange={onValueChange} />
                                 </div>
                             </div>
                             <div className={'mb-12'}>

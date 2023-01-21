@@ -11,16 +11,20 @@ import CommonIcon from "@/components/Common/CommonIcon/CommonIcon";
 
 interface IProps {
     bench?: BenchType
-    isOpen: boolean
+    visible: boolean
     onClose: () => void
-    updateDialogToggle: () => void
+    updateDialogVisibleToggle: () => void
 }
 
-const BenchesDetail: FC<IProps> = ({ bench, isOpen, onClose, updateDialogToggle}): ReactElement => {
+const BenchesDetail: FC<IProps> = ({ bench, visible, onClose, updateDialogVisibleToggle}): ReactElement => {
+    const handleUpdateDialogVisibleToggle = (): void => {
+        updateDialogVisibleToggle()
+    }
+
     return (
         <Drawer
             anchor={'right'}
-            open={isOpen}
+            open={visible}
             onClose={onClose}
         >
             <StyledHeader>
@@ -72,7 +76,7 @@ const BenchesDetail: FC<IProps> = ({ bench, isOpen, onClose, updateDialogToggle}
                                    color={'warning'}
                                    variant="outlined"
                                    className={'mb-8'}
-                                   onClick={updateDialogToggle}
+                                   onClick={handleUpdateDialogVisibleToggle}
                                >
                                    Редактировать
                                </Button>
