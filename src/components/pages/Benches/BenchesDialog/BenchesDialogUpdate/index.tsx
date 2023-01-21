@@ -112,8 +112,8 @@ const BenchesDialogUpdate: FC<IProps> = ({visible, onClose, bench, updateTable})
                                 <BenchesDialogImages images={currentBench.images as SlideType[]} onImagesUpdate={handleImagesUpdate} />
                             </div>
                             <div className={'d-f jc-sb'}>
-                                <Button color={'success'} variant={'outlined'} onClick={handleBenchUpdate}>Изменить</Button>
                                 <Button color={'warning'} variant={'outlined'}>Отмена</Button>
+                                <Button color={'success'} variant={'outlined'} onClick={handleBenchUpdate}>Изменить</Button>
                             </div>
                         </>
                         )
