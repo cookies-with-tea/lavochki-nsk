@@ -2,6 +2,8 @@ import React, {FC, ReactElement, ReactNode, useState} from 'react';
 import {UserMeType} from "@/types/user.type";
 import {useQuery} from "react-query";
 import UserService from "@/services/User/UserService";
+import DefaultLayoutHeader from "@/components/layouts/DefaultLayout/DefaultLayoutHeader";
+import DefaultLayoutSidebar from "@/components/layouts/DefaultLayout/DefaultLayoutSidebar";
 interface IProps {
     children: ReactNode
 }
@@ -23,9 +25,14 @@ const DefaultLayout: FC<IProps> = ({ children }): ReactElement => {
     })
 
     return (
-        <div className={'d-f fd-c w-100'}>
-            { children }
+        <div className={'d-f w-100'}>
+            <DefaultLayoutSidebar />
+            <div className={'w-100'}>
+                <DefaultLayoutHeader />
+                { children }
+            </div>
         </div>
+
     );
 };
 

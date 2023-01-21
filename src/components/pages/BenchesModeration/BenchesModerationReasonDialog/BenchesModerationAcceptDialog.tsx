@@ -7,12 +7,12 @@ import {
 } from "@mui/material";
 
 interface IProps {
-    open: boolean
+    visible: boolean
     onClose: () => void
     updateTable: () => void
 }
 
-const BenchesModerationAcceptDialog: FC<IProps> = ({ open, onClose, updateTable }) => {
+const BenchesModerationAcceptDialog: FC<IProps> = ({ visible, onClose, updateTable }) => {
     const [reasonText, setReasonText] = useState('')
 
     const handleReasonTextChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
@@ -29,7 +29,7 @@ const BenchesModerationAcceptDialog: FC<IProps> = ({ open, onClose, updateTable 
 
     return (
         <div>
-            <Dialog open={open} onClose={handleDialogClose}>
+            <Dialog open={visible} onClose={handleDialogClose}>
                 <DialogTitle>Причина принятия</DialogTitle>
                 <Box className={'d-f fd-c p-12'} sx={{ width: '540px'}}>
                     <TextField

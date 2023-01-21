@@ -12,12 +12,12 @@ import {
 } from "@mui/material";
 
 interface IProps {
-    open: boolean
+    visible: boolean
     onClose: () => void
     updateTable: () => void
 }
 
-const BenchesModerationDenyDialog: FC<IProps> = ({ open, onClose, updateTable }) => {
+const BenchesModerationDenyDialog: FC<IProps> = ({ visible, onClose, updateTable }) => {
     const [currentReason, setCurrentReason] = useState('cheats')
     const [reasonText, setReasonText] = useState('')
 
@@ -51,7 +51,7 @@ const BenchesModerationDenyDialog: FC<IProps> = ({ open, onClose, updateTable })
 
     return (
         <div>
-            <Dialog open={open} onClose={handleDialogClose}>
+            <Dialog open={visible} onClose={handleDialogClose}>
                 <DialogTitle>Причина отклонения</DialogTitle>
                 <Box className={'d-f fd-c p-12'} sx={{ width: '540px'}}>
                     <FormControl sx={{ marginBottom: '24px' }}>

@@ -6,8 +6,6 @@ interface IProps {
     tags: BenchTagType[]
 }
 
-const setActiveStatus = (status: boolean): string => status ? 'Активна' : 'Не активна'
-
 const CommentsModerationTable: FC<IProps> = ({ tags }): ReactElement => {
     return (
         <>
