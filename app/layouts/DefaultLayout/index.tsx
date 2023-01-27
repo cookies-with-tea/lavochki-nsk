@@ -2,7 +2,7 @@ import { GetStaticProps, NextPage } from 'next'
 import { ReactElement, ReactNode, useState } from 'react'
 import DefaultLayoutHeader
   from '@/app/components/Layouts/DefaultLayout/DefaultLayoutHeader'
-import { StyledContainer }
+import { StyledContainer, StyledWrapper }
   from '@/app/layouts/DefaultLayout/DefaultLayout.style'
 import DefaultLayoutFooter
   from '@/app/components/Layouts/DefaultLayout/DefaultLayoutFooter'
@@ -18,12 +18,7 @@ interface IProps {
 const getMe = async (): Promise<UserMeType> => await UserService.getMe()
 
 const DefaultLayout: NextPage<IProps> = ({ children }): ReactElement => {
-  const [user, setUser] = useState<UserMeType>({
-    id: '',
-    role: '',
-    telegram_id: 0,
-    username: ''
-  })
+  const [user, setUser] = useState<UserMeType>({} as UserMeType)
 
   useQuery<UserMeType>('get user', getMe, {
     onSuccess: (response) => {
@@ -33,13 +28,17 @@ const DefaultLayout: NextPage<IProps> = ({ children }): ReactElement => {
 
   return (
     <UserContext.Provider value={user}>
-      <DefaultLayoutHeader />
+      <div className={'mh-100 d-f fd-c'}>
+        <DefaultLayoutHeader />
 
-      <StyledContainer className="container">
-        { children }
-      </StyledContainer>
+        <StyledWrapper>
+          <StyledContainer className={'container'}>
+            { children }
+          </StyledContainer>
+        </StyledWrapper>
 
-      <DefaultLayoutFooter />
+        <DefaultLayoutFooter />
+      </div>
     </UserContext.Provider>
   )
 }

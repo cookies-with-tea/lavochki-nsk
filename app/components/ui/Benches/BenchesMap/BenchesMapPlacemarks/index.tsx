@@ -1,6 +1,6 @@
 import React, { FC, ReactElement, useEffect, useState } from 'react'
 import { Clusterer, Placemark } from 'react-yandex-maps'
-import { BenchType } from '@/app/types/bench.type'
+import {  BenchType } from '@/app/types/bench.type'
 import { MapBalloonType, MapPointOptions } from '@/app/types/map.type'
 
 interface IProps {
@@ -42,7 +42,7 @@ const BenchesMapPlacemarks: FC<IProps> = ({
   bench,
   benches
 }): ReactElement => {
-  const [currentBenches, setCurrentBenches] = useState<BenchType[] | []>([])
+  const [currentBenches, setCurrentBenches] = useState<BenchType[]>([] as BenchType[])
 
   useEffect(() => {
     if (bench) {

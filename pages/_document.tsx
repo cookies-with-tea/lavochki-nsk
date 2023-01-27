@@ -17,7 +17,6 @@ class MyDocument extends Document {
     return (
       <Html lang={'ru'}>
         <Head>
-          {/* eslint-disable-next-line @next/next/no-title-in-document-head */}
           <title>Lavochki NSK</title>
         </Head>
         <body>

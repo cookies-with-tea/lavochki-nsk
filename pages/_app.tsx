@@ -1,10 +1,6 @@
 import type { AppProps } from 'next/app'
 import DefaultLayout from '@/app/layouts/DefaultLayout'
 import { requireSvg } from '@/app/utils/reqireSvg'
-
-import 'swiper/css'
-import '@/app/styles/main.scss'
-
 import {
   QueryClient,
   QueryClientProvider,
@@ -17,6 +13,13 @@ import { ReactElement, useRef, useState } from 'react'
 import { ErrorType } from '@/app/types/common.type'
 import CommonSnackbar from '@/app/components/Common/CommonSnackbar'
 import { ReactQueryDevtools } from 'react-query/devtools'
+
+import 'swiper/css'
+import '@/app/styles/main.scss'
+
+interface IProps {
+  dehydratedState: DehydratedState
+}
 
 requireSvg()
 
@@ -33,7 +36,7 @@ const queryClientOptions: QueryClientConfig = {
 }
 
 const BenchesApp = (
-  { Component, pageProps }: AppProps<{ dehydratedState: DehydratedState }>
+  { Component, pageProps }: AppProps<IProps>
 ): ReactElement  => {
   const [snackbarOptions, setSnackbarOptions] = useState<
     { isVisible: boolean } & ErrorType

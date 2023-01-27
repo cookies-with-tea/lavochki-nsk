@@ -6,3 +6,7 @@ export const StyledContainer = styled.div`
     max-width: 1360px;
     margin-inside: auto;
 `
+
+export const StyledWrapper = styled.div`
+  flex: 1 1 100%;
+`

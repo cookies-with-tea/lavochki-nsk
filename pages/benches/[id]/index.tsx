@@ -12,7 +12,11 @@ import BenchDetailMap from '@/app/components/pages/BenchDetail/BenchDetailMap'
 import BenchDetailComments
   from '@/app/components/pages/BenchDetail/BenchDetailComments'
 import CommentService from '@/app/services/Comment/CommentService'
-import { BenchTagType, BenchType } from '@/app/types/bench.type'
+import {
+  BenchTagType,
+  BenchesResponseType,
+  BenchType
+} from '@/app/types/bench.type'
 import BenchDetailNear from '@/app/components/pages/BenchDetail/BenchDetailNear'
 import { CommentType } from '@/app/types/comment.type'
 import { CircularProgress, Fade } from '@mui/material'
@@ -20,7 +24,7 @@ import BenchDetailCommentReport
   from '@/app/components/pages/BenchDetail/BenchDetailComment/BenchDetailCommentReport'
 import { YMapsApi } from 'react-yandex-maps'
 
-const getBenches = async (): Promise<BenchType[]> => (
+const getBenches = async (): Promise<BenchesResponseType> => (
   await BenchService.getAll()
 )
 
@@ -39,28 +43,13 @@ const BenchDetail: NextPage = (): ReactElement => {
 
   const [isReportDialogVisible, setIsReportDialogVisible] = useState(false)
 
-  const [bench, setBench] = useState<BenchType>({
-    id: '',
-    images: [],
-    is_active: false,
-    lat: 0,
-    lng: 0,
-    owner_id: '',
-    tags: []
-  })
+  const [bench, setBench] = useState<BenchType>({} as BenchType)
 
-  const [comments, setComments] = useState<CommentType[]>([{
-    author_id: '',
-    bench_id: '',
-    content: '',
-    nested_comments: [],
-    parent_id: '',
-    id: ''
-  }])
+  const [comments, setComments] = useState<CommentType[]>([] as CommentType[])
 
   const [currentCommentId, setCurrentCommentId] = useState('')
-  const [benches, setBenches] = useState<BenchType[] | []>([])
-  const [chipData, setChipData] = useState<BenchTagType[] | []>([])
+  const [benches, setBenches] = useState<BenchesResponseType>({} as BenchesResponseType)
+  const [chipData, setChipData] = useState<BenchTagType[]>([] as BenchTagType[])
   const [map, setMap] = useState<YMapsApi | null>(null)
 
   const benchQuery = useQuery<BenchType, ErrorType>(
@@ -87,7 +76,7 @@ const BenchDetail: NextPage = (): ReactElement => {
       enabled: benchId.length > 0,
     })
 
-  useQuery<BenchType[], ErrorType>(
+  useQuery<BenchesResponseType, ErrorType>(
     'get benches',
     getBenches.bind(null),
     {
@@ -186,12 +175,14 @@ const BenchDetail: NextPage = (): ReactElement => {
         bench.images
         && bench.images.length
           ? <BenchDetailSlider images={bench.images} />
-          : <></>
+          : null
       }
 
       <BenchDetailMap bench={bench} setMapInstance={setMapInstance} />
+
       {renderComments()}
-      <BenchDetailNear benches={benches} />
+
+      <BenchDetailNear benches={benches.items} />
 
       <BenchDetailCommentReport
         isOpen={isReportDialogVisible}
