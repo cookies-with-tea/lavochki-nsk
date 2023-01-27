@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-export const StyledFooter = styled.div`
+export const StyledFooter = styled.footer`
   display: flex;
   background-color: var(--color--primary-dark);
   padding: 36px 0 22px;

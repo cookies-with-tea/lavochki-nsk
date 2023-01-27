@@ -1,3 +1,9 @@
+export type BenchTagType = {
+    id: string
+    title: string
+    active?: boolean
+}
+
 export type BenchType = {
     id: string
     lat: number
@@ -9,9 +15,7 @@ export type BenchType = {
     address?: string
 }
 
-export type BenchTagType = {
-    id: string
-    title: string
-    active?: boolean
+export type BenchesResponseType = {
+    count: number
+    items: BenchType[]
 }
-

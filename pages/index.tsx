@@ -5,40 +5,44 @@ import { dehydrate, QueryClient, useQuery } from 'react-query'
 import BenchService from '@/app/services/Bench/BenchService'
 import HomeBenches from '@/app/components/pages/Home/HomeBenches'
 import { ErrorType } from '@/app/types/common.type'
-import { BenchType } from '@/app/types/bench.type'
+import { BenchesResponseType } from '@/app/types/bench.type'
 import { YMapsApi } from 'react-yandex-maps'
 
-const getBenches = async (): Promise<BenchType[]> => await BenchService.getAll()
+const getBenches = async (): Promise<BenchesResponseType> =>
+  await BenchService.getAll()
 
 const HomePage: NextPage = (): ReactElement => {
-  const [benches, setBenches] = useState<BenchType[] | []>([])
+  const [benches, setBenches] = useState<BenchesResponseType>(
+    {} as BenchesResponseType
+  )
   const [map, setMap] = useState<YMapsApi | null>(null)
 
   const geoDecoding = (
-    benches: BenchType[],
+    benches: BenchesResponseType,
     instance: YMapsApi | null
   ): void => {
     if (!instance) return
 
-    benches.forEach((bench, index) => {
+    benches.items.forEach((bench, index) => {
       instance.geocode([bench.lat, bench.lng])
         .then(({ geoObjects }: Record<string, any>) => {
           const firstGeoObjectLocation = geoObjects
             .get(0)
             .getAddressLine() as string
 
-          const newBenches = [...benches]
+          const newBenches = [...benches.items]
 
-          newBenches[index] = Object.assign(bench,
-            { address: firstGeoObjectLocation }
-          )
+          newBenches[index] = { ...bench, address: firstGeoObjectLocation }
 
-          setBenches(newBenches)
+          setBenches({
+            ...benches,
+            items: newBenches,
+          })
         })
     })
   }
 
-  useQuery<BenchType[], ErrorType>('get benches', getBenches, {
+  useQuery<BenchesResponseType, ErrorType>('get benches', getBenches, {
     onSuccess: (response) => {
       setBenches(response)
     }
@@ -54,8 +58,8 @@ const HomePage: NextPage = (): ReactElement => {
 
   return (
     <>
-      <HomeMap benches={ benches } setMapInstance={setMapInstance} />
-      <HomeBenches benches={ benches } />
+      <HomeMap benches={ benches.items } setMapInstance={setMapInstance} />
+      <HomeBenches benches={ benches.items } />
     </>
   )
 }
@@ -63,7 +67,7 @@ const HomePage: NextPage = (): ReactElement => {
 export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient()
 
-  await queryClient.prefetchQuery<BenchType[]>('get benches', getBenches)
+  await queryClient.prefetchQuery<BenchesResponseType>('get benches', getBenches)
 
   return {
     props: {

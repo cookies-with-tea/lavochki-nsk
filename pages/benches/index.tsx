@@ -12,16 +12,17 @@ import { dehydrate, QueryClient, useQuery } from 'react-query'
 import BenchService from '@/app/services/Bench/BenchService'
 import TagService from '@/app/services/Tag/TagService'
 import { ErrorType } from '@/app/types/common.type'
-import { BenchTagType, BenchType } from '@/app/types/bench.type'
+import { BenchTagType, BenchesResponseType } from '@/app/types/bench.type'
 
-const getBenches = async (): Promise<BenchType[]> => await BenchService.getAll()
+const getBenches = async (): Promise<BenchesResponseType> =>
+  await BenchService.getAll()
 const getTags = async (): Promise<BenchTagType[]> => await TagService.getAll()
 
 const BenchesPage: NextPage = (): ReactElement => {
-  const [benches, setBenches] = useState<BenchType[]>([])
+  const [benches, setBenches] = useState<BenchesResponseType>({} as BenchesResponseType)
   const [tags, setTags] = useState<BenchTagType[]>([])
 
-  useQuery<BenchType[]>('get benches', getBenches, {
+  useQuery<BenchesResponseType>('get benches', getBenches, {
     onSuccess: (response) => {
       setBenches(response)
     }
@@ -46,9 +47,14 @@ const BenchesPage: NextPage = (): ReactElement => {
           <StyledContent>
             {
               benches &&
-              benches.map((bench) => (
-                <BenchCard key={bench.id} bench={bench} />)
-              )
+              benches.items &&
+              benches.items.length
+                ? (
+                  benches.items.map((bench) => (
+                    <BenchCard key={bench.id} bench={bench} />)
+                  )
+                )
+                : <div>Нет данных</div>
             }
           </StyledContent>
         </div>
@@ -61,7 +67,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient()
 
   await queryClient
-    .prefetchQuery<BenchType[], ErrorType>('get benches', getBenches)
+    .prefetchQuery<BenchesResponseType, ErrorType>('get benches', getBenches)
   await queryClient.prefetchQuery<BenchTagType[], ErrorType>('get tags', getTags)
 
   return {

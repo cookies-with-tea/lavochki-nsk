@@ -36,6 +36,7 @@ const BenchCard: FC<IProps> = ({ bench }): ReactElement => {
         <StyledBenchTitle>Лавочка на Каменской</StyledBenchTitle>
         <StyledTags>
           {
+            bench.tags &&
             bench.tags.map((item) => (
               <StyledTag key={item.id}>
                 #{item.title}
