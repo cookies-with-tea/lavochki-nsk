@@ -38,7 +38,9 @@ const HomePage: NextPage = (): ReactElement => {
 
           const newBenches = [...benches.items]
 
-          newBenches[index] = Object.assign(bench, { address: firstGeoObjectLocation })
+          newBenches[index] = Object.assign(bench,
+            { address: firstGeoObjectLocation }
+          )
 
           setBenches({
             ...benches,

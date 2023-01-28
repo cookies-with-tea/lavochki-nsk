@@ -49,13 +49,18 @@ const BenchesMap: FC<IProps> = (
       <Map
         version={'2.1.79'}
         state={mapState}
-        width='100%'
+        width={'100%'}
         height={height}
         instanceRef={setMap}
         onLoad={(ymaps) => {
           setMap(ymaps)
         }}
-        modules={['geolocation', 'geocode', 'geoObject.addon.balloon', 'geoObject.addon.hint']}
+        modules={[
+          'geolocation',
+          'geocode',
+          'geoObject.addon.balloon',
+          'geoObject.addon.hint'
+        ]}
       >
         <BenchesMapPlacemarks
           benches={benches}
