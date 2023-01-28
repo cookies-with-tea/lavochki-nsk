@@ -1,5 +1,6 @@
 import { Alert, Snackbar } from '@mui/material'
 import React, { FC, ReactElement } from 'react'
+import { NoSsr } from '@mui/base'
 
 interface IProps {
     isOpen: boolean
@@ -13,17 +14,20 @@ const CommonSnackbar: FC<IProps> = ({
   onClose
 }): ReactElement => {
   return (
-    <Snackbar
-      open={isOpen}
-      autoHideDuration={2000}
-      onClose={onClose}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right'
-      }}
-    >
-      <Alert severity="error">{message}</Alert>
-    </Snackbar>
+    <NoSsr>
+      <Snackbar
+        open={isOpen}
+        autoHideDuration={2000}
+        onClose={onClose}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right'
+        }}
+      >
+        <Alert severity="error">{message}</Alert>
+      </Snackbar>
+    </NoSsr>
+
   )
 }
 
