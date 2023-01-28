@@ -71,7 +71,9 @@ const BenchDetailCommentReport: FC<IProps> = ({
             multiline
             value={currentReason}
             placeholder="Enter a reason..."
-            onChange={(e) => handleReasonTextChange(e)} minRows={2} maxRows={4}
+            onChange={(e) => handleReasonTextChange(e)}
+            minRows={2}
+            maxRows={4}
             sx={{ marginBottom: '24px' }}
           />
         )

@@ -11,12 +11,20 @@ import {
 import Link from 'next/link'
 import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
 import { BenchType } from '@/app/types/bench.type'
+import { scrollToTop } from '@/app/utils/scrollToTop'
 
 interface IProps {
   bench: BenchType
+  moveToPlacemark: (coordinates: number[], zoom: number) => void
 }
 
-const HomeBench: FC<IProps> = ({ bench }): ReactElement => {
+const HomeBench: FC<IProps> = ({ bench, moveToPlacemark }): ReactElement => {
+  const handleScrollToTop = (coords: number[]): void => {
+    scrollToTop()
+
+    moveToPlacemark(coords, 18)
+  }
+
   return (
     <StyledLatestBench>
       <div className={'d-f fd-c'}>
@@ -27,7 +35,7 @@ const HomeBench: FC<IProps> = ({ bench }): ReactElement => {
           <StyledLatestBenchInfoLocationTitle>
             { bench.address }
           </StyledLatestBenchInfoLocationTitle>
-          <StyledLocationButton>
+          <StyledLocationButton onClick={() => handleScrollToTop([bench.lat, bench.lng])}>
             <CommonIcon name="location" width={24} height={32} />
           </StyledLocationButton>
         </StyledLatestBenchInfoLocation>
@@ -40,7 +48,7 @@ const HomeBench: FC<IProps> = ({ bench }): ReactElement => {
         bench.images
         && bench.images.length
           ? <StyledHomeBenchesSlider images={bench.images} />
-          : <></>
+          : null
       }
 
     </StyledLatestBench>
