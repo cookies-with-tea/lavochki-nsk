@@ -23,6 +23,7 @@ import { CircularProgress, Fade } from '@mui/material'
 import BenchDetailCommentReport
   from '@/app/components/pages/BenchDetail/BenchDetailComment/BenchDetailCommentReport'
 import { YMapsApi } from 'react-yandex-maps'
+import { MapStateOptionsType } from '@/app/types/map.type'
 
 const getBenches = async (): Promise<BenchesResponseType> => (
   await BenchService.getAll()
@@ -42,15 +43,17 @@ const BenchDetail: NextPage = (): ReactElement => {
   const benchId = typeof router.query?.id === 'string' ? router.query.id : ''
 
   const [isReportDialogVisible, setIsReportDialogVisible] = useState(false)
-
   const [bench, setBench] = useState<BenchType>({} as BenchType)
-
   const [comments, setComments] = useState<CommentType[]>([] as CommentType[])
-
   const [currentCommentId, setCurrentCommentId] = useState('')
   const [benches, setBenches] = useState<BenchesResponseType>({} as BenchesResponseType)
   const [chipData, setChipData] = useState<BenchTagType[]>([] as BenchTagType[])
   const [map, setMap] = useState<YMapsApi | null>(null)
+  const [mapSettings, setMapSettings] = useState<MapStateOptionsType>({
+    center: [55.00, 82.95],
+    zoom: 14,
+    behaviors: ['default', 'scrollZoom']
+  })
 
   const benchQuery = useQuery<BenchType, ErrorType>(
     ['get bench', benchId],
@@ -60,6 +63,11 @@ const BenchDetail: NextPage = (): ReactElement => {
           setBench(response)
 
           setChipData(response.tags)
+
+          setMapSettings({
+            ...mapSettings,
+            center: [response.lat, response.lng]
+          })
         }
       },
       enabled: benchId.length > 0,
@@ -178,7 +186,7 @@ const BenchDetail: NextPage = (): ReactElement => {
           : null
       }
 
-      <BenchDetailMap bench={bench} setMapInstance={setMapInstance} />
+      <BenchDetailMap bench={bench} setMapInstance={setMapInstance} mapSettings={mapSettings} />
 
       {renderComments()}
 

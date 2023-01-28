@@ -35,7 +35,7 @@ const BenchDetailNearSlider: FC<IProps> = ({ benches }): ReactElement => {
         }}
       >
         {
-          benches.map((bench) => (
+          benches?.map((bench) => (
             <StyledSlide key={bench.id}>
               <BenchCard key={bench.id} bench={bench} />
             </StyledSlide>

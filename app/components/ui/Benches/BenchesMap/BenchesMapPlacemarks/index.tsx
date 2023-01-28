@@ -9,7 +9,7 @@ interface IProps {
 }
 
 const renderBalloonImage = (images: string[]): string => {
-  return images.length ? `<img src='${images[0]}' alt="" />` : ''
+  return images?.length ? `<img src='${images[0]}' alt="" />` : ''
 }
 
 const getPointData = (bench: BenchType): MapBalloonType => {
