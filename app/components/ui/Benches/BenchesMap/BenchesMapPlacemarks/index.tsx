@@ -8,15 +8,15 @@ interface IProps {
   benches?: BenchType[]
 }
 
-const renderBalloonImage = (images: string[]): ReactElement | '' => {
-  return images.length ? <img src={images[0]} alt="" /> : ''
+const renderBalloonImage = (images: string[]): string => {
+  return images.length ? `<img src='${images[0]}' alt="" />` : ''
 }
 
 const getPointData = (bench: BenchType): MapBalloonType => {
   const balloonBody =
       `<div class="benches-map__balloon-image">
+            <div>Лавочка <strong>#${bench.id}</strong></div>
             ${renderBalloonImage(bench.images)}
-            <div>Лавочка <strong>#${bench.id}</div>
         </div>
         `
 
@@ -68,9 +68,9 @@ const BenchesMapPlacemarks: FC<IProps> = ({
       options={{
         preset: 'islands#invertedVioletClusterIcons',
         groupByCoordinates: false,
-        clusterDisableClickZoom: true,
-        clusterHideIconOnBalloonOpen: false,
-        geoObjectHideIconOnBalloonOpen: false,
+        clusterDisableClickZoom: false,
+        clusterHideIconOnBalloonOpen: true,
+        geoObjectHideIconOnBalloonOpen: true,
         clusterIconColor: '#49260a'
       }}
     >
