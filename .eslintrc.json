@@ -30,6 +30,7 @@
     "__WebpackModuleApi": "readonly"
   },
   "rules": {
+    "react/jsx-max-props-per-line": [1, { "when": "multiline" }],
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-use-before-define": ["error"],

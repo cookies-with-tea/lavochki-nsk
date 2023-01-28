@@ -3,22 +3,35 @@ import { BenchType } from '@/app/types/bench.type'
 import { YMaps, Map, YMapsApi } from 'react-yandex-maps'
 import BenchesMapPlacemarks
   from '@/app/components/ui/Benches/BenchesMap/BenchesMapPlacemarks'
-
-const mapState = {
-  center: [55.00, 82.95],
-  zoom: 9,
-  behaviors: ['default', 'scrollZoom']
-}
+import { MapStateOptionsType } from '@/app/types/map.type'
 
 interface IProps {
   height: number
   bench?: BenchType
   benches?: BenchType[]
   setMapInstance: (mapInstance: YMapsApi | null) => void
+  mapSettings: MapStateOptionsType
 }
 
-const BenchesMap: FC<IProps> = ({ height, bench, benches, setMapInstance }): ReactElement => {
+const BenchesMap: FC<IProps> = (
+  {
+    height,
+    bench,
+    benches,
+    setMapInstance,
+    mapSettings
+  }
+): ReactElement => {
   const [map, setMap] = useState<YMapsApi | null>(null)
+  const [mapState, setMapState] = useState({} as MapStateOptionsType)
+
+  useEffect(() => {
+    setMapState({
+      ...mapState,
+      center: mapSettings.center,
+      zoom: mapSettings.zoom,
+    })
+  }, [mapSettings.zoom, mapSettings.center])
 
   useEffect(() => {
     if (map) {
@@ -34,16 +47,20 @@ const BenchesMap: FC<IProps> = ({ height, bench, benches, setMapInstance }): Rea
         apikey: process.env.YANDEX_KEY
       }}>
       <Map
-        defaultState={mapState}
+        version={'2.1.79'}
+        state={mapState}
         width='100%'
         height={height}
         instanceRef={setMap}
         onLoad={(ymaps) => {
           setMap(ymaps)
         }}
-        modules={['geolocation', 'geocode']}
+        modules={['geolocation', 'geocode', 'geoObject.addon.balloon', 'geoObject.addon.hint']}
       >
-        <BenchesMapPlacemarks benches={benches} bench={bench} />
+        <BenchesMapPlacemarks
+          benches={benches}
+          bench={bench}
+        />
       </Map>
     </YMaps>
   )

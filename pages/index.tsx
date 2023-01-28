@@ -7,6 +7,7 @@ import HomeBenches from '@/app/components/pages/Home/HomeBenches'
 import { ErrorType } from '@/app/types/common.type'
 import { BenchesResponseType } from '@/app/types/bench.type'
 import { YMapsApi } from 'react-yandex-maps'
+import { MapStateOptionsType } from '@/app/types/map.type'
 
 const getBenches = async (): Promise<BenchesResponseType> =>
   await BenchService.getAll()
@@ -16,6 +17,11 @@ const HomePage: NextPage = (): ReactElement => {
     {} as BenchesResponseType
   )
   const [map, setMap] = useState<YMapsApi | null>(null)
+  const [mapSettings, setMapSettings] = useState<MapStateOptionsType>({
+    center: [55.00, 82.95],
+    zoom: 9,
+    behaviors: ['default', 'scrollZoom']
+  })
 
   const geoDecoding = (
     benches: BenchesResponseType,
@@ -23,7 +29,7 @@ const HomePage: NextPage = (): ReactElement => {
   ): void => {
     if (!instance) return
 
-    benches.items.forEach((bench, index) => {
+    benches?.items?.forEach((bench, index) => {
       instance.geocode([bench.lat, bench.lng])
         .then(({ geoObjects }: Record<string, any>) => {
           const firstGeoObjectLocation = geoObjects
@@ -32,7 +38,7 @@ const HomePage: NextPage = (): ReactElement => {
 
           const newBenches = [...benches.items]
 
-          newBenches[index] = { ...bench, address: firstGeoObjectLocation }
+          newBenches[index] = Object.assign(bench, { address: firstGeoObjectLocation })
 
           setBenches({
             ...benches,
@@ -52,14 +58,29 @@ const HomePage: NextPage = (): ReactElement => {
     setMap(instance)
   }
 
+  const handleMoveToPlacemark = (coordinates: number[], zoom: number): void => {
+    setMapSettings({
+      ...mapSettings,
+      center: coordinates,
+      zoom
+    })
+  }
+
   useEffect(() => {
     geoDecoding(benches, map)
   }, [map])
 
   return (
     <>
-      <HomeMap benches={ benches.items } setMapInstance={setMapInstance} />
-      <HomeBenches benches={ benches.items } />
+      <HomeMap
+        benches={ benches.items }
+        setMapInstance={setMapInstance}
+        mapSettings={mapSettings}
+      />
+      <HomeBenches
+        benches={ benches.items }
+        moveToPlacemark={handleMoveToPlacemark}
+      />
     </>
   )
 }

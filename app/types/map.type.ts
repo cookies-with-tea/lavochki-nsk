@@ -17,3 +17,9 @@ export type MapPointOptions = {
     radius?: number
   },
 }
+
+export type MapStateOptionsType = {
+  center: number[]
+  zoom: number
+  behaviors: string[]
+}

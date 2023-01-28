@@ -7,15 +7,18 @@ interface IProps {
   bench?: BenchType
   benches?: BenchType[]
 }
+
+const renderBalloonImage = (images: string[]): ReactElement | '' => {
+  return images.length ? <img src={images[0]} alt="" /> : ''
+}
+
 const getPointData = (bench: BenchType): MapBalloonType => {
-  const balloonBody = bench.images && bench.images.length
-    ? (
+  const balloonBody =
       `<div class="benches-map__balloon-image">
-            <img src=${bench.images[0]} alt="bench" />
+            ${renderBalloonImage(bench.images)}
+            <div>Лавочка <strong>#${bench.id}</div>
         </div>
         `
-    )
-    : ''
 
   return {
     hintContent: `Лавочка <strong>#' ${bench.id} </strong>`,
@@ -31,8 +34,8 @@ const getPointOptions = (): MapPointOptions => {
     iconImageSize: [58, 78],
     iconShape: {
       type: 'Circle',
-      coordinates: [0, 0],
-      radius: 50
+      coordinates: [20, -12],
+      radius: 30
     },
     balloonOffset: [18, -35]
   }
@@ -40,9 +43,11 @@ const getPointOptions = (): MapPointOptions => {
 
 const BenchesMapPlacemarks: FC<IProps> = ({
   bench,
-  benches
+  benches,
 }): ReactElement => {
-  const [currentBenches, setCurrentBenches] = useState<BenchType[]>([] as BenchType[])
+  const [currentBenches, setCurrentBenches] = useState<BenchType[]>(
+    [] as BenchType[]
+  )
 
   useEffect(() => {
     if (bench) {
@@ -79,8 +84,6 @@ const BenchesMapPlacemarks: FC<IProps> = ({
               properties={getPointData(bench)}
               options={getPointOptions()}
               modules={[
-                'geoObject.addon.balloon',
-                'geoObject.addon.hint',
                 'layout.Image'
               ]}
             />
