@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import { ChangeEvent, ReactElement, useEffect, useState } from 'react'
 import { StyledBenchesPage } from '@/pages/benches/BenchesPage.style'
 import BenchesSidebar from
   '@/app/components/pages/Benches/BenchesSidebar/BenchesSidebar'
@@ -12,27 +12,62 @@ import { dehydrate, QueryClient, useQuery } from 'react-query'
 import BenchService from '@/app/services/Bench/BenchService'
 import TagService from '@/app/services/Tag/TagService'
 import { ErrorType } from '@/app/types/common.type'
-import { BenchTagType, BenchesResponseType } from '@/app/types/bench.type'
+import {
+  BenchTagType,
+  BenchesResponseType,
+  BenchesParamsType
+} from '@/app/types/bench.type'
+import { Pagination } from '@mui/material'
 
-const getBenches = async (): Promise<BenchesResponseType> =>
-  await BenchService.getAll()
+const defaultParams = {
+  sortOrder: 'desc',
+  page: 1,
+  perPage: 3
+}
+
+const getBenches = async (
+  params?: Partial<BenchesParamsType>
+): Promise<BenchesResponseType> => await BenchService.getAll(params)
+
 const getTags = async (): Promise<BenchTagType[]> => await TagService.getAll()
 
 const BenchesPage: NextPage = (): ReactElement => {
   const [benches, setBenches] = useState<BenchesResponseType>({} as BenchesResponseType)
   const [tags, setTags] = useState<BenchTagType[]>([])
+  const [benchesParams, setBenchesParams] =
+    useState<Partial<BenchesParamsType>>({
+      sortOrder: 'desc',
+      page: 1,
+      perPage: 15
+    })
 
-  useQuery<BenchesResponseType>('get benches', getBenches, {
-    onSuccess: (response) => {
-      setBenches(response)
-    }
-  })
+  const { refetch } = useQuery<BenchesResponseType>(
+    'get benches',
+    getBenches.bind(null, benchesParams),
+    {
+      onSuccess: (response) => {
+        setBenches(response)
+      }
+    })
 
   useQuery<BenchTagType[]>('get tags', getTags, {
     onSuccess: (response) => {
       setTags(response)
     }
   })
+
+  const handlePageChange = (event: ChangeEvent<unknown>, value: number): void => {
+    setBenches({} as BenchesResponseType)
+
+    setBenchesParams({
+      ...benchesParams,
+      page: value,
+    })
+  }
+
+  useEffect(() => {
+    refetch()
+  }, [benchesParams.page])
 
   return (
     <StyledBenchesPage>
@@ -44,7 +79,7 @@ const BenchesPage: NextPage = (): ReactElement => {
 
         <div className={'mt-42'}>
           <BenchesSort />
-          <StyledContent>
+          <StyledContent className={'mb-24'}>
             {
               benches &&
               benches.items &&
@@ -57,6 +92,13 @@ const BenchesPage: NextPage = (): ReactElement => {
                 : <div>Нет данных</div>
             }
           </StyledContent>
+          <Pagination
+            count={3}
+            page={benchesParams.page}
+            showFirstButton
+            showLastButton 
+            onChange={handlePageChange}
+          />
         </div>
       </div>
     </StyledBenchesPage>
@@ -67,7 +109,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient()
 
   await queryClient
-    .prefetchQuery<BenchesResponseType, ErrorType>('get benches', getBenches)
+    .prefetchQuery<BenchesResponseType, ErrorType>('get benches', getBenches.bind(null, defaultParams))
   await queryClient.prefetchQuery<BenchTagType[], ErrorType>('get tags', getTags)
 
   return {
