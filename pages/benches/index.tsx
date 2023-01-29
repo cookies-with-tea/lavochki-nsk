@@ -18,6 +18,9 @@ import {
   BenchesParamsType
 } from '@/app/types/bench.type'
 import { Pagination } from '@mui/material'
+import BenchCardSkeleton
+  from '@/app/components/ui/Bench/BenchCard/BenchCardSkeleton'
+import { scrollToTop } from '@/app/utils/scrollToTop'
 
 const defaultParams = {
   sortOrder: 'desc',
@@ -41,7 +44,7 @@ const BenchesPage: NextPage = (): ReactElement => {
       perPage: 15
     })
 
-  const { refetch } = useQuery<BenchesResponseType>(
+  const { refetch, isFetching } = useQuery<BenchesResponseType>(
     'get benches',
     getBenches.bind(null, benchesParams),
     {
@@ -63,6 +66,8 @@ const BenchesPage: NextPage = (): ReactElement => {
       ...benchesParams,
       page: value,
     })
+
+    scrollToTop()
   }
 
   useEffect(() => {
@@ -81,15 +86,17 @@ const BenchesPage: NextPage = (): ReactElement => {
           <BenchesSort />
           <StyledContent className={'mb-24'}>
             {
-              benches &&
-              benches.items &&
-              benches.items.length
+              !isFetching && benches?.items?.length
                 ? (
                   benches.items.map((bench) => (
                     <BenchCard key={bench.id} bench={bench} />)
                   )
                 )
-                : <div>Нет данных</div>
+                : (
+                  [...Array(15)].map((benchSkeleton) => (
+                    <BenchCardSkeleton key={benchSkeleton} isBenchFetching={isFetching} />
+                  ))
+                )
             }
           </StyledContent>
           <Pagination

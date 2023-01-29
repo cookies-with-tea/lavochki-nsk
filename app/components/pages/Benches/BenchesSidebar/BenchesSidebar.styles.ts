@@ -9,8 +9,7 @@ export const StyledBenchesPage = styled.div`
 export const StyledContent = styled.div`
   display: flex;
   flex-wrap: wrap;
-  column-gap: 44px;
-  row-gap: 42px;
+  gap: 42px;
 `
 
 export const StyledSortTitle = styled.p`
@@ -39,6 +38,7 @@ export const StyledSortItem = styled.li`
 export const StyledAside = styled.aside`
     width: 350px;
     margin-top: 114px;
+    margin-right: 45px;
 `
 
 export const StyledResetButton = styled(Button)`
