@@ -126,12 +126,10 @@ const BenchesSidebar: FC<IProps> = ({ tags }): ReactElement => {
 
   return (
     <StyledAside>
-      <div className="mb-52 pr-20">
+      <div className="mb-52">
         <FormControl>
           <FormLabel id="add-date" className="d-f flex-end mb-22">
-            <StyledFilterTitle
-              className="mr-12"
-            >
+            <StyledFilterTitle className="mr-12">
               Дата добавления
             </StyledFilterTitle>
             <StyledResetButton
@@ -172,7 +170,7 @@ const BenchesSidebar: FC<IProps> = ({ tags }): ReactElement => {
         </FormControl>
       </div>
       <div className="mb-52">
-        <FormControl>
+        <FormControl sx={{ width: '300px' }}>
           <FormLabel id="district" className="d-f flex-end mb-22">
             <StyledFilterTitle className="mr-12">Район</StyledFilterTitle>
             <StyledResetButton
