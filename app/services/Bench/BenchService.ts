@@ -11,15 +11,17 @@ class BenchService extends AxiosService {
     super(config)
   }
 
-  public getAll = async (params?: Partial<BenchesParamsType>): Promise<BenchesResponseType> => {
+  public getAll = async (
+    params?: Partial<BenchesParamsType>
+  ): Promise<BenchesResponseType> => {
     const
-      { 
+      {
         sortBy: sort_by,
         sortOrder: sort_order,
         perPage: per_page,
         page
       } = params as BenchesParamsType
-    
+
     return this.axiosCall<BenchesResponseType>({
       method: 'get',
       url: '',
