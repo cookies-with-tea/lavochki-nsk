@@ -19,3 +19,10 @@ export type BenchesResponseType = {
     count: number
     items: BenchType[]
 }
+
+export type BenchesParamsType = {
+    sortBy: string
+    sortOrder: string
+    page: number
+    perPage: number
+}

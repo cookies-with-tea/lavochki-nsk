@@ -55,26 +55,26 @@ const BenchDetail: NextPage = (): ReactElement => {
     behaviors: ['default', 'scrollZoom']
   })
 
-  const benchQuery = useQuery<BenchType, ErrorType>(
-    ['get bench', benchId],
-    getBench.bind(null, benchId), {
-      onSuccess: (response) => {
-        if (response) {
-          setBench(response)
+  const { refetch: benchRefetch, isFetching: isBenchFething }
+    = useQuery<BenchType, ErrorType>(['get bench', benchId],
+      getBench.bind(null, benchId), {
+        onSuccess: (response) => {
+          if (response) {
+            setBench(response)
 
-          setChipData(response.tags)
+            setChipData(response.tags)
 
-          setMapSettings({
-            ...mapSettings,
-            center: [response.lat, response.lng]
-          })
-        }
-      },
-      enabled: benchId.length > 0,
-      staleTime: 1000
-    })
+            setMapSettings({
+              ...mapSettings,
+              center: [response.lat, response.lng]
+            })
+          }
+        },
+        enabled: benchId.length > 0,
+        staleTime: 1000
+      })
 
-  const commentQuery = useQuery<CommentType[], ErrorType>(
+  const { refetch: commensRefetch } = useQuery<CommentType[], ErrorType>(
     ['get comments', benchId],
     getComments.bind(null, benchId), 
     {
@@ -104,18 +104,18 @@ const BenchDetail: NextPage = (): ReactElement => {
   }
 
   const handleUpdateData = async (): Promise<void> => {
-    await benchQuery.refetch()
-    await commentQuery.refetch()
+    await benchRefetch()
+    await commensRefetch()
   }
 
 
   const renderComments = (): ReactElement => {
-    if (commentQuery.isFetching) {
+    if (isBenchFething) {
       return (
         <Fade
-          in={commentQuery.isFetched}
+          in={isBenchFething}
           style={{
-            transitionDelay: commentQuery.isLoading ? '800ms' : '0ms',
+            transitionDelay: isBenchFething ? '800ms' : '0ms',
           }}
           unmountOnExit
         >
