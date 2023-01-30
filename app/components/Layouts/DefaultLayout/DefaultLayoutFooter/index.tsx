@@ -9,7 +9,7 @@ import {
   StyledDeveloped,
 } from '@/app/components/Layouts/DefaultLayout/DefaultLayoutFooter/DefaultLayoutFooter.style'
 import Link from 'next/link'
-import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
+import CommonIcon from '@/app/components/Common/ui/CommonIcon/CommonIcon'
 import { BaseLink } from '@/app/styles/common'
 
 const DefaultLayoutFooter: FC = (): ReactElement => {

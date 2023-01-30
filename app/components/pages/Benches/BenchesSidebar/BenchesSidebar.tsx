@@ -19,7 +19,7 @@ import {
   StyledResetButton,
   StyledShowAllButton
 } from '@/app/components/pages/Benches/BenchesSidebar/BenchesSidebar.styles'
-import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
+import CommonIcon from '@/app/components/Common/ui/CommonIcon/CommonIcon'
 import { BenchTagType } from '@/app/types/bench.type'
 
 interface IProps {

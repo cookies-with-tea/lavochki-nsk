@@ -8,9 +8,10 @@ import { BenchType } from '@/app/types/bench.type'
 interface IProps {
   benches?: BenchType[]
   moveToPlacemark: (coordinates: number[], zoom: number) => void
+  openPreviewImage: (benchId: string, index: number) => void
 }
 
-const HomeBenches: FC<IProps> = ({ benches, moveToPlacemark }): ReactElement => {
+const HomeBenches: FC<IProps> = ({ benches, moveToPlacemark, openPreviewImage }): ReactElement => {
   return (
     <div className={'home-benches'}>
       <div className="d-f ai-c jc-sb mb-40">
@@ -23,7 +24,11 @@ const HomeBenches: FC<IProps> = ({ benches, moveToPlacemark }): ReactElement => 
       </div>
       {
         benches && benches.map((bench) => (
-          <HomeBench key={bench.id} bench={bench}  moveToPlacemark={moveToPlacemark} />
+          <HomeBench
+            key={bench.id}
+            bench={bench}
+            moveToPlacemark={moveToPlacemark}
+            openPreviewImage={openPreviewImage} />
         ))
       }
     </div>

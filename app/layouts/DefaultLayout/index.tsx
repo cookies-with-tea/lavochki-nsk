@@ -11,7 +11,7 @@ import { UserMeType } from '@/app/types/user.type'
 import UserService from '@/app/services/User/UserService'
 import { UserContext } from '@/app/contexts/userContext'
 import { useRouter } from 'next/router'
-import CommonLoader from '@/app/components/Common/CommonLoader'
+import CommonLoader from '@/app/components/Common/ui/CommonLoader'
 
 interface IProps {
     children: ReactNode

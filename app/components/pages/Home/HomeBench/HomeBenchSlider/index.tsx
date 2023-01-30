@@ -2,19 +2,21 @@ import React, { FC, useRef } from 'react'
 import { Swiper } from 'swiper/react'
 import SwiperCore, { Swiper as SwiperType, Navigation } from 'swiper'
 import Image from 'next/image'
-import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
+import CommonIcon from '@/app/components/Common/ui/CommonIcon/CommonIcon'
 import {
   StyledSlide
 } from 
   '@/app/components/pages/Home/HomeBench/HomeBenchSlider/HomeBenchSlider.style'
 import { StyledNavigation } from '@/app/styles/vendor/swiper/_swiper'
+import { BenchType } from '@/app/types/bench.type'
 
 interface IProps {
-  images: string[]
+  bench: BenchType
   className?: string
+  openPreviewImage: (benchId: string, index: number) => void
 }
 
-const HomeBenchSlider: FC<IProps> = ({ images, className }) => {
+const HomeBenchSlider: FC<IProps> = ({ bench, className, openPreviewImage }) => {
   const swiperRef = useRef<SwiperType | null>(null)
   const swiperNavPrevRef = useRef<HTMLDivElement>(null)
   const swiperNavNextRef = useRef<HTMLDivElement>(null)
@@ -41,8 +43,8 @@ const HomeBenchSlider: FC<IProps> = ({ images, className }) => {
           swiper.navigation.update()
         }}
       >
-        { images && images.map((image, index) => (
-          <StyledSlide key={index}>
+        { bench?.images.map((image, index) => (
+          <StyledSlide key={index} onClick={() => openPreviewImage(bench.id, index)}>
             <Image src={image} alt="image" width={240} height={240} />
           </StyledSlide>
         ))}

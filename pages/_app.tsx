@@ -11,7 +11,7 @@ import {
 } from 'react-query'
 import { ReactElement, useRef, useState } from 'react'
 import { ErrorType } from '@/app/types/common.type'
-import CommonSnackbar from '@/app/components/Common/CommonSnackbar'
+import CommonSnackbar from '@/app/components/Common/ui/CommonSnackbar'
 import { ReactQueryDevtools } from 'react-query/devtools'
 
 import 'swiper/css'

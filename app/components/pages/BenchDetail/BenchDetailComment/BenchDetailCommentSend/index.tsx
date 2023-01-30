@@ -4,7 +4,7 @@ import {
   StyledSendCommentWrapper
 } from '@/app/components/pages/BenchDetail/BenchDetailComments/BenchDetailComments.style'
 import { Box, Button, FormControl } from '@mui/material'
-import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
+import CommonIcon from '@/app/components/Common/ui/CommonIcon/CommonIcon'
 
 interface IProps {
     className?: string

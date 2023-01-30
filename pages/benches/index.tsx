@@ -7,7 +7,7 @@ import BenchesSort from '@/app/components/pages/Benches/BenchesSort/BenchesSort'
 import { StyledContent }
   from '@/app/components/pages/Benches/BenchesSidebar/BenchesSidebar.styles'
 import BenchCard
-  from '@/app/components/ui/Bench/BenchCard/BenchCard'
+  from '@/app/components/Common/ui/Bench/BenchCard/BenchCard'
 import { dehydrate, QueryClient, useQuery } from 'react-query'
 import BenchService from '@/app/services/Bench/BenchService'
 import TagService from '@/app/services/Tag/TagService'
@@ -19,7 +19,7 @@ import {
 } from '@/app/types/bench.type'
 import { Pagination } from '@mui/material'
 import BenchCardSkeleton
-  from '@/app/components/ui/Bench/BenchCard/BenchCardSkeleton'
+  from '@/app/components/Common/ui/Bench/BenchCard/BenchCardSkeleton'
 import { scrollToTop } from '@/app/utils/scrollToTop'
 
 const defaultParams = {

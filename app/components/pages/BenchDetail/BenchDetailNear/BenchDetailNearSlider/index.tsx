@@ -2,9 +2,9 @@ import React, { FC, ReactElement, useRef } from 'react'
 import { BenchType } from '@/app/types/bench.type'
 import SwiperCore, { Navigation, Swiper as SwiperType } from 'swiper'
 import { Swiper } from 'swiper/react'
-import BenchCard from '@/app/components/ui/Bench/BenchCard/BenchCard'
+import BenchCard from '@/app/components/Common/ui/Bench/BenchCard/BenchCard'
 import { StyledNavigation } from '@/app/styles/vendor/swiper/_swiper'
-import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
+import CommonIcon from '@/app/components/Common/ui/CommonIcon/CommonIcon'
 import {
   StyledSlide
 } from '@/app/components/pages/BenchDetail/BenchDetailNear/BenchDetailNearSlider/BenchDetailNearSlider.style'

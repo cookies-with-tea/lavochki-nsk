@@ -9,7 +9,7 @@ import {
   '@/app/components/Layouts/DefaultLayout/DefaultLayoutHeader/DefaultLayoutHeader.type'
 import Link from 'next/link'
 import Profile from '@/public/Avatar.png'
-import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
+import CommonIcon from '@/app/components/Common/ui/CommonIcon/CommonIcon'
 import { Avatar } from '@mui/material'
 import Image from 'next/image'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

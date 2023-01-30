@@ -4,7 +4,7 @@ import {
   StyledLogoutButton,
   StyledMenuItem
 } from '@/app/components/Layouts/DefaultLayout/DefaultLayoutMenu/DefaultLayoutMenu.style'
-import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
+import CommonIcon from '@/app/components/Common/ui/CommonIcon/CommonIcon'
 import { Menu } from '@mui/material'
 import { menuItems }
   from 

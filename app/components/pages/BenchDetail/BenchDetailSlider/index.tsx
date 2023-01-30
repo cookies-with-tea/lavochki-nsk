@@ -9,7 +9,7 @@ import {
 } from
   '@/app/components/pages/BenchDetail/BenchDetailSlider/BenchDetailSlider.style'
 
-import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
+import CommonIcon from '@/app/components/Common/ui/CommonIcon/CommonIcon'
 
 interface IProps {
   images: string[]

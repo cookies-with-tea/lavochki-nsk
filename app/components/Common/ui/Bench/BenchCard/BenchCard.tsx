@@ -10,8 +10,8 @@ import {
   StyledRatingCount,
   StyledTag,
   StyledTags
-} from '@/app/components/ui/Bench/BenchCard/BenchesCard.styles'
-import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
+} from '@/app/components/Common/ui/Bench/BenchCard/BenchesCard.styles'
+import CommonIcon from '@/app/components/Common/ui/CommonIcon/CommonIcon'
 import Link from 'next/link'
 import { BenchType } from '@/app/types/bench.type'
 

@@ -9,16 +9,17 @@ import {
   StyledLocationButton
 } from '@/app/components/pages/Home/HomeBench/HomeBench.style'
 import Link from 'next/link'
-import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
+import CommonIcon from '@/app/components/Common/ui/CommonIcon/CommonIcon'
 import { BenchType } from '@/app/types/bench.type'
 import { scrollToTop } from '@/app/utils/scrollToTop'
 
 interface IProps {
   bench: BenchType
   moveToPlacemark: (coordinates: number[], zoom: number) => void
+  openPreviewImage: (benchId: string, index: number) => void
 }
 
-const HomeBench: FC<IProps> = ({ bench, moveToPlacemark }): ReactElement => {
+const HomeBench: FC<IProps> = ({ bench, moveToPlacemark, openPreviewImage }): ReactElement => {
   const handleScrollToTop = (coords: number[]): void => {
     scrollToTop()
 
@@ -47,7 +48,7 @@ const HomeBench: FC<IProps> = ({ bench, moveToPlacemark }): ReactElement => {
       {
         bench.images
         && bench.images.length
-          ? <StyledHomeBenchesSlider images={bench.images} />
+          ? <StyledHomeBenchesSlider bench={bench} openPreviewImage={openPreviewImage} />
           : null
       }
 

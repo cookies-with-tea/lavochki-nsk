@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, ReactElement, useState } from 'react'
-import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
+import CommonIcon from '@/app/components/Common/ui/CommonIcon/CommonIcon'
 import {
   StyledHeading,
   StyledOpenCommentInputButton

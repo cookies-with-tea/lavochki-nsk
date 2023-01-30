@@ -1,19 +1,21 @@
 import { GetStaticProps, NextPage } from 'next'
 import { ReactElement, useEffect, useState } from 'react'
 import HomeMap from '@/app/components/pages/Home/HomeMap'
-import { dehydrate, QueryClient, useInfiniteQuery } from 'react-query'
+import { dehydrate, QueryClient, useInfiniteQuery, useQuery } from 'react-query'
 import BenchService from '@/app/services/Bench/BenchService'
 import HomeBenches from '@/app/components/pages/Home/HomeBenches'
 import { ErrorType } from '@/app/types/common.type'
 import {
   BenchesParamsType,
-  BenchesResponseType,
+  BenchesResponseType, BenchType,
   // BenchType
 } from '@/app/types/bench.type'
 // import { YMapsApi } from 'react-yandex-maps'
 import { MapStateOptionsType } from '@/app/types/map.type'
 import { useInView } from 'react-intersection-observer'
 import { Box } from '@mui/material'
+import dynamic from 'next/dynamic'
+import { useToggle } from '@/app/hooks/useToggle'
 
 const defaultParams = {
   sortOrder: 'desc',
@@ -25,9 +27,20 @@ const getBenches = async (
   params?: Partial<BenchesParamsType>
 ): Promise<BenchesResponseType> => await BenchService.getAll(params)
 
+const getAllBenches = async (): Promise<BenchesResponseType> => await BenchService.getAll()
+
+const ImagePreviewWithoutSSR = dynamic(
+  () => import('@/app/components/Common/ui/ImagePreview'),
+  { ssr: false }
+)
+
 const HomePage: NextPage = (): ReactElement => {
   const { ref, inView } = useInView()
+  const [bench, setBench] = useState<BenchType & { imageIndex?: number }>({} as BenchType & { imageIndex?: number })
   const [benches, setBenches] = useState<BenchesResponseType>(
+    {} as BenchesResponseType
+  )
+  const [allBenches, setAllBenches] = useState<BenchesResponseType>(
     {} as BenchesResponseType
   )
   // const [map, setMap] = useState<YMapsApi | null>(null)
@@ -42,6 +55,7 @@ const HomePage: NextPage = (): ReactElement => {
       page: 1,
       perPage: 3
     })
+  const [isPreviewImageVisible, setIsPreviewImageVisible] = useToggle(false)
 
   // const geoDecoding = (
   //   benches: BenchesResponseType,
@@ -89,12 +103,42 @@ const HomePage: NextPage = (): ReactElement => {
       }
     })
 
+  useQuery<BenchesResponseType, ErrorType>(
+    'get all benches',
+    getAllBenches,
+    {
+      onSuccess: (response) => {
+        setAllBenches(response)
+      }
+    }
+  )
+
   const handleMoveToPlacemark = (coordinates: number[], zoom: number): void => {
     setMapSettings({
       ...mapSettings,
       center: coordinates,
       zoom
     })
+  }
+
+  const findBenchById = (id: string): BenchType | undefined => {
+    return benches.items.find((bench) => bench.id === id)
+  }
+
+  const handlePreviewImageOpen = (benchId: string, index: number): void => {
+    const bench = findBenchById(benchId)
+    if (bench) {
+      setBench({
+        ...bench,
+        imageIndex: index,
+      })
+    }
+
+    setIsPreviewImageVisible()
+  }
+
+  const onPreviewImageClose = (): void => {
+    setIsPreviewImageVisible()
   }
 
   useEffect(() => {
@@ -114,17 +158,26 @@ const HomePage: NextPage = (): ReactElement => {
   return (
     <>
       <HomeMap
-        benches={ benches.items }
+        benches={ allBenches.items }
         setMapInstance={() => {
           console.log('map instance')
         }}
         mapSettings={mapSettings}
       />
+
       <HomeBenches
         benches={ benches.items }
         moveToPlacemark={handleMoveToPlacemark}
+        openPreviewImage={handlePreviewImageOpen}
       />
+
       { !isLoading && benches?.items?.length ? <Box ref={ref} component={'span'} sx={{ visibility: 'hidden' }}>observer</Box> : null }
+
+      <ImagePreviewWithoutSSR
+        open={isPreviewImageVisible}
+        image={bench.images?.[bench.imageIndex as number]}
+        title={'Просмотр фотографий'}
+        onClose={onPreviewImageClose} />
     </>
   )
 }
@@ -133,6 +186,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient()
 
   await queryClient.prefetchQuery<BenchesResponseType>('get benches', getBenches.bind(null, defaultParams))
+  await queryClient.prefetchQuery<BenchesResponseType>('get all benches', getAllBenches)
 
   return {
     props: {

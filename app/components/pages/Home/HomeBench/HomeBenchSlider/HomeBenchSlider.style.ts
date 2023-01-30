@@ -6,6 +6,8 @@ export const StyledSlide = styled(SwiperSlide)`
   height: 190px !important;
   text-align: center;
   
+  cursor: pointer;
+  
   img {
     border-radius: 20px;
     width: 100%;

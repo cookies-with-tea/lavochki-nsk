@@ -2,7 +2,7 @@ import { FC, ReactElement, useEffect, useState } from 'react'
 import { BenchType } from '@/app/types/bench.type'
 import { YMaps, Map, YMapsApi } from 'react-yandex-maps'
 import BenchesMapPlacemarks
-  from '@/app/components/ui/Benches/BenchesMap/BenchesMapPlacemarks'
+  from '@/app/components/Common/ui/Benches/BenchesMap/BenchesMapPlacemarks'
 import { MapStateOptionsType } from '@/app/types/map.type'
 
 interface IProps {

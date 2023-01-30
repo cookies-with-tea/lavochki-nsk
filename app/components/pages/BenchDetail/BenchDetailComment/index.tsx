@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FC, ReactElement, useState } from 'react'
 import { Avatar, Button, Popover } from '@mui/material'
-import CommonIcon from '@/app/components/Common/CommonIcon/CommonIcon'
+import CommonIcon from '@/app/components/Common/ui/CommonIcon/CommonIcon'
 import {
   StyledAnswerButton,
   StyledHeart, StyledHeartWrapper, StyledInfo, StyledReportButton,

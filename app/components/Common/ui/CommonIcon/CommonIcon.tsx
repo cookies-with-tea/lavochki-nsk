@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
-import { StyledSvg } from '@/app/components/Common/CommonIcon/CommonIconStyles'
-import { IProps } from '@/app/components/Common/CommonIcon/CommonIcon.interface'
+import { StyledSvg } from '@/app/components/Common/ui/CommonIcon/CommonIconStyles'
+import { IProps } from '@/app/components/Common/ui/CommonIcon/CommonIcon.interface'
 import { NoSsr } from '@mui/base'
 
 const CommonIcon: FC<IProps> = (
