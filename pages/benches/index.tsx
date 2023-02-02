@@ -21,12 +21,7 @@ import { Pagination } from '@mui/material'
 import BenchCardSkeleton
   from '@/app/components/Common/ui/Bench/BenchCard/BenchCardSkeleton'
 import { scrollToTop } from '@/app/utils/scrollToTop'
-
-const defaultParams = {
-  sortOrder: 'desc',
-  page: 1,
-  perPage: 3
-}
+import { benchesDefaultParams, benchesParamsInitialState } from '@/pages/benches/BenchesPage.constant'
 
 const getBenches = async (
   params?: Partial<BenchesParamsType>
@@ -37,12 +32,7 @@ const getTags = async (): Promise<BenchTagType[]> => await TagService.getAll()
 const BenchesPage: NextPage = (): ReactElement => {
   const [benches, setBenches] = useState<BenchesResponseType>({} as BenchesResponseType)
   const [tags, setTags] = useState<BenchTagType[]>([])
-  const [benchesParams, setBenchesParams] =
-    useState<Partial<BenchesParamsType>>({
-      sortOrder: 'desc',
-      page: 1,
-      perPage: 15
-    })
+  const [benchesParams, setBenchesParams] = useState<Partial<BenchesParamsType>>(benchesParamsInitialState)
 
   const { refetch, isFetching } = useQuery<BenchesResponseType>(
     'get benches',
@@ -93,7 +83,7 @@ const BenchesPage: NextPage = (): ReactElement => {
                   )
                 )
                 : (
-                  [...Array(15)].fill(1).map((_: number, index: number) => (
+                  [...Array(15)].map((_: number, index: number) => (
                     <BenchCardSkeleton key={index} isBenchFetching={isFetching} />
                   ))
                 )
@@ -116,7 +106,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient()
 
   await queryClient
-    .prefetchQuery<BenchesResponseType, ErrorType>('get benches', getBenches.bind(null, defaultParams))
+    .prefetchQuery<BenchesResponseType, ErrorType>('get benches', getBenches.bind(null, benchesDefaultParams))
   await queryClient.prefetchQuery<BenchTagType[], ErrorType>('get tags', getTags)
 
   return {

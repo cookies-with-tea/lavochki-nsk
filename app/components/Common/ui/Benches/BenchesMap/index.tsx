@@ -1,6 +1,7 @@
 import { FC, ReactElement, useEffect, useState } from 'react'
 import { BenchType } from '@/app/types/bench.type'
-import { YMaps, Map, YMapsApi } from 'react-yandex-maps'
+import { YMaps, Map } from '@pbe/react-yandex-maps'
+import { YMapsApi } from '@pbe/react-yandex-maps/typings/util/typing'
 import BenchesMapPlacemarks
   from '@/app/components/Common/ui/Benches/BenchesMap/BenchesMapPlacemarks'
 import { MapStateOptionsType } from '@/app/types/map.type'
@@ -13,15 +14,13 @@ interface IProps {
   mapSettings: MapStateOptionsType
 }
 
-const BenchesMap: FC<IProps> = (
-  {
-    height,
-    bench,
-    benches,
-    setMapInstance,
-    mapSettings
-  }
-): ReactElement => {
+const BenchesMap: FC<IProps> = ({
+  height,
+  bench,
+  benches,
+  setMapInstance,
+  mapSettings
+}): ReactElement => {
   const [map, setMap] = useState<YMapsApi | null>(null)
   const [mapState, setMapState] = useState({} as MapStateOptionsType)
 

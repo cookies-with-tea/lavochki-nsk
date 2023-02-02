@@ -40,6 +40,9 @@ const BenchDetailComment: FC<IProps> = ({
     parentId: ''
   })
 
+  const isReportPopoverVisible = Boolean(reportElement)
+  const reportId = isReportPopoverVisible ? 'report-popover' : undefined
+
   const { mutateAsync } = useMutation(
     'create comment',
     async (payload: CreateCommentType) => createComment(payload),
@@ -49,9 +52,6 @@ const BenchDetailComment: FC<IProps> = ({
       }
     }
   )
-
-  const isReportPopoverVisible = Boolean(reportElement)
-  const reportId = isReportPopoverVisible ? 'report-popover' : undefined
 
   const handleAnswerVisibleToggle = (): void => {
     setAnswer({
