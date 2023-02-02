@@ -2,7 +2,9 @@ import Document, {
   DocumentContext,
   DocumentInitialProps,
   Html,
-  Head, Main, NextScript
+  Head,
+  Main,
+  NextScript
 } from 'next/document'
 import { ReactElement } from 'react'
 

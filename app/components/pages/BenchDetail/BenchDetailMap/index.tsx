@@ -6,7 +6,7 @@ import {
   '@/app/components/pages/BenchDetail/BenchDetailMap/DetailedBenchMap.styles'
 import { BenchType } from '@/app/types/bench.type'
 import BenchesMap from '@/app/components/Common/ui/Benches/BenchesMap'
-import { YMapsApi } from 'react-yandex-maps'
+import { YMapsApi } from '@pbe/react-yandex-maps/typings/util/typing'
 import { MapStateOptionsType } from '@/app/types/map.type'
 
 interface IProps {

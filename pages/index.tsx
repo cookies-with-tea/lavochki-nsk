@@ -10,7 +10,7 @@ import {
   BenchesResponseType, BenchType,
   // BenchType
 } from '@/app/types/bench.type'
-// import { YMapsApi } from 'react-yandex-maps'
+// import { YMapsApi } from '@pbe/react-yandex-maps'
 import { MapStateOptionsType } from '@/app/types/map.type'
 import { useInView } from 'react-intersection-observer'
 import { Box } from '@mui/material'

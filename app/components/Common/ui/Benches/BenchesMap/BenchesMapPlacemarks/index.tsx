@@ -1,5 +1,5 @@
 import React, { FC, ReactElement, useEffect, useState } from 'react'
-import { Clusterer, Placemark } from 'react-yandex-maps'
+import { Clusterer, Placemark } from '@pbe/react-yandex-maps'
 import {  BenchType } from '@/app/types/bench.type'
 import { MapBalloonType, MapPointOptions } from '@/app/types/map.type'
 
