@@ -5,17 +5,18 @@ import { StyledOrderIcon }
 
 import { StyledSortItem, StyledSortTitle }
   from '@/app/components/pages/Benches/BenchesSidebar/BenchesSidebar.styles'
+import { benchesSortList } from '@/app/components/pages/Benches/BenchesSort/BenchesSort.constant'
 
 const setOrder = (currentSort: string): string => {
   switch (currentSort) {
   case 'desc': {
     return ''
   }
-
+  
   case 'asc': {
     return 'desc'
   }
-
+  
   default: {
     return 'asc'
   }
@@ -23,11 +24,7 @@ const setOrder = (currentSort: string): string => {
 }
 
 const BenchesSort: FC = (): ReactElement => {
-  const [sort, setSort] = useState([
-    { id: 1, label: 'Дате добавления', value: 'date', order: '' },
-    { id: 2, label: 'Рейтингу', value: 'raring', order: '' },
-    { id: 3, label: 'Количеству отзывов', value: 'reviews', order: '' },
-  ])
+  const [sort, setSort] = useState(benchesSortList)
 
   const handleChangeSort = (sortId: number): void => {
     const newSort = sort.map((item) => {

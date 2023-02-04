@@ -1,7 +1,9 @@
 import { FC, ReactElement, useEffect, useState } from 'react'
 import { BenchType } from '@/app/types/bench.type'
-import { Map, YMaps, YMapsApi } from 'react-yandex-maps'
-import BenchesMapPlacemarks from '@/app/components/Common/ui/Benches/BenchesMap/BenchesMapPlacemarks'
+import { YMaps, Map } from '@pbe/react-yandex-maps'
+import { YMapsApi } from '@pbe/react-yandex-maps/typings/util/typing'
+import BenchesMapPlacemarks
+  from '@/app/components/Common/ui/Benches/BenchesMap/BenchesMapPlacemarks'
 import { MapStateOptionsType } from '@/app/types/map.type'
 import { Box } from '@mui/material'
 import {
