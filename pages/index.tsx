@@ -95,13 +95,11 @@ const HomePage: NextPage = (): ReactElement => {
     {
       getNextPageParam: () => (benchesParams),
       onSuccess: (response) => {
-        response.pages.forEach((page: BenchesResponseType) => {
-          if (page) {
-            setBenches({
-              ...benches,
-              ...page
-            })
-          }
+        response.pages.forEach((page) => {
+          setBenches({
+            ...benches,
+            ...page
+          })
         })
       }
     })
