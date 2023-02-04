@@ -47,7 +47,8 @@ const HomePage: NextPage = (): ReactElement => {
   const [mapSettings, setMapSettings] = useState<MapStateOptionsType>({
     center: [55.00, 82.95],
     zoom: 9,
-    behaviors: ['default', 'scrollZoom']
+    behaviors: ['default', 'scrollZoom'],
+    controls: []
   })
   const [benchesParams, setBenchesParams] = 
     useState<Partial<BenchesParamsType>>({
@@ -56,6 +57,8 @@ const HomePage: NextPage = (): ReactElement => {
       perPage: 3
     })
   const [isPreviewImageVisible, setIsPreviewImageVisible] = useToggle(false)
+
+  // TODO: Пока что этот функционал выпилил, ибо жду backend для того, чтобы это там было реализовано
 
   // const geoDecoding = (
   //   benches: BenchesResponseType,
@@ -92,13 +95,11 @@ const HomePage: NextPage = (): ReactElement => {
     {
       getNextPageParam: () => (benchesParams),
       onSuccess: (response) => {
-        response.pages.forEach((page: BenchesResponseType) => {
-          if (page) {
-            setBenches({
-              ...benches,
-              ...page
-            })
-          }
+        response.pages.forEach((page) => {
+          setBenches({
+            ...benches,
+            ...page
+          })
         })
       }
     })

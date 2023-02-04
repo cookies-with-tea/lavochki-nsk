@@ -22,4 +22,5 @@ export type MapStateOptionsType = {
   center: number[]
   zoom: number
   behaviors: string[]
+  controls?: []
 }

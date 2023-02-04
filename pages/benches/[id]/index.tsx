@@ -131,30 +131,30 @@ const BenchDetail: NextPage = (): ReactElement => {
     )
   }
 
-  const geoDecoding = (bench: BenchType, instance: YMapsApi | null): void => {
-    if (!instance) return
-
-    instance.geocode([bench.lat, bench.lng])
-      .then(({ geoObjects }: Record<string, any>) => {
-        const firstGeoObjectLocation = geoObjects
-          .get(0)
-          .getAddressLine() as string
-
-        const newBench = {
-          ...bench,
-          address: firstGeoObjectLocation
-        }
-
-        setBench(newBench)
-      })
-  }
+  // const geoDecoding = (bench: BenchType, instance: YMapsApi | null): void => {
+  //   if (!instance) return
+  //
+  //   instance.geocode([bench.lat, bench.lng])
+  //     .then(({ geoObjects }: Record<string, any>) => {
+  //       const firstGeoObjectLocation = geoObjects
+  //         .get(0)
+  //         .getAddressLine() as string
+  //
+  //       const newBench = {
+  //         ...bench,
+  //         address: firstGeoObjectLocation
+  //       }
+  //
+  //       setBench(newBench)
+  //     })
+  // }
 
   const setMapInstance = (instance: YMapsApi | null): void => {
     setMap(instance)
   }
 
   useEffect(() => {
-    geoDecoding(bench, map)
+    // geoDecoding(bench, map)
   }, [map])
 
   return (
