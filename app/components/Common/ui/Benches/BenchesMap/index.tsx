@@ -12,6 +12,7 @@ import {
   StyledZoomSlider
 } from '@/app/components/pages/Home/HomeMap/HomeMap.style'
 import CommonIcon from '@/app/components/Common/ui/CommonIcon/CommonIcon'
+import { IEvent } from 'yandex-maps'
 
 interface IProps {
   height: number
@@ -45,9 +46,9 @@ const BenchesMap: FC<IProps> = ({
     }
   }
 
-  const watchBoundsChange = (e: YMapsApi): void => {
-    const newZoom = e.get('newZoom')
-    const oldZoom = e.get('oldZoom')
+  const watchBoundsChange = (e: IEvent): void => {
+    const newZoom = e.get('newZoom') || 0
+    const oldZoom = e.get('oldZoom') || 0
 
     if (newZoom != oldZoom) {
       changeZoom(newZoom)
@@ -62,12 +63,21 @@ const BenchesMap: FC<IProps> = ({
 
   useEffect(() => {
     if (map && ymaps) {
+      // TODO: Найти где-то типизацию этого
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       map.events.add('boundschange', watchBoundsChange)
     }
 
     setMapState({
       ...mapSettings
     })
+
+    return () => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      map?.events.remove('boundschange', watchBoundsChange)
+    }
   }, [map, mapSettings])
 
   return (
