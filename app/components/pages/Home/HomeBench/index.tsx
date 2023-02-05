@@ -8,7 +8,6 @@ import {
   StyledLink,
   StyledLocationButton
 } from '@/app/components/pages/Home/HomeBench/HomeBench.style'
-import Link from 'next/link'
 import CommonIcon from '@/app/components/Common/ui/CommonIcon/CommonIcon'
 import { BenchType } from '@/app/types/bench.type'
 import { scrollToTop } from '@/app/utils/scrollToTop'
@@ -40,9 +39,10 @@ const HomeBench: FC<IProps> = ({ bench, moveToPlacemark, openPreviewImage }): Re
             <CommonIcon name="location" width={24} height={32} />
           </StyledLocationButton>
         </StyledLatestBenchInfoLocation>
-        <Link href={`/benches/${bench.id}`} passHref shallow>
-          <StyledLink>Смотреть</StyledLink>
-        </Link>
+        {/* TODO: Если будет SPA, то будет ошибка */}
+        {/*<Link href={`/benches/${bench.id}`} passHref shallow>*/}
+        <StyledLink href={`/benches/${bench.id}`}>Смотреть</StyledLink>
+        {/*</Link>*/}
       </div>
 
       {

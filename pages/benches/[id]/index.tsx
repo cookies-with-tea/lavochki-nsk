@@ -24,7 +24,6 @@ import BenchDetailCommentReport
   from '@/app/components/pages/BenchDetail/BenchDetailComment/BenchDetailCommentReport'
 import { YMapsApi } from '@pbe/react-yandex-maps/typings/util/typing'
 import { MapStateOptionsType } from '@/app/types/map.type'
-import { benchDetailDefaultMapSettings } from '@/pages/benches/[id]/BenchDetail.constant'
 
 const getBenches = async (): Promise<BenchesResponseType> => (
   await BenchService.getAll()
@@ -50,7 +49,12 @@ const BenchDetail: NextPage = (): ReactElement => {
   const [benches, setBenches] = useState<BenchesResponseType>({} as BenchesResponseType)
   const [chipData, setChipData] = useState<BenchTagType[]>([] as BenchTagType[])
   const [map, setMap] = useState<YMapsApi | null>(null)
-  const [mapSettings, setMapSettings] = useState<MapStateOptionsType>(benchDetailDefaultMapSettings)
+  const [mapSettings, setMapSettings] = useState<MapStateOptionsType>({
+    center: [55.00, 82.95],
+    zoom: 14,
+    behaviors: ['default', 'scrollZoom'],
+    controls: []
+  })
 
   const { refetch: benchRefetch, isFetching: isBenchFething }
     = useQuery<BenchType, ErrorType>(['get bench', benchId],
@@ -104,7 +108,6 @@ const BenchDetail: NextPage = (): ReactElement => {
     await benchRefetch()
     await commensRefetch()
   }
-
 
   const renderComments = (): ReactElement => {
     if (isBenchFething) {
