@@ -11,8 +11,6 @@ import Profile from '@/public/Avatar.png'
 import CommonIcon from '@/app/components/Common/ui/CommonIcon/CommonIcon'
 import { Avatar } from '@mui/material'
 import Image from 'next/image'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { UserType } from '@/app/types/user.type'
 import UserService from '@/app/services/User/UserService'
 import { useMutation } from 'react-query'
@@ -68,11 +66,12 @@ const DefaultLayoutHeader: FC = (): ReactElement => {
     <StyledHeader>
       <StyledHeaderWrapper>
         <div className="d-f ai-c">
-          <Link href={'/'} passHref>
-            <StyledHomeLink href={'/'}>
-              <CommonIcon name="logo" width={260} height={32} />
-            </StyledHomeLink>
-          </Link>
+          {/* TODO: Если будет SPA, то будет ошибка */}
+          {/*<Link href={'/'} passHref>*/}
+          <StyledHomeLink href={'/'}>
+            <CommonIcon name="logo" width={260} height={32} />
+          </StyledHomeLink>
+          {/*</Link>*/}
           <Link href="/benches" passHref>
             <a>Все лавочки</a>
           </Link>

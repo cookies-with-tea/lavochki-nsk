@@ -28,7 +28,7 @@ const BenchesMap: FC<IProps> = ({
   benches,
   mapSettings
 }): ReactElement => {
-  const [map, setMap] = useState<YMapsApi | null>(null)
+  const [map, setMap] = useState(null)
   const [ymaps, setYmaps] = useState<YMapsApi | null>(null)
   const [mapState, setMapState] = useState({} as MapStateOptionsType)
 
@@ -62,23 +62,26 @@ const BenchesMap: FC<IProps> = ({
   }
 
   useEffect(() => {
+    setMapState({
+      ...mapSettings
+    })
+  }, [mapSettings])
+
+  useEffect(() => {
     if (map && ymaps) {
-      // TODO: Найти где-то типизацию этого
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       map.events.add('boundschange', watchBoundsChange)
     }
+  }, [map, ymaps])
 
-    setMapState({
-      ...mapSettings
-    })
-
+  useEffect(() => {
     return () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       map?.events.remove('boundschange', watchBoundsChange)
     }
-  }, [map, mapSettings])
+  }, [])
 
   return (
     <div className={'p-relative'}>
@@ -86,7 +89,8 @@ const BenchesMap: FC<IProps> = ({
         query={{
           ns: 'use-load-option',
           load: 'package.full',
-          apikey: process.env.YANDEX_KEY
+          apikey: process.env.YANDEX_KEY,
+          lang: 'en_RU'
         }}
       >
         <Map
@@ -99,9 +103,7 @@ const BenchesMap: FC<IProps> = ({
               setMap(ref)
             }
           }}
-          onLoad={(ymaps) => {
-            setYmaps(ymaps)
-          }}
+          onLoad={setYmaps}
           modules={[
             'domEvent.manager',
             'geolocation',

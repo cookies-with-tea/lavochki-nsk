@@ -82,6 +82,9 @@ const BenchesMapPlacemarks: FC<IProps> = ({
               key={index}
               geometry={[bench.lat, bench.lng]}
               properties={getPointData(bench)}
+              // TODO: разобраться с типизацией
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
               options={getPointOptions()}
               modules={[
                 'layout.Image'
