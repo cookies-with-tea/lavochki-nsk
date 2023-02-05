@@ -1,11 +1,10 @@
-import React, { FC, ReactElement, useEffect, useRef, useState } from 'react'
+import React, { FC, ReactElement, useEffect, useState } from 'react'
 import {
   StyledAvatarButton,
   StyledHeader,
   StyledHeaderWrapper,
   StyledHomeLink
-} from 
-  // eslint-disable-next-line max-len
+} from
   '@/app/components/Layouts/DefaultLayout/DefaultLayoutHeader/DefaultLayoutHeader.type'
 import Link from 'next/link'
 import Profile from '@/public/Avatar.png'
@@ -14,18 +13,17 @@ import { Avatar } from '@mui/material'
 import Image from 'next/image'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import TelegramLoginButton from 'react-telegram-login'
 import { UserType } from '@/app/types/user.type'
 import UserService from '@/app/services/User/UserService'
 import { useMutation } from 'react-query'
 import DefaultLayoutMenu
   from '@/app/components/Layouts/DefaultLayout/DefaultLayoutMenu'
+import DefaultLayoutHeaderAuthButton
+  from '@/app/components/Layouts/DefaultLayout/DefaultLayoutHeader/DefaultLayoutHeaderAuthButton'
 
 const DefaultLayoutHeader: FC = (): ReactElement => {
   const [isAuth, setIsAuth] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-
-  const telegramWidget = useRef<HTMLDivElement | null>(null)
 
   const open = Boolean(anchorEl)
 
@@ -80,7 +78,7 @@ const DefaultLayoutHeader: FC = (): ReactElement => {
           </Link>
         </div>
         <div className="d-f ai-c">
-          <div className="d-f ai-c ml-36">
+          <div className="d-f ai-c">
             { isAuth ? (
               <>
                 <span className="text mr-12">Никита</span>
@@ -110,13 +108,8 @@ const DefaultLayoutHeader: FC = (): ReactElement => {
                 />
               </>
             ) : (
-              <TelegramLoginButton
-                ref={telegramWidget}
-                dataOnauth={handleTelegramResponse}
-                botName={process.env.BOT_USERNAME}
-              />
+              <DefaultLayoutHeaderAuthButton onAuth={handleTelegramResponse} />
             )}
-
           </div>
         </div>
       </StyledHeaderWrapper>
