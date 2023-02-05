@@ -12,7 +12,8 @@ const nextConfig = {
   env: {
     BOT_USERNAME: process.env.BOT_USERNAME,
     BASE_URL: process.env.BASE_URL,
-    YANDEX_KEY: process.env.YANDEX_KEY
+    YANDEX_KEY: process.env.YANDEX_KEY,
+    BOT_ID: process.env.BOT_ID,
   },
   swcMinify: true,
   sassOptions: {

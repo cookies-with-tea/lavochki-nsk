@@ -14,6 +14,7 @@ export const StyledHeaderWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-inline: auto;
+  padding: 0 15px;
 `
 
 export const StyledHomeLink = styled.a`
