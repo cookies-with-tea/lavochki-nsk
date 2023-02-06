@@ -8,9 +8,10 @@ interface IProps {
   benches?: BenchType[]
   setMapInstance: (mapInstance: YMapsApi | null) => void
   mapSettings: MapStateOptionsType
+  resetMap?: () => void
 }
 
-const HomeMap: FC<IProps> = ({ benches, setMapInstance, mapSettings }): ReactElement => {
+const HomeMap: FC<IProps> = ({ benches, setMapInstance, mapSettings, resetMap }): ReactElement => {
   return (
     <div className="mb-52">
       <h2>Расположение лавочек</h2>
@@ -20,6 +21,7 @@ const HomeMap: FC<IProps> = ({ benches, setMapInstance, mapSettings }): ReactEle
         benches={benches}
         setMapInstance={setMapInstance}
         mapSettings={mapSettings}
+        resetMap={resetMap}
       />
     </div>
   )

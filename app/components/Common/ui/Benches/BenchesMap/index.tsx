@@ -7,7 +7,7 @@ import BenchesMapPlacemarks
 import { MapStateOptionsType } from '@/app/types/map.type'
 import { Box } from '@mui/material'
 import {
-  StyledZoomButton,
+  StyledMapButton, StyledResetMapButton,
   StyledZoomControl,
   StyledZoomSlider
 } from '@/app/components/pages/Home/HomeMap/HomeMap.style'
@@ -18,15 +18,17 @@ interface IProps {
   height: number
   bench?: BenchType
   benches?: BenchType[]
-  setMapInstance?: (mapInstance: YMapsApi | null) => void
   mapSettings: MapStateOptionsType
+  setMapInstance?: (mapInstance: YMapsApi | null) => void
+  resetMap?: () => void
 }
 
 const BenchesMap: FC<IProps> = ({
   height,
   bench,
   benches,
-  mapSettings
+  mapSettings,
+  resetMap
 }): ReactElement => {
   const [map, setMap] = useState(null)
   const [ymaps, setYmaps] = useState<YMapsApi | null>(null)
@@ -117,10 +119,14 @@ const BenchesMap: FC<IProps> = ({
             bench={bench}
           />
 
+          <StyledResetMapButton onClick={resetMap}>
+            <CommonIcon name={'reset'} width={24} height={24} />
+          </StyledResetMapButton>
+
           <StyledZoomControl>
-            <StyledZoomButton onClick={handleZoomChange.bind(null, true)}>
+            <StyledMapButton onClick={handleZoomChange.bind(null, true)}>
               <CommonIcon name={'arrow-light'} width={24} height={24} />
-            </StyledZoomButton>
+            </StyledMapButton>
 
             <Box sx={{
               height: '120px',
@@ -140,9 +146,9 @@ const BenchesMap: FC<IProps> = ({
               />
             </Box>
 
-            <StyledZoomButton onClick={handleZoomChange.bind(null, false)}>
+            <StyledMapButton onClick={handleZoomChange.bind(null, false)}>
               <CommonIcon name={'arrow-light'} width={24} height={24} />
-            </StyledZoomButton>
+            </StyledMapButton>
           </StyledZoomControl>
         </Map>
       </YMaps>

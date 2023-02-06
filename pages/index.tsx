@@ -126,6 +126,10 @@ const HomePage: NextPage = (): ReactElement => {
     return benches.items.find((bench) => bench.id === id)
   }
 
+  const onPreviewImageClose = (): void => {
+    setIsPreviewImageVisible()
+  }
+
   const handlePreviewImageOpen = (benchId: string, index: number): void => {
     const bench = findBenchById(benchId)
     if (bench) {
@@ -138,8 +142,13 @@ const HomePage: NextPage = (): ReactElement => {
     setIsPreviewImageVisible()
   }
 
-  const onPreviewImageClose = (): void => {
-    setIsPreviewImageVisible()
+  const handleResetMap = (): void => {
+    setMapSettings({
+      center: [55.00, 82.95],
+      zoom: 9,
+      behaviors: ['default', 'scrollZoom'],
+      controls: []
+    })
   }
 
   useEffect(() => {
@@ -164,6 +173,7 @@ const HomePage: NextPage = (): ReactElement => {
           console.log('map instance')
         }}
         mapSettings={mapSettings}
+        resetMap={handleResetMap}
       />
 
       <HomeBenches
