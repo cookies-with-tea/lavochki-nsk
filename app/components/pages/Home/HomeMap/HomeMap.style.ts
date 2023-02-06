@@ -12,27 +12,50 @@ export const StyledZoomControl = styled.div`
   align-items: center;
 `
 
-export const StyledZoomButton = styled(Button)`
+export const StyledMapButton = styled(Button)`
   background-color: #f6eddd;
   border: none !important;
   padding: 8px 12px !important;
   min-width: 32px;
   border-radius: 8px !important;
-
+  z-index: 1 !important;
+  
   &:first-of-type {
     .app-icon {
-      transform: rotate(90deg);
+      &:not(.reset--icon) {
+        transform: rotate(90deg);
+      }
     }
   }
 
   &:last-of-type {
     .app-icon {
-      transform: rotate(-90deg);
+      &:not(.reset--icon) {
+        transform: rotate(-90deg);
+      }
     }
   }
 
   &:hover {
     background-color: rgba(246, 237, 221, 0.6);
+  }
+`
+
+export const StyledResetMapButton = styled(StyledMapButton)`
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1;
+  
+  .reset--icon {
+    transform: rotate(135deg);
+    transition: transform 0.2s ease-in;
+  }
+  
+  &:hover {
+    .reset--icon {
+      transform: rotate(-45deg);
+    }
   }
 `
 
