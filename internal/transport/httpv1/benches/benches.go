@@ -55,8 +55,8 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 // @Param sort_by query string false "sort field"
 // @Param sort_order query string false "sort order"
 // @Param page query int false "page"
-// @Param pre_page query int false "pre page"
-// @Success 200 {object} []domain.Bench
+// @Param per_page query int false "per page"
+// @Success 200 {object} domain.BenchesList
 // @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches [get]
 func (handler *Handler) listBenches(writer http.ResponseWriter, request *http.Request) error {
@@ -217,7 +217,7 @@ func (handler *Handler) deleteBench(writer http.ResponseWriter, request *http.Re
 // @Param sort_by query string false "sort field"
 // @Param sort_order query string false "sort order"
 // @Param page query int false "page"
-// @Param pre_page query int false "pre page"
+// @Param per_page query int false "pre page"
 // @Success 200 {object} []domain.Bench
 // @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches/moderation [get]
