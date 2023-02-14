@@ -17,8 +17,8 @@ import (
 )
 
 type Service interface {
-	GetListBenches(ctx context.Context, isActive bool, sortOptions sort.Options,
-		paginateOptions paginate.Options) ([]*domain.Bench, error)
+	GetListBenches(ctx context.Context, isActive bool, sortOptions *sort.Options,
+		paginateOptions *paginate.Options) ([]*domain.Bench, error)
 	CreateBench(ctx context.Context, bench domain.Bench) error
 	DecisionBench(ctx context.Context, benchID string, decision bool) error
 	GetBenchByID(ctx context.Context, id string) (*domain.Bench, error)
@@ -38,13 +38,21 @@ func NewService(db benches.Repository, storage *storage.Storage, log *zap.Logger
 	return &service{db: db, storage: storage, log: log}
 }
 
-func (service *service) GetListBenches(ctx context.Context, isActive bool, sortOptions sort.Options,
-	paginateOptions paginate.Options) ([]*domain.Bench, error) {
+func (service *service) GetListBenches(ctx context.Context, isActive bool, sortOptions *sort.Options,
+	paginateOptions *paginate.Options) ([]*domain.Bench, error) {
+
+	var optionsForSort model.SortOptions
+	var optionsForPaginate model.PaginateOptions
+
 	// Создаём параметры для сортировки
-	optionsForSort := model.NewSortOptions(sortOptions.Field, sortOptions.Order)
+	if sortOptions != nil {
+		optionsForSort = model.NewSortOptions(sortOptions.Field, sortOptions.Order)
+	}
 
 	// Создаём параметры для пагинации
-	optionsForPaginate := model.NewPaginateOptions(paginateOptions.Page, paginateOptions.PerPage)
+	if paginateOptions != nil {
+		optionsForPaginate = model.NewPaginateOptions(paginateOptions.Page, paginateOptions.PerPage)
+	}
 
 	// Получаем все лавочки из базы данных
 	all, err := service.db.All(ctx, isActive, optionsForSort, optionsForPaginate)

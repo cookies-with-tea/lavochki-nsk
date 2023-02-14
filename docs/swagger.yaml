@@ -190,7 +190,7 @@ info:
 paths:
   /api/v1/benches:
     get:
-      description: Get list active benches
+      description: Get a list of benches with filtering and pagination
       parameters:
       - description: sort field
         in: query
@@ -204,7 +204,7 @@ paths:
         in: query
         name: page
         type: integer
-      - description: pre page
+      - description: per page
         in: query
         name: per_page
         type: integer
@@ -217,7 +217,7 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/apperror.AppError'
-      summary: List benches
+      summary: List benches with filtering and pagination
       tags:
       - Benches
     post:

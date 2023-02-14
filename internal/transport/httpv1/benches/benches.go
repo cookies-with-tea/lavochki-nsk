@@ -23,6 +23,7 @@ func NewHandler(benches *benches.Policy) *Handler {
 }
 
 func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) {
+	router.HandleFunc("/all", apperror.Middleware(handler.allListBenches)).Methods("GET")
 	router.HandleFunc("", paginate.Middleware(sort.Middleware(
 		apperror.Middleware(handler.listBenches), "id", sort.ASC), 1, 10)).Methods("GET")
 
@@ -49,27 +50,45 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 	router.HandleFunc("/{id}", apperror.Middleware(handler.detailBench)).Methods("GET")
 }
 
-// @Summary List benches
-// @Description Get list active benches
+// @Summary All list benches
+// @Description Get all the benches
+// @Tags Benches
+// @Success 200 {object} domain.BenchesList
+// @Failure 400 {object} apperror.AppError
+// @Router /api/v1/benches [get]
+func (handler *Handler) allListBenches(writer http.ResponseWriter, request *http.Request) error {
+	all, errGetAll := handler.policy.GetListBenches(
+		request.Context(), true, nil, nil)
+
+	if errGetAll != nil {
+		return errGetAll
+	}
+
+	handler.ResponseJson(writer, all, 200)
+	return nil
+}
+
+// @Summary List benches with filtering and pagination
+// @Description Get a list of benches with filtering and pagination
 // @Tags Benches
 // @Param sort_by query string false "sort field"
 // @Param sort_order query string false "sort order"
 // @Param page query int false "page"
-// @Param pre_page query int false "pre page"
-// @Success 200 {object} []domain.Bench
+// @Param per_page query int false "per page"
+// @Success 200 {object} domain.BenchesList
 // @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches [get]
 func (handler *Handler) listBenches(writer http.ResponseWriter, request *http.Request) error {
 	// Получаем параметры для сортировки
-	var sortOptions sort.Options
+	var sortOptions *sort.Options
 	if options, ok := request.Context().Value(sort.OptionsContextKey).(sort.Options); ok {
-		sortOptions = options
+		sortOptions = &options
 	}
 
 	// Получаем параметры для пагинации
-	var paginateOptions paginate.Options
+	var paginateOptions *paginate.Options
 	if options, ok := request.Context().Value(paginate.OptionsContextKey).(paginate.Options); ok {
-		paginateOptions = options
+		paginateOptions = &options
 	}
 
 	all, err := handler.policy.GetListBenches(request.Context(), true, sortOptions, paginateOptions)
@@ -217,21 +236,21 @@ func (handler *Handler) deleteBench(writer http.ResponseWriter, request *http.Re
 // @Param sort_by query string false "sort field"
 // @Param sort_order query string false "sort order"
 // @Param page query int false "page"
-// @Param pre_page query int false "pre page"
+// @Param per_page query int false "pre page"
 // @Success 200 {object} []domain.Bench
 // @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches/moderation [get]
 func (handler *Handler) listModerationBench(writer http.ResponseWriter, request *http.Request) error {
 	// Получаем параметры для сортировки
-	var sortOptions sort.Options
+	var sortOptions *sort.Options
 	if options, ok := request.Context().Value(sort.OptionsContextKey).(sort.Options); ok {
-		sortOptions = options
+		sortOptions = &options
 	}
 
 	// Получаем параметры для пагинации
-	var paginateOptions paginate.Options
+	var paginateOptions *paginate.Options
 	if options, ok := request.Context().Value(paginate.OptionsContextKey).(paginate.Options); ok {
-		paginateOptions = options
+		paginateOptions = &options
 	}
 
 	all, err := handler.policy.GetListBenches(request.Context(), false, sortOptions, paginateOptions)

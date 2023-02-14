@@ -18,11 +18,11 @@ const docTemplate = `{
     "paths": {
         "/api/v1/benches": {
             "get": {
-                "description": "Get list active benches",
+                "description": "Get a list of benches with filtering and pagination",
                 "tags": [
                     "Benches"
                 ],
-                "summary": "List benches",
+                "summary": "List benches with filtering and pagination",
                 "parameters": [
                     {
                         "type": "string",
@@ -44,7 +44,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "pre page",
+                        "description": "per page",
                         "name": "per_page",
                         "in": "query"
                     }
