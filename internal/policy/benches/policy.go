@@ -48,8 +48,8 @@ func (policy *Policy) CreateBenchViaTelegram(ctx context.Context, userTelegramID
 	return nil
 }
 
-func (policy *Policy) GetListBenches(ctx context.Context, isActive bool, sortOptions sort.Options,
-	paginateOptions paginate.Options) (domain.BenchesList, error) {
+func (policy *Policy) GetListBenches(ctx context.Context, isActive bool, sortOptions *sort.Options,
+	paginateOptions *paginate.Options) (domain.BenchesList, error) {
 
 	all, errGetList := policy.benchesService.GetListBenches(ctx, isActive, sortOptions, paginateOptions)
 	if errGetList != nil {
