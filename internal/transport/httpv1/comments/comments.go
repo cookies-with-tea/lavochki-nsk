@@ -31,6 +31,7 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 	interactionCommentRouter.Use(authManager.JWTMiddleware)
 	interactionCommentRouter.HandleFunc("", apperror.Middleware(handler.createComment)).Methods("POST")
 	interactionCommentRouter.HandleFunc("", apperror.Middleware(handler.updateComment)).Methods("PATCH")
+	interactionCommentRouter.HandleFunc("/{id}", apperror.Middleware(handler.deleteComment)).Methods("DELETE")
 }
 
 // @Summary List comments by bench
@@ -137,7 +138,7 @@ func (handler *Handler) updateComment(writer http.ResponseWriter, request *http.
 // @Success 200
 // @Failure 400 {object} apperror.AppError
 // @Failure 418
-// @Router /api/v1/benches/{id} [delete]
+// @Router /api/v1/comments/{id} [delete]
 func (handler *Handler) deleteComment(writer http.ResponseWriter, request *http.Request) error {
 	idComment := mux.Vars(request)["id"]
 
