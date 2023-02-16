@@ -13,6 +13,7 @@ type Service interface {
 	CreateComment(ctx context.Context, comment domain.Comment) error
 	UpdateComment(ctx context.Context, comment domain.Comment) error
 	IsOwner(ctx context.Context, commentID string, userID string) (bool, error)
+	DeleteComment(ctx context.Context, id string) error
 }
 
 type service struct {
@@ -70,4 +71,14 @@ func (service *service) IsOwner(ctx context.Context, commentID string, userID st
 		return false, errGetComment
 	}
 	return userID == comment.AuthorID, nil
+}
+
+func (service *service) DeleteComment(ctx context.Context, id string) error {
+	err := service.db.Delete(ctx, id)
+	if err != nil {
+		service.log.Error("failed delete comment", zap.String("id", id), zap.Error(err))
+		return apperror.ErrFailedToDelete
+	}
+
+	return nil
 }

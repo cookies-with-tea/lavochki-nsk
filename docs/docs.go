@@ -66,7 +66,7 @@ const docTemplate = `{
             },
             "post": {
                 "produces": [
-                    "application/json"
+                    "multipart/form-data"
                 ],
                 "tags": [
                     "Benches"
@@ -501,6 +501,43 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "description": "Delete comment by ID",
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Delete comment",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Comment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apperror.AppError"
+                        }
+                    },
+                    "418": {
+                        "description": "I'm a teapot"
+                    }
+                }
             }
         },
         "/api/v1/reports/comments": {
@@ -905,11 +942,11 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "images": {
-                    "type": "array",
-                    "items": {
+                    "type": "object",
+                    "additionalProperties": {
                         "type": "array",
                         "items": {
-                            "type": "integer"
+                            "$ref": "#/definitions/multipart.FileHeader"
                         }
                     }
                 },
@@ -1046,6 +1083,29 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "multipart.FileHeader": {
+            "type": "object",
+            "properties": {
+                "filename": {
+                    "type": "string"
+                },
+                "header": {
+                    "$ref": "#/definitions/textproto.MIMEHeader"
+                },
+                "size": {
+                    "type": "integer"
+                }
+            }
+        },
+        "textproto.MIMEHeader": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "array",
+                "items": {
                     "type": "string"
                 }
             }
