@@ -92,11 +92,11 @@ definitions:
   dto.CreateBench:
     properties:
       images:
-        items:
+        additionalProperties:
           items:
-            type: integer
+            $ref: '#/definitions/multipart.FileHeader'
           type: array
-        type: array
+        type: object
       lat:
         type: number
       lng:
@@ -185,6 +185,21 @@ definitions:
       id:
         type: string
     type: object
+  multipart.FileHeader:
+    properties:
+      filename:
+        type: string
+      header:
+        $ref: '#/definitions/textproto.MIMEHeader'
+      size:
+        type: integer
+    type: object
+  textproto.MIMEHeader:
+    additionalProperties:
+      items:
+        type: string
+      type: array
+    type: object
 info:
   contact: {}
 paths:
@@ -234,7 +249,7 @@ paths:
         required: true
         type: string
       produces:
-      - application/json
+      - multipart/form-data
       responses:
         "201":
           description: Created
@@ -485,6 +500,31 @@ paths:
       tags:
       - Comments
   /api/v1/comments/{id}:
+    delete:
+      description: Delete comment by ID
+      parameters:
+      - description: Bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/apperror.AppError'
+        "418":
+          description: I'm a teapot
+      summary: Delete comment
+      tags:
+      - Comments
     get:
       description: Get list comments by bench
       parameters:
