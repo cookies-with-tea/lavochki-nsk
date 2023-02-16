@@ -128,3 +128,25 @@ func (handler *Handler) updateComment(writer http.ResponseWriter, request *http.
 	writer.WriteHeader(http.StatusOK)
 	return nil
 }
+
+// @Summary Delete comment
+// @Description Delete comment by ID
+// @Tags Comments
+// @Param Authorization header string true "Bearer"
+// @Param id path string true "Comment ID"
+// @Success 200
+// @Failure 400 {object} apperror.AppError
+// @Failure 418
+// @Router /api/v1/benches/{id} [delete]
+func (handler *Handler) deleteComment(writer http.ResponseWriter, request *http.Request) error {
+	idComment := mux.Vars(request)["id"]
+
+	errDelete := handler.policy.DeleteComment(request.Context(), idComment)
+	if errDelete != nil {
+		return errDelete
+	}
+
+	writer.WriteHeader(http.StatusOK)
+
+	return nil
+}

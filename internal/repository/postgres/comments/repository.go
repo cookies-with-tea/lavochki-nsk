@@ -20,6 +20,7 @@ type Repository interface {
 	ByID(ctx context.Context, id string) (*domain.Comment, error)
 	Create(ctx context.Context, comment domain.Comment) error
 	Update(ctx context.Context, id string, comment domain.Comment) error
+	Delete(ctx context.Context, id string) error
 }
 
 type repository struct {
@@ -185,6 +186,26 @@ func (repository *repository) Update(ctx context.Context, id string, comment dom
 	if exec, errExec := repository.client.Exec(ctx, sql, args...); errExec != nil {
 		return errExec
 	} else if exec.RowsAffected() == 0 || !exec.Update() {
+		return errExec
+	}
+
+	return nil
+}
+
+// Delete Удаление комментария
+func (repository *repository) Delete(ctx context.Context, id string) error {
+	sql, args, errBuild := repository.queryBuilder.
+		Delete(tableScheme).
+		Where(squirrel.Eq{"id": id}).
+		ToSql()
+
+	if errBuild != nil {
+		return errBuild
+	}
+
+	if exec, errExec := repository.client.Exec(ctx, sql, args...); errExec != nil {
+		return errExec
+	} else if exec.RowsAffected() == 0 || !exec.Delete() {
 		return errExec
 	}
 

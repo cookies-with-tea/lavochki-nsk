@@ -42,3 +42,7 @@ func (policy *Policy) UpdateComment(ctx context.Context, comment domain.Comment)
 func (policy *Policy) IsOwner(ctx context.Context, commentID string, userID string) (bool, error) {
 	return policy.commentsService.IsOwner(ctx, commentID, userID)
 }
+
+func (policy *Policy) DeleteComment(ctx context.Context, commentID string) error {
+	return policy.commentsService.DeleteComment(ctx, commentID)
+}
