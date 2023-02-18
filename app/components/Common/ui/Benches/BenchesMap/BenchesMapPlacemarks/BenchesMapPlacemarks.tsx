@@ -41,7 +41,7 @@ const getPointOptions = (): MapPointOptions => {
   }
 }
 
-const BenchesMapPlacemarks: FC<IProps> = ({
+export const BenchesMapPlacemarks: FC<IProps> = ({
   bench,
   benches,
 }): ReactElement => {
@@ -95,5 +95,3 @@ const BenchesMapPlacemarks: FC<IProps> = ({
     </Clusterer>
   )
 }
-
-export default BenchesMapPlacemarks

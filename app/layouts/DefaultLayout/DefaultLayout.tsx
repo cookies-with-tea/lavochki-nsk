@@ -1,17 +1,17 @@
 import { GetStaticProps, NextPage } from 'next'
 import { ReactElement, ReactNode, useEffect, useState } from 'react'
-import DefaultLayoutHeader
-  from '@/app/components/Layouts/DefaultLayout/DefaultLayoutHeader'
+import { DefaultLayoutHeader }
+  from '@/app/components/Layouts/DefaultLayout/DefaultLayoutHeader/DefaultLayoutHeader'
 import { StyledContainer, StyledWrapper }
   from '@/app/layouts/DefaultLayout/DefaultLayout.style'
-import DefaultLayoutFooter
-  from '@/app/components/Layouts/DefaultLayout/DefaultLayoutFooter'
+import { DefaultLayoutFooter }
+  from '@/app/components/Layouts/DefaultLayout/DefaultLayoutFooter/DefaultLayoutFooter'
 import { dehydrate, QueryClient, useQuery } from 'react-query'
 import { UserMeType } from '@/app/types/user.type'
 import UserService from '@/app/services/User/UserService'
 import { UserContext } from '@/app/contexts/userContext'
 import { useRouter } from 'next/router'
-import CommonLoader from '@/app/components/Common/ui/CommonLoader'
+import { CommonLoader } from '@/app/components/Common/ui/CommonLoader/CommonLoader'
 
 interface IProps {
     children: ReactNode
@@ -19,7 +19,7 @@ interface IProps {
 
 const getMe = async (): Promise<UserMeType> => await UserService.getMe()
 
-const DefaultLayout: NextPage<IProps> = ({ children }): ReactElement => {
+export const DefaultLayout: NextPage<IProps> = ({ children }): ReactElement => {
 
   const [user, setUser] = useState<UserMeType>({} as UserMeType)
   const [loading, setLoading] = useState(false)
@@ -78,5 +78,3 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   }
 }
-
-export default DefaultLayout

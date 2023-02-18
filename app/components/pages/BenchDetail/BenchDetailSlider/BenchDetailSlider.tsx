@@ -15,7 +15,7 @@ interface IProps {
   images: string[]
 }
 
-const BenchDetailSlider: FC<IProps> = ({ images }): ReactElement => {
+export const BenchDetailSlider: FC<IProps> = ({ images }): ReactElement => {
   const swiperRef = useRef<SwiperType | null>(null)
   const swiperNavPrevRef = useRef<HTMLDivElement | null>(null)
   const swiperNavNextRef = useRef<HTMLDivElement | null>(null)
@@ -63,5 +63,3 @@ const BenchDetailSlider: FC<IProps> = ({ images }): ReactElement => {
     </div>
   )
 }
-
-export default BenchDetailSlider

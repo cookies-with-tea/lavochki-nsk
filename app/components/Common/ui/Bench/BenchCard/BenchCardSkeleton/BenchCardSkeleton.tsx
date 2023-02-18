@@ -5,7 +5,7 @@ interface IProps {
   isBenchFetching: boolean
 }
 
-const BenchCardSkeleton: FC<IProps> = ({ isBenchFetching }): ReactElement => {
+export const BenchCardSkeleton: FC<IProps> = ({ isBenchFetching }): ReactElement => {
   return (
     <Grow
       in={isBenchFetching}
@@ -29,5 +29,3 @@ const BenchCardSkeleton: FC<IProps> = ({ isBenchFetching }): ReactElement => {
 
   )
 }
-
-export default BenchCardSkeleton

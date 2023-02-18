@@ -4,13 +4,14 @@ import {
   StyledHeading,
   StyledOpenCommentInputButton
 } from '@/app/components/pages/BenchDetail/BenchDetailComments/BenchDetailComments.style'
-import BenchDetailSendComment
-  from '@/app/components/pages/BenchDetail/BenchDetailComment/BenchDetailCommentSend'
-import BenchDetailComment
-  from '@/app/components/pages/BenchDetail/BenchDetailComment'
+import { BenchDetailComment }
+  from '@/app/components/pages/BenchDetail/BenchDetailComment/BenchDetailComment'
 import { CommentType, CreateCommentType } from '@/app/types/comment.type'
 import CommentService from '@/app/services/Comment/CommentService'
 import { useMutation } from 'react-query'
+import {
+  BenchDetailCommentSend
+} from '@/app/components/pages/BenchDetail/BenchDetailComment/BenchDetailCommentSend/BenchDetailCommentSend'
 
 interface IProps {
     benchId: string
@@ -22,7 +23,7 @@ interface IProps {
 const createComment = async (payload: CreateCommentType): Promise<unknown> => 
   await CommentService.create(payload)
 
-const BenchDetailComments: FC<IProps> = ({
+export const BenchDetailComments: FC<IProps> = ({
   benchId,
   comments,
   updateData,
@@ -74,7 +75,7 @@ const BenchDetailComments: FC<IProps> = ({
       </div>
       { 
         inputCommentVisible
-          ? <BenchDetailSendComment
+          ? <BenchDetailCommentSend
             commentChange={handleCommentChange}
             commentSend={handleCommentSend}
           />
@@ -104,5 +105,3 @@ const BenchDetailComments: FC<IProps> = ({
     </>
   )
 }
-
-export default BenchDetailComments

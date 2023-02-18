@@ -8,7 +8,7 @@ interface IProps {
   onAuth: (user: UserType) => void
 }
 
-const DefaultLayoutHeaderAuthButton: FC<IProps> = ({ onAuth }): ReactElement => {
+export const DefaultLayoutHeaderAuthButton: FC<IProps> = ({ onAuth }): ReactElement => {
   const handleLogin = (): void => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -43,5 +43,3 @@ const DefaultLayoutHeaderAuthButton: FC<IProps> = ({ onAuth }): ReactElement => 
     </StyledTelegramWrapper>
   )
 }
-
-export default DefaultLayoutHeaderAuthButton

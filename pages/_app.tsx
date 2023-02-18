@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app'
-import DefaultLayout from '@/app/layouts/DefaultLayout'
+import { DefaultLayout } from '@/app/layouts/DefaultLayout/DefaultLayout'
 import { requireSvg } from '@/app/utils/reqireSvg'
 import {
   QueryClient,
@@ -11,7 +11,7 @@ import {
 } from 'react-query'
 import { ReactElement, useRef, useState } from 'react'
 import { ErrorType } from '@/app/types/common.type'
-import CommonSnackbar from '@/app/components/Common/ui/CommonSnackbar'
+import { CommonSnackbar } from '@/app/components/Common/ui/CommonSnackbar/CommonSnackbar'
 import { ReactQueryDevtools } from 'react-query/devtools'
 
 import 'swiper/css'

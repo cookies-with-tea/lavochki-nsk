@@ -8,7 +8,7 @@ interface IProps {
     message?: string
 }
 
-const CommonSnackbar: FC<IProps> = ({ 
+export const CommonSnackbar: FC<IProps> = ({
   isOpen,
   message,
   onClose
@@ -30,5 +30,3 @@ const CommonSnackbar: FC<IProps> = ({
 
   )
 }
-
-export default CommonSnackbar
