@@ -18,10 +18,9 @@ import {
   BenchesParamsType
 } from '@/app/types/bench.type'
 import { Pagination } from '@mui/material'
-import { BenchCardSkeleton }
-  from '@/app/components/Common/ui/Bench/BenchCard/BenchCardSkeleton/BenchCardSkeleton'
 import { scrollToTop } from '@/app/utils/scrollToTop'
 import { benchesDefaultParams, benchesParamsInitialState } from '@/pages/benches/BenchesPage.constant'
+import { BenchCardSkeleton } from '@/app/components/Common/ui/Bench/BenchCard/BenchCardSkeleton/BenchCardSkeleton'
 
 const getBenches = async (
   params?: Partial<BenchesParamsType>
