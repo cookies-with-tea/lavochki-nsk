@@ -12,7 +12,7 @@ import Link from 'next/link'
 import CommonIcon from '@/app/components/Common/ui/CommonIcon/CommonIcon'
 import { BaseLink } from '@/app/styles/common'
 
-const DefaultLayoutFooter: FC = (): ReactElement => {
+export const DefaultLayoutFooter: FC = (): ReactElement => {
   return (
     <>
       <StyledFooter>
@@ -77,5 +77,3 @@ const DefaultLayoutFooter: FC = (): ReactElement => {
 
   )
 }
-
-export default DefaultLayoutFooter

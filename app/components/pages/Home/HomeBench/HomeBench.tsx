@@ -18,7 +18,7 @@ interface IProps {
   openPreviewImage: (benchId: string, index: number) => void
 }
 
-const HomeBench: FC<IProps> = ({ bench, moveToPlacemark, openPreviewImage }): ReactElement => {
+export const HomeBench: FC<IProps> = ({ bench, moveToPlacemark, openPreviewImage }): ReactElement => {
   const handleScrollToTop = (coords: number[]): void => {
     scrollToTop()
 
@@ -55,5 +55,3 @@ const HomeBench: FC<IProps> = ({ bench, moveToPlacemark, openPreviewImage }): Re
     </StyledLatestBench>
   )
 }
-
-export default HomeBench

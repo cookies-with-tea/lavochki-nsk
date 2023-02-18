@@ -18,8 +18,8 @@ import {
   BenchesParamsType
 } from '@/app/types/bench.type'
 import { Pagination } from '@mui/material'
-import BenchCardSkeleton
-  from '@/app/components/Common/ui/Bench/BenchCard/BenchCardSkeleton'
+import { BenchCardSkeleton }
+  from '@/app/components/Common/ui/Bench/BenchCard/BenchCardSkeleton/BenchCardSkeleton'
 import { scrollToTop } from '@/app/utils/scrollToTop'
 import { benchesDefaultParams, benchesParamsInitialState } from '@/pages/benches/BenchesPage.constant'
 
@@ -89,6 +89,7 @@ const BenchesPage: NextPage = (): ReactElement => {
                 )
             }
           </StyledContent>
+
           <Pagination
             count={3}
             page={benchesParams.page}

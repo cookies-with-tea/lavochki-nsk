@@ -1,6 +1,6 @@
 import React, { FC, ReactElement } from 'react'
 import Link from 'next/link'
-import HomeBench from '@/app/components/pages/Home/HomeBench'
+import { HomeBench } from '@/app/components/pages/Home/HomeBench/HomeBench'
 import { StyledAllBenchesLink }
   from '@/app/components/pages/Home/HomeBenches/HomeBenches.style'
 import { BenchType } from '@/app/types/bench.type'
@@ -11,7 +11,7 @@ interface IProps {
   openPreviewImage: (benchId: string, index: number) => void
 }
 
-const HomeBenches: FC<IProps> = ({ benches, moveToPlacemark, openPreviewImage }): ReactElement => {
+export const HomeBenches: FC<IProps> = ({ benches, moveToPlacemark, openPreviewImage }): ReactElement => {
   return (
     <div className={'home-benches'}>
       <div className="d-f ai-c jc-sb mb-40">
@@ -34,5 +34,3 @@ const HomeBenches: FC<IProps> = ({ benches, moveToPlacemark, openPreviewImage })
     </div>
   )
 }
-
-export default HomeBenches

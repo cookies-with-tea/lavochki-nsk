@@ -6,22 +6,22 @@ import { ErrorType } from '@/app/types/common.type'
 import { useRouter } from 'next/router'
 import { StyledSubtitle, StyledSubtitleAuthor, StyledTag }
   from '@/pages/benches/[id]/BenchDetail.styles'
-import BenchDetailSlider
-  from '@/app/components/pages/BenchDetail/BenchDetailSlider'
-import BenchDetailMap from '@/app/components/pages/BenchDetail/BenchDetailMap'
-import BenchDetailComments
-  from '@/app/components/pages/BenchDetail/BenchDetailComments'
+import { BenchDetailSlider }
+  from '@/app/components/pages/BenchDetail/BenchDetailSlider/BenchDetailSlider'
+import { BenchDetailMap } from '@/app/components/pages/BenchDetail/BenchDetailMap/BenchDetailMap'
+import { BenchDetailComments }
+  from '@/app/components/pages/BenchDetail/BenchDetailComments/BenchDetailComments'
 import CommentService from '@/app/services/Comment/CommentService'
 import {
   BenchTagType,
   BenchesResponseType,
   BenchType
 } from '@/app/types/bench.type'
-import BenchDetailNear from '@/app/components/pages/BenchDetail/BenchDetailNear'
+import { BenchDetailNear } from '@/app/components/pages/BenchDetail/BenchDetailNear/BenchDetailNear'
 import { CommentType } from '@/app/types/comment.type'
 import { CircularProgress, Fade } from '@mui/material'
-import BenchDetailCommentReport
-  from '@/app/components/pages/BenchDetail/BenchDetailComment/BenchDetailCommentReport'
+import { BenchDetailCommentReport }
+  from '@/app/components/pages/BenchDetail/BenchDetailComment/BenchDetailCommentReport/BenchDetailCommentReport'
 import { YMapsApi } from '@pbe/react-yandex-maps/typings/util/typing'
 import { MapStateOptionsType } from '@/app/types/map.type'
 
@@ -56,7 +56,7 @@ const BenchDetail: NextPage = (): ReactElement => {
     controls: []
   })
 
-  const { refetch: benchRefetch, isFetching: isBenchFething }
+  const { refetch: benchRefetch, isFetching: isBenchFetching }
     = useQuery<BenchType, ErrorType>(['get bench', benchId],
       getBench.bind(null, benchId), {
         onSuccess: (response) => {
@@ -75,24 +75,18 @@ const BenchDetail: NextPage = (): ReactElement => {
         staleTime: 1000
       })
 
-  const { refetch: commensRefetch } = useQuery<CommentType[], ErrorType>(
-    ['get comments', benchId],
-    getComments.bind(null, benchId), 
-    {
-      onSuccess: (response) => {
-        setComments(response)
-      },
-      enabled: benchId.length > 0,
-    })
+  const { refetch: commentsRefetch } = useQuery<CommentType[], ErrorType>(['get comments', benchId], getComments.bind(null, benchId), {
+    onSuccess: (response) => {
+      setComments(response)
+    },
+    enabled: benchId.length > 0,
+  })
 
-  useQuery<BenchesResponseType, ErrorType>(
-    'get benches',
-    getBenches.bind(null),
-    {
-      onSuccess: (response) => {
-        setBenches(response)
-      },
-    })
+  useQuery<BenchesResponseType, ErrorType>('get benches', getBenches.bind(null), {
+    onSuccess: (response) => {
+      setBenches(response)
+    },
+  })
 
   const handleReportDialogVisibleToggle = (id: string): void => {
     setCurrentCommentId(id)
@@ -106,16 +100,17 @@ const BenchDetail: NextPage = (): ReactElement => {
 
   const handleUpdateData = async (): Promise<void> => {
     await benchRefetch()
-    await commensRefetch()
+
+    await commentsRefetch()
   }
 
   const renderComments = (): ReactElement => {
-    if (isBenchFething) {
+    if (isBenchFetching) {
       return (
         <Fade
-          in={isBenchFething}
+          in={isBenchFetching}
           style={{
-            transitionDelay: isBenchFething ? '800ms' : '0ms',
+            transitionDelay: isBenchFetching ? '800ms' : '0ms',
           }}
           unmountOnExit
         >

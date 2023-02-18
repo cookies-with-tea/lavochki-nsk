@@ -1,9 +1,9 @@
 import { GetStaticProps, NextPage } from 'next'
 import { ReactElement, useEffect, useState } from 'react'
-import HomeMap from '@/app/components/pages/Home/HomeMap'
+import { HomeMap } from '@/app/components/pages/Home/HomeMap/HomeMap'
 import { dehydrate, QueryClient, useInfiniteQuery, useQuery } from 'react-query'
 import BenchService from '@/app/services/Bench/BenchService'
-import HomeBenches from '@/app/components/pages/Home/HomeBenches'
+import { HomeBenches } from '@/app/components/pages/Home/HomeBenches/HomeBenches'
 import { ErrorType } from '@/app/types/common.type'
 import {
   BenchesParamsType,
@@ -30,7 +30,7 @@ const getBenches = async (
 const getAllBenches = async (): Promise<BenchesResponseType> => await BenchService.getAll()
 
 const ImagePreviewWithoutSSR = dynamic(
-  () => import('@/app/components/Common/ui/ImagePreview'),
+  () => import('@/app/components/Common/ui/ImagePreview/ImagePreview'),
   { ssr: false }
 )
 

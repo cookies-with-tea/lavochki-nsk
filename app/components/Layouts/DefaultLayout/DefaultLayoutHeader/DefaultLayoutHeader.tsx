@@ -14,12 +14,12 @@ import Image from 'next/image'
 import { UserType } from '@/app/types/user.type'
 import UserService from '@/app/services/User/UserService'
 import { useMutation } from 'react-query'
-import DefaultLayoutMenu
-  from '@/app/components/Layouts/DefaultLayout/DefaultLayoutMenu'
-import DefaultLayoutHeaderAuthButton
-  from '@/app/components/Layouts/DefaultLayout/DefaultLayoutHeader/DefaultLayoutHeaderAuthButton'
+import { DefaultLayoutMenu }
+  from '@/app/components/Layouts/DefaultLayout/DefaultLayoutMenu/DefaultLayoutMenu'
+import { DefaultLayoutHeaderAuthButton }
+  from '@/app/components/Layouts/DefaultLayout/DefaultLayoutHeader/DefaultLayoutHeaderAuthButton/DefaultLayoutHeaderAuthButton'
 
-const DefaultLayoutHeader: FC = (): ReactElement => {
+export const DefaultLayoutHeader: FC = (): ReactElement => {
   const [isAuth, setIsAuth] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
@@ -115,5 +115,3 @@ const DefaultLayoutHeader: FC = (): ReactElement => {
     </StyledHeader>
   )
 }
-
-export default DefaultLayoutHeader

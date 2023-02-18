@@ -19,7 +19,7 @@ interface IProps {
     handleLogout: () => void
 }
 
-const DefaultLayoutMenu: FC<IProps> = (
+export const DefaultLayoutMenu: FC<IProps> = (
   { anchorEl,
     isOpen,
     onClose,
@@ -86,5 +86,3 @@ const DefaultLayoutMenu: FC<IProps> = (
     </NoSsr>
   )
 }
-
-export default DefaultLayoutMenu

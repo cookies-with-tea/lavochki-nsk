@@ -16,7 +16,7 @@ interface IProps {
   openPreviewImage: (benchId: string, index: number) => void
 }
 
-const HomeBenchSlider: FC<IProps> = ({ bench, className, openPreviewImage }) => {
+export const HomeBenchSlider: FC<IProps> = ({ bench, className, openPreviewImage }) => {
   const swiperRef = useRef<SwiperType | null>(null)
   const swiperNavPrevRef = useRef<HTMLDivElement>(null)
   const swiperNavNextRef = useRef<HTMLDivElement>(null)
@@ -60,5 +60,3 @@ const HomeBenchSlider: FC<IProps> = ({ bench, className, openPreviewImage }) => 
     </div>
   )
 }
-
-export default HomeBenchSlider

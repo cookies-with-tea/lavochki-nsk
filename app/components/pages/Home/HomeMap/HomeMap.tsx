@@ -1,6 +1,6 @@
 import { FC, ReactElement } from 'react'
 import { BenchType } from '@/app/types/bench.type'
-import BenchesMap from '@/app/components/Common/ui/Benches/BenchesMap'
+import { BenchesMap } from '@/app/components/Common/ui/Benches/BenchesMap/BenchesMap'
 import { YMapsApi } from '@pbe/react-yandex-maps/typings/util/typing'
 import { MapStateOptionsType } from '@/app/types/map.type'
 
@@ -11,7 +11,7 @@ interface IProps {
   resetMap?: () => void
 }
 
-const HomeMap: FC<IProps> = ({ benches, setMapInstance, mapSettings, resetMap }): ReactElement => {
+export const HomeMap: FC<IProps> = ({ benches, setMapInstance, mapSettings, resetMap }): ReactElement => {
   return (
     <div className="mb-52">
       <h2>Расположение лавочек</h2>
@@ -27,4 +27,3 @@ const HomeMap: FC<IProps> = ({ benches, setMapInstance, mapSettings, resetMap })
   )
 }
 
-export default HomeMap

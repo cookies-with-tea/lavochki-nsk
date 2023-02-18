@@ -17,7 +17,7 @@ const createReport = async (
   await ReportService.create(payload)
 )
 
-const BenchDetailCommentReport: FC<IProps> = ({
+export const BenchDetailCommentReport: FC<IProps> = ({
   commentId,
   isOpen,
   onClose
@@ -82,5 +82,3 @@ const BenchDetailCommentReport: FC<IProps> = ({
     </Dialog>
   )
 }
-
-export default BenchDetailCommentReport

@@ -12,7 +12,8 @@ import {
 interface IProps {
   benches: BenchType[]
 }
-const BenchDetailNearSlider: FC<IProps> = ({ benches }): ReactElement => {
+
+export const BenchDetailNearSlider: FC<IProps> = ({ benches }): ReactElement => {
   const swiperRef = useRef<SwiperType | null>(null)
   const swiperNavPrevRef = useRef<HTMLDivElement | null>(null)
   const swiperNavNextRef = useRef<HTMLDivElement | null>(null)
@@ -53,5 +54,3 @@ const BenchDetailNearSlider: FC<IProps> = ({ benches }): ReactElement => {
     </div>
   )
 }
-
-export default BenchDetailNearSlider

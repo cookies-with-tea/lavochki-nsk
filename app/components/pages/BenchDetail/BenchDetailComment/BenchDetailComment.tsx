@@ -9,11 +9,12 @@ import {
   '@/app/components/pages/BenchDetail/BenchDetailComment/BenchDetailComment.style'
 import Image from 'next/image'
 import Profile from '@/public/Avatar.png'
-import BenchDetailSendComment
-  from '@/app/components/pages/BenchDetail/BenchDetailComment/BenchDetailCommentSend'
 import { CommentType, CreateCommentType } from '@/app/types/comment.type'
 import CommentService from '@/app/services/Comment/CommentService'
 import { useMutation } from 'react-query'
+import {
+  BenchDetailCommentSend
+} from '@/app/components/pages/BenchDetail/BenchDetailComment/BenchDetailCommentSend/BenchDetailCommentSend'
 
 interface IProps {
     benchId: string
@@ -25,7 +26,7 @@ interface IProps {
 const createComment = async (payload: CreateCommentType): Promise<unknown> =>
   await CommentService.create(payload)
 
-const BenchDetailComment: FC<IProps> = ({ 
+export const BenchDetailComment: FC<IProps> = ({
   benchId,
   comment,
   updateData,
@@ -165,7 +166,7 @@ const BenchDetailComment: FC<IProps> = ({
 
       {
         answer.visible
-        && <BenchDetailSendComment
+        && <BenchDetailCommentSend
           commentChange={handleAnswerChange}
           commentSend={handleAnswerSend} 
           authorId={comment.author_id }
@@ -188,5 +189,3 @@ const BenchDetailComment: FC<IProps> = ({
     </div>
   )
 }
-
-export default BenchDetailComment
