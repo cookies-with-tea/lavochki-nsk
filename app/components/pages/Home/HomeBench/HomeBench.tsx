@@ -11,6 +11,7 @@ import {
 import CommonIcon from '@/app/components/Common/ui/CommonIcon/CommonIcon'
 import { BenchType } from '@/app/types/bench.type'
 import { scrollToTop } from '@/app/utils/scrollToTop'
+import Link from 'next/link'
 
 interface IProps {
   bench: BenchType
@@ -39,10 +40,9 @@ export const HomeBench: FC<IProps> = ({ bench, moveToPlacemark, openPreviewImage
             <CommonIcon name="location" width={24} height={32} />
           </StyledLocationButton>
         </StyledLatestBenchInfoLocation>
-        {/* TODO: Если будет SPA, то будет ошибка */}
-        {/*<Link href={`/benches/${bench.id}`} passHref shallow>*/}
-        <StyledLink href={`/benches/${bench.id}`}>Смотреть</StyledLink>
-        {/*</Link>*/}
+        <Link href={`/benches/${bench.id}`} passHref shallow>
+          <StyledLink>Смотреть</StyledLink>
+        </Link>
       </div>
 
       {

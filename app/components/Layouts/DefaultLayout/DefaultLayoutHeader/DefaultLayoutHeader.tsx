@@ -67,11 +67,11 @@ export const DefaultLayoutHeader: FC = (): ReactElement => {
       <StyledHeaderWrapper>
         <div className="d-f ai-c">
           {/* TODO: Если будет SPA, то будет ошибка */}
-          {/*<Link href={'/'} passHref>*/}
-          <StyledHomeLink href={'/'}>
-            <CommonIcon name="logo" width={260} height={32} />
-          </StyledHomeLink>
-          {/*</Link>*/}
+          <Link href={'/'} passHref>
+            <StyledHomeLink>
+              <CommonIcon name="logo" width={260} height={32} />
+            </StyledHomeLink>
+          </Link>
           <Link href="/benches" passHref>
             <a>Все лавочки</a>
           </Link>

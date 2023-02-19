@@ -87,19 +87,16 @@ export const BenchesMap: FC<IProps> = ({
 
   return (
     <div className={'p-relative'}>
-      <YMaps
-        query={{
-          ns: 'use-load-option',
-          load: 'package.full',
-          apikey: process.env.YANDEX_KEY,
-          lang: 'en_RU'
-        }}
-      >
+      <YMaps query={{
+        lang: 'ru_RU',
+        load: 'package.full'
+      }}>
         <Map
           version={'2.1.79'}
-          state={mapState}
+          defaultState={{ center: [55.0110, 82.9610], zoom: 9 }}
           width={'100%'}
           height={height}
+          state={mapState}
           instanceRef={(ref) => {
             if (ref) {
               setMap(ref)
