@@ -1,5 +1,5 @@
 import { ChangeEvent, ReactElement, useEffect, useState } from 'react'
-import { StyledBenchesPage } from '@/pages/benches/BenchesPage.style'
+import { StyledBenchesPage } from '@/app/components/pages/Benches/BenchesPage.style'
 import BenchesSidebar from
   '@/app/components/pages/Benches/BenchesSidebar/BenchesSidebar'
 import { GetStaticProps, NextPage } from 'next'
@@ -19,7 +19,7 @@ import {
 } from '@/app/types/bench.type'
 import { Pagination } from '@mui/material'
 import { scrollToTop } from '@/app/utils/scrollToTop'
-import { benchesDefaultParams, benchesParamsInitialState } from '@/pages/benches/BenchesPage.constant'
+import { benchesDefaultParams, benchesParamsInitialState } from '@/app/components/pages/Benches/BenchesPage.constant'
 import { BenchCardSkeleton } from '@/app/components/Common/ui/Bench/BenchCard/BenchCardSkeleton/BenchCardSkeleton'
 
 const getBenches = async (

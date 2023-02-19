@@ -5,7 +5,7 @@ import BenchService from '@/app/services/Bench/BenchService'
 import { ErrorType } from '@/app/types/common.type'
 import { useRouter } from 'next/router'
 import { StyledSubtitle, StyledSubtitleAuthor, StyledTag }
-  from '@/pages/benches/[id]/BenchDetail.styles'
+  from '@/app/components/pages/BenchDetail/BenchDetail.styles'
 import { BenchDetailSlider }
   from '@/app/components/pages/BenchDetail/BenchDetailSlider/BenchDetailSlider'
 import { BenchDetailMap } from '@/app/components/pages/BenchDetail/BenchDetailMap/BenchDetailMap'
