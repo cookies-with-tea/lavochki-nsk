@@ -129,6 +129,8 @@ const BenchDetail: NextPage = (): ReactElement => {
     )
   }
 
+  // TODO: Убрать геокодинг
+
   // const geoDecoding = (bench: BenchType, instance: YMapsApi | null): void => {
   //   if (!instance) return
   //
