@@ -7,9 +7,9 @@ import (
 	"benches/pkg/auth"
 	"benches/pkg/telegram"
 	"context"
-	"database/sql"
 	"errors"
 	"fmt"
+	"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"
 	"time"
 )
@@ -41,8 +41,9 @@ func (service *service) LoginViaTelegram(ctx context.Context, telegramUser domai
 	}
 
 	dbUser, err := service.db.ByTelegramID(ctx, telegramUser.ID)
-	if errors.Is(err, sql.ErrNoRows) {
-		errCreate := service.db.Create(ctx, user)
+	if errors.Is(err, pgx.ErrNoRows) {
+		var errCreate error
+		dbUser, errCreate = service.db.Create(ctx, user)
 		if errCreate != nil {
 			return "", "", errCreate
 		}
