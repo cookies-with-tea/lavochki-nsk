@@ -17,7 +17,7 @@ const (
 type Repository interface {
 	ByTelegramID(ctx context.Context, telegramID int) (*domain.User, error)
 	ByID(ctx context.Context, id string) (*domain.User, error)
-	Create(ctx context.Context, user domain.User) error
+	Create(ctx context.Context, user domain.User) (*domain.User, error)
 	All(ctx context.Context) ([]*domain.User, error)
 }
 
@@ -34,7 +34,7 @@ func NewUsersRepository(client postgres.Client) Repository {
 }
 
 func (repository *repository) ByTelegramID(ctx context.Context, telegramID int) (*domain.User, error) {
-	sql, args, errToSql := repository.queryBuilder.Select("id").
+	query, args, errToSql := repository.queryBuilder.Select("id").
 		Columns("username", "telegram_id", "role").
 		From(tableScheme).
 		Where(squirrel.Eq{"telegram_id": telegramID}).ToSql()
@@ -45,7 +45,7 @@ func (repository *repository) ByTelegramID(ctx context.Context, telegramID int) 
 
 	var user domain.User
 
-	err := repository.client.QueryRow(ctx, sql, args...).Scan(
+	err := repository.client.QueryRow(ctx, query, args...).Scan(
 		&user.ID,
 		&user.Username,
 		&user.TelegramID,
@@ -85,29 +85,37 @@ func (repository *repository) ByID(ctx context.Context, id string) (*domain.User
 	return &user, nil
 }
 
-func (repository *repository) Create(ctx context.Context, user domain.User) error {
+func (repository *repository) Create(ctx context.Context, user domain.User) (*domain.User, error) {
 	createUserModel := userModel{}
 	createUserModel.FromDomain(user)
 	createUserModel.ID = ulid.Make().String()
 
 	modelMap, errToMap := createUserModel.ToMap()
 	if errToMap != nil {
-		return errToMap
+		return nil, errToMap
 	}
 
 	sql, args, errBuild := repository.queryBuilder.Insert(tableScheme).SetMap(modelMap).
-		PlaceholderFormat(squirrel.Dollar).ToSql()
+		PlaceholderFormat(squirrel.Dollar).
+		Suffix("RETURNING \"id\", \"username\", \"telegram_id\", \"role\"").
+		ToSql()
 
 	if errBuild != nil {
-		return errBuild
+		return nil, errBuild
 	}
 
-	if exec, execErr := repository.client.Exec(ctx, sql, args...); execErr != nil {
-		return execErr
-	} else if exec.RowsAffected() == 0 || !exec.Insert() {
-		return execErr
+	err := repository.client.QueryRow(ctx, sql, args...).Scan(
+		&user.ID,
+		&user.Username,
+		&user.TelegramID,
+		&user.Role,
+	)
+
+	if err != nil {
+		return nil, err
 	}
-	return nil
+
+	return &user, nil
 }
 
 func (repository *repository) All(ctx context.Context) ([]*domain.User, error) {
