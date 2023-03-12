@@ -8,9 +8,12 @@ import (
 	"benches/pkg/api/paginate"
 	"benches/pkg/api/sort"
 	"benches/pkg/auth"
+	"bytes"
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"io"
 	"net/http"
+	"strconv"
 )
 
 type Handler struct {
@@ -148,7 +151,7 @@ func (handler *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Reque
 
 // @Summary Create bench
 // @Tags Benches
-// @Produce json
+// @Produce mpfd
 // @Param Bench body dto.CreateBench true "bench data"
 // @Param Authorization header string true "Bearer"
 // @Success 201
@@ -156,10 +159,49 @@ func (handler *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Reque
 // @Failure 418
 // @Router /api/v1/benches [post]
 func (handler *Handler) createBench(writer http.ResponseWriter, request *http.Request) error {
-	var bench dto.CreateBench
+	errParseMultipartForm := request.ParseMultipartForm(0)
+	if errParseMultipartForm != nil {
+		return errParseMultipartForm
+	}
 
-	if err := json.NewDecoder(request.Body).Decode(&bench); err != nil {
+	var lat, lng float64
+	var errParseFloat error
+	if lat, errParseFloat = strconv.ParseFloat(request.PostForm.Get("lat"), 64); errParseFloat != nil {
 		return apperror.ErrDecodeData
+	}
+
+	if lng, errParseFloat = strconv.ParseFloat(request.PostForm.Get("lng"), 64); errParseFloat != nil {
+		return apperror.ErrDecodeData
+	}
+
+	var images [][]byte
+	for _, image := range request.MultipartForm.File["images"] {
+		buffer := bytes.NewBuffer(nil)
+
+		// Открываем файл
+		openFile, errOpenFile := image.Open()
+		if errOpenFile != nil {
+			return apperror.ErrDecodeData
+		}
+
+		// Делаем список байт из файла
+		if _, err := io.Copy(buffer, openFile); err != nil {
+			return apperror.ErrDecodeData
+		}
+
+		// Закрываем файл
+		errCloseFile := openFile.Close()
+		if errCloseFile != nil {
+			return errCloseFile
+		}
+
+		images = append(images, buffer.Bytes())
+	}
+
+	bench := dto.CreateBench{
+		Lat:    lat,
+		Lng:    lng,
+		Images: images,
 	}
 
 	// Валидация
@@ -169,7 +211,12 @@ func (handler *Handler) createBench(writer http.ResponseWriter, request *http.Re
 	}
 
 	// Создаём лавочку
-	errCreate := handler.policy.CreateBench(request.Context(), bench.ToDomain())
+	errCreate := handler.policy.CreateBench(
+		request.Context(),
+		request.Context().Value("userID").(string),
+		bench.Images,
+		bench.ToDomain(),
+	)
 	if errCreate != nil {
 		return apperror.ErrFailedToCreate
 	}

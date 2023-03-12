@@ -7,8 +7,8 @@ import (
 )
 
 type CreateBench struct {
-	Lat    float64  `json:"lat"`
-	Lng    float64  `json:"lng"`
+	Lat    float64  `json:"lat,string"`
+	Lng    float64  `json:"lng,string"`
 	Images [][]byte `json:"images"`
 }
 
