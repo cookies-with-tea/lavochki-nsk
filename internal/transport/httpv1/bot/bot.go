@@ -45,7 +45,7 @@ func (handler *Handler) authorization(w http.ResponseWriter, r *http.Request) er
 		return apperror.NewAppError(err, "validation error", details)
 	}
 
-	token, refreshToken, err := handler.policy.AuthorizationBot(r.Context(), bot)
+	token, refreshToken, err := handler.policy.AuthorizationBot(r.Context(), bot.ToDomain())
 	if err != nil {
 		return apperror.ErrIncorrectDataAuth
 	}
