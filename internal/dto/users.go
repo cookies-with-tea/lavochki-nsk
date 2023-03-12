@@ -43,9 +43,16 @@ func (user *CreateUser) ToDomain() domain.TelegramUser {
 	}
 }
 
-func (user *AuthorizationBot) Validate() error {
-	return validation.ValidateStruct(user,
-		validation.Field(&user.Login, validation.Required),
-		validation.Field(&user.Password, validation.Required),
+func (bot *AuthorizationBot) Validate() error {
+	return validation.ValidateStruct(bot,
+		validation.Field(&bot.Login, validation.Required),
+		validation.Field(&bot.Password, validation.Required),
 	)
+}
+
+func (bot *AuthorizationBot) ToDomain() domain.Bot {
+	return domain.Bot{
+		Login:    bot.Login,
+		Password: bot.Password,
+	}
 }

@@ -2,7 +2,7 @@ package bot
 
 import (
 	"benches/internal/apperror"
-	"benches/internal/dto"
+	"benches/internal/domain"
 	redisStorage "benches/internal/storage/redis"
 	"benches/pkg/auth"
 	"context"
@@ -11,7 +11,7 @@ import (
 )
 
 type Service interface {
-	AuthorizationBot(ctx context.Context, bot dto.AuthorizationBot) (string, string, error)
+	AuthorizationBot(ctx context.Context, bot domain.Bot) (string, string, error)
 	RefreshToken(ctx context.Context, token string) (string, string, error)
 }
 
@@ -35,7 +35,7 @@ func NewService(login, password string, log *zap.Logger, tokenManager *auth.Mana
 }
 
 // AuthorizationBot Сервис для авторизации бота
-func (service *service) AuthorizationBot(ctx context.Context, bot dto.AuthorizationBot) (string, string, error) {
+func (service *service) AuthorizationBot(ctx context.Context, bot domain.Bot) (string, string, error) {
 	if service.login != bot.Login || service.password != bot.Password {
 		return "", "", apperror.ErrNotEnoughRights
 	}
