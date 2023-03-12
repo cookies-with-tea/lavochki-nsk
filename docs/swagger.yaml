@@ -29,6 +29,10 @@ definitions:
     properties:
       count:
         type: integer
+      count_all_pages:
+        type: integer
+      count_in_page:
+        type: integer
       items:
         items:
           $ref: '#/definitions/domain.Bench'

@@ -10,13 +10,17 @@ type Bench struct {
 }
 
 type BenchesList struct {
-	Count int      `json:"count"`
-	Items []*Bench `json:"items"`
+	Count         int      `json:"count"`
+	CountInPage   int      `json:"count_in_page"`
+	CountAllPages int      `json:"count_all_pages"`
+	Items         []*Bench `json:"items"`
 }
 
-func NewBenchesList(benches []*Bench, count int) BenchesList {
+func NewBenchesList(benches []*Bench, count, countInPage, countAllPages int) BenchesList {
 	return BenchesList{
-		Count: count,
-		Items: benches,
+		Count:         count,
+		Items:         benches,
+		CountInPage:   countInPage,
+		CountAllPages: countAllPages,
 	}
 }
