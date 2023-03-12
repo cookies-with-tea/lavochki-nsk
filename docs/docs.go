@@ -942,19 +942,21 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "images": {
-                    "type": "object",
-                    "additionalProperties": {
+                    "type": "array",
+                    "items": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/definitions/multipart.FileHeader"
+                            "type": "integer"
                         }
                     }
                 },
                 "lat": {
-                    "type": "number"
+                    "type": "string",
+                    "example": "0"
                 },
                 "lng": {
-                    "type": "number"
+                    "type": "string",
+                    "example": "0"
                 }
             }
         },
@@ -1083,29 +1085,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
-                    "type": "string"
-                }
-            }
-        },
-        "multipart.FileHeader": {
-            "type": "object",
-            "properties": {
-                "filename": {
-                    "type": "string"
-                },
-                "header": {
-                    "$ref": "#/definitions/textproto.MIMEHeader"
-                },
-                "size": {
-                    "type": "integer"
-                }
-            }
-        },
-        "textproto.MIMEHeader": {
-            "type": "object",
-            "additionalProperties": {
-                "type": "array",
-                "items": {
                     "type": "string"
                 }
             }

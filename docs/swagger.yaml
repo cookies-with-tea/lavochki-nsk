@@ -92,15 +92,17 @@ definitions:
   dto.CreateBench:
     properties:
       images:
-        additionalProperties:
+        items:
           items:
-            $ref: '#/definitions/multipart.FileHeader'
+            type: integer
           type: array
-        type: object
+        type: array
       lat:
-        type: number
+        example: "0"
+        type: string
       lng:
-        type: number
+        example: "0"
+        type: string
     type: object
   dto.CreateBenchViaTelegram:
     properties:
@@ -184,21 +186,6 @@ definitions:
         type: string
       id:
         type: string
-    type: object
-  multipart.FileHeader:
-    properties:
-      filename:
-        type: string
-      header:
-        $ref: '#/definitions/textproto.MIMEHeader'
-      size:
-        type: integer
-    type: object
-  textproto.MIMEHeader:
-    additionalProperties:
-      items:
-        type: string
-      type: array
     type: object
 info:
   contact: {}
