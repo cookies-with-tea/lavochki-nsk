@@ -19,15 +19,15 @@ func NewTelegramManager(token string) *Manager {
 	}
 }
 
-func (m *Manager) CheckTelegramAuthorization(params map[string]string) bool {
+func (manager *Manager) CheckTelegramAuthorization(params map[string]string) bool {
 	keyHash := sha256.New()
-	keyHash.Write([]byte(m.Token))
+	keyHash.Write([]byte(manager.Token))
 	secretKey := keyHash.Sum(nil)
 
 	var checkParams []string
-	for k, v := range params {
-		if k != "hash" && len(v) != 0 {
-			checkParams = append(checkParams, fmt.Sprintf("%s=%s", k, v))
+	for key, value := range params {
+		if key != "hash" && len(value) != 0 {
+			checkParams = append(checkParams, fmt.Sprintf("%s=%s", key, value))
 		}
 	}
 	sort.Strings(checkParams)
@@ -35,8 +35,5 @@ func (m *Manager) CheckTelegramAuthorization(params map[string]string) bool {
 	hash := hmac.New(sha256.New, secretKey)
 	hash.Write([]byte(checkString))
 	hashStr := hex.EncodeToString(hash.Sum(nil))
-	if hashStr == params["hash"] {
-		return true
-	}
-	return false
+	return hashStr == params["hash"]
 }
