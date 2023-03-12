@@ -845,6 +845,12 @@ const docTemplate = `{
                 "count": {
                     "type": "integer"
                 },
+                "count_all_pages": {
+                    "type": "integer"
+                },
+                "count_in_page": {
+                    "type": "integer"
+                },
                 "items": {
                     "type": "array",
                     "items": {
