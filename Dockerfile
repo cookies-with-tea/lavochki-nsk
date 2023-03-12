@@ -1,9 +1,18 @@
-FROM golang:1.19.1
+# Build project
+FROM golang:1.19.1-alpine as builder
+
+WORKDIR /build
+COPY go.mod .
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -o /app/build/app ./cmd/initiator/main.go
+
+# Run project
+FROM alpine:latest
 
 WORKDIR /opt/benches
 
-COPY . .
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder /app/build/app /bin/main
 
-RUN go mod tidy
-RUN go build -o /app/build/app ./cmd/initiator/main.go
-CMD /app/build/app
+CMD /bin/main
