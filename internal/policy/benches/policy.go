@@ -66,7 +66,16 @@ func (policy *Policy) GetListBenches(ctx context.Context, isActive bool, sortOpt
 	return list, nil
 }
 
-func (policy *Policy) CreateBench(ctx context.Context, bench domain.Bench) error {
+func (policy *Policy) CreateBench(ctx context.Context, ownerID string, byteImages [][]byte, bench domain.Bench) error {
+	// Сохраняем все фотографии, которые нам пришли в виде байт, в Minio
+	images, err := policy.benchesService.SaveImages(ctx, byteImages)
+	if err != nil {
+		return err
+	}
+
+	bench.Images = images
+	bench.Owner = ownerID
+
 	return policy.benchesService.CreateBench(ctx, bench)
 }
 
