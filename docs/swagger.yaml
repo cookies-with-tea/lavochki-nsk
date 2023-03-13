@@ -24,6 +24,8 @@ definitions:
         type: number
       owner:
         type: string
+      street:
+        type: string
     type: object
   domain.BenchesList:
     properties:

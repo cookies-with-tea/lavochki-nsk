@@ -836,6 +836,9 @@ const docTemplate = `{
                 },
                 "owner": {
                     "type": "string"
+                },
+                "street": {
+                    "type": "string"
                 }
             }
         },
