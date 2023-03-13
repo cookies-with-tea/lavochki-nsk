@@ -3,7 +3,6 @@ import {Box, Button, Dialog, DialogTitle, Input} from "@mui/material";
 import CommonIcon from "@/components/Common/CommonIcon/CommonIcon";
 import {BenchType} from "@/types/bench.type";
 import BenchesDialogImages from "@/components/pages/Benches/BenchesDialog/BenchesDialogImages";
-import {SlideType} from "@/components/pages/Benches/BenchesDialog/BenchesDialogImages/BenchesDialogImages.type";
 import {useMutation} from "react-query";
 import BenchService from "@/services/Bench/BenchService";
 
@@ -13,7 +12,7 @@ interface IProps {
     updateTable: () => void
 }
 
-const createBench = async (bench: Partial<BenchType>) => await BenchService.create(bench)
+const createBench = async (bench: FormData) => await BenchService.create(bench)
 
 const BenchesDialogCreate: FC<IProps> = ({visible, onClose, updateTable}): ReactElement => {
     const [bench, setBench] = useState<BenchType>({
@@ -41,26 +40,50 @@ const BenchesDialogCreate: FC<IProps> = ({visible, onClose, updateTable}): React
         onClose()
     }
 
-    const handleImagesUpdate = (imageKey: string) => {
-        const benchImages = bench.images as SlideType[]
-        const filteredImages = benchImages.filter((image) => image.key !== imageKey)
-
+    const handleImagesAppend = (images: File[]): void => {
         setBench({
             ...bench,
-            images: filteredImages
+            images: [...bench.images, ...images]
         })
     }
 
-    const { mutateAsync } = useMutation('update bench', createBench.bind(null, bench), {
-        onSuccess: () => {
-            updateTable()
+    const handleImageRemove = (index: number): void => {
+        setBench({
+          ...bench,
+            images: bench.images.slice(index, 1)
+        })
+    }
 
+    const createBenchMutation = useMutation({
+        mutationKey: 'create bench',
+        mutationFn: createBench,
+        onSuccess: () => {
             onClose()
+
+            updateTable()
         }
     })
 
     const handleBenchCreate = async (): Promise<void> => {
-        await mutateAsync()
+        const formData = new FormData()
+
+        formData.append('address', bench?.address ? bench.address.toString() : '')
+        formData.append('id', bench.id)
+        formData.append('is_active', bench.is_active.toString())
+        formData.append('lat', bench.lat.toString())
+        formData.append('lng', bench.lng.toString())
+        formData.append('owner', bench.owner)
+        // formData.append('tags', JSON.stringify(bench.tags))
+
+        if (bench.images.length >= 1) {
+            bench.images.forEach((image) => {
+                if (typeof image !== 'string') {
+                    formData.append('images', image as File)
+                }
+            })
+        }
+
+        createBenchMutation.mutate(formData)
     }
 
     return (
@@ -85,7 +108,7 @@ const BenchesDialogCreate: FC<IProps> = ({visible, onClose, updateTable}): React
                 </div>
                 <div className={'mb-12'}>
                     <p className={'mb-8'}>Изображения</p>
-                    <BenchesDialogImages images={bench.images as SlideType[]} onImagesUpdate={handleImagesUpdate} />
+                    <BenchesDialogImages onImagesLoad={handleImagesAppend} onImageRemove={handleImageRemove}/>
                 </div>
                 <div className={'d-f jc-sb'}>
                     <Button color={'warning'} variant={'outlined'}>Отмена</Button>

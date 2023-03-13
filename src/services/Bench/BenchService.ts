@@ -7,7 +7,7 @@ class BenchService extends AxiosService {
     super(config)
   }
 
-  public create = async (data: Partial<BenchType>): Promise<unknown> => {
+  public create = async (data: FormData): Promise<unknown> => {
     return this.axiosCall<unknown>({
       method: 'post',
       url: '',

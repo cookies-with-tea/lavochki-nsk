@@ -64,6 +64,20 @@ const BenchesDialogUpdate: FC<IProps> = ({visible, onClose, bench, updateTable})
         })
     }
 
+    const handleImagesAppend = (images: File[]): void => {
+        setCurrentBench({
+            ...currentBench,
+            images: [...currentBench.images, ...images]
+        })
+    }
+
+    const handleImageRemove = (index: number): void => {
+        // setCurrentBench({
+        //     ...bench,
+        //     images: currentBench.images.slice(index, 1)
+        // })
+    }
+
     useEffect(() => {
         if (bench) {
             const newImages: SlideType[] = []
@@ -109,7 +123,7 @@ const BenchesDialogUpdate: FC<IProps> = ({visible, onClose, bench, updateTable})
                             </div>
                             <div className={'mb-12'}>
                                 <p className={'mb-8'}>Изображения</p>
-                                <BenchesDialogImages images={currentBench.images as SlideType[]} onImagesUpdate={handleImagesUpdate} />
+                                <BenchesDialogImages remoteImages={bench?.images as string[]} onImagesLoad={handleImagesAppend} onImageRemove={handleImageRemove}/>
                             </div>
                             <div className={'d-f jc-sb'}>
                                 <Button color={'warning'} variant={'outlined'}>Отмена</Button>
