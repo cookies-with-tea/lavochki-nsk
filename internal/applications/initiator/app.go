@@ -31,6 +31,7 @@ import (
 	"benches/internal/transport/httpv1/users"
 	"benches/pkg/auth"
 	postgresClient "benches/pkg/client/postgres"
+	"benches/pkg/maps"
 	"benches/pkg/telegram"
 	"context"
 	"errors"
@@ -104,6 +105,8 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 		logger.Fatal("init auth manager", zap.Error(err))
 	}
 
+	geoCoder := maps.NewYandexGeoCoder(cfg.Yandex.Token)
+
 	var appNotificationsService notificationsService.Service
 	if cfg.IsDevelopment {
 		appNotificationsService = notificationsService.NewServiceMock(logger, cfg.Telegram.NotificationToken)
@@ -126,7 +129,13 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appBenchesStorage := minioStorage.NewMinioStorage(minioClient, cfg.Minio.Bucket, cfg.Images.PublicEndpoint)
 	appBenchesRepository := benchesRepository.NewBenchesRepository(db)
 	appBenchesService := benchesService.NewService(appBenchesRepository, appBenchesStorage, logger)
-	appBenchesPolicy := benchesPolicy.NewPolicy(appBenchesService, appUsersService, appNotificationsService)
+	appBenchesPolicy := benchesPolicy.NewPolicy(
+		appBenchesService,
+		appUsersService,
+		appNotificationsService,
+		geoCoder,
+		logger,
+	)
 	appHandlerBenches := benches.NewHandler(appBenchesPolicy)
 	appHandlerBenches.Register(appBenchesRouter, authManager)
 
