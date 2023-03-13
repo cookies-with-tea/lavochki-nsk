@@ -9,17 +9,28 @@ import (
 	usersService "benches/internal/service/users"
 	"benches/pkg/api/paginate"
 	"benches/pkg/api/sort"
+	"benches/pkg/maps"
 	"context"
+	"go.uber.org/zap"
 )
 
 type Policy struct {
 	benchesService       benchesService.Service
 	usersService         usersService.Service
 	notificationsService notificationsService.Service
+	geoCoder             maps.GeoCoder
+	logger               *zap.Logger
 }
 
-func NewPolicy(benchesService benchesService.Service, usersService usersService.Service, notificationsService notificationsService.Service) *Policy {
-	return &Policy{benchesService: benchesService, usersService: usersService, notificationsService: notificationsService}
+func NewPolicy(benchesService benchesService.Service, usersService usersService.Service,
+	notificationsService notificationsService.Service, geoCoder maps.GeoCoder, logger *zap.Logger) *Policy {
+	return &Policy{
+		benchesService:       benchesService,
+		usersService:         usersService,
+		notificationsService: notificationsService,
+		geoCoder:             geoCoder,
+		logger:               logger,
+	}
 }
 
 func (policy *Policy) CreateBenchViaTelegram(ctx context.Context, userTelegramID int, byteImages [][]byte, bench domain.Bench) error {
@@ -29,9 +40,20 @@ func (policy *Policy) CreateBenchViaTelegram(ctx context.Context, userTelegramID
 		return apperror.ErrNotEnoughRights
 	}
 
+	// Получаем адрес по координатам лавочки
+	address, errReverseGeoCode := policy.geoCoder.ReverseGeocode(bench.Lat, bench.Lng)
+	if errReverseGeoCode != nil {
+		policy.logger.Error("error reverse geo code", zap.Error(errReverseGeoCode))
+		return errReverseGeoCode
+	}
+
+	// Устанавливаем улицу
+	bench.Street = address.Street
+
 	// Сохраняем все фотографии, которые нам пришли в виде байт, в Minio
 	images, err := policy.benchesService.SaveImages(ctx, byteImages)
 	if err != nil {
+		policy.logger.Error("error save image", zap.Error(err))
 		return err
 	}
 
@@ -42,6 +64,7 @@ func (policy *Policy) CreateBenchViaTelegram(ctx context.Context, userTelegramID
 	// Создаём лавочку
 	errCreateBench := policy.benchesService.CreateBench(ctx, bench)
 	if errCreateBench != nil {
+		policy.logger.Error("error create bench", zap.Error(errCreateBench))
 		return errCreateBench
 	}
 
@@ -77,6 +100,16 @@ func (policy *Policy) CreateBench(ctx context.Context, ownerID string, byteImage
 	if err != nil {
 		return err
 	}
+
+	// Получаем адрес по координатам лавочки
+	address, errReverseGeoCode := policy.geoCoder.ReverseGeocode(bench.Lat, bench.Lng)
+	if errReverseGeoCode != nil {
+		policy.logger.Error("error reverse geo code", zap.Error(errReverseGeoCode))
+		return errReverseGeoCode
+	}
+
+	// Устанавливаем улицу
+	bench.Street = address.Street
 
 	bench.Images = images
 	bench.Owner = ownerID

@@ -48,6 +48,9 @@ type Config struct {
 		Login             string `env:"BOT_TELEGRAM_LOGIN" env-required:"true"`
 		Password          string `env:"BOT_TELEGRAM_PASSWORD" env-required:"true"`
 	}
+	Yandex struct {
+		Token string `env:"YANDEX_API_KEY" env-required:"false"`
+	}
 }
 
 var instance *Config

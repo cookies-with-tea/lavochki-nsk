@@ -40,7 +40,7 @@ func (repository *repository) All(ctx context.Context, isActive bool, sortOption
 	paginateOptions model.PaginateOptions) ([]*domain.Bench, error) {
 	query := repository.queryBuilder.
 		Select("id").
-		Columns("lat", "lng", "is_active", "images", "owner_id").
+		Columns("lat", "lng", "street", "is_active", "images", "owner_id").
 		From(tableScheme).Where(squirrel.Eq{"is_active": isActive})
 
 	if sortOptions != nil {
@@ -65,25 +65,26 @@ func (repository *repository) All(ctx context.Context, isActive bool, sortOption
 	}
 	defer rows.Close()
 
-	list := make([]*domain.Bench, 0)
+	list := make([]benchModel, 0)
 
 	for rows.Next() {
-		bench := domain.Bench{}
+		bench := benchModel{}
 		if err = rows.Scan(
 			&bench.ID,
 			&bench.Lat,
 			&bench.Lng,
+			&bench.Street,
 			&bench.IsActive,
 			&bench.Images,
-			&bench.Owner,
+			&bench.OwnerID,
 		); err != nil {
 			return nil, err
 		}
 
-		list = append(list, &bench)
+		list = append(list, bench)
 	}
 
-	return list, nil
+	return benchModelsToDomain(list), nil
 }
 
 func (repository *repository) Count(ctx context.Context, isActive bool) (int, error) {
@@ -106,29 +107,31 @@ func (repository *repository) Count(ctx context.Context, isActive bool) (int, er
 func (repository *repository) ByID(ctx context.Context, id string) (*domain.Bench, error) {
 	sql, args, errBuild := repository.queryBuilder.
 		Select("id").
-		Columns("lat", "lng", "is_active", "images", "owner_id").
+		Columns("lat", "lng", "street", "is_active", "images", "owner_id").
 		From(tableScheme).Where(squirrel.Eq{"id": id}).ToSql()
 
 	if errBuild != nil {
 		return nil, errBuild
 	}
 
-	var bench domain.Bench
+	var bench benchModel
 
 	err := repository.client.QueryRow(ctx, sql, args...).Scan(
 		&bench.ID,
 		&bench.Lat,
 		&bench.Lng,
+		&bench.Street,
 		&bench.IsActive,
 		&bench.Images,
-		&bench.Owner,
+		&bench.OwnerID,
 	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &bench, nil
+	benchDomain := benchModelToDomain(bench)
+	return &benchDomain, nil
 }
 
 func (repository *repository) Create(ctx context.Context, bench domain.Bench) error {
