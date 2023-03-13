@@ -9,6 +9,7 @@ CREATE TABLE benches (
     id TEXT NOT NULL PRIMARY KEY,
     lat DECIMAL NOT NULL,
     lng DECIMAL NOT NULL,
+    street TEXT NULL,
     images TEXT[] NOT NULL,
     owner_id TEXT NOT NULL,
     is_active BOOLEAN NOT NULL DEFAULT false,
