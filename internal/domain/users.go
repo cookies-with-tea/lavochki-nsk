@@ -16,3 +16,8 @@ type TelegramUser struct {
 	AuthDate  int    `json:"auth_date"`
 	Hash      string `json:"hash"`
 }
+
+type TokenCredentials struct {
+	Access  string `json:"access,omitempty"`
+	Refresh string `json:"refresh,omitempty"`
+}
