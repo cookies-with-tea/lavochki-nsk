@@ -67,7 +67,7 @@ export const BenchDetailComments: FC<IProps> = ({
   return (
     <>
       <div className="d-f ai-c w-100 jc-sb mb-24">
-        <StyledHeading>Комментарии <span>8</span> </StyledHeading>
+        <StyledHeading id={'comments'}>Комментарии <span>8</span> </StyledHeading>
         <div className="d-f ai-c">
           <CommonIcon name={'sorting'} width={24} height={17} />
           <CommonIcon name={'notifications'} width={24} height={24} />

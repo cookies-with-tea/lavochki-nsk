@@ -4,7 +4,7 @@ import Image from 'next/image'
 import {
   StyledBenchCard,
   StyledBenchTitle,
-  StyledBenchWrapper,
+  StyledBenchWrapper, StyledCommentsButton,
   StyledImageWrapper,
   StyledOpenlink,
   StyledRatingCount,
@@ -50,11 +50,16 @@ const BenchCard: FC<IProps> = ({ bench }): ReactElement => {
               Открыть
             </StyledOpenlink>
           </Link>
-          <div className={'d-f ai-c'}>
-            <CommonIcon name="star" width={16} height={16} />
-            <StyledRatingCount>
-              4.2
-            </StyledRatingCount>
+          <div className={'d-f ai-c fd-c'}>
+            <Link href={`/benches/${bench.id}#comments`} passHref scroll={false}>
+              <StyledCommentsButton>Комментарии</StyledCommentsButton>
+            </Link>
+            <div className={'d-f jc-fe w-100'}>
+              <CommonIcon name="star" width={16} height={16} />
+              <StyledRatingCount>
+                4.2
+              </StyledRatingCount>
+            </div>
           </div>
         </div>
       </StyledBenchWrapper>

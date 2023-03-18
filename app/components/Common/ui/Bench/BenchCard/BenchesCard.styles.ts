@@ -73,3 +73,8 @@ export const StyledRatingCount = styled.div`
   color: var(--color--primary-dark);
   margin-left: 4px;
 `
+
+export const StyledCommentsButton = styled.a`
+  border: none;
+  padding: 0;
+`
