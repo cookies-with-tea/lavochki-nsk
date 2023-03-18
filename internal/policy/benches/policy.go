@@ -48,7 +48,9 @@ func (policy *Policy) CreateBenchViaTelegram(ctx context.Context, userTelegramID
 	}
 
 	// Устанавливаем улицу
-	bench.Street = address.Street
+	if address.Street != "" {
+		bench.Street = address.Street
+	}
 
 	// Сохраняем все фотографии, которые нам пришли в виде байт, в Minio
 	images, err := policy.benchesService.SaveImages(ctx, byteImages)
@@ -109,7 +111,9 @@ func (policy *Policy) CreateBench(ctx context.Context, ownerID string, byteImage
 	}
 
 	// Устанавливаем улицу
-	bench.Street = address.Street
+	if address.Street != "" {
+		bench.Street = address.Street
+	}
 
 	bench.Images = images
 	bench.Owner = ownerID
