@@ -33,7 +33,7 @@ export const DefaultLayoutHeader: FC = (): ReactElement => {
         localStorage.setItem('token', response.access)
         localStorage.setItem('refresh-token', response.refresh)
 
-        // location.reload()
+        location.reload()
       }
     })
 
@@ -54,7 +54,7 @@ export const DefaultLayoutHeader: FC = (): ReactElement => {
   const handleLogout = (): void => {
     localStorage.clear()
 
-    // location.reload()
+    location.reload()
   }
 
   useEffect(() => {
