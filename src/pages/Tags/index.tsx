@@ -25,7 +25,7 @@ const TheTags = (): ReactElement => {
                 tags && Boolean(tags.length)
                     ? (
                         <TagsTable tags={tags} />
-                    ) : <CommonNoData title={'Нет комментариев на модерации'} />
+                    ) : <CommonNoData title={'Нет тегов'} />
             }
 
         </div>

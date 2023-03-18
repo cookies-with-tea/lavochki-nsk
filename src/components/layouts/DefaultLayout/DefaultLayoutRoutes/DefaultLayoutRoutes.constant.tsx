@@ -6,6 +6,7 @@ import ReportComments from "@/pages/ReportComments";
 import Tags from "@/pages/Tags";
 import Users from "@/pages/Users";
 import {CommentsPage} from "@/pages/Comments/CommentsPage";
+import {NotFoundPage} from "@/pages/NotFound/NotFoundPage";
 
 export const routes = [
     {
@@ -36,4 +37,8 @@ export const routes = [
         path: '/comments',
         element: <CommentsPage />
     },
+    {
+        path: '*',
+        element: <NotFoundPage />
+    }
 ]
