@@ -19,7 +19,7 @@ type Repository interface {
 	All(ctx context.Context, isActive bool, sortOptions model.SortOptions, paginateOptions model.PaginateOptions) ([]*domain.Bench, error)
 	Count(ctx context.Context, isActive bool) (int, error)
 	ByID(ctx context.Context, id string) (*domain.Bench, error)
-	Create(ctx context.Context, bench domain.Bench) error
+	Create(ctx context.Context, bench domain.Bench) (*domain.Bench, error)
 	Update(ctx context.Context, id string, bench domain.Bench) error
 	Delete(ctx context.Context, id string) error
 }
@@ -134,29 +134,41 @@ func (repository *repository) ByID(ctx context.Context, id string) (*domain.Benc
 	return &benchDomain, nil
 }
 
-func (repository *repository) Create(ctx context.Context, bench domain.Bench) error {
+func (repository *repository) Create(ctx context.Context, bench domain.Bench) (*domain.Bench, error) {
 	createBenchModel := benchModel{}
 	createBenchModel.FromDomain(bench)
 	createBenchModel.ID = ulid.Make().String()
 
 	modelMap, errToMap := createBenchModel.ToMap()
 	if errToMap != nil {
-		return errToMap
+		return nil, errToMap
 	}
 
 	sql, args, errBuild := repository.queryBuilder.Insert(tableScheme).SetMap(modelMap).
+		Suffix("RETURNING \"id\", \"lat\", \"lng\", \"street\", \"images\", \"is_active\", \"owner_id\"").
 		PlaceholderFormat(squirrel.Dollar).ToSql()
 
 	if errBuild != nil {
-		return errBuild
+		return nil, errBuild
 	}
 
-	if exec, execErr := repository.client.Exec(ctx, sql, args...); execErr != nil {
-		return execErr
-	} else if exec.RowsAffected() == 0 || !exec.Insert() {
-		return execErr
+	resultBench := benchModel{}
+	errQueryRow := repository.client.QueryRow(ctx, sql, args...).Scan(
+		&resultBench.ID,
+		&resultBench.Lat,
+		&resultBench.Lng,
+		&resultBench.Street,
+		&resultBench.Images,
+		&resultBench.IsActive,
+		&resultBench.OwnerID,
+	)
+
+	if errQueryRow != nil {
+		return nil, errQueryRow
 	}
-	return nil
+
+	benchModel := benchModelToDomain(resultBench)
+	return &benchModel, nil
 }
 
 func (repository *repository) Update(ctx context.Context, id string, bench domain.Bench) error {

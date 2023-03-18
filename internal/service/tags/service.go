@@ -10,6 +10,7 @@ import (
 type Service interface {
 	GetAllTags(ctx context.Context) ([]*domain.Tag, error)
 	CreateTag(ctx context.Context, tag domain.Tag) error
+	AddTagToBench(ctx context.Context, tagBench domain.TagBench) error
 }
 
 type service struct {
@@ -37,4 +38,8 @@ func (service *service) CreateTag(ctx context.Context, tag domain.Tag) error {
 		return err
 	}
 	return nil
+}
+
+func (service *service) AddTagToBench(ctx context.Context, tagBench domain.TagBench) error {
+	return service.db.CreateTagToBench(ctx, tagBench)
 }

@@ -6,6 +6,7 @@ import (
 	"benches/internal/notifications"
 	benchesService "benches/internal/service/benches"
 	notificationsService "benches/internal/service/notifications"
+	tagsService "benches/internal/service/tags"
 	usersService "benches/internal/service/users"
 	"benches/pkg/api/paginate"
 	"benches/pkg/api/sort"
@@ -18,16 +19,18 @@ type Policy struct {
 	benchesService       benchesService.Service
 	usersService         usersService.Service
 	notificationsService notificationsService.Service
+	tagsService          tagsService.Service
 	geoCoder             maps.GeoCoder
 	logger               *zap.Logger
 }
 
 func NewPolicy(benchesService benchesService.Service, usersService usersService.Service,
-	notificationsService notificationsService.Service, geoCoder maps.GeoCoder, logger *zap.Logger) *Policy {
+	notificationsService notificationsService.Service, tagsService tagsService.Service, geoCoder maps.GeoCoder, logger *zap.Logger) *Policy {
 	return &Policy{
 		benchesService:       benchesService,
 		usersService:         usersService,
 		notificationsService: notificationsService,
+		tagsService:          tagsService,
 		geoCoder:             geoCoder,
 		logger:               logger,
 	}
@@ -48,7 +51,9 @@ func (policy *Policy) CreateBenchViaTelegram(ctx context.Context, userTelegramID
 	}
 
 	// Устанавливаем улицу
-	bench.Street = address.Street
+	if address.Street != "" {
+		bench.Street = address.Street
+	}
 
 	// Сохраняем все фотографии, которые нам пришли в виде байт, в Minio
 	images, err := policy.benchesService.SaveImages(ctx, byteImages)
@@ -62,7 +67,7 @@ func (policy *Policy) CreateBenchViaTelegram(ctx context.Context, userTelegramID
 	bench.Owner = user.ID
 
 	// Создаём лавочку
-	errCreateBench := policy.benchesService.CreateBench(ctx, bench)
+	_, errCreateBench := policy.benchesService.CreateBench(ctx, bench)
 	if errCreateBench != nil {
 		policy.logger.Error("error create bench", zap.Error(errCreateBench))
 		return errCreateBench
@@ -94,27 +99,47 @@ func (policy *Policy) GetListBenches(ctx context.Context, isActive bool, sortOpt
 	return list, nil
 }
 
-func (policy *Policy) CreateBench(ctx context.Context, ownerID string, byteImages [][]byte, bench domain.Bench) error {
+func (policy *Policy) CreateBench(ctx context.Context, ownerID string, byteImages [][]byte,
+	tags []string, bench domain.Bench) (*domain.Bench, error) {
 	// Сохраняем все фотографии, которые нам пришли в виде байт, в Minio
 	images, err := policy.benchesService.SaveImages(ctx, byteImages)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// Получаем адрес по координатам лавочки
 	address, errReverseGeoCode := policy.geoCoder.ReverseGeocode(bench.Lat, bench.Lng)
 	if errReverseGeoCode != nil {
 		policy.logger.Error("error reverse geo code", zap.Error(errReverseGeoCode))
-		return errReverseGeoCode
+		return nil, errReverseGeoCode
 	}
 
 	// Устанавливаем улицу
-	bench.Street = address.Street
+	if address.Street != "" {
+		bench.Street = address.Street
+	}
 
+	// Устанавливаем дополнительные переменные
 	bench.Images = images
 	bench.Owner = ownerID
 
-	return policy.benchesService.CreateBench(ctx, bench)
+	// Создаём лавочку
+	newBench, errCreateBench := policy.benchesService.CreateBench(ctx, bench)
+	if errCreateBench != nil {
+		policy.logger.Error("error create bench", zap.Error(errCreateBench))
+		return nil, errCreateBench
+	}
+
+	// Добавляем к лавочке теги, если они есть
+	for _, tagID := range tags {
+		errAddToBench := policy.tagsService.AddTagToBench(ctx, domain.TagBench{BenchID: newBench.ID, TagID: tagID})
+		if errAddToBench != nil {
+			policy.logger.Error("error add tag to bench", zap.Error(errAddToBench))
+			return nil, errAddToBench
+		}
+	}
+
+	return nil, nil
 }
 
 func (policy *Policy) UpdateBench(ctx context.Context, id string, bench domain.Bench) error {

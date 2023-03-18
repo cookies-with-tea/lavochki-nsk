@@ -211,10 +211,11 @@ func (handler *Handler) createBench(writer http.ResponseWriter, request *http.Re
 	}
 
 	// Создаём лавочку
-	errCreate := handler.policy.CreateBench(
+	_, errCreate := handler.policy.CreateBench(
 		request.Context(),
 		request.Context().Value("userID").(string),
 		bench.Images,
+		request.Form["tags"],
 		bench.ToDomain(),
 	)
 	if errCreate != nil {

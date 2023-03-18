@@ -19,7 +19,7 @@ import (
 type Service interface {
 	GetListBenches(ctx context.Context, isActive bool, sortOptions *sort.Options,
 		paginateOptions *paginate.Options) ([]*domain.Bench, error)
-	CreateBench(ctx context.Context, bench domain.Bench) error
+	CreateBench(ctx context.Context, bench domain.Bench) (*domain.Bench, error)
 	DecisionBench(ctx context.Context, benchID string, decision bool) error
 	GetBenchByID(ctx context.Context, id string) (*domain.Bench, error)
 	SaveImages(ctx context.Context, images [][]byte) ([]string, error)
@@ -81,13 +81,13 @@ func (service *service) CountAllBenches(ctx context.Context, isActive bool) (int
 	return count, nil
 }
 
-func (service *service) CreateBench(ctx context.Context, bench domain.Bench) error {
-	err := service.db.Create(ctx, bench)
+func (service *service) CreateBench(ctx context.Context, bench domain.Bench) (*domain.Bench, error) {
+	resultBench, err := service.db.Create(ctx, bench)
 	if err != nil {
 		service.log.Error("failed create bench", zap.Error(err))
-		return apperror.ErrFailedToCreate
+		return nil, apperror.ErrFailedToCreate
 	}
-	return nil
+	return resultBench, nil
 }
 
 func (service *service) UpdateBench(ctx context.Context, id string, bench domain.Bench) error {

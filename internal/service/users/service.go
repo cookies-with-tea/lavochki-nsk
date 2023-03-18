@@ -45,10 +45,12 @@ func (service *service) LoginViaTelegram(ctx context.Context, telegramUser domai
 		var errCreate error
 		dbUser, errCreate = service.db.Create(ctx, user)
 		if errCreate != nil {
+			service.log.Error("error create user in database", zap.Error(errCreate))
 			return "", "", errCreate
 		}
 	} else {
 		if err != nil {
+			service.log.Error("error check exception", zap.Error(err))
 			return "", "", err
 		}
 	}
@@ -69,17 +71,20 @@ func (service *service) LoginViaTelegram(ctx context.Context, telegramUser domai
 	var token string
 	token, err = service.tokenManager.NewJWT(dbUser.ID, dbUser.Role, 60*time.Minute)
 	if err != nil {
+		service.log.Error("error generate new access token", zap.Error(err))
 		return "", "", err
 	}
 
 	var refreshToken string
 	refreshToken, err = service.tokenManager.NewRefreshToken()
 	if err != nil {
+		service.log.Error("error generate new refresh token", zap.Error(err))
 		return "", "", err
 	}
 
 	err = service.redisStorage.WriteRefreshToken(ctx, refreshToken, dbUser.ID, 60*time.Minute)
 	if err != nil {
+		service.log.Error("error write refresh token to redis", zap.Error(err))
 		return "", "", err
 	}
 
