@@ -114,6 +114,14 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 		appNotificationsService = notificationsService.NewService(logger, cfg.Telegram.NotificationToken)
 	}
 
+	// Теги
+	appTagsRouter := router.PathPrefix("/api/v1/tags").Subrouter()
+	appTagsRepository := tagsRepository.NewTagsRepository(db)
+	appTagsService := tagsService.NewService(appTagsRepository, logger)
+	appTagsPolicy := tagsPolicy.NewPolicy(appTagsService)
+	appHandlerTags := tags.NewHandler(appTagsPolicy)
+	appHandlerTags.Register(appTagsRouter)
+
 	// Пользователи
 	appUsersRedisStorage := redisStorage.NewRedisStorage(redisClient)
 	appUsersTelegramManager := telegram.NewTelegramManager(cfg.Telegram.Token)
@@ -133,6 +141,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 		appBenchesService,
 		appUsersService,
 		appNotificationsService,
+		appTagsService,
 		geoCoder,
 		logger,
 	)
@@ -146,14 +155,6 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appBotPolicy := botPolicy.NewPolicy(appBotService)
 	appBotHandler := bot.NewHandler(appBotPolicy)
 	appBotHandler.Register(appBotRouter)
-
-	// Теги
-	appTagsRouter := router.PathPrefix("/api/v1/tags").Subrouter()
-	appTagsRepository := tagsRepository.NewTagsRepository(db)
-	appTagsService := tagsService.NewService(appTagsRepository, logger)
-	appTagsPolicy := tagsPolicy.NewPolicy(appTagsService)
-	appHandlerTags := tags.NewHandler(appTagsPolicy)
-	appHandlerTags.Register(appTagsRouter)
 
 	// Комментарии
 	appCommentsRouter := router.PathPrefix("/api/v1/comments").Subrouter()
