@@ -2,8 +2,8 @@ import {SlideType} from "@/components/pages/Benches/BenchesDialog/BenchesDialogI
 
 export type BenchType = {
     id: string
-    lat: number
-    lng: number
+    lat: number | string
+    lng: number | string
     images: (string | SlideType | File)[]
     owner: string
     is_active: boolean

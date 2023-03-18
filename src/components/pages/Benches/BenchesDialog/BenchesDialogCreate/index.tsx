@@ -1,5 +1,5 @@
 import React, {ChangeEvent, FC, ReactElement, useState} from 'react';
-import {Box, Button, Dialog, DialogTitle, Input} from "@mui/material";
+import {Box, Button, Dialog, DialogTitle, Input, TextField} from "@mui/material";
 import CommonIcon from "@/components/Common/CommonIcon/CommonIcon";
 import {BenchType} from "@/types/bench.type";
 import BenchesDialogImages from "@/components/pages/Benches/BenchesDialog/BenchesDialogImages";
@@ -20,23 +20,30 @@ const BenchesDialogCreate: FC<IProps> = ({visible, onClose, updateTable}): React
         id: "",
         images: [''],
         is_active: false,
-        lat: 0,
-        lng: 0,
+        lat: '',
+        lng: '',
         owner: "",
         tags: []
     })
 
     const onValueChange = (event: ChangeEvent<HTMLInputElement>): void => {
         const target = event.target
-        const value = target.name === 'lat' || target.name === 'lng' ? +target.value : target.value
+        const re = /^(?!,$)[\d,.]+$/
 
-        setBench({
-            ...bench,
-            [target.name]: value
-        })
+        if (event.target.value === '' || re.test(event.target.value)) {
+            setBench({
+                ...bench,
+                [target.name]: event.target.value
+            })
+        }
     }
 
     const handleDialogClose = (): void => {
+        setBench({
+            ...bench,
+            lat: '',
+            lng: ''
+        })
         onClose()
     }
 
@@ -58,7 +65,7 @@ const BenchesDialogCreate: FC<IProps> = ({visible, onClose, updateTable}): React
         mutationKey: 'create bench',
         mutationFn: createBench,
         onSuccess: () => {
-            onClose()
+            handleDialogClose()
 
             updateTable()
         }
@@ -102,8 +109,8 @@ const BenchesDialogCreate: FC<IProps> = ({visible, onClose, updateTable}): React
                         Координаты:
                     </p>
                     <div>
-                        <Input required size="small" value={bench.lat} name={'lat'} onChange={onValueChange} />
-                        <Input required size="small" value={bench.lng} name={'lng'} onChange={onValueChange} />
+                        <TextField required size="small" value={bench.lat.toString()} name={'lat'} onChange={onValueChange}  />
+                        <TextField required size="small" value={bench.lng} name={'lng'} onChange={onValueChange}  />
                     </div>
                 </div>
                 <div className={'mb-12'}>
