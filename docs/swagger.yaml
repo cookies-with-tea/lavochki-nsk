@@ -77,6 +77,13 @@ definitions:
       title:
         type: string
     type: object
+  domain.TokenCredentials:
+    properties:
+      access:
+        type: string
+      refresh:
+        type: string
+    type: object
   domain.User:
     properties:
       id:
@@ -109,6 +116,10 @@ definitions:
       lng:
         example: "0"
         type: string
+      tags:
+        items:
+          type: string
+        type: array
     type: object
   dto.CreateBenchViaTelegram:
     properties:
@@ -185,6 +196,10 @@ definitions:
         type: number
       lng:
         type: number
+      tags:
+        items:
+          type: string
+        type: array
     type: object
   dto.UpdateComment:
     properties:
@@ -660,6 +675,8 @@ paths:
       responses:
         "200":
           description: OK
+          schema:
+            $ref: '#/definitions/domain.TokenCredentials'
         "400":
           description: Bad Request
       summary: User registration
@@ -702,6 +719,8 @@ paths:
       responses:
         "200":
           description: OK
+          schema:
+            $ref: '#/definitions/domain.TokenCredentials'
         "400":
           description: Bad Request
       summary: User refresh token

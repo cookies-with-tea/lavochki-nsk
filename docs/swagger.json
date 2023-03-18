@@ -712,7 +712,10 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.TokenCredentials"
+                        }
                     },
                     "400": {
                         "description": "Bad Request"
@@ -777,7 +780,10 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.TokenCredentials"
+                        }
                     },
                     "400": {
                         "description": "Bad Request"
@@ -907,6 +913,17 @@
                 }
             }
         },
+        "domain.TokenCredentials": {
+            "type": "object",
+            "properties": {
+                "access": {
+                    "type": "string"
+                },
+                "refresh": {
+                    "type": "string"
+                }
+            }
+        },
         "domain.User": {
             "type": "object",
             "properties": {
@@ -954,6 +971,12 @@
                 "lng": {
                     "type": "string",
                     "example": "0"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
@@ -1072,6 +1095,12 @@
                 },
                 "lng": {
                     "type": "number"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },

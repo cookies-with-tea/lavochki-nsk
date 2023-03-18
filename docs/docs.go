@@ -724,7 +724,10 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.TokenCredentials"
+                        }
                     },
                     "400": {
                         "description": "Bad Request"
@@ -789,7 +792,10 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.TokenCredentials"
+                        }
                     },
                     "400": {
                         "description": "Bad Request"
@@ -919,6 +925,17 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.TokenCredentials": {
+            "type": "object",
+            "properties": {
+                "access": {
+                    "type": "string"
+                },
+                "refresh": {
+                    "type": "string"
+                }
+            }
+        },
         "domain.User": {
             "type": "object",
             "properties": {
@@ -966,6 +983,12 @@ const docTemplate = `{
                 "lng": {
                     "type": "string",
                     "example": "0"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
@@ -1084,6 +1107,12 @@ const docTemplate = `{
                 },
                 "lng": {
                     "type": "number"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
