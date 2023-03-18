@@ -64,7 +64,6 @@ const TheBenches = () => {
                             getBenchById={handleGetBenchById}
                         />
                     ) : <CommonNoData title={'Нет лавочек'} />
-
             }
 
             <BenchesDialogUpdate
