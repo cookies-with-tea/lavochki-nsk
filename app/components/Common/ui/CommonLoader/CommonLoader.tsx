@@ -4,6 +4,6 @@ import { StyledLoader, StyledRing, StyledText } from '@/app/components/Common/ui
 export const CommonLoader = (): ReactElement => (
   <StyledLoader>
     <StyledRing />
-    <StyledText>Загрузка...</StyledText>
+    <StyledText>Котики <br /> просыпаются...</StyledText>
   </StyledLoader>
 )

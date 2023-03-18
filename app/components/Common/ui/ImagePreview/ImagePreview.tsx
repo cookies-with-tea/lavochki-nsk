@@ -1,8 +1,11 @@
 import { FC, ReactPortal, useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import {
-  StyledBackground, StyledClose,
-  StyledContent, StyledImage, StyledImageWrapper,
+  StyledBackground,
+  StyledClose,
+  StyledContent,
+  StyledImage,
+  StyledImageWrapper,
   StyledTitle
 } from '@/app/components/Common/ui/ImagePreview/ImagePreview.style'
 import CommonIcon from '@/app/components/Common/ui/CommonIcon/CommonIcon'
@@ -33,6 +36,7 @@ const ImagePreview: FC<IProps> = ({ open, onClose, image, title }): ReactPortal 
 
       return () => {
         modalRootElement?.removeChild(element)
+
         document.removeEventListener('keyup', close)
       }
     }

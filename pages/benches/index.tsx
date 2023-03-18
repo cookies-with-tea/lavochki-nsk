@@ -82,7 +82,7 @@ const BenchesPage: NextPage = (): ReactElement => {
                   )
                 )
                 : (
-                  [...Array(15)].map((_: number, index: number) => (
+                  [...Array(15)].map((_, index) => (
                     <BenchCardSkeleton key={index} isBenchFetching={isFetching} />
                   ))
                 )
