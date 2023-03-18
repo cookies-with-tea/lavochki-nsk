@@ -1,5 +1,5 @@
 import { GetStaticProps, NextPage } from 'next'
-import { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useContext, useEffect, useState } from 'react'
 import { HomeMap } from '@/app/components/pages/Home/HomeMap/HomeMap'
 import { dehydrate, QueryClient, useInfiniteQuery, useQuery } from 'react-query'
 import BenchService from '@/app/services/Bench/BenchService'
@@ -16,6 +16,7 @@ import { useInView } from 'react-intersection-observer'
 import { Box } from '@mui/material'
 import dynamic from 'next/dynamic'
 import { useToggle } from '@/app/hooks/useToggle'
+import { MapContext } from '@/app/contexts/mapContext'
 
 const defaultParams = {
   sortOrder: 'desc',
@@ -57,6 +58,8 @@ const HomePage: NextPage = (): ReactElement => {
       perPage: 3
     })
   const [isPreviewImageVisible, setIsPreviewImageVisible] = useToggle(false)
+
+  const mapContext = useContext(MapContext)
 
   // TODO: Пока что этот функционал выпилил, ибо жду backend для того, чтобы это там было реализовано
 
@@ -153,6 +156,7 @@ const HomePage: NextPage = (): ReactElement => {
 
   useEffect(() => {
     const currentPerPage = benchesParams.perPage as number
+
     const nextPerPage = currentPerPage + 3
 
     setBenchesParams({
@@ -164,6 +168,14 @@ const HomePage: NextPage = (): ReactElement => {
       fetchNextPage()
     }
   }, [inView])
+
+  useEffect(() => {
+    setMapSettings({
+      ...mapSettings,
+      center: mapContext.mapState.center,
+      zoom: mapContext.mapState.zoom,
+    })
+  }, [mapContext.mapState.zoom])
 
   return (
     <>

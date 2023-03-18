@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useContext, useEffect, useState } from 'react'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { dehydrate, QueryClient, useQuery } from 'react-query'
 import BenchService from '@/app/services/Bench/BenchService'
@@ -24,6 +24,7 @@ import { BenchDetailCommentReport }
   from '@/app/components/pages/BenchDetail/BenchDetailComment/BenchDetailCommentReport/BenchDetailCommentReport'
 import { YMapsApi } from '@pbe/react-yandex-maps/typings/util/typing'
 import { MapStateOptionsType } from '@/app/types/map.type'
+import { MapContext } from '@/app/contexts/mapContext'
 
 const getBenches = async (): Promise<BenchesResponseType> => (
   await BenchService.getAll()
@@ -50,11 +51,13 @@ const BenchDetail: NextPage = (): ReactElement => {
   const [chipData, setChipData] = useState<BenchTagType[]>([] as BenchTagType[])
   const [map, setMap] = useState<YMapsApi | null>(null)
   const [mapSettings, setMapSettings] = useState<MapStateOptionsType>({
-    center: [55.00, 82.95],
-    zoom: 14,
+    center: [],
+    zoom: 18,
     behaviors: ['default', 'scrollZoom'],
     controls: []
   })
+
+  const mapContext = useContext(MapContext)
 
   const { refetch: benchRefetch, isFetching: isBenchFetching }
     = useQuery<BenchType, ErrorType>(['get bench', benchId],
@@ -156,6 +159,14 @@ const BenchDetail: NextPage = (): ReactElement => {
   useEffect(() => {
     // geoDecoding(bench, map)
   }, [map])
+
+  useEffect(() => {
+    setMapSettings({
+      ...mapSettings,
+      ...mapContext.mapState,
+      zoom: 18,
+    })
+  }, [])
 
   return (
     <>

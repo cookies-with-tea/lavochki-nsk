@@ -10,8 +10,8 @@ export const StyledLoader = styled.div`
 
 export const StyledRing = styled.div`
   position: absolute;
-  width: 200px;
-  height: 200px;
+  width: 220px;
+  height: 220px;
   border-radius: 50%;
   animation: ring 2s linear infinite;
 
@@ -48,7 +48,7 @@ export const StyledText = styled.span`
   font-size: 20px;
   text-transform: uppercase;
   letter-spacing: 1px;
-  line-height: 200px;
+  line-height: 24px;
   animation: text 3s ease-in-out infinite;
   
   @keyframes text {

@@ -7,7 +7,8 @@ import {
   Hydrate,
   DehydratedState,
   QueryCache,
-  QueryClientConfig, MutationCache
+  QueryClientConfig,
+  MutationCache
 } from 'react-query'
 import { ReactElement, useRef, useState } from 'react'
 import { ErrorType } from '@/app/types/common.type'

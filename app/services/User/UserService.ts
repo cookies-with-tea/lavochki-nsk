@@ -21,6 +21,14 @@ class UserService extends AxiosService {
       url: '/me'
     })
   }
+
+  public getToken = (data: string): Promise<{ token: string }> => {
+    return this.axiosCall<{ token: string }>({
+      method: 'post',
+      url: '/refresh',
+      data,
+    })
+  }
 }
 
 export default new UserService({

@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useEffect, useState } from 'react'
+import { FC, ReactElement, useEffect, useState, MouseEvent, useContext } from 'react'
 import {
   StyledAvatarButton,
   StyledHeader,
@@ -18,10 +18,12 @@ import { DefaultLayoutMenu }
   from '@/app/components/Layouts/DefaultLayout/DefaultLayoutMenu/DefaultLayoutMenu'
 import { DefaultLayoutHeaderAuthButton }
   from '@/app/components/Layouts/DefaultLayout/DefaultLayoutHeader/DefaultLayoutHeaderAuthButton/DefaultLayoutHeaderAuthButton'
+import { UserContext } from '@/app/contexts/userContext'
 
 export const DefaultLayoutHeader: FC = (): ReactElement => {
   const [isAuth, setIsAuth] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const user = useContext(UserContext)
 
   const open = Boolean(anchorEl)
 
@@ -29,13 +31,14 @@ export const DefaultLayoutHeader: FC = (): ReactElement => {
     async (data: UserType) => await UserService.create(data), {
       onSuccess: (response) => {
         localStorage.setItem('token', response.access)
+        localStorage.setItem('refresh-token', response.refresh)
 
-        location.reload()
+        // location.reload()
       }
     })
 
   const handleAnchorSet = (
-    event: React.MouseEvent<HTMLButtonElement>
+    event: MouseEvent<HTMLButtonElement>
   ): void => {
     setAnchorEl(event.currentTarget)
   }
@@ -51,7 +54,7 @@ export const DefaultLayoutHeader: FC = (): ReactElement => {
   const handleLogout = (): void => {
     localStorage.clear()
 
-    location.reload()
+    // location.reload()
   }
 
   useEffect(() => {
@@ -80,7 +83,7 @@ export const DefaultLayoutHeader: FC = (): ReactElement => {
           <div className="d-f ai-c">
             { isAuth ? (
               <>
-                <span className="text mr-12">Никита</span>
+                <span className="text mr-12">{ user.username }</span>
                 <StyledAvatarButton
                   id="profile-button"
                   aria-controls={open ? 'profile-menu' : undefined}

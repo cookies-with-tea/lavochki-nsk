@@ -82,7 +82,6 @@ export const DefaultLayoutMenu: FC<IProps> = (
           </StyledLogoutButton>
         </StyledMenuItem>
       </Menu>
-      )
     </NoSsr>
   )
 }
