@@ -5,6 +5,7 @@ import BenchesModeration from "@/pages/BenchesModeration";
 import ReportComments from "@/pages/ReportComments";
 import Tags from "@/pages/Tags";
 import Users from "@/pages/Users";
+import {CommentsPage} from "@/pages/Comments/CommentsPage";
 
 export const routes = [
     {
@@ -30,5 +31,9 @@ export const routes = [
     {
         path: '/users',
         element: <Users />
-    }
+    },
+    {
+        path: '/comments',
+        element: <CommentsPage />
+    },
 ]

@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import 'virtual:svg-icons-register'
 
-import '@/styles/main.scss'
+import '@/styles/index.scss'
 import {BrowserRouter} from "react-router-dom";
 import App from "@/components/App";
 import {QueryClient, QueryClientConfig, QueryClientProvider} from "react-query";
@@ -58,6 +58,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 
             <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
-        )
     </React.StrictMode>
 )

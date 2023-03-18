@@ -1,0 +1,37 @@
+@use './src/styles/resources/variables/fonts' as *;
+
+@mixin font($size: 16px, $line-height: 20px, $weight: 400, $style: normal) {
+  font-family: $font--main;
+  font-weight: $weight;
+  font-style: $style;
+  font-size: $size;
+  line-height: $line-height;
+}
+
+@mixin text-h1() {
+  @include font(30px, 36px, 700);
+}
+
+@mixin text-h2() {
+  @include font(24px, 30px, 700);
+}
+
+@mixin text-h3() {
+  @include font(18px, 22px, 700);
+}
+
+@mixin text-h4() {
+  @include font(16px, 20px, 700);
+}
+
+@mixin text-lg($bold: false) {
+  @include font(18px, 22px, if($bold, 700, 400));
+}
+
+@mixin text-md($bold: false) {
+  @include font(16px, 20px, if($bold, 700, 400));
+}
+
+@mixin text-sm($bold: false) {
+  @include font(14px, 18px, if($bold, 700, 400));
+}

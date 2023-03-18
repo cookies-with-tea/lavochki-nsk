@@ -1,19 +1,38 @@
-@import '../variables';
+@use 'sass:map';
+@use '../variables' as *;
 
-@mixin color($name, $color) {
-  .bg-#{$name} {
-    background-color: $color !important; // stylelint-disable-line declaration-no-important
-  }
 
-  .color-#{$name} {
-    color: $color !important; // stylelint-disable-line declaration-no-important
+@mixin responsive($key, $map: $breakpoints-map) {
+  @if map-has-key($map, $key) {
+    @media screen and #{unquote(map-get($map, $key))} {
+      @content;
+    }
+  } @else {
+    @warn 'Not found key `#{$key}` in map `#{$map}`';
   }
 }
 
-// Margins | Paddings
+@mixin flex-item-width($width: 100%, $grow: 0, $shrink: 0) {
+  flex: $grow $shrink #{$width};
 
-// stylelint-disable declaration-no-important
-// Нужно перекрывать всевозможные стили, поэтому important
+  @if $width == 'auto' {
+    width: auto;
+    max-width: 100%;
+  } @else {
+    max-width: $width;
+  }
+}
+
+/* stylelint-disable declaration-no-important */
+@mixin icon-classes($screen-name: '') {
+  @each $index, $size in $icon-sizes {
+    .icon#{$screen-name}-#{$index} {
+      width: $size;
+      height: $size;
+    }
+  }
+}
+
 @mixin sizes-classes($screen-name: '') {
   .mt#{$screen-name}-auto {
     margin-top: auto !important;
@@ -61,30 +80,6 @@
       margin-bottom: $size !important;
     }
 
-    .m#{$screen-name}-#{$index}-n {
-      margin: -$size !important;
-    }
-    .mx#{$screen-name}-#{$index}-n {
-      margin-right: -$size !important;
-      margin-left: -$size !important;
-    }
-    .my#{$screen-name}-#{$index}-n {
-      margin-top: -$size !important;
-      margin-bottom: -$size !important;
-    }
-    .ml#{$screen-name}-#{$index}-n {
-      margin-left: -$size !important;
-    }
-    .mr#{$screen-name}-#{$index}-n {
-      margin-right: -$size !important;
-    }
-    .mt#{$screen-name}-#{$index}-n {
-      margin-top: -$size !important;
-    }
-    .mb#{$screen-name}-#{$index}-n {
-      margin-bottom: -$size !important;
-    }
-
     .p#{$screen-name}-#{$index} {
       padding: $size !important;
     }
@@ -111,7 +106,6 @@
   }
 }
 
-// Global classes
 @mixin project-classes($screen-name: '') {
   .d#{$screen-name}-b {
     display: block !important;
@@ -139,8 +133,14 @@
   .fd#{$screen-name}-c {
     flex-direction: column !important;
   }
+  .fd#{$screen-name}-cr {
+    flex-direction: column-reverse !important;
+  }
   .fd#{$screen-name}-r {
     flex-direction: row !important;
+  }
+  .fd#{$screen-name}-rr {
+    flex-direction: row-reverse !important;
   }
 
   .fb#{$screen-name}-100 {
@@ -188,6 +188,9 @@
   }
   .as#{$screen-name}-c {
     align-self: center !important;
+  }
+  .as#{$screen-name}-b {
+    align-self: baseline !important;
   }
 
   .jc#{$screen-name}-fs {
@@ -251,6 +254,10 @@
     text-align: center !important;
   }
 
+  .tt#{$screen-name}-u {
+    text-transform: uppercase !important;
+  }
+
   .wb#{$screen-name}-bw {
     word-break: break-word !important;
   }
@@ -264,4 +271,9 @@
     word-break: normal !important;
   }
 }
-// stylelint-enable declaration-no-important
+
+/* stylelint-enable declaration-no-important */
+
+@mixin z-index($name) {
+  z-index: map.get($z-index, $name);
+}

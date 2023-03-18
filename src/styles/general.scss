@@ -1,9 +1,10 @@
-@import 'resources/variables';
-@import 'resources/mixins';
+@use 'resources/variables' as *;
+@use 'resources/mixins' as *;
 
 body {
   transition: all 0.15s ease-in;
-  font-family: 'Montserrat', sans-serif;
+  font-family: $font--main;
+  color: $color--black;
   line-height: 1;
   background-color: $color--bg;
 }
@@ -19,9 +20,34 @@ body {
   }
 }
 
-h1 {
-  font-size: 36px !important;
-  color: var(--color--text);
+.h1, h1 {
+  @include text-h1;
+}
+
+.h2, h2 {
+  @include text-h2;
+}
+
+.h3, h3 {
+  @include text-h3;
+}
+
+.h4, h4 {
+  @include text-h4;
+}
+
+.text {
+  &-lg {
+    @include text-lg;
+  }
+
+  &-md {
+    @include text-md;
+  }
+
+  &-sm {
+    @include text-sm;
+  }
 }
 
 //// Colors

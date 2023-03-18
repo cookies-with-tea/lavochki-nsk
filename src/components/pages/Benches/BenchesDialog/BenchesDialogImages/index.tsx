@@ -9,7 +9,6 @@ import {
 } from "@/components/pages/Benches/BenchesDialog/BenchesDialogImages/BenchesDialogImages.style";
 import CommonIcon from "@/components/Common/CommonIcon/CommonIcon";
 import {Box} from "@mui/material";
-import {prev} from "dom7";
 
 interface IProps {
     remoteImages?: string[]
