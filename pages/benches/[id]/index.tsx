@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useEffect, useState } from 'react'
+import { ReactElement, useContext, useEffect, useState } from 'react'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { dehydrate, QueryClient, useQuery } from 'react-query'
 import BenchService from '@/app/services/Bench/BenchService'
@@ -25,6 +25,8 @@ import { BenchDetailCommentReport }
 import { YMapsApi } from '@pbe/react-yandex-maps/typings/util/typing'
 import { MapStateOptionsType } from '@/app/types/map.type'
 import { MapContext } from '@/app/contexts/mapContext'
+import { scrollToAnchor } from '@/app/utils/scrollToTop'
+import { useComponentDidMount } from '@/app/hooks/useDidMount'
 
 const getBenches = async (): Promise<BenchesResponseType> => (
   await BenchService.getAll()
@@ -41,6 +43,8 @@ const getComments = async (id: string): Promise<CommentType[]> => (
 const BenchDetail: NextPage = (): ReactElement => {
   const router = useRouter()
 
+  const mapContext = useContext(MapContext)
+
   const benchId = typeof router.query?.id === 'string' ? router.query.id : ''
 
   const [isReportDialogVisible, setIsReportDialogVisible] = useState(false)
@@ -56,8 +60,6 @@ const BenchDetail: NextPage = (): ReactElement => {
     behaviors: ['default', 'scrollZoom'],
     controls: []
   })
-
-  const mapContext = useContext(MapContext)
 
   const { refetch: benchRefetch, isFetching: isBenchFetching }
     = useQuery<BenchType, ErrorType>(['get bench', benchId],
@@ -167,6 +169,16 @@ const BenchDetail: NextPage = (): ReactElement => {
       zoom: 18,
     })
   }, [])
+
+  useComponentDidMount(() => {
+    const asPath = (router.asPath as string).split('#')
+
+    if (asPath) {
+      scrollToAnchor(asPath[1])
+
+      history.replaceState({}, document.title, asPath[0])
+    }
+  })
 
   return (
     <>
