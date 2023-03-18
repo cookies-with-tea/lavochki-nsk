@@ -2,6 +2,7 @@ package users
 
 import (
 	"benches/internal/apperror"
+	"benches/internal/domain"
 	"benches/internal/dto"
 	"benches/internal/policy/users"
 	"benches/pkg/auth"
@@ -39,7 +40,7 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 // @Tags Users
 // @Produce json
 // @Param user body dto.CreateUser true "user info"
-// @Success 200
+// @Success 200 {object} domain.TokenCredentials
 // @Failure 400
 // @Router /api/v1/users [post]
 func (handler *Handler) registerUser(writer http.ResponseWriter, request *http.Request) error {
@@ -54,11 +55,14 @@ func (handler *Handler) registerUser(writer http.ResponseWriter, request *http.R
 		return apperror.NewAppError(err, "validation error", details)
 	}
 
-	token, refreshToken, err := handler.policy.LoginViaTelegram(request.Context(), user.ToDomain())
+	accessToken, refreshToken, err := handler.policy.LoginViaTelegram(request.Context(), user.ToDomain())
 	if err != nil {
 		return apperror.ErrIncorrectDataAuth
 	}
-	handler.ResponseJson(writer, map[string]string{"access": token, "refresh": refreshToken}, 200)
+	handler.ResponseJson(writer, domain.TokenCredentials{
+		Access:  accessToken,
+		Refresh: refreshToken,
+	}, 200)
 	return nil
 }
 
@@ -68,7 +72,7 @@ func (handler *Handler) registerUser(writer http.ResponseWriter, request *http.R
 // @Produce json
 // @Param Authorization header string true "Bearer"
 // @Param token body dto.RefreshToken true "token info"
-// @Success 200
+// @Success 200 {object} domain.TokenCredentials
 // @Failure 400
 // @Router /api/v1/users/refresh [post]
 func (handler *Handler) refreshToken(writer http.ResponseWriter, request *http.Request) error {
@@ -87,7 +91,10 @@ func (handler *Handler) refreshToken(writer http.ResponseWriter, request *http.R
 	if err != nil {
 		return apperror.ErrIncorrectDataToken
 	}
-	handler.ResponseJson(writer, map[string]string{"access": accessToken, "refresh": refreshToken}, 200)
+	handler.ResponseJson(writer, domain.TokenCredentials{
+		Access:  accessToken,
+		Refresh: refreshToken,
+	}, 200)
 	return nil
 }
 
