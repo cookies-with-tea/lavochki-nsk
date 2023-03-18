@@ -59,7 +59,7 @@ const BenchesDetail: FC<IProps> = ({ bench, visible, onClose, updateDialogVisibl
                                                     bench.images.map((image, index) => (
                                                         <StyledListImage key={index}>
                                                             <img
-                                                                src={typeof image !== "string" ? image?.url : image}
+                                                                src={image as string}
                                                                 loading={'lazy'}
                                                                 alt={''}
                                                             />

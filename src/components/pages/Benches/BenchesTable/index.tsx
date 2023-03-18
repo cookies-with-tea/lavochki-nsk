@@ -83,55 +83,49 @@ const BenchesTable: FC<IProps> = ({ benches, updateDialogVisibleToggle, detailBe
                         <TableCell align='left'>ID владельца</TableCell>
                     </TableRow>
                 </TableHead>
-                {
-                    benches
-                        ? (
-                            <TableBody>
-                                {
-                                    benches.map((bench) => {
-                                        const isItemSelected = isSelected(bench.id);
-                                        const labelId = `enhanced-table-checkbox-${bench.id}`;
+                <TableBody>
+                    {
+                        benches.map((bench) => {
+                            const isItemSelected = isSelected(bench.id);
+                            const labelId = `enhanced-table-checkbox-${bench.id}`;
 
-                                        return (
-                                            <TableRow
-                                                key={bench.id}
-                                                selected={isItemSelected}
-                                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                                                onClick={handleDetailBenchToggle.bind(null, bench.id)}
-                                            >
-                                                <TableCell padding="checkbox">
-                                                    <Checkbox
-                                                        color="primary"
-                                                        checked={isItemSelected}
-                                                        inputProps={{
-                                                            'aria-labelledby': labelId,
-                                                        }}
-                                                        onClick={(event) => handleRowSelect(event, bench.id)}
-                                                    />
-                                                </TableCell>
-                                                <TableCell>
-                                                    {
-                                                        isItemSelected ? <Button onClick={(event) => handleUpdateDialogOpen(event, bench.id)}>Изменить</Button> : bench.id
-                                                    }
-                                                </TableCell>
-                                                <TableCell>
-                                                    {
-                                                        isItemSelected
-                                                            ? <Button>Удалить</Button>
-                                                            :  `${bench.lat}, ${bench.lng}`
-                                                    }
-                                                </TableCell>
-                                                <TableCell>
-                                                    {bench.owner}
-                                                </TableCell>
-                                            </TableRow>
-                                        )
-                                    })
-                                }
-                            </TableBody>
-                        )
-                        : <div>Нет данных</div>
-                }
+                            return (
+                                <TableRow
+                                    key={bench.id}
+                                    selected={isItemSelected}
+                                    sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                                    onClick={handleDetailBenchToggle.bind(null, bench.id)}
+                                >
+                                    <TableCell padding="checkbox">
+                                        <Checkbox
+                                            color="primary"
+                                            checked={isItemSelected}
+                                            inputProps={{
+                                                'aria-labelledby': labelId,
+                                            }}
+                                            onClick={(event) => handleRowSelect(event, bench.id)}
+                                        />
+                                    </TableCell>
+                                    <TableCell>
+                                        {
+                                            isItemSelected ? <Button onClick={(event) => handleUpdateDialogOpen(event, bench.id)}>Изменить</Button> : bench.id
+                                        }
+                                    </TableCell>
+                                    <TableCell>
+                                        {
+                                            isItemSelected
+                                                ? <Button>Удалить</Button>
+                                                :  `${bench.lat}, ${bench.lng}`
+                                        }
+                                    </TableCell>
+                                    <TableCell>
+                                        {bench.owner}
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        })
+                    }
+                </TableBody>
             </Table>
         </div>
     )

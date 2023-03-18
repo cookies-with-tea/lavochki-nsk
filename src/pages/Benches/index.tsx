@@ -8,6 +8,8 @@ import {useToggle} from "@/hooks/useToggle";
 import BenchesDialogUpdate from "@/components/pages/Benches/BenchesDialog/BenchesDialogUpdate";
 import {Box, Button, Typography} from "@mui/material";
 import BenchesDetail from "@/components/pages/Benches/BenchesDetail";
+import BenchesDialogCreate from "@/components/pages/Benches/BenchesDialog/BenchesDialogCreate";
+import {CommonNoData} from "@/components/Common/CommonNoData/CommonNoData";
 
 const getBenches = async (): Promise<BenchesResponseType> => await BenchService.getAll()
 const getBenchById = async (id: string): Promise<BenchType> => await BenchService.getById(id)
@@ -18,6 +20,7 @@ const TheBenches = () => {
     const [id, setId] = useState('')
 
     const [isUpdateDialogVisible, setIsUpdateDialogVisible] = useToggle()
+    const [isCreateDialogVisible, setIsCreateDialogVisible] = useToggle()
     const [isDetailBenchVisible, setDetailBenchVisible] = useToggle()
 
     const benchesQuery = useQuery<BenchesResponseType, ErrorType>('get benches', getBenches, {
@@ -46,16 +49,23 @@ const TheBenches = () => {
     return (
         <Box className={'w-100'}>
             <Box className="d-f ai-c jc-sb">
-                <Typography variant={'h1'} component={'h1'}>Лавочки</Typography>
-                <Button color={'primary'}>Создать лавочку</Button>
+                <h1>Лавочки</h1>
+                <Button color={'primary'} onClick={setIsCreateDialogVisible}>Создать лавочку</Button>
             </Box>
 
-            <BenchesTable
-                benches={benches.items}
-                updateDialogVisibleToggle={setIsUpdateDialogVisible}
-                detailBenchDrawerVisible={setDetailBenchVisible}
-                getBenchById={handleGetBenchById}
-            />
+
+            {
+                benches && Boolean(benches.items.length)
+                     ? (
+                        <BenchesTable
+                            benches={benches.items}
+                            updateDialogVisibleToggle={setIsUpdateDialogVisible}
+                            detailBenchDrawerVisible={setDetailBenchVisible}
+                            getBenchById={handleGetBenchById}
+                        />
+                    ) : <CommonNoData title={'Нет лавочек'} />
+
+            }
 
             <BenchesDialogUpdate
                 bench={bench}
@@ -64,12 +74,15 @@ const TheBenches = () => {
                 onClose={setIsUpdateDialogVisible}
             />
 
+           <BenchesDialogCreate visible={isCreateDialogVisible} onClose={setIsCreateDialogVisible} updateTable={benchesQuery.refetch} />
+
            <BenchesDetail
                bench={bench}
                visible={isDetailBenchVisible}
                onClose={setDetailBenchVisible}
                updateDialogVisibleToggle={setIsUpdateDialogVisible}
            />
+
         </Box>
     );
 };

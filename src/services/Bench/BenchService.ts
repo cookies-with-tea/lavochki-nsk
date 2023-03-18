@@ -7,6 +7,14 @@ class BenchService extends AxiosService {
     super(config)
   }
 
+  public create = async (data: FormData): Promise<unknown> => {
+    return this.axiosCall<unknown>({
+      method: 'post',
+      url: '',
+      data,
+    })
+  }
+
   public getAll = async (): Promise<BenchesResponseType> => {
     return this.axiosCall<BenchesResponseType>({
       method: 'get',

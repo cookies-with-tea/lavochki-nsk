@@ -4,7 +4,7 @@ export type BenchType = {
     id: string
     lat: number
     lng: number
-    images: string[] | SlideType[]
+    images: (string | SlideType | File)[]
     owner: string
     is_active: boolean
     tags: BenchTagType[]

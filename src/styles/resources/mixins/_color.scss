@@ -1,0 +1,9 @@
+@mixin color($name, $color) {
+  .bg-#{$name} {
+    background-color: $color !important; // stylelint-disable-line declaration-no-important
+  }
+
+  .color-#{$name} {
+    color: $color !important; // stylelint-disable-line declaration-no-important
+  }
+}

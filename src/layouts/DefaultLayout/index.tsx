@@ -32,7 +32,6 @@ const DefaultLayout: FC<IProps> = ({ children }): ReactElement => {
                 { children }
             </div>
         </div>
-
     );
 };
 

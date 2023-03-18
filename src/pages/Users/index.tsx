@@ -4,6 +4,7 @@ import {ErrorType} from "@/types/common.type";
 import UsersTable from "@/components/pages/Users/UsersTable";
 import UserService from "@/services/User/UserService";
 import {UserMeType} from "@/types/user.type";
+import {CommonNoData} from "@/components/Common/CommonNoData/CommonNoData";
 
 const getAll = async () => await UserService.getAll()
 
@@ -18,7 +19,13 @@ const TheUsers = (): ReactElement => {
 
     return (
         <div className={'w-100'}>
-            <UsersTable users={users} />
+            <h1>Пользователи</h1>
+            {
+                users && Boolean(users.length)
+                    ? (
+                        <UsersTable users={users} />
+                    ) : <CommonNoData title={'Нет списка пользователей'} />
+            }
         </div>
     );
 };

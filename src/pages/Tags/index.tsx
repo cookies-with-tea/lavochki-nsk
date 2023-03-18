@@ -5,6 +5,7 @@ import CommentsModerationTable from "@/components/pages/ReportComments/ReportCom
 import {ErrorType} from "@/types/common.type";
 import TagService from "@/services/Tag/TagService";
 import TagsTable from "@/components/pages/Tags/TagsTable";
+import {CommonNoData} from "@/components/Common/CommonNoData/CommonNoData";
 
 const getTags = async () => await TagService.getAll()
 
@@ -19,7 +20,14 @@ const TheTags = (): ReactElement => {
 
     return (
         <div className={'w-100'}>
-            <TagsTable tags={tags} />
+            <h1>Теги</h1>
+            {
+                tags && Boolean(tags.length)
+                    ? (
+                        <TagsTable tags={tags} />
+                    ) : <CommonNoData title={'Нет комментариев на модерации'} />
+            }
+
         </div>
     );
 };

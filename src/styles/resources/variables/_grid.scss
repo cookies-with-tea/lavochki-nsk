@@ -1,0 +1,34 @@
+@import 'sizes';
+
+// breakpoints
+
+$breakpoint--sm: 800px;
+$breakpoint--md: 1366px;
+$breakpoint--lg: 1920px;
+
+$breakpoints: (
+  // мобилка
+  xs: '(max-width: #{$breakpoint--sm - 1px})',
+  // Планшеты
+  sm: '(min-width: #{$breakpoint--sm})',
+  // ноутбуки
+  md: '(min-width: #{$breakpoint--md})',
+  // полноразмерные экраны
+  lg: '(min-width: #{$breakpoint--lg})',
+);
+
+$breakpoints-with-max: (
+  xs: '(max-width: #{$breakpoint--sm - 1px})',
+  sm: '(min-width: #{$breakpoint--sm}) and (max-width: #{$breakpoint--md - 1px})',
+  md: '(min-width: #{$breakpoint--md}) and (max-width: #{$breakpoint--lg - 1px})',
+  lg: '(min-width: #{$breakpoint--lg})',
+);
+
+$breakpoints-only-max: (
+  xs: '(max-width: #{$breakpoint--sm - 1px})',
+  sm: '(max-width: #{$breakpoint--md - 1px})',
+  md: '(max-width: #{$breakpoint--lg - 1px})',
+  lg: '(min-width: #{$breakpoint--lg})',
+);
+
+$breakpoints-map: $breakpoints !default;

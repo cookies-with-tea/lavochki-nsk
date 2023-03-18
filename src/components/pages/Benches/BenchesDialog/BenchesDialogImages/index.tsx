@@ -11,47 +11,62 @@ import CommonIcon from "@/components/Common/CommonIcon/CommonIcon";
 import {Box} from "@mui/material";
 
 interface IProps {
-    images: SlideType[]
-    onImagesUpdate: (imageKey: string) => void
+    remoteImages?: string[]
+    onImagesLoad: (images: File[]) => void
+    onImageRemove: (index: number) => void
 }
 
-const BenchesDialogImages: FC<IProps> = ({ images, onImagesUpdate }): ReactElement => {
-    const [currentImages, setCurrentImages] = useState<SlideType[]>([])
+// 1. Записываем картинку в виде url для отображения
+// 2. Записываем картинку в file для отправки в formData
 
-    const setDefaultImages = (): void => {
-        setCurrentImages(images)
+const BenchesDialogImages: FC<IProps> = ({ remoteImages, onImagesLoad, onImageRemove }): ReactElement => {
+    const [imageURLs, setImageURLs] = useState<SlideType[]>([])
+    const [images, setImages] = useState<File[]>([])
+    const handleImageClear = (imageKey: string, index: number): void => {
+        setImageURLs(() => [...imageURLs.filter((imageURL) => imageURL.key !== imageKey)])
+
+        onImageRemove(index)
     }
 
-    const handleImageClose = (imageKey: string): void => {
-        onImagesUpdate(imageKey)
-    }
+    const changeFiles = (event: ChangeEvent<HTMLInputElement>): void => {
+        // Array.from(event.target.files) == Array.prototype.slice.call(event.target.files)
+        // const fileList: File[] = Array.prototype.slice.call(event.target.files)
+        if (event.target.files) {
+            const fileList: File[] = Array.from(event.target.files)
 
-    const uploadFile = (event: ChangeEvent<HTMLInputElement>): void => {
-        const fileReader = new FileReader()
-        const files = event.target.files
+            setImages([...fileList])
 
-        if (event.target && files) {
-            fileReader.readAsDataURL(files[0]);
-
-            const imageSrc = URL.createObjectURL(files[0])
-
-            fileReader.onload = () => {
-                setCurrentImages((prevState) => [
-                    {
-                        url: imageSrc,
-                        key: Date.now().toString()
-                    },
-                    ...prevState]
-                )
-            }
+            onImagesLoad(fileList)
         }
     }
 
     useEffect(() => {
-        if (images) {
-            setDefaultImages()
-        }
+        if (images.length < 1) return
+
+        images.forEach((image) => {
+            setImageURLs((prevState) => [
+                ...prevState,
+                {
+                    url: URL.createObjectURL(image),
+                    key: Math.random().toString(36).substring(2,7)
+                },
+            ])
+        })
     }, [images])
+
+    useEffect(() => {
+        if (remoteImages?.length) {
+
+            remoteImages.forEach((image) => {
+                setImageURLs((prevState) => [
+                    {
+                        url: image,
+                        key: Math.random().toString(36).substring(2,7)
+                    },
+                ])
+            })
+        }
+    }, [remoteImages])
 
     return (
         <Swiper
@@ -62,14 +77,14 @@ const BenchesDialogImages: FC<IProps> = ({ images, onImagesUpdate }): ReactEleme
             <StyledSlideAddImage>
                 <Box component="label" sx={{width: '100%', height: '100%'}}>
                     <div className={'plus'}></div>
-                    <input hidden accept="image/*" multiple type="file" onChange={uploadFile} />
+                    <input hidden accept="image/*" multiple type="file" onChange={changeFiles} />
                 </Box>
             </StyledSlideAddImage>
             {
-                currentImages && (
-                    currentImages.map((image) => (
+                imageURLs && imageURLs.length > 0 ? (
+                    imageURLs.map((image, index) => image && (
                         <StyledSlide key={image.key}>
-                            <StyledClose onClick={handleImageClose.bind(null, image.key)}>
+                            <StyledClose onClick={handleImageClear.bind(null, image.key, index)}>
                                 <CommonIcon name={'close'} width={12} height={12} />
                             </StyledClose>
                             <StyledRefresh>
@@ -78,7 +93,7 @@ const BenchesDialogImages: FC<IProps> = ({ images, onImagesUpdate }): ReactEleme
                             <img src={image.url} alt="" />
                         </StyledSlide>
                     ))
-                )
+                ) : null
             }
         </Swiper>
     );

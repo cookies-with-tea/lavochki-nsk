@@ -8,6 +8,7 @@ import {BenchesResponseType} from "@/types/bench.type";
 import BenchService from "@/services/Bench/BenchService";
 import {useQuery} from "react-query";
 import {ErrorType} from "@/types/common.type";
+import {CommonNoData} from "@/components/Common/CommonNoData/CommonNoData";
 
 const getModerationBenches = async () => await BenchService.getModerationAll()
 
@@ -51,11 +52,17 @@ const BenchesModeration = () => {
 
     return (
         <div className={'w-100'}>
-            <BenchesModerationTable
-                benches={benches.items}
-                acceptDialogOpen={handleAcceptDialogReasonSet}
-                denyDialogOpen={handleDenyDialogReasonSet}
-            />
+            <h1>Лавочки на модерации</h1>
+            {
+                benches && Boolean(benches.items.length)
+                    ? (
+                        <BenchesModerationTable
+                            benches={benches.items}
+                            acceptDialogOpen={handleAcceptDialogReasonSet}
+                            denyDialogOpen={handleDenyDialogReasonSet}
+                     />
+                    ) : <CommonNoData title={'Нет лавочек на модерации'} />
+            }
 
             <BenchesModerationAcceptDialog
                 visible={isAcceptDialogOpen}
