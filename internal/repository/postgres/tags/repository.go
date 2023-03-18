@@ -9,14 +9,16 @@ import (
 )
 
 const (
-	scheme      = "public"
-	table       = "tags"
-	tableScheme = scheme + "." + table
+	scheme       = "public"
+	table        = "tags"
+	tableScheme  = scheme + "." + table
+	tableToBench = scheme + "." + "tags_benches"
 )
 
 type Repository interface {
 	All(ctx context.Context) ([]*domain.Tag, error)
 	Create(ctx context.Context, tag domain.Tag) error
+	CreateTagToBench(ctx context.Context, tagBench domain.TagBench) error
 }
 
 type repository struct {
@@ -90,5 +92,31 @@ func (repository *repository) Create(ctx context.Context, tag domain.Tag) error 
 	} else if exec.RowsAffected() == 0 || !exec.Insert() {
 		return execErr
 	}
+	return nil
+}
+
+// CreateTagToBench Создать связь между лавочкой и тегом
+func (repository *repository) CreateTagToBench(ctx context.Context, tagBench domain.TagBench) error {
+	createTagBenchModel := tagBenchModel{}
+	createTagBenchModel.FromDomain(tagBench)
+
+	modelMap, errToMap := createTagBenchModel.ToMap()
+	if errToMap != nil {
+		return errToMap
+	}
+
+	sql, args, errBuild := repository.queryBuilder.Insert(tableToBench).SetMap(modelMap).
+		PlaceholderFormat(squirrel.Dollar).ToSql()
+
+	if errBuild != nil {
+		return errBuild
+	}
+
+	if exec, execErr := repository.client.Exec(ctx, sql, args...); execErr != nil {
+		return execErr
+	} else if exec.RowsAffected() == 0 || !exec.Insert() {
+		return execErr
+	}
+
 	return nil
 }
