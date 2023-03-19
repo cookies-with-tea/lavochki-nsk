@@ -12,6 +12,7 @@ import (
 	"benches/pkg/api/sort"
 	"benches/pkg/maps"
 	"context"
+
 	"go.uber.org/zap"
 )
 
@@ -25,7 +26,8 @@ type Policy struct {
 }
 
 func NewPolicy(benchesService benchesService.Service, usersService usersService.Service,
-	notificationsService notificationsService.Service, tagsService tagsService.Service, geoCoder maps.GeoCoder, logger *zap.Logger) *Policy {
+	notificationsService notificationsService.Service,
+	tagsService tagsService.Service, geoCoder maps.GeoCoder, logger *zap.Logger) *Policy {
 	return &Policy{
 		benchesService:       benchesService,
 		usersService:         usersService,
@@ -36,7 +38,8 @@ func NewPolicy(benchesService benchesService.Service, usersService usersService.
 	}
 }
 
-func (policy *Policy) CreateBenchViaTelegram(ctx context.Context, userTelegramID int, byteImages [][]byte, bench domain.Bench) error {
+func (policy *Policy) CreateBenchViaTelegram(ctx context.Context, userTelegramID int,
+	byteImages [][]byte, bench domain.Bench) error {
 	// Получаем пользователя по Telegram ID
 	user, err := policy.usersService.ByTelegramID(ctx, userTelegramID)
 	if err != nil {
@@ -78,7 +81,6 @@ func (policy *Policy) CreateBenchViaTelegram(ctx context.Context, userTelegramID
 
 func (policy *Policy) GetListBenches(ctx context.Context, isActive bool, sortOptions *sort.Options,
 	paginateOptions *paginate.Options) (domain.BenchesList, error) {
-
 	all, errGetList := policy.benchesService.GetListBenches(ctx, isActive, sortOptions, paginateOptions)
 	if errGetList != nil {
 		return domain.BenchesList{}, errGetList
@@ -138,10 +140,28 @@ func (policy *Policy) CreateBench(ctx context.Context, ownerID string, byteImage
 		}
 	}
 
-	return nil, nil
+	return newBench, nil
 }
 
-func (policy *Policy) UpdateBench(ctx context.Context, id string, bench domain.Bench) error {
+func (policy *Policy) UpdateBench(ctx context.Context, id string, tags []string, bench domain.Bench) error {
+	// Удаляем старые теги
+	errDeleteTags := policy.tagsService.DeleteByBench(ctx, id)
+	if errDeleteTags != nil {
+		return errDeleteTags
+	}
+
+	// Добавляем новые
+	for _, tag := range tags {
+		errAddTag := policy.tagsService.AddTagToBench(ctx, domain.TagBench{
+			TagID:   tag,
+			BenchID: id,
+		})
+
+		if errAddTag != nil {
+			return errAddTag
+		}
+	}
+
 	return policy.benchesService.UpdateBench(ctx, id, bench)
 }
 
