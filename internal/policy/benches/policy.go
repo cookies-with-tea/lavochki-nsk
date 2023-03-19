@@ -89,10 +89,9 @@ func (policy *Policy) GetListBenches(ctx context.Context, isActive bool, sortOpt
 		return domain.BenchesList{}, errGetCount
 	}
 
-	countObjectsInPage := len(all)
 	countAllPages := 0
-	if countObjectsInPage != 0 {
-		countAllPages = paginateOptions.PerPage / countObjectsInPage
+	if count != 0 {
+		countAllPages = count / paginateOptions.PerPage
 	}
 	list := domain.NewBenchesList(all, count, len(all), countAllPages)
 
