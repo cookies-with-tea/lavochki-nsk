@@ -23,3 +23,7 @@
   $ go get -u github.com/radovskyb/watcher
   $ watcher -cmd="go run ./cmd/initiator/main.go" -ignore "./migrations,./docs,./.idea" -pipe=true
   ```
+- Запустить linter'ы
+  ```console
+  $ golangci-lint run --config=./.golangci.yml
+  ```
