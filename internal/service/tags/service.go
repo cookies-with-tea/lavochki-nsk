@@ -4,6 +4,7 @@ import (
 	"benches/internal/domain"
 	"benches/internal/repository/postgres/tags"
 	"context"
+
 	"go.uber.org/zap"
 )
 
@@ -11,6 +12,7 @@ type Service interface {
 	GetAllTags(ctx context.Context) ([]*domain.Tag, error)
 	CreateTag(ctx context.Context, tag domain.Tag) error
 	AddTagToBench(ctx context.Context, tagBench domain.TagBench) error
+	DeleteByBench(ctx context.Context, benchID string) error
 }
 
 type service struct {
@@ -40,6 +42,25 @@ func (service *service) CreateTag(ctx context.Context, tag domain.Tag) error {
 	return nil
 }
 
+// AddTagToBench Удаление тега к лавочке.
 func (service *service) AddTagToBench(ctx context.Context, tagBench domain.TagBench) error {
-	return service.db.CreateTagToBench(ctx, tagBench)
+	errCreateTag := service.db.CreateTagToBench(ctx, tagBench)
+	if errCreateTag != nil {
+		service.log.Error("failed create tag to bench", zap.String("bench id", tagBench.BenchID),
+			zap.String("tag id", tagBench.TagID), zap.Error(errCreateTag))
+		return errCreateTag
+	}
+
+	return nil
+}
+
+// DeleteByBench Удаление тегов по лавочки.
+func (service *service) DeleteByBench(ctx context.Context, benchID string) error {
+	// Удаляем теги, которые привязаны к данному пользователю
+	errDelete := service.db.DeleteByBench(ctx, benchID)
+	if errDelete != nil {
+		service.log.Error("failed delete all tags", zap.String("bench id", benchID), zap.Error(errDelete))
+		return errDelete
+	}
+	return nil
 }
