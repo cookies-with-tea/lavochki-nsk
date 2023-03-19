@@ -3,6 +3,7 @@ package notifications
 import (
 	"benches/internal/notifications"
 	"context"
+
 	"go.uber.org/zap"
 )
 

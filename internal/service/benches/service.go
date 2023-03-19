@@ -11,6 +11,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+
 	"github.com/jackc/pgx/v5"
 	"github.com/oklog/ulid/v2"
 	"go.uber.org/zap"
@@ -40,7 +41,6 @@ func NewService(db benches.Repository, storage *storage.Storage, log *zap.Logger
 
 func (service *service) GetListBenches(ctx context.Context, isActive bool, sortOptions *sort.Options,
 	paginateOptions *paginate.Options) ([]*domain.Bench, error) {
-
 	var optionsForSort model.SortOptions
 	var optionsForPaginate model.PaginateOptions
 

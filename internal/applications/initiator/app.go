@@ -36,6 +36,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net"
+	"net/http"
+	"time"
+
 	"github.com/go-redis/redis/v9"
 	"github.com/gorilla/mux"
 	"github.com/minio/minio-go/v7"
@@ -44,9 +48,6 @@ import (
 	httpSwagger "github.com/swaggo/http-swagger"
 	"github.com/uptrace/bun"
 	"go.uber.org/zap"
-	"net"
-	"net/http"
-	"time"
 )
 
 type App struct {

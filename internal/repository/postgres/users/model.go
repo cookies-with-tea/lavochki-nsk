@@ -2,6 +2,7 @@ package users
 
 import (
 	"benches/internal/domain"
+
 	"github.com/mitchellh/mapstructure"
 )
 

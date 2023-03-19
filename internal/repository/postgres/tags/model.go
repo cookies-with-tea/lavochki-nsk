@@ -2,6 +2,7 @@ package tags
 
 import (
 	"benches/internal/domain"
+
 	"github.com/mitchellh/mapstructure"
 )
 
@@ -23,7 +24,6 @@ func (tag *tagModel) FromDomain(tagDomain domain.Tag) {
 func (tagBench *tagBenchModel) FromDomain(tagBenchDomain domain.TagBench) {
 	tagBench.TagID = tagBenchDomain.TagID
 	tagBench.BenchID = tagBenchDomain.BenchID
-
 }
 
 func (tagBench *tagBenchModel) ToMap() (map[string]interface{}, error) {

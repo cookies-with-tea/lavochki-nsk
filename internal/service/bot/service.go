@@ -6,8 +6,9 @@ import (
 	redisStorage "benches/internal/storage/redis"
 	"benches/pkg/auth"
 	"context"
-	"go.uber.org/zap"
 	"time"
+
+	"go.uber.org/zap"
 )
 
 type Service interface {
@@ -34,7 +35,7 @@ func NewService(login, password string, log *zap.Logger, tokenManager *auth.Mana
 	}
 }
 
-// AuthorizationBot Сервис для авторизации бота
+// AuthorizationBot Сервис для авторизации бота.
 func (service *service) AuthorizationBot(ctx context.Context, bot domain.Bot) (string, string, error) {
 	if service.login != bot.Login || service.password != bot.Password {
 		return "", "", apperror.ErrNotEnoughRights

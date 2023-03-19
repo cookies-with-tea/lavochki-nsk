@@ -13,7 +13,7 @@ func (b *baseHandler) ResponseErrorJson(w http.ResponseWriter, error string, cod
 	w.Header().Set("X-Content-Type-Options", "nosniff")
 	w.WriteHeader(code)
 	if error != "" {
-		w.Write([]byte(`{"error":"` + error + `"}`)) // nolint: errcheck
+		w.Write([]byte(`{"error":"` + error + `"}`)) //nolint:errcheck
 	}
 	return
 }
@@ -28,7 +28,7 @@ func (b *baseHandler) ResponseJson(w http.ResponseWriter, body interface{}, code
 			b.ResponseErrorJson(w, "", http.StatusInternalServerError)
 			return
 		}
-		w.Write(jsonBody) // nolint: errcheck
+		w.Write(jsonBody) //nolint:errcheck
 	}
 	return
 }

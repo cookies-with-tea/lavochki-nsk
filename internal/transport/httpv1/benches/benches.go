@@ -10,10 +10,11 @@ import (
 	"benches/pkg/auth"
 	"bytes"
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"io"
 	"net/http"
 	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
 type Handler struct {
@@ -245,7 +246,7 @@ func (handler *Handler) updateBench(writer http.ResponseWriter, request *http.Re
 
 	idBench := mux.Vars(request)["id"]
 
-	errUpdate := handler.policy.UpdateBench(request.Context(), idBench, bench.ToDomain())
+	errUpdate := handler.policy.UpdateBench(request.Context(), idBench, bench.Tags, bench.ToDomain())
 	if errUpdate != nil {
 		return errUpdate
 	}

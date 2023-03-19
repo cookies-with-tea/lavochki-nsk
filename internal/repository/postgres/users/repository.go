@@ -4,6 +4,7 @@ import (
 	"benches/internal/domain"
 	"benches/internal/repository/postgres"
 	"context"
+
 	"github.com/Masterminds/squirrel"
 	"github.com/oklog/ulid/v2"
 )

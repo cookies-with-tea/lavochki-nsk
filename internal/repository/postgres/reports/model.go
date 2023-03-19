@@ -2,6 +2,7 @@ package reports
 
 import (
 	"benches/internal/domain"
+
 	"github.com/mitchellh/mapstructure"
 )
 
