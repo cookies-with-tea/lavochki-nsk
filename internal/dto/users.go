@@ -2,6 +2,7 @@ package dto
 
 import (
 	"benches/internal/domain"
+
 	validation "github.com/go-ozzo/ozzo-validation"
 )
 

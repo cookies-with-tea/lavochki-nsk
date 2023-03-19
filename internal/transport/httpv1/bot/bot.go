@@ -5,8 +5,9 @@ import (
 	"benches/internal/dto"
 	botPolicy "benches/internal/policy/bot"
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 type Handler struct {

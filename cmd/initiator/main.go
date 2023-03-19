@@ -15,7 +15,7 @@ func main() {
 	if err != nil {
 		fmt.Errorf("failed to create logger: %v", err)
 	}
-	defer logger.Sync() // nolint:errcheck
+	defer logger.Sync() //nolint:errcheck
 	appLogger := logging.NewLogger(logger, "benches")
 	logger.Info("config initializing")
 	cfg := config.GetConfig()

@@ -8,9 +8,10 @@ import (
 	"benches/pkg/auth"
 	"encoding/json"
 	"errors"
+	"net/http"
+
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v5"
-	"net/http"
 )
 
 type Handler struct {

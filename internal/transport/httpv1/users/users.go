@@ -7,8 +7,9 @@ import (
 	"benches/internal/policy/users"
 	"benches/pkg/auth"
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"net/http"
+
+	"github.com/gorilla/mux"
 
 	_ "benches/internal/domain"
 )

@@ -3,6 +3,7 @@ package benches
 import (
 	"benches/internal/domain"
 	"database/sql"
+
 	"github.com/mitchellh/mapstructure"
 )
 

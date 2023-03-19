@@ -4,6 +4,7 @@ import (
 	"benches/internal/domain"
 	"benches/internal/repository/postgres"
 	"context"
+
 	"github.com/Masterminds/squirrel"
 	"github.com/oklog/ulid/v2"
 )
@@ -32,7 +33,7 @@ func NewReportsRepository(client postgres.Client) Repository {
 	}
 }
 
-// All Получение всех жалоб на комментарии
+// All Получение всех жалоб на комментарии.
 func (repository *reportsRepository) All(ctx context.Context, isActive bool) ([]*domain.CommentReport, error) {
 	query := repository.queryBuilder.Select("id").
 		Columns("cause", "comment_id", "user_id", "is_active").

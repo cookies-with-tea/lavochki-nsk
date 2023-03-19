@@ -5,8 +5,9 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"go.uber.org/zap"
 	"net/http"
+
+	"go.uber.org/zap"
 )
 
 type Service interface {

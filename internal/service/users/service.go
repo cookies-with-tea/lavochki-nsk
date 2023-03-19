@@ -9,9 +9,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
+
 	"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"
-	"time"
 )
 
 type Service interface {

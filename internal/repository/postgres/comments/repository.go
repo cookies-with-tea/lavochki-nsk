@@ -4,6 +4,7 @@ import (
 	"benches/internal/domain"
 	"benches/internal/repository/postgres"
 	"context"
+
 	"github.com/Masterminds/squirrel"
 	"github.com/oklog/ulid/v2"
 )
@@ -35,7 +36,7 @@ func NewCommentsRepository(client postgres.Client) Repository {
 	}
 }
 
-// ByBenchID Получение всех комментариев первого уровня по ID лавочки
+// ByBenchID Получение всех комментариев первого уровня по ID лавочки.
 func (repository *repository) ByBenchID(ctx context.Context, id string) ([]*domain.Comment, error) {
 	query := repository.queryBuilder.Select("id").
 		Columns("bench_id", "parent_id", "author_id", "content").
@@ -72,7 +73,7 @@ func (repository *repository) ByBenchID(ctx context.Context, id string) ([]*doma
 	return list, nil
 }
 
-// ByParentID Получение всех комментариев по ID родители
+// ByParentID Получение всех комментариев по ID родители.
 func (repository *repository) ByParentID(ctx context.Context, id string) ([]*domain.Comment, error) {
 	query := repository.queryBuilder.Select("id").
 		Columns("bench_id", "parent_id", "author_id", "content").
@@ -110,7 +111,7 @@ func (repository *repository) ByParentID(ctx context.Context, id string) ([]*dom
 	return list, nil
 }
 
-// ByID Получение комментария по ID
+// ByID Получение комментария по ID.
 func (repository *repository) ByID(ctx context.Context, id string) (*domain.Comment, error) {
 	sql, args, errToSql := repository.queryBuilder.Select("id").
 		Columns("bench_id", "parent_id", "author_id", "content").
@@ -138,7 +139,7 @@ func (repository *repository) ByID(ctx context.Context, id string) (*domain.Comm
 	return &comment, nil
 }
 
-// Create Создание комментария
+// Create Создание комментария.
 func (repository *repository) Create(ctx context.Context, comment domain.Comment) error {
 	createCommentModel := commentModel{}
 	createCommentModel.FromDomain(comment)
@@ -164,7 +165,7 @@ func (repository *repository) Create(ctx context.Context, comment domain.Comment
 	return nil
 }
 
-// Update Обновление комментария
+// Update Обновление комментария.
 func (repository *repository) Update(ctx context.Context, id string, comment domain.Comment) error {
 	updateCommentModel := commentModel{}
 	updateCommentModel.FromDomain(comment)
@@ -192,7 +193,7 @@ func (repository *repository) Update(ctx context.Context, id string, comment dom
 	return nil
 }
 
-// Delete Удаление комментария
+// Delete Удаление комментария.
 func (repository *repository) Delete(ctx context.Context, id string) error {
 	sql, args, errBuild := repository.queryBuilder.
 		Delete(tableScheme).

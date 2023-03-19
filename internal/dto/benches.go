@@ -2,14 +2,16 @@ package dto
 
 import (
 	"benches/internal/domain"
-	validation "github.com/go-ozzo/ozzo-validation"
 	"strconv"
+
+	validation "github.com/go-ozzo/ozzo-validation"
 )
 
 type CreateBench struct {
 	Lat    float64  `json:"lat,string"`
 	Lng    float64  `json:"lng,string"`
 	Images [][]byte `json:"images"`
+	Tags   []string `json:"tags"`
 }
 
 type CreateBenchViaTelegram struct {
@@ -20,8 +22,9 @@ type CreateBenchViaTelegram struct {
 }
 
 type UpdateBench struct {
-	Lat float64 `json:"lat"`
-	Lng float64 `json:"lng"`
+	Lat  float64  `json:"lat"`
+	Lng  float64  `json:"lng"`
+	Tags []string `json:"tags"`
 }
 
 type DecisionBench struct {
