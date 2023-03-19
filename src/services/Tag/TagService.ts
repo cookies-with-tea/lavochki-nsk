@@ -7,6 +7,16 @@ class TagService extends AxiosService {
     super(config)
   }
 
+  public create = (title: string): Promise<unknown> => {
+    return this.axiosCall<unknown>({
+      method: 'post',
+      url: '',
+      data: {
+        title
+      }
+    })
+  }
+
   public getAll(): Promise<BenchTagType[]> {
     return this.axiosCall<BenchTagType[]>({
       method: 'get',
