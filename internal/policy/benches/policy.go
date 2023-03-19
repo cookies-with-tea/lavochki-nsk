@@ -115,7 +115,7 @@ func (policy *Policy) CreateBench(ctx context.Context, ownerID string, byteImage
 	}
 
 	// Устанавливаем улицу
-	if address.Street != "" {
+	if address != nil && address.Street != "" {
 		bench.Street = address.Street
 	}
 
