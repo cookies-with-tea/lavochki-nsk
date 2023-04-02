@@ -20,6 +20,8 @@ type Config struct {
 			Email    string `env:"ADMIN_EMAIL" env-default:"admin"`
 			Password string `env:"ADMIN_PWD" env-default:"admin"`
 		}
+		LifetimeAccessTokenMinutes  int `env:"LIFETIME_ACCESS_TOKEN_MINUTES" env-default:"15"`
+		LifetimeRefreshTokenMinutes int `env:"LIFETIME_REFRESH_TOKEN_MINUTES" env-default:"30"`
 	}
 	PostgreSQL struct {
 		Username string `env:"POSTGRES_USER" env-required:"true"`
