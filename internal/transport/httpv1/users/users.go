@@ -70,6 +70,15 @@ func (handler *Handler) registerUser(writer http.ResponseWriter, request *http.R
 	return nil
 }
 
+// AuthorizationAdmin
+// @Summary Authorization Admin
+// @Tags Users
+// @Produce json
+// @Param user body dto.CreateUser true "user info"
+// @Success 200 {object} domain.TokenCredentials
+// @Failure 400
+// @Failure 403
+// @Router /api/v1/users/admin [post]
 func (handler *Handler) authorizationAdmin(writer http.ResponseWriter, request *http.Request) error {
 	var user dto.CreateUser
 	if err := json.NewDecoder(request.Body).Decode(&user); err != nil {
