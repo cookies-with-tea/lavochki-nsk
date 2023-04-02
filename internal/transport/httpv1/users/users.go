@@ -27,6 +27,9 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 	router.HandleFunc("/api/v1/users", apperror.Middleware(handler.registerUser)).Methods("POST")
 	router.HandleFunc("/api/v1/users/refresh", apperror.Middleware(handler.refreshToken))
 
+	// Отдельная авторизация для администратора
+	router.HandleFunc("/api/v1/users/admin", apperror.Middleware(handler.authorizationAdmin)).Methods("POST")
+
 	meUsersRouter := router.NewRoute().Subrouter()
 	meUsersRouter.Use(authManager.JWTMiddleware)
 	meUsersRouter.HandleFunc("/api/v1/users/me", apperror.Middleware(handler.me))
@@ -34,9 +37,6 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 	adminPanelRouter := router.NewRoute().Subrouter()
 	adminPanelRouter.Use(authManager.JWTRoleMiddleware("admin"))
 	adminPanelRouter.HandleFunc("/api/v1/users", apperror.Middleware(handler.listAllUsers)).Methods("GET")
-
-	// Отдельная авторизация только для администратора
-	adminPanelRouter.HandleFunc("/api/v1/users/admin", apperror.Middleware(handler.registerUser)).Methods("GET")
 }
 
 // RegisterUser
@@ -63,6 +63,30 @@ func (handler *Handler) registerUser(writer http.ResponseWriter, request *http.R
 	if err != nil {
 		return apperror.ErrIncorrectDataAuth
 	}
+	handler.ResponseJson(writer, domain.TokenCredentials{
+		Access:  accessToken,
+		Refresh: refreshToken,
+	}, 200)
+	return nil
+}
+
+func (handler *Handler) authorizationAdmin(writer http.ResponseWriter, request *http.Request) error {
+	var user dto.CreateUser
+	if err := json.NewDecoder(request.Body).Decode(&user); err != nil {
+		return apperror.ErrIncorrectDataAuth
+	}
+
+	// Валидация
+	if err := user.Validate(); err != nil {
+		details, _ := json.Marshal(err)
+		return apperror.NewAppError(err, "validation error", details)
+	}
+
+	accessToken, refreshToken, err := handler.policy.LoginViaTelegramByAdmin(request.Context(), user.ToDomain())
+	if err != nil {
+		return apperror.ErrIncorrectDataAuth
+	}
+
 	handler.ResponseJson(writer, domain.TokenCredentials{
 		Access:  accessToken,
 		Refresh: refreshToken,
