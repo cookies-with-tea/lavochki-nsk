@@ -32,6 +32,10 @@ func (policy *Policy) LoginViaTelegramByAdmin(ctx context.Context, telegramUser 
 		return "", "", apperror.ErrNotEnoughRights
 	}
 
+	if errGetByTelegramID != nil {
+		return "", "", errGetByTelegramID
+	}
+
 	return policy.usersService.LoginViaTelegram(ctx, telegramUser, user)
 }
 
