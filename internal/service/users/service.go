@@ -1,6 +1,7 @@
 package users
 
 import (
+	"benches/internal/apperror"
 	"benches/internal/domain"
 	"benches/internal/repository/postgres/users"
 	redisStorage "benches/internal/storage/redis"
@@ -9,7 +10,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/jackc/pgx/v5"
 	"time"
 
 	"go.uber.org/zap"
@@ -25,15 +25,30 @@ type Service interface {
 }
 
 type service struct {
-	db           users.Repository
-	log          *zap.Logger
-	telegram     *telegram.Manager
-	tokenManager *auth.Manager
-	redisStorage redisStorage.Storage
+	db            users.Repository
+	log           *zap.Logger
+	telegram      *telegram.Manager
+	tokenManager  *auth.Manager
+	tokenLifetime domain.TokenLifetime
+	redisStorage  redisStorage.Storage
 }
 
-func NewService(db users.Repository, redisStorage redisStorage.Storage, tokenManager *auth.Manager, telegram *telegram.Manager, log *zap.Logger) Service {
-	return &service{db: db, redisStorage: redisStorage, tokenManager: tokenManager, telegram: telegram, log: log}
+func NewService(
+	db users.Repository,
+	redisStorage redisStorage.Storage,
+	tokenManager *auth.Manager,
+	telegram *telegram.Manager,
+	tokenLifetime domain.TokenLifetime,
+	log *zap.Logger,
+) Service {
+	return &service{
+		db:            db,
+		redisStorage:  redisStorage,
+		tokenManager:  tokenManager,
+		telegram:      telegram,
+		tokenLifetime: tokenLifetime,
+		log:           log,
+	}
 }
 
 func (service *service) LoginViaTelegram(ctx context.Context, telegramUser domain.TelegramUser, dbUser *domain.User) (string, string, error) {
@@ -50,17 +65,16 @@ func (service *service) LoginViaTelegram(ctx context.Context, telegramUser domai
 		return "", "", errors.New("not is auth")
 	}
 
-	return service.GenerateTokens(ctx, dbUser, 60*time.Minute, 60*time.Minute)
+	return service.GenerateTokens(ctx, dbUser, service.tokenLifetime.Access, service.tokenLifetime.Refresh)
 }
 
 func (service *service) GetOrCreate(ctx context.Context, userDomain domain.User) (*domain.User, error) {
-	_, err := service.db.ByTelegramID(ctx, userDomain.TelegramID)
+	dbUser, err := service.db.ByTelegramID(ctx, userDomain.TelegramID)
 
-	var dbUser *domain.User
 	if err != nil {
 		var errCreate error
 
-		if errors.Is(err, pgx.ErrNoRows) {
+		if errors.Is(err, apperror.ErrNotFound) {
 			// Создаём пользователя
 			dbUser, errCreate = service.db.Create(ctx, userDomain)
 
