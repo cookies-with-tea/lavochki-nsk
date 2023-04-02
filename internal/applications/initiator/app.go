@@ -3,6 +3,7 @@ package initiator
 import (
 	_ "benches/docs"
 	"benches/internal/config"
+	"benches/internal/domain"
 	benchesPolicy "benches/internal/policy/benches"
 	botPolicy "benches/internal/policy/bot"
 	commentsPolicy "benches/internal/policy/comments"
@@ -127,8 +128,14 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appUsersRedisStorage := redisStorage.NewRedisStorage(redisClient)
 	appUsersTelegramManager := telegram.NewTelegramManager(cfg.Telegram.Token)
 	appUsersRepository := usersRepository.NewUsersRepository(db)
-	appUsersService := usersService.NewService(appUsersRepository,
-		appUsersRedisStorage, authManager, appUsersTelegramManager, logger)
+	appUsersService := usersService.NewService(
+		appUsersRepository,
+		appUsersRedisStorage,
+		authManager,
+		appUsersTelegramManager,
+		domain.CreateTokenLifetime(cfg.AppConfig.LifetimeAccessTokenMinutes, cfg.AppConfig.LifetimeRefreshTokenMinutes),
+		logger,
+	)
 	appUsersPolicy := usersPolicy.NewPolicy(appUsersService)
 	appHandlerUsers := users.NewHandler(appUsersPolicy)
 	appHandlerUsers.Register(router, authManager)
