@@ -9,14 +9,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/jackc/pgx/v5"
 	"time"
 
-	"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"
 )
 
 type Service interface {
-	LoginViaTelegram(ctx context.Context, user domain.TelegramUser) (string, string, error)
+	LoginViaTelegram(ctx context.Context, user domain.TelegramUser, dbUser *domain.User) (string, string, error)
+	GetOrCreate(ctx context.Context, userDomain domain.User) (*domain.User, error)
 	RefreshToken(ctx context.Context, token string) (string, string, error)
 	GetUserByID(ctx context.Context, userID string) (*domain.User, error)
 	ByTelegramID(ctx context.Context, telegramID int) (*domain.User, error)
@@ -35,27 +36,7 @@ func NewService(db users.Repository, redisStorage redisStorage.Storage, tokenMan
 	return &service{db: db, redisStorage: redisStorage, tokenManager: tokenManager, telegram: telegram, log: log}
 }
 
-func (service *service) LoginViaTelegram(ctx context.Context, telegramUser domain.TelegramUser) (string, string, error) {
-	user := domain.User{
-		Username:   telegramUser.Username,
-		TelegramID: telegramUser.ID,
-	}
-
-	dbUser, err := service.db.ByTelegramID(ctx, telegramUser.ID)
-	if errors.Is(err, pgx.ErrNoRows) {
-		var errCreate error
-		dbUser, errCreate = service.db.Create(ctx, user)
-		if errCreate != nil {
-			service.log.Error("error create user in database", zap.Error(errCreate))
-			return "", "", errCreate
-		}
-	} else {
-		if err != nil {
-			service.log.Error("error check exception", zap.Error(err))
-			return "", "", err
-		}
-	}
-
+func (service *service) LoginViaTelegram(ctx context.Context, telegramUser domain.TelegramUser, dbUser *domain.User) (string, string, error) {
 	isTelegramAuth := service.telegram.CheckTelegramAuthorization(map[string]string{
 		"id":         fmt.Sprintf("%d", telegramUser.ID),
 		"first_name": fmt.Sprintf("%s", telegramUser.FirstName),
@@ -69,13 +50,42 @@ func (service *service) LoginViaTelegram(ctx context.Context, telegramUser domai
 		return "", "", errors.New("not is auth")
 	}
 
-	var token string
-	token, err = service.tokenManager.NewJWT(dbUser.ID, dbUser.Role, 60*time.Minute)
+	return service.GenerateTokens(ctx, dbUser, 60*time.Minute, 60*time.Minute)
+}
+
+func (service *service) GetOrCreate(ctx context.Context, userDomain domain.User) (*domain.User, error) {
+	_, err := service.db.ByTelegramID(ctx, userDomain.TelegramID)
+
+	var dbUser *domain.User
+	if err != nil {
+		var errCreate error
+
+		if errors.Is(err, pgx.ErrNoRows) {
+			// Создаём пользователя
+			dbUser, errCreate = service.db.Create(ctx, userDomain)
+
+			if errCreate != nil {
+				service.log.Error("error create user in database", zap.Error(errCreate))
+				return nil, errCreate
+			}
+		}
+
+		service.log.Error("error check exception", zap.Error(err))
+		return nil, err
+	}
+
+	return dbUser, nil
+}
+
+func (service *service) GenerateTokens(ctx context.Context, user *domain.User, accessTime, refreshTime time.Duration) (string, string, error) {
+	// Создаём access токен
+	token, err := service.tokenManager.NewJWT(user.ID, user.Role, accessTime)
 	if err != nil {
 		service.log.Error("error generate new access token", zap.Error(err))
 		return "", "", err
 	}
 
+	// Создаём refresh токен
 	var refreshToken string
 	refreshToken, err = service.tokenManager.NewRefreshToken()
 	if err != nil {
@@ -83,7 +93,8 @@ func (service *service) LoginViaTelegram(ctx context.Context, telegramUser domai
 		return "", "", err
 	}
 
-	err = service.redisStorage.WriteRefreshToken(ctx, refreshToken, dbUser.ID, 60*time.Minute)
+	// Записываем refresh токен в Redis и устанавливаем срок, которое данный токен будет находится в Redis
+	err = service.redisStorage.WriteRefreshToken(ctx, refreshToken, user.ID, refreshTime)
 	if err != nil {
 		service.log.Error("error write refresh token to redis", zap.Error(err))
 		return "", "", err

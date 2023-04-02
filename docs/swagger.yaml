@@ -682,6 +682,29 @@ paths:
       summary: User registration
       tags:
       - Users
+  /api/v1/users/admin:
+    post:
+      parameters:
+      - description: user info
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.TokenCredentials'
+        "400":
+          description: Bad Request
+        "403":
+          description: Forbidden
+      summary: Authorization Admin
+      tags:
+      - Users
   /api/v1/users/me:
     get:
       parameters:

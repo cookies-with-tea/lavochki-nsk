@@ -1,9 +1,12 @@
 package users
 
 import (
+	"benches/internal/apperror"
 	"benches/internal/domain"
 	"benches/internal/repository/postgres"
 	"context"
+	"errors"
+	"github.com/jackc/pgx/v5"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/oklog/ulid/v2"
@@ -54,6 +57,9 @@ func (repository *repository) ByTelegramID(ctx context.Context, telegramID int) 
 	)
 
 	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, apperror.ErrNotFound
+		}
 		return nil, err
 	}
 
