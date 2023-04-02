@@ -69,13 +69,18 @@ func (service *service) LoginViaTelegram(ctx context.Context, telegramUser domai
 		return "", "", errors.New("not is auth")
 	}
 
-	var token string
-	token, err = service.tokenManager.NewJWT(dbUser.ID, dbUser.Role, 60*time.Minute)
+	return service.GenerateTokens(ctx, dbUser, 60*time.Minute, 60*time.Minute)
+}
+
+func (service *service) GenerateTokens(ctx context.Context, user *domain.User, accessTime, refreshTime time.Duration) (string, string, error) {
+	// Создаём access токен
+	token, err := service.tokenManager.NewJWT(user.ID, user.Role, accessTime)
 	if err != nil {
 		service.log.Error("error generate new access token", zap.Error(err))
 		return "", "", err
 	}
 
+	// Создаём refresh токен
 	var refreshToken string
 	refreshToken, err = service.tokenManager.NewRefreshToken()
 	if err != nil {
@@ -83,7 +88,8 @@ func (service *service) LoginViaTelegram(ctx context.Context, telegramUser domai
 		return "", "", err
 	}
 
-	err = service.redisStorage.WriteRefreshToken(ctx, refreshToken, dbUser.ID, 60*time.Minute)
+	// Записываем refresh токен в Redis и устанавливаем срок, которое данный токен будет находится в Redis
+	err = service.redisStorage.WriteRefreshToken(ctx, refreshToken, user.ID, refreshTime)
 	if err != nil {
 		service.log.Error("error write refresh token to redis", zap.Error(err))
 		return "", "", err
