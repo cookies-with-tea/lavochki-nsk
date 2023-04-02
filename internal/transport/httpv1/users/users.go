@@ -34,6 +34,9 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 	adminPanelRouter := router.NewRoute().Subrouter()
 	adminPanelRouter.Use(authManager.JWTRoleMiddleware("admin"))
 	adminPanelRouter.HandleFunc("/api/v1/users", apperror.Middleware(handler.listAllUsers)).Methods("GET")
+
+	// Отдельная авторизация только для администратора
+	adminPanelRouter.HandleFunc("/api/v1/users/admin", apperror.Middleware(handler.registerUser)).Methods("GET")
 }
 
 // RegisterUser
