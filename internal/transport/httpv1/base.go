@@ -1,14 +1,14 @@
-package comments
+package httpv1
 
 import (
 	"encoding/json"
 	"net/http"
 )
 
-type baseHandler struct {
+type BaseHandler struct {
 }
 
-func (b *baseHandler) ResponseErrorJson(w http.ResponseWriter, error string, code int) {
+func (b *BaseHandler) ResponseErrorJson(w http.ResponseWriter, error string, code int) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("X-Content-Type-Options", "nosniff")
 	w.WriteHeader(code)
@@ -18,7 +18,7 @@ func (b *baseHandler) ResponseErrorJson(w http.ResponseWriter, error string, cod
 	return
 }
 
-func (b *baseHandler) ResponseJson(w http.ResponseWriter, body interface{}, code int) {
+func (b *BaseHandler) ResponseJson(w http.ResponseWriter, body interface{}, code int) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("X-Content-Type-Options", "nosniff")
 	w.WriteHeader(code)
