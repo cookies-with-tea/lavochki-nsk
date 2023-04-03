@@ -5,6 +5,7 @@ import (
 	_ "benches/internal/domain"
 	"benches/internal/dto"
 	commentsPolicy "benches/internal/policy/comments"
+	"benches/internal/transport/httpv1"
 	"benches/pkg/auth"
 	"encoding/json"
 	"errors"
@@ -15,7 +16,7 @@ import (
 )
 
 type Handler struct {
-	baseHandler
+	httpv1.BaseHandler
 	policy *commentsPolicy.Policy
 }
 

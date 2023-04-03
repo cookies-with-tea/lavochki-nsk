@@ -4,6 +4,7 @@ import (
 	"benches/internal/apperror"
 	"benches/internal/dto"
 	reportsPolicy "benches/internal/policy/reports"
+	"benches/internal/transport/httpv1"
 	"benches/pkg/auth"
 	"encoding/json"
 	"net/http"
@@ -14,7 +15,7 @@ import (
 )
 
 type Handler struct {
-	baseHandler
+	httpv1.BaseHandler
 	policy *reportsPolicy.Policy
 }
 

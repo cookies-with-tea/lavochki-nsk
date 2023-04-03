@@ -5,9 +5,11 @@ import (
 	_ "benches/internal/domain"
 	"benches/internal/dto"
 	"benches/internal/policy/benches"
+	"benches/internal/transport/httpv1"
 	"benches/pkg/api/paginate"
 	"benches/pkg/api/sort"
 	"benches/pkg/auth"
+
 	"bytes"
 	"encoding/json"
 	"io"
@@ -18,7 +20,7 @@ import (
 )
 
 type Handler struct {
-	baseHandler
+	httpv1.BaseHandler
 	policy *benches.Policy
 }
 
