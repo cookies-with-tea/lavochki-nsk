@@ -4,6 +4,7 @@ import (
 	"benches/internal/apperror"
 	"benches/internal/dto"
 	tagsPolicy "benches/internal/policy/tags"
+	"benches/internal/transport/httpv1"
 	"encoding/json"
 	"net/http"
 
@@ -13,7 +14,7 @@ import (
 )
 
 type Handler struct {
-	baseHandler
+	httpv1.BaseHandler
 	policy *tagsPolicy.Policy
 }
 

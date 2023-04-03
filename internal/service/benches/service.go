@@ -8,6 +8,7 @@ import (
 	storage "benches/internal/storage/minio"
 	"benches/pkg/api/paginate"
 	"benches/pkg/api/sort"
+	"benches/pkg/geo"
 	"context"
 	"errors"
 	"fmt"
@@ -15,6 +16,10 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/oklog/ulid/v2"
 	"go.uber.org/zap"
+)
+
+const (
+	DISTANCE = 10000
 )
 
 type Service interface {
@@ -27,6 +32,7 @@ type Service interface {
 	UpdateBench(ctx context.Context, id string, bench domain.Bench) error
 	DeleteBench(ctx context.Context, id string) error
 	CountAllBenches(ctx context.Context, isActive bool) (int, error)
+	GetNearestBenches(ctx context.Context, id string) ([]*domain.Bench, error)
 }
 
 type service struct {
@@ -143,6 +149,38 @@ func (service *service) GetBenchByID(ctx context.Context, id string) (*domain.Be
 		bench.Images[idxImage] = service.storage.GetImageURL(bench.Images[idxImage])
 	}
 	return bench, nil
+}
+
+func (service *service) GetNearestBenches(ctx context.Context, id string) ([]*domain.Bench, error) {
+	// Получаем лавочку по ID из базы данных
+	bench, err := service.db.ByID(ctx, id)
+	if err != nil {
+		service.log.Error("get bench by id", zap.Error(err))
+		return nil, err
+	}
+
+	// Высчитываем диапазон поиска остальных лавочек
+	lat, lng := geo.GetRange(bench.Lat, bench.Lng, DISTANCE)
+
+	latStart := bench.Lat - lat
+	latEnd := bench.Lat + lat
+
+	lngStart := bench.Lng - lng
+	lngEnd := bench.Lng + lng
+
+	// id передаётся, чтобы исключить данную лавочку из ближайших
+	all, errGetByRange := service.db.ByRange(ctx, latStart, latEnd, lngStart, lngEnd, []string{bench.ID})
+	if errGetByRange != nil {
+		service.log.Error("get benches by range", zap.Error(errGetByRange))
+		return nil, err
+	}
+
+	// Получаем картинки для этой лавочки из Minio
+	for idxImage := range bench.Images {
+		bench.Images[idxImage] = service.storage.GetImageURL(bench.Images[idxImage])
+	}
+
+	return all, nil
 }
 
 func (service *service) SaveImages(ctx context.Context, images [][]byte) ([]string, error) {

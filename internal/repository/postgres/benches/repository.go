@@ -1,10 +1,14 @@
 package benches
 
 import (
+	"benches/internal/apperror"
 	"benches/internal/domain"
 	"benches/internal/repository/model"
 	"benches/internal/repository/postgres"
 	"context"
+	"errors"
+	"github.com/jackc/pgx/v5"
+
 	"github.com/Masterminds/squirrel"
 	"github.com/oklog/ulid/v2"
 )
@@ -16,12 +20,14 @@ const (
 )
 
 type Repository interface {
-	All(ctx context.Context, isActive bool, sortOptions model.SortOptions, paginateOptions model.PaginateOptions) ([]*domain.Bench, error)
+	All(ctx context.Context, isActive bool,
+		sortOptions model.SortOptions, paginateOptions model.PaginateOptions) ([]*domain.Bench, error)
 	Count(ctx context.Context, isActive bool) (int, error)
 	ByID(ctx context.Context, id string) (*domain.Bench, error)
 	Create(ctx context.Context, bench domain.Bench) (*domain.Bench, error)
 	Update(ctx context.Context, id string, bench domain.Bench) error
 	Delete(ctx context.Context, id string) error
+	ByRange(ctx context.Context, latStart, latEnd, lngStart, lngEnd float64, extends []string) ([]*domain.Bench, error)
 }
 
 type repository struct {
@@ -51,7 +57,7 @@ func (repository *repository) All(ctx context.Context, isActive bool, sortOption
 		page := paginateOptions.GetPage()
 		perPage := paginateOptions.GetPerPage()
 
-		query = query.Limit(perPage).Offset(uint64((page - 1) * perPage))
+		query = query.Limit(perPage).Offset((page - 1) * perPage)
 	}
 
 	sql, args, err := query.ToSql()
@@ -127,6 +133,9 @@ func (repository *repository) ByID(ctx context.Context, id string) (*domain.Benc
 	)
 
 	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, apperror.ErrNotFound
+		}
 		return nil, err
 	}
 
@@ -215,4 +224,50 @@ func (repository *repository) Delete(ctx context.Context, id string) error {
 	}
 
 	return nil
+}
+
+func (repository *repository) ByRange(ctx context.Context, latStart, latEnd,
+	lngStart, lngEnd float64, extends []string) ([]*domain.Bench, error) {
+	sql, args, errBuild := repository.queryBuilder.
+		Select("id").
+		Columns("lat", "lng", "street", "is_active", "images", "owner_id").
+		From(tableScheme).
+		Where("lat BETWEEN ? AND ? AND lng BETWEEN ? AND ?",
+			latStart, latEnd, lngStart, lngEnd).
+		Where(squirrel.NotEq{"id": extends}).
+		ToSql()
+	if errBuild != nil {
+		return nil, errBuild
+	}
+
+	rows, errQuery := repository.client.Query(ctx, sql, args...)
+	if errQuery != nil {
+		if errors.Is(errQuery, pgx.ErrNoRows) {
+			return nil, apperror.ErrNotFound
+		}
+		return nil, errQuery
+	}
+	defer rows.Close()
+
+	list := make([]benchModel, 0)
+
+	var err error
+	for rows.Next() {
+		bench := benchModel{}
+		if err = rows.Scan(
+			&bench.ID,
+			&bench.Lat,
+			&bench.Lng,
+			&bench.Street,
+			&bench.IsActive,
+			&bench.Images,
+			&bench.OwnerID,
+		); err != nil {
+			return nil, err
+		}
+
+		list = append(list, bench)
+	}
+
+	return benchModelsToDomain(list), nil
 }

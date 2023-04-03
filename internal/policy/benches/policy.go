@@ -208,3 +208,7 @@ func (policy *Policy) GetBenchByID(ctx context.Context, id string) (*domain.Benc
 func (policy *Policy) DeleteBench(ctx context.Context, id string) error {
 	return policy.benchesService.DeleteBench(ctx, id)
 }
+
+func (policy *Policy) GetNearestBenches(ctx context.Context, benchID string) ([]*domain.Bench, error) {
+	return policy.benchesService.GetNearestBenches(ctx, benchID)
+}

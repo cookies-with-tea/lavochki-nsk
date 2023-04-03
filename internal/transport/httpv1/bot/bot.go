@@ -4,6 +4,7 @@ import (
 	"benches/internal/apperror"
 	"benches/internal/dto"
 	botPolicy "benches/internal/policy/bot"
+	"benches/internal/transport/httpv1"
 	"encoding/json"
 	"net/http"
 
@@ -11,7 +12,7 @@ import (
 )
 
 type Handler struct {
-	baseHandler
+	httpv1.BaseHandler
 	policy *botPolicy.Policy
 }
 

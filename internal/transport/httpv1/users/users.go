@@ -5,6 +5,7 @@ import (
 	"benches/internal/domain"
 	"benches/internal/dto"
 	"benches/internal/policy/users"
+	"benches/internal/transport/httpv1"
 	"benches/pkg/auth"
 	"encoding/json"
 	"net/http"
@@ -15,7 +16,7 @@ import (
 )
 
 type Handler struct {
-	baseHandler
+	httpv1.BaseHandler
 	policy *users.Policy
 }
 
