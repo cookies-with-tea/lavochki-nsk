@@ -7,7 +7,6 @@ import (
 	"benches/internal/repository/postgres"
 	"context"
 	"errors"
-	"fmt"
 	"github.com/jackc/pgx/v5"
 
 	"github.com/Masterminds/squirrel"
@@ -237,8 +236,6 @@ func (repository *repository) ByRange(ctx context.Context, latStart, latEnd,
 			latStart, latEnd, lngStart, lngEnd).
 		Where(squirrel.NotEq{"id": extends}).
 		ToSql()
-	fmt.Println(sql)
-	fmt.Println(args)
 	if errBuild != nil {
 		return nil, errBuild
 	}
