@@ -199,7 +199,7 @@ const docTemplate = `{
             }
         },
         "/api/v1/benches/nearest/{id}": {
-            "delete": {
+            "get": {
                 "description": "Get the nearest benches by bench",
                 "tags": [
                     "Benches"

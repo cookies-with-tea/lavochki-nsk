@@ -404,7 +404,7 @@ paths:
       tags:
       - Benches
   /api/v1/benches/nearest/{id}:
-    delete:
+    get:
       description: Get the nearest benches by bench
       parameters:
       - description: Bench ID
