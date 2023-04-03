@@ -9,7 +9,6 @@ import (
 	"benches/pkg/api/paginate"
 	"benches/pkg/api/sort"
 	"benches/pkg/auth"
-
 	"bytes"
 	"encoding/json"
 	"io"
@@ -30,6 +29,7 @@ func NewHandler(benches *benches.Policy) *Handler {
 
 func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) {
 	router.HandleFunc("/all", apperror.Middleware(handler.allListBenches)).Methods("GET")
+	router.HandleFunc("/nearest/{id}", apperror.Middleware(handler.nearestBenches)).Methods("GET")
 	router.HandleFunc("", paginate.Middleware(sort.Middleware(
 		apperror.Middleware(handler.listBenches), "id", sort.ASC), 1, 10)).Methods("GET")
 
@@ -338,5 +338,25 @@ func (handler *Handler) decisionBench(writer http.ResponseWriter, request *http.
 		return err
 	}
 	handler.ResponseJson(writer, map[string]string{"result": "okay"}, http.StatusAccepted)
+	return nil
+}
+
+// @Summary Get the nearest benches
+// @Description Get the nearest benches by bench
+// @Tags Benches
+// @Param id path string true "Bench ID"
+// @Success 200
+// @Failure 400 {object} apperror.AppError
+// @Failure 418
+// @Router /api/v1/benches/nearest/{id} [delete]
+func (handler *Handler) nearestBenches(writer http.ResponseWriter, request *http.Request) error {
+	idBench := mux.Vars(request)["id"]
+
+	all, errGetBenches := handler.policy.GetNearestBenches(request.Context(), idBench)
+	if errGetBenches != nil {
+		return errGetBenches
+	}
+
+	handler.ResponseJson(writer, all, http.StatusOK)
 	return nil
 }
