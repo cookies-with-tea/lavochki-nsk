@@ -348,7 +348,7 @@ func (handler *Handler) decisionBench(writer http.ResponseWriter, request *http.
 // @Success 200
 // @Failure 400 {object} apperror.AppError
 // @Failure 418
-// @Router /api/v1/benches/nearest/{id} [delete]
+// @Router /api/v1/benches/nearest/{id} [get]
 func (handler *Handler) nearestBenches(writer http.ResponseWriter, request *http.Request) error {
 	idBench := mux.Vars(request)["id"]
 
