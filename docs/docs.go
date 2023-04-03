@@ -198,6 +198,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/benches/nearest/{id}": {
+            "delete": {
+                "description": "Get the nearest benches by bench",
+                "tags": [
+                    "Benches"
+                ],
+                "summary": "Get the nearest benches",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bench ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apperror.AppError"
+                        }
+                    },
+                    "418": {
+                        "description": "I'm a teapot"
+                    }
+                }
+            }
+        },
         "/api/v1/benches/telegram": {
             "post": {
                 "produces": [
