@@ -1,0 +1,9 @@
+.gitignore
+
+/dist/
+/node_modules/
+public/
+*.css
+*.svg
+*.scss
+.md

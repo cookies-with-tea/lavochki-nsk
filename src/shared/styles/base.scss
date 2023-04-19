@@ -1,0 +1,97 @@
+@use "resources/variables" as *;
+@use "resources/mixins" as *;
+
+#root,
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: $font--main;
+  color: $color--dark;
+  line-height: 1;
+}
+
+.container {
+  max-width: 1820px;
+  position: relative;
+  margin-left: auto;
+  padding-left: 20px;
+
+  @media screen and (min-width: (2400px)) {
+    max-width: 80%;
+  }
+}
+
+.h1,
+h1 {
+  @include text-h1;
+}
+
+.h2,
+h2 {
+  @include text-h2;
+}
+
+.h3,
+h3 {
+  @include text-h3;
+}
+
+.h4,
+h4 {
+  @include text-h4;
+}
+
+.text {
+  &-lg {
+    @include text-lg;
+  }
+
+  &-md {
+    @include text-md;
+  }
+
+  &-sm {
+    @include text-sm;
+  }
+}
+
+// Colors
+@each $_class-name, $_color in $colors {
+  // @sample
+  // .bg-primary
+  // .color-primary
+  @include color($_class-name, $_color);
+}
+
+// Margins | Paddings
+@include sizes-classes;
+
+// Icons classes
+@include icon-classes;
+
+// Global classes
+@include project-classes;
+
+@include responsive(xs) {
+  @include sizes-classes("-xs");
+  @include project-classes("-xs");
+}
+
+@include responsive(sm) {
+  @include sizes-classes("-sm");
+  @include project-classes("-sm");
+}
+
+@include responsive(md) {
+  @include sizes-classes("-md");
+  @include project-classes("-md");
+}
+
+@include responsive(lg) {
+  @include sizes-classes("-lg");
+  @include project-classes("-lg");
+}

@@ -1,0 +1,28 @@
+// Dark theme
+$color--primary-dark: #f7d4a4;
+
+// Light theme
+$color--primary-light: #6ad7e5;
+
+// Base
+$color--white: #fff;
+$color--dark: #333;
+$color--success: #219653;
+$color--danger: #eb1313;
+$color--violet: #7879f1;
+$color--blue: #4759f7;
+$color--orange: #f88f2f;
+$color--yellow: #f4dc5a;
+
+$colors: (
+  primary-light: $color--primary-light,
+  primary-dark: $color--primary-dark,
+  white: $color--white,
+  dark: $color--dark,
+  success: $color--success,
+  danger: $color--danger,
+  violet: $color--violet,
+  blue: $color--blue,
+  orange: $color--orange,
+  yellow: $color--yellow,
+);
