@@ -12,7 +12,7 @@ import 'virtual:svg-icons-register'
 import '@/shared/styles/index.scss'
 
 import { App } from '@/components/core/App'
-import { Box, CssBaseline } from '@mui/material'
+import {  CssBaseline } from '@mui/material'
 
 const queryClientOptions: QueryClientConfig = {
   defaultOptions: {

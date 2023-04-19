@@ -11,11 +11,10 @@
     "build-only": "vite build",
     "eslint": "eslint . --ext .js,.tsx,.ts",
     "eslint:fix": "npm run eslint -- --fix",
-    "lint": "npm run eslint && npm run stylelint",
-    "lint:fix": "npm run eslint:fix && npm run stylelint:fix",
+    "lint": "npm run eslint",
+    "lint:fix": "npm run eslint:fix",
     "prettier": "prettier --check .",
-    "prettier:fix": "prettier --write .",
-    "type-check": "vue-tsc --noEmit --skipLibCheck"
+    "prettier:fix": "prettier --write ."
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
