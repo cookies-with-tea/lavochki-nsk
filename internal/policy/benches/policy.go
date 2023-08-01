@@ -1,9 +1,10 @@
 package benches
 
 import (
+	"context"
+
 	"benches/internal/apperror"
 	"benches/internal/domain"
-	"benches/internal/notifications"
 	benchesService "benches/internal/service/benches"
 	notificationsService "benches/internal/service/notifications"
 	tagsService "benches/internal/service/tags"
@@ -11,7 +12,6 @@ import (
 	"benches/pkg/api/paginate"
 	"benches/pkg/api/sort"
 	"benches/pkg/maps"
-	"context"
 
 	"go.uber.org/zap"
 )
@@ -185,11 +185,11 @@ func (policy *Policy) DecisionBench(ctx context.Context, benchID string, decisio
 	}
 
 	// Выбираем тип уведомления
-	var notification *notifications.TelegramNotification
+	var notification *domain.TelegramNotification
 	if decision {
-		notification = notifications.BenchSuccessfullyAccepted.ToNotification(user.TelegramID, bench.ID)
+		notification, _ = domain.BenchSuccessfullyAccepted.ToNotification(user.TelegramID, bench.ID)
 	} else {
-		notification = notifications.BenchDenied.ToNotification(user.TelegramID, bench.ID)
+		notification, _ = domain.BenchDenied.ToNotification(user.TelegramID, bench.ID)
 	}
 
 	// Отправляем уведомления в telegram

@@ -1,8 +1,9 @@
 package notifications
 
 import (
-	"benches/internal/notifications"
 	"context"
+
+	"benches/internal/domain"
 
 	"go.uber.org/zap"
 )
@@ -19,7 +20,7 @@ func NewServiceMock(log *zap.Logger, telegramNotificationURL string) *ServiceMoc
 	}
 }
 
-func (s *ServiceMock) SendNotificationInTelegram(ctx context.Context, notification *notifications.TelegramNotification) error {
+func (s *ServiceMock) SendNotificationInTelegram(ctx context.Context, notification *domain.TelegramNotification) error {
 	s.log.Info("Send message to telegram", zap.String("notification", notification.Message),
 		zap.Int("user", notification.UserID))
 	return nil
