@@ -1,14 +1,16 @@
 package users
 
 import (
+	"encoding/json"
+	"net/http"
+
 	"benches/internal/apperror"
 	"benches/internal/domain"
+	"benches/internal/domain/roles"
 	"benches/internal/dto"
 	"benches/internal/policy/users"
 	"benches/internal/transport/httpv1"
 	"benches/pkg/auth"
-	"encoding/json"
-	"net/http"
 
 	"github.com/gorilla/mux"
 
@@ -36,7 +38,7 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 	meUsersRouter.HandleFunc("/api/v1/users/me", apperror.Middleware(handler.me))
 
 	adminPanelRouter := router.NewRoute().Subrouter()
-	adminPanelRouter.Use(authManager.JWTRoleMiddleware("admin"))
+	adminPanelRouter.Use(authManager.JWTRoleMiddleware(roles.Admin))
 	adminPanelRouter.HandleFunc("/api/v1/users", apperror.Middleware(handler.listAllUsers)).Methods("GET")
 }
 

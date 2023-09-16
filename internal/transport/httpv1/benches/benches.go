@@ -1,19 +1,21 @@
 package benches
 
 import (
+	"bytes"
+	"encoding/json"
+	"io"
+	"net/http"
+	"strconv"
+
 	"benches/internal/apperror"
 	_ "benches/internal/domain"
+	"benches/internal/domain/roles"
 	"benches/internal/dto"
 	"benches/internal/policy/benches"
 	"benches/internal/transport/httpv1"
 	"benches/pkg/api/paginate"
 	"benches/pkg/api/sort"
 	"benches/pkg/auth"
-	"bytes"
-	"encoding/json"
-	"io"
-	"net/http"
-	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -40,7 +42,7 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 
 	// Роутер для функционала модерации
 	routerModeration := router.NewRoute().Subrouter()
-	routerModeration.Use(authManager.JWTRoleMiddleware("admin"))
+	routerModeration.Use(authManager.JWTRoleMiddleware(roles.Admin))
 	// Получение списка всех лавочек на модерации
 	routerModeration.HandleFunc("/moderation", paginate.Middleware(
 		sort.Middleware(apperror.Middleware(handler.listModerationBench), "id", sort.ASC), 1, 10)).Methods("GET")
