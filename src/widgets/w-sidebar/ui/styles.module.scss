@@ -1,0 +1,46 @@
+.w-sidebar {
+  min-width: 330px;
+  position: relative;
+  box-shadow: 5px 5px 20px 0 rgb(188 188 188 / 0.25);
+  background-color: var(--color-white);
+  margin-right: 20px;
+
+  &__item {
+    width: 330px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.15s ease-in-out;
+
+    &-link {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      padding: 14px 30px 13px;
+    }
+    
+    &-icon {
+      font-size: 20px;
+      margin-right: 20px;
+    }
+
+    &:hover {
+      background-color: var(--color-blue-20); 
+    }
+
+    &.active {
+      &::after {
+        content: '';
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 3px;
+        height: 100%;
+        position: absolute;
+        border-radius: 1.5px;
+        background-color: var(--color-blue-1);
+      }
+    }
+  }
+}

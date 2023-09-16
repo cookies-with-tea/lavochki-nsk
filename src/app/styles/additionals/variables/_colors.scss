@@ -1,0 +1,51 @@
+@use 'sass:color';
+
+$color--dark: #000;
+$color--black-1: #1F2024;
+$color--black-2: #333;
+$color--white: #fff;
+$color--white-1: #F4F5F5;
+$color--blue-1: #6AD7E5;
+$color--blue-1-dark: #35b3c4;
+$color--blue-20: #E1F7FA;
+$color--blue-3: #4759F7;
+$color--grey-1: #BFBFBF;
+$color--grey-2: #DCE3EB;
+$color--grey-3: #BFBFBF;
+$color--grey-4: #555;
+$color--grey-5: #666;
+$color--green-1: #57F82F;
+$color--green-2: #219653;
+$color--beige-1: #F7D4A4;
+$color--beige-2: #E59E6A;
+$color--orange: #F88F2F;
+$color--brown: #F88F2F;
+$color--red: #EB1313;
+$color--red-light: #EB5757;
+
+$gradient-blue-violet: linear-gradient(90deg, #4CDFE8 -0.58%, #7947F7 101.51%);
+
+$colors: (
+  dark: $color--dark,
+  black-1: $color--black-1,
+  black-2: $color--black-2,
+  white: $color--white,
+  white-1: $color--white-1,
+  blue-1: $color--blue-1,
+  blue-1-dark: $color--blue-1-dark,
+  blue-20: $color--blue-20,
+  blue-3: $color--blue-3,
+  grey-1: $color--grey-1,
+  grey-2: $color--grey-2,
+  grey-3: $color--grey-3,
+  grey-4: $color--grey-4,
+  grey-5: $color--grey-5,
+  green-1: $color--green-1,
+  green-2: $color--green-2,
+  beige-1: $color--beige-1,
+  beige-2: $color--beige-2,
+  orange-1: $color--orange,
+  brown-1: $color--brown,
+  red: $color--red,
+  red-light: $color--red-light,
+)

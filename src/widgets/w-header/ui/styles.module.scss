@@ -1,0 +1,63 @@
+.w-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 68px 0 48px;
+
+  &__notifications {
+    height: 37px;
+    font-size: 37px;
+    margin-right: 62px;
+
+    :global(.s-icon) {
+      font-size: 37px;
+    }
+
+    :global(.ant-badge-count) {
+      top: 3px;
+      left: 15px;
+      width: 16px;
+      height: 16px;
+      line-height: 1;
+      background-color: var(--color-blue-1);
+
+      :global(.ant-scroll-number-only) {
+        height: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+.header-profile {
+  display: flex;
+  align-items: center;
+
+  &__button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+
+    img {
+      border-radius: 50%; // TODO: Вынести в компонент картинки
+    }
+  }
+
+  &__text {
+    font-size: 20px;
+    line-height: 26px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    margin-right: 12px;
+  }
+}
+
+.header-search {
+  width: 100%;
+  display: flex;
+  margin-right: 64px;
+}

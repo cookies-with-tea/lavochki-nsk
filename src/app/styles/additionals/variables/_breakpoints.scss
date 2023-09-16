@@ -1,0 +1,25 @@
+$breakpoint--md: 768px;
+$breakpoint--lg: 1200px;
+$breakpoint--xl: 1440px;
+
+$breakpoints: (
+  md: '(min-width: #{$breakpoint--md})',
+  // планшет
+  lg: '(min-width: #{$breakpoint--lg})',
+  // ноутбук
+  xl: '(min-width: #{$breakpoint--xl})',
+  // полноразмерные экраны
+);
+
+$breakpoints-with-max: (
+  sm: '(max-width: #{$breakpoint--md - 1px})',
+  md: '(min-width: #{$breakpoint--md}) and (max-width: #{$breakpoint--lg - 1px})',
+  lg: '(min-width: #{$breakpoint--lg}) and (max-width: #{$breakpoint--xl - 1px})',
+  xl: '(min-width: #{$breakpoint--xl})',
+);
+
+$breakpoints-only-max: (
+  sm: '(max-width: #{$breakpoint--md - 1px})',
+  md: '(max-width: #{$breakpoint--lg - 1px})',
+  lg: '(max-width: #{$breakpoint--xl - 1px})',
+);

@@ -1,0 +1,65 @@
+.f-telegram-auth {
+
+  $root: &;
+
+  width: 62px;
+  height: 62px;
+  position: relative;
+  border: 2px solid transparent;
+  background: none;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+
+  &__text {
+    top: 50%;
+    right: 0;
+    position: absolute;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 18px;
+    text-transform: none;
+    color: var(--color-blue-1-dark);
+    transform: translate(-15%, -50%);
+    transition: visibility 0.15s linear, opacity 0.15s linear, transform 0.15s linear;
+    transition-delay: 0.02s;
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  &__inner {
+    top: 0;
+    right: 0;
+    width: 62px;
+    height: 62px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    transition: width 0.2s ease-in-out;
+  }
+
+  :global(.s-icon) {
+    top: -2px;
+    right: -2px;
+    width: 62px;
+    height: 62px;
+    position: absolute;
+    border-radius: 50%;
+    color: var(--color-blue-1);
+    margin-left: auto;
+  }
+
+  &:hover {
+    width: 157px;
+    border: 2px solid var(--color-blue-1);
+    border-radius: 100px;
+
+    #{$root}__text {
+      top: 50%;
+      right: 0;
+      transform: translate(-142%, -50%);
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}
