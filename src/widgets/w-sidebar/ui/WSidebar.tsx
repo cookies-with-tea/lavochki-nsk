@@ -5,6 +5,8 @@ import { Link, useLocation } from 'react-router-dom'
 import { ROUTES_MAP } from 'widgets/w-sidebar/constants/routes'
 import styles from 'widgets/w-sidebar/ui/styles.module.scss'
 
+import Logo from '/logo.png'
+
 import { SIcon } from 'shared/ui'
 
 const cx = cnBind.bind(styles)
@@ -16,6 +18,14 @@ export const WSidebar = () => {
 
   return (
     <aside className={cn(cx('w-sidebar'))}>
+      <Link to={'/'} className={cn(cx('w-sidebar__logo'))}>
+        <div className={cn(cx('w-sidebar__logo-inner'))}>
+          <img src={Logo} />
+
+          <span>Lavochki NSK</span>
+        </div>
+      </Link>
+
       <nav>
         <ul>
           { ROUTES_MAP.map((route) => (
