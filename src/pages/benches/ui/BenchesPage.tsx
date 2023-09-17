@@ -40,7 +40,7 @@ export const BenchesPage = () => {
 
       <BenchesTable />
 
-      <SDialog title="Создание лавочки" open={isCreateBenchVisible} onSuccess={handleOk} onCancel={handleCancel}>
+      <SDialog title={'Создание лавочки'} open={isCreateBenchVisible} onSuccess={handleOk} onCancel={handleCancel}>
         <BenchFormCreate />
       </SDialog>
     </div>

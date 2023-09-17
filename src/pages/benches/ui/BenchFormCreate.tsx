@@ -1,6 +1,10 @@
 import { Form, Space, Upload } from 'antd'
 import type { UploadFile, UploadProps } from 'antd/es/upload/interface'
+import cn from 'classnames'
+import cnBind from 'classnames/bind'
 import { useState } from 'react'
+
+import styles from 'pages/benches/ui/styles.module.scss'
 
 import { BenchType } from 'shared/types'
 import { SButton, SInput, SInputNumber, SSelect } from 'shared/ui'
@@ -11,7 +15,9 @@ type FieldType = {
   lng?: string
   images?: string
   tags?: string[]
-};
+}
+
+const cx = cnBind.bind(styles)
 
 export const BenchFormCreate = () => {
   const [form, setForm] = useState<Partial<BenchType>>({
@@ -42,6 +48,7 @@ export const BenchFormCreate = () => {
     <Form
       layout={'vertical'}
       autoComplete={'off'}
+      className={cn(cx('bench-form-create'))}
     >
       <Form.Item<FieldType>
         label="Название"
@@ -51,46 +58,50 @@ export const BenchFormCreate = () => {
         <SInput size={'sm'} placeholder={'Удобная лавочка...'} />
       </Form.Item>
 
-      <Space>
+      <Space className={'w-100'}>
+        <Space>
+          <Form.Item<FieldType>
+            label="Долгота"
+            name="lat"
+            rules={[{ required: false, message: 'Введите название лавочки!' }]}
+          >
+            <SInputNumber
+              name={'lat'}
+              min={'-180'}
+              max={'180'}
+              value={form.lat}
+              stringMode
+              onChange={(value) => onValueChange(value, 'lat')}
+            />
+          </Form.Item>
+          <Form.Item<FieldType>
+            label="Широта"
+            name="lng"
+            rules={[{ required: false, message: 'Введите название лавочки!' }]}
+          >
+            <SInputNumber
+              name={'lng'}
+              min={'-180'}
+              max={'180'}
+              value={form.lng}
+              stringMode
+              onChange={(value) => onValueChange(value, 'lng')}
+            />
+          </Form.Item>
+        </Space>
+
         <Form.Item<FieldType>
-          label="Долгота"
-          name="lat"
-          rules={[{ required: false, message: 'Введите название лавочки!' }]}
+          label={'Теги'}
+          name={'tags'}
+          className={cn(cx('bench-form-create__tags'),)}
         >
-          <SInputNumber
-            name={'lat'}
-            min={'-180'}
-            max={'180'}
-            value={form.lat}
-            stringMode
-            onChange={(value) => onValueChange(value, 'lat')}
-          />
-        </Form.Item>
-        <Form.Item<FieldType>
-          label="Широта"
-          name="lng"
-          rules={[{ required: false, message: 'Введите название лавочки!' }]}
-        >
-          <SInputNumber
-            name={'lng'}
-            min={'-180'}
-            max={'180'}
-            value={form.lng}
-            stringMode
-            onChange={(value) => onValueChange(value, 'lng')}
+          <SSelect<{ label: string, value: string }>
+            onChange={(value) => {
+              console.log(value)
+            }}
           />
         </Form.Item>
       </Space>
-
-      <Form.Item<FieldType>
-        label="Теги"
-        name="tags"
-      >
-        <SSelect<{ label: string, value: string }> onChange={(value) => {
-          console.log(value)
-          
-        }}/>
-      </Form.Item>
 
       <Form.Item<FieldType>
         label="Изображения"

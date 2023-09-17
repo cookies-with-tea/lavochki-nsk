@@ -1,11 +1,13 @@
 import { Modal } from 'antd'
-import { ReactNode } from 'react'
+import { ReactNode, useRef } from 'react'
+import { createPortal } from 'react-dom'
 
 interface IProps {
   title?: string
   open: boolean
   centered?: boolean
   children: ReactNode
+  toBody?: boolean
 
   onSuccess: () => void
   onCancel: () => void
@@ -35,17 +37,37 @@ interface IProps {
 
 // Варианты transitionName | END
 
-export const SDialog = ({ title, open = false, children, centered = true, onCancel, onSuccess }: IProps) => {
+export const SDialog = ({ 
+  title,
+  open = false,
+  children,
+  centered = true,
+  onCancel,
+  onSuccess,
+  toBody = false
+}: IProps) => {
+  const teleportTarget = toBody ? document.body : document.getElementById('dialogs-container') ?? document.body
+  const dialogWrapperRef = useRef<HTMLDivElement | null>(null)
+
   return (
-    <Modal
-      title={title}
-      open={open}
-      centered={centered}
-      footer={null}
-      onOk={onSuccess}
-      onCancel={onCancel}
-    >
-      { children }
-    </Modal>
+    <>
+      { 
+        createPortal( 
+          <div ref={dialogWrapperRef}>
+            <Modal
+              title={title}
+              open={open}
+              centered={centered}
+              footer={null}
+              onOk={onSuccess}
+              onCancel={onCancel}
+            >
+              { children }
+            </Modal>
+          </div>,
+          teleportTarget
+        ) 
+      }
+    </>
   )
 }
