@@ -1,7 +1,7 @@
 .s-button {
   --s-button-padding-vertical: 12px;
   --s-button-padding-horizontal: 20px;
-  --s-button-font-size: 14px;
+  --s-button-font-size: 16px;
 
   // --s-button-background-hover-color: rgb(var(--color-rgb-blue-1) / 0.60);
   --s-button-background-hover-color: var(--color-blue-1-dark);
@@ -11,6 +11,7 @@
   align-items: center;
   border-radius: 16px;
   font-size: var(--s-button-font-size);
+  padding: var(--s-button-padding-vertical) var(--s-button-padding-horizontal);
 
   &.postfixIcon {
     flex-direction: row-reverse;
@@ -22,14 +23,14 @@
   }
 
   &--primary {
-    font-size: 18px;
-
     &:hover {
       background-color: var(--s-button-background-hover-color) !important;
     }
   }
 
-  &--md {
-    padding: var(--s-button-padding-vertical) var(--s-button-padding-horizontal);
+  &--sm {
+    --s-button-padding-vertical: 8px;
+    --s-button-padding-horizontal: 12px;
+    --s-button-font-size: 14px;
   }
 }

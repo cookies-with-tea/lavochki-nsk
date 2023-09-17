@@ -3,24 +3,23 @@ import type { UploadFile, UploadProps } from 'antd/es/upload/interface'
 import { useState } from 'react'
 
 import { BenchType } from 'shared/types'
-import { SButton, SInput, SInputNumber } from 'shared/ui'
+import { SButton, SInput, SInputNumber, SSelect } from 'shared/ui'
 
 type FieldType = {
-  title?: string;
+  title?: string
   lat?: string
   lng?: string
+  images?: string
+  tags?: string[]
 };
 
 export const BenchFormCreate = () => {
-  const [bench, setBench] = useState<BenchType>({
-    address: '',
-    id: '',
+  const [form, setForm] = useState<Partial<BenchType>>({
     images: [],
     is_active: false,
     lat: 0,
     lng: 0,
-    owner: '',
-    tags: []
+    tags: [],
   })
 
   const [images, setImages] = useState<Array<UploadFile>>([])
@@ -29,8 +28,8 @@ export const BenchFormCreate = () => {
 
     if (!value) return
 
-    setBench({
-      ...bench,
+    setForm({
+      ...form,
       [formKey]: value
     })
   }
@@ -49,7 +48,7 @@ export const BenchFormCreate = () => {
         name="title"
         rules={[{ required: false, message: 'Введите название лавочки!' }]}
       >
-        <SInput placeholder={'Удобная лавочка...'} />
+        <SInput size={'sm'} placeholder={'Удобная лавочка...'} />
       </Form.Item>
 
       <Space>
@@ -62,7 +61,7 @@ export const BenchFormCreate = () => {
             name={'lat'}
             min={'-180'}
             max={'180'}
-            value={bench.lat}
+            value={form.lat}
             stringMode
             onChange={(value) => onValueChange(value, 'lat')}
           />
@@ -76,7 +75,7 @@ export const BenchFormCreate = () => {
             name={'lng'}
             min={'-180'}
             max={'180'}
-            value={bench.lng}
+            value={form.lng}
             stringMode
             onChange={(value) => onValueChange(value, 'lng')}
           />
@@ -84,8 +83,18 @@ export const BenchFormCreate = () => {
       </Space>
 
       <Form.Item<FieldType>
-        label="Название"
-        name="title"
+        label="Теги"
+        name="tags"
+      >
+        <SSelect<{ label: string, value: string }> onChange={(value) => {
+          console.log(value)
+          
+        }}/>
+      </Form.Item>
+
+      <Form.Item<FieldType>
+        label="Изображения"
+        name="images"
         rules={[{ required: false, message: 'Введите название лавочки!' }]}
       >
         {/* TODO: Добавить заместо текста "Картинка" какое-либо изображение */}
@@ -99,9 +108,9 @@ export const BenchFormCreate = () => {
         </Upload>
       </Form.Item>
 
-      <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <SButton appearance={'primary'} htmlType="submit">
-          Создать лавочку
+      <Form.Item>
+        <SButton appearance={'primary'} htmlType={'submit'} size={'sm'}>
+          Создать
         </SButton>
       </Form.Item>
     </Form>

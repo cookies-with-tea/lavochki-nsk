@@ -11,3 +11,5 @@ export { SIcon } from 'shared/ui/s-icon'
 export { SInput } from 'shared/ui/s-input'
 
 export { SInputNumber } from 'shared/ui/s-input-number'
+
+export { SSelect } from 'shared/ui/s-select'

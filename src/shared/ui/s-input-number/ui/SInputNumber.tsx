@@ -19,7 +19,7 @@ interface IProps {
 export const SInputNumber = ({ 
   min = 0,
   max = 99,
-  size = 'middle',
+  size = 'large',
   stringMode = false,
   defaultValue = 0,
   step = '1',

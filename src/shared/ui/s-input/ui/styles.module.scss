@@ -1,10 +1,20 @@
 .s-input {
+  --s-input-padding-vertical: 19px;
+  --s-input-padding-horizontal: 20px;
+  --s-input-font-size: 18px;
+
   width: 100%;
   border: 1px solid var(--color-white);
   border-radius: 8px;
   box-shadow: 5px 5px 20px 0 rgb(188 188 188 / 0.25);
-  font-size: 18px;
+  font-size: var(--s-input-font-size);
   color: var(--color-grey-4);
   background: var(--color-white);
-  padding: 19px 20px;
+  padding: var(--s-input-padding-vertical) var(--s-input-padding-horizontal);
+
+  &--sm {
+    --s-input-font-size: 14px;
+    --s-input-padding-vertical: 12px;
+    --s-button-padding-horizontal: 14px;
+  }
 }
