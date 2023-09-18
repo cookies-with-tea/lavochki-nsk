@@ -1,4 +1,4 @@
-import { Table } from 'antd'
+import { Checkbox, Table } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 
 interface DataType {
@@ -12,7 +12,12 @@ const columns: ColumnsType<DataType> = [
   {
     title: 'Name',
     dataIndex: 'name',
-    render: (text: string) => <a>{text}</a>,
+    render: (value, record, rowIndex) => (
+      <Checkbox
+        checked={value}
+        onChange={() => { console.log('select') }}
+      />
+    )
   },
   {
     title: 'Age',

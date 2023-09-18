@@ -1,0 +1,13 @@
+.w-table {
+  border-spacing: 0 8px;
+
+  :global(.ant-table) {
+    border-spacing: 0 8px;
+  }
+
+  :global(.ant-table-thead) {
+    :global(.an\t-table-cell) {
+      background: var(--color-blue-20);
+    }
+  }
+}
