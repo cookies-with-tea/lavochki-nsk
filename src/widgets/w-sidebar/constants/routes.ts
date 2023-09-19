@@ -5,6 +5,11 @@ export const ROUTES_MAP = [
     icon: 'home',
   },
   {
+    path: '/uikit',
+    title: 'UIKit',
+    icon: 'home',
+  },
+  {
     path: '/benches',
     title: 'Лавочки',
     icon: 'user', // TODO: Заменить на benches.

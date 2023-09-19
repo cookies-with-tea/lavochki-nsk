@@ -5,6 +5,7 @@ import { BaseLayout } from 'app/layouts/base'
 import { GuestLayout } from 'app/layouts/guest'
 
 import { BenchesPage } from 'pages/benches'
+import { HomePage } from 'pages/home'
 import { LoginPage } from 'pages/login'
 import { UIKitPage } from 'pages/UIKit'
 import { UsersPage } from 'pages/users'
@@ -14,21 +15,15 @@ import { UsersPage } from 'pages/users'
 
 export const router: Router = createBrowserRouter([
   {
-    path: '/login',
-    element: <GuestLayout />,
-    children: [
-      {
-        path: '',
-        element: <LoginPage />
-      }
-    ]
-  },
-  {
     path: '/',
     element: <BaseLayout />,
     children: [
       {
         path: '/',
+        element: <HomePage />
+      },
+      {
+        path: '/uikit',
         element: <UIKitPage />
       },
       {
@@ -38,6 +33,16 @@ export const router: Router = createBrowserRouter([
       {
         path: '/users',
         element: <UsersPage />,
+      }
+    ]
+  },
+  {
+    path: '/',
+    element: <GuestLayout />,
+    children: [
+      {
+        path: '/login',
+        element: <LoginPage />
       }
     ]
   },
