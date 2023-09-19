@@ -14,7 +14,7 @@ import { SButton, SIcon, SDialog } from 'shared/ui'
 const items: TabsProps['items'] = [
   {
     key: '1',
-    label: 'Прошедшие модерацию',
+    label: 'Пользователи',
     children: <WTable<DataType>
       dataSource={AFTER_MODERATION_TABLE_DATA}
       columns={columns}
@@ -30,7 +30,7 @@ const items: TabsProps['items'] = [
   },
 ]
 
-export const BenchesPage = () => {
+export const UsersPage = () => {
   const [isCreateBenchVisible, setIsCreateBenchVisible] = useState(false)
 
   const onTabChange = (tab: string) => {
@@ -52,23 +52,23 @@ export const BenchesPage = () => {
   return (
     <div className={styles['benches-page']}>
       <Space className={styles['benches-page__header']}>
-        <h1>Лавочки</h1>
+        <h1>Пользователи</h1>
 
-        <SButton
+        {/* <SButton
           appearance={'primary'}
           postfixIcon={
             <SIcon name={'plus'} />
           }
           onClick={showModal}
           >
-          Создать лавочку
-        </SButton>
+          Создать пользователя
+        </SButton> */}
       </Space>
 
       <Tabs defaultActiveKey="1" items={items} onChange={onTabChange} />
 
       <SDialog title={'Создание лавочки'} open={isCreateBenchVisible} onSuccess={handleOk} onCancel={handleCancel}>
-        <BenchFormCreate />
+        Создание пользователя
       </SDialog>
     </div>
   )

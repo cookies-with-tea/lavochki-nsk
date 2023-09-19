@@ -10,16 +10,27 @@ const cx = cnBind.bind(styles)
 interface IProps<T> {
   dataSource: Array<T>
   columns: ColumnsType<T>
-  rowSelection?: any
 }
 
-export const WTable = <T extends object>({ dataSource, columns, rowSelection }: IProps<T>) => {
+const rowSelection = {
+  onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
+    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows)
+  },
+  getCheckboxProps: (record: any) => ({
+    disabled: record.name === 'Disabled User',
+    name: record.name,
+  }),
+}
+
+export const WTable = <T extends object>({ dataSource, columns }: IProps<T>) => {
   return (
     <Table
       className={cn(cx('w-table'))}
       columns={columns}
       dataSource={dataSource}
-      rowSelection={rowSelection }
+      rowSelection={{
+        ...rowSelection
+      }}
       pagination={{ position: ['bottomCenter'], hideOnSinglePage: true }} 
     />
   )
