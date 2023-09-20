@@ -1,16 +1,17 @@
 package users
 
 import (
+	"context"
+	"errors"
+	"fmt"
+	"time"
+
 	"benches/internal/apperror"
 	"benches/internal/domain"
 	"benches/internal/repository/postgres/users"
 	redisStorage "benches/internal/storage/redis"
 	"benches/pkg/auth"
 	"benches/pkg/telegram"
-	"context"
-	"errors"
-	"fmt"
-	"time"
 
 	"go.uber.org/zap"
 )
@@ -82,6 +83,7 @@ func (service *service) GetOrCreate(ctx context.Context, userDomain domain.User)
 				service.log.Error("error create user in database", zap.Error(errCreate))
 				return nil, errCreate
 			}
+			return dbUser, nil
 		}
 
 		service.log.Error("error check exception", zap.Error(err))

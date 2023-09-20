@@ -19,7 +19,7 @@ func NewPolicy(usersService users.Service) *Policy {
 }
 
 func (policy *Policy) LoginViaTelegram(ctx context.Context, user domain.TelegramUser) (string, string, error) {
-	dbUser, errCreateUser := policy.usersService.GetOrCreate(ctx, domain.User{TelegramID: user.ID})
+	dbUser, errCreateUser := policy.usersService.GetOrCreate(ctx, domain.User{TelegramID: user.ID, Username: user.Username})
 	if errCreateUser != nil {
 		return "", "", errCreateUser
 	}
