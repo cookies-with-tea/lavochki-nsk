@@ -1,40 +1,49 @@
 import { Space, Tabs, TabsProps } from 'antd'
-import { useState } from 'react'
+import { useUnit } from 'effector-react'
+import { useEffect, useState } from 'react'
 
 import { columns } from 'pages/benches/constants'
-import { AFTER_MODERATION_TABLE_DATA, MODERATION_TABLE_DATA } from 'pages/benches/mock'
-import { DataType } from 'pages/benches/types'
-import { BenchFormCreate } from 'pages/benches/ui/BenchFormCreate'
+import { $benches, getBenchesFx } from 'pages/benches/model/benches'
+import { BenchFormCreate } from 'pages/benches/ui/bench-form-create/BenchFormCreate'
 import styles from 'pages/benches/ui/styles.module.scss'
 
 import { WTable } from 'widgets/w-table'
 
+import { BenchType } from 'shared/types'
 import { SButton, SIcon, SDialog } from 'shared/ui'
-
-const items: TabsProps['items'] = [
-  {
-    key: '1',
-    label: 'Прошедшие модерацию',
-    children: <WTable<DataType>
-      dataSource={AFTER_MODERATION_TABLE_DATA}
-      columns={columns}
-    />
-  },
-  {
-    key: '2',
-    label: 'На модерации',
-    children: <WTable<DataType>
-      dataSource={MODERATION_TABLE_DATA}
-      columns={columns}
-    />
-  },
-]
 
 export const BenchesPage = () => {
   const [isCreateBenchVisible, setIsCreateBenchVisible] = useState(false)
 
+  const benches = useUnit($benches)
+
+  // const [items, setItems]  = useState<TabsProps['items']>([
+  //   {
+  //     key: '1',
+  //     label: 'Прошедшие модерацию',
+  //     children: <WTable<DataType>
+  //       dataSource={benches}
+  //       columns={columns}
+  //     />
+  //   },
+  //   {
+  //     key: '2',
+  //     label: 'На модерации',
+  //     children: <WTable<DataType>
+  //       dataSource={benches}
+  //       columns={columns}
+  //     />
+  //   },
+  // ])
+
   const onTabChange = (tab: string) => {
     console.log(tab)
+
+    if (tab === '1') {
+      // benchesQuery.refresh()
+    } else if (tab === '2') {
+      // moderationBenchesQuery.refresh()
+    }
   }
 
   const showModal = () => {
@@ -48,6 +57,11 @@ export const BenchesPage = () => {
   const handleCancel = () => {
     setIsCreateBenchVisible(false)
   }
+
+  useEffect(() => {
+    // TODO: Это плохо. Вынести запрос из useEffect
+    getBenchesFx()
+  }, [])
 
   return (
     <div className={styles['benches-page']}>
@@ -65,7 +79,13 @@ export const BenchesPage = () => {
         </SButton>
       </Space>
 
-      <Tabs defaultActiveKey="1" items={items} onChange={onTabChange} />
+      {/* TODO: Добавить табы */}
+      {/* <Tabs defaultActiveKey="1" items={items} onChange={onTabChange} /> */}
+
+      <WTable<BenchType>
+        dataSource={benches}
+        columns={columns}
+      />
 
       <SDialog title={'Создание лавочки'} open={isCreateBenchVisible} onSuccess={handleOk} onCancel={handleCancel}>
         <BenchFormCreate />

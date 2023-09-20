@@ -29,7 +29,13 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: env.BASE_URL ?? '/',
-    plugins: [react(), styleLintConfig, eslintConfig, svgLoader(), svgIconsConfig],
+    plugins: [
+      react(),
+      styleLintConfig,
+      eslintConfig,
+      svgLoader(),
+      svgIconsConfig,
+    ],
     server: {
       proxy: {
         '/api': {

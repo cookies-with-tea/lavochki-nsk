@@ -5,6 +5,7 @@ import cnBind from 'classnames/bind'
 import debounce from 'lodash.debounce'
 import React, { useMemo, useRef, useState } from 'react'
 
+import { OptionType } from 'shared/types'
 import styles from 'shared/ui/s-select/ui/styles.module.scss'
 
 const cx = cnBind.bind(styles)
@@ -75,12 +76,19 @@ async function fetchUserList(username: string): Promise<any[]> {
     )
 }
 
-interface IProps<T> {
-  onChange?: (items: T[]) => void;
+interface IProps {
+  onChange?: (items: string[]) => void;
 }
 
-export const SSelect = <T extends object>({ onChange }: IProps<T>) => {
-  const [value, setValue] = useState<T[]>([])
+
+export const SSelect = ({ onChange }: IProps) => {
+  const [value, setValue] = useState<Array<OptionType>>([])
+
+  const onChangeSelect = (options: OptionType[]) => {
+    setValue(options)
+
+    onChange && onChange(options.map(({ value }) => value))
+  }
 
   return (
     <DebounceSelect
@@ -88,10 +96,8 @@ export const SSelect = <T extends object>({ onChange }: IProps<T>) => {
       value={value}
       placeholder={'Выбрать теги'}
       fetchOptions={fetchUserList}
-      onChange={(newValue) => {
-        setValue(newValue as T[])
-
-        onChange && onChange(newValue as T[])
+      onChange={(options) => {
+        onChangeSelect(options)
       }}
       style={{ width: '100%' }}
     />

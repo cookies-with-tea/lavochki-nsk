@@ -1,6 +1,4 @@
-import { DataType } from '../types/index'
-
-export const AFTER_MODERATION_TABLE_DATA: DataType[] = [
+export const AFTER_MODERATION_TABLE_DATA = [
   {
     key: '1',
     name: 'John Brown',
@@ -87,7 +85,7 @@ export const AFTER_MODERATION_TABLE_DATA: DataType[] = [
   },
 ]
 
-export const MODERATION_TABLE_DATA: DataType[] = [
+export const MODERATION_TABLE_DATA = [
   {
     key: '1',
     name: 'Лавочка 1',

@@ -1,59 +1,49 @@
-import { Space, Tag } from 'antd'
+import { Space } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 
-import { DataType } from '../types'
+import { BenchType } from 'shared/types'
 
-export const columns: ColumnsType<DataType> = [
-  {
-     title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green'
+export const INITIAL_BENCH_PAGE_PARAMS = {
+  initialTab: '1',
+} as const
 
-          if (tag === 'loser') {
-            color = 'volcano'
-          }
-
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          )
-        })}
-      </>
-    ),
+export const columns: ColumnsType<BenchType> = [
+  {
+    title: 'ID',
+    dataIndex: 'id',
+    key: 'id',
+  },
+  {
+    title: 'ID владельца',
+    dataIndex: 'owner',
+    key: 'owner',
+  },
+  {
+    title: 'Широта',
+    dataIndex: 'lat',
+    key: 'lat',
+  },
+  {
+    title: 'Долгота',
+    dataIndex: 'lng',
+    key: 'lng',
+  },
+  {
+    title: 'Адрес',
+    dataIndex: 'street',
+    key: 'street',
+  },
+  {
+    title: 'Дата создания',
+    dataIndex: 'created_at',
+    key: 'created_at',
   },
   {
     title: 'Action',
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-        <a>Invite {record.name}</a>
+        <a>Invite {record.id}</a>
         <a>Delete</a>
       </Space>
     ),

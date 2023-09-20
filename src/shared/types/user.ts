@@ -7,3 +7,8 @@ export type UserType = {
   photo_url: string
   username: string
 }
+
+export type AuthorizationResponseType = { 
+  access: string
+  refresh: string
+}

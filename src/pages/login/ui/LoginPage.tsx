@@ -9,7 +9,7 @@ export const LoginPage = () => {
   const navigate = useNavigate()
 
   const onSuccessAuth = () => {
-    navigate('/')
+    // navigate('/')
   }
 
   return (

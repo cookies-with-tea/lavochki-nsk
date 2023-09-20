@@ -3,19 +3,19 @@ import { useState } from 'react'
 
 import { columns } from 'pages/benches/constants'
 import { AFTER_MODERATION_TABLE_DATA, MODERATION_TABLE_DATA } from 'pages/benches/mock'
-import { DataType } from 'pages/benches/types'
-import { BenchFormCreate } from 'pages/benches/ui/BenchFormCreate'
 import styles from 'pages/benches/ui/styles.module.scss'
 
 import { WTable } from 'widgets/w-table'
 
 import { SButton, SIcon, SDialog } from 'shared/ui'
 
+import { BenchFormCreate } from '@/pages/benches/ui/bench-form-create/BenchFormCreate'
+
 const items: TabsProps['items'] = [
   {
     key: '1',
     label: 'Пользователи',
-    children: <WTable<DataType>
+    children: <WTable<any>
       dataSource={AFTER_MODERATION_TABLE_DATA}
       columns={columns}
     />
@@ -23,7 +23,7 @@ const items: TabsProps['items'] = [
   {
     key: '2',
     label: 'На модерации',
-    children: <WTable<DataType>
+    children: <WTable<any>
       dataSource={MODERATION_TABLE_DATA}
       columns={columns}
     />

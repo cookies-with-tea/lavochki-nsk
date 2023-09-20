@@ -4,10 +4,12 @@ import cn from 'classnames'
 import cnBind from 'classnames/bind'
 import { useState } from 'react'
 
-import styles from 'pages/benches/ui/styles.module.scss'
+import styles from 'pages/benches/ui/bench-form-create/styles.module.scss'
 
 import { BenchType } from 'shared/types'
 import { SButton, SInput, SInputNumber, SSelect } from 'shared/ui'
+import { useUnit } from 'effector-react'
+import { $lat, $lng, formSubmitted, latChanged, lngChanged, tagsChanged } from '../../model/create-bench'
 
 type FieldType = {
   title?: string
@@ -44,20 +46,20 @@ export const BenchFormCreate = () => {
     setImages(newFileList)
   }
 
+  const [lat, lng] = useUnit([$lat, $lng])
+
+  // TODO: Добавить тип
+  const onFormSubmit = () => {
+    formSubmitted()
+  }
+
   return (
     <Form
       layout={'vertical'}
       autoComplete={'off'}
       className={cn(cx('bench-form-create'))}
+      onFinish={onFormSubmit}
     >
-      <Form.Item<FieldType>
-        label="Название"
-        name="title"
-        rules={[{ required: false, message: 'Введите название лавочки!' }]}
-      >
-        <SInput size={'sm'} placeholder={'Удобная лавочка...'} />
-      </Form.Item>
-
       <Space className={'w-100'}>
         <Space>
           <Form.Item<FieldType>
@@ -69,9 +71,9 @@ export const BenchFormCreate = () => {
               name={'lat'}
               min={'-180'}
               max={'180'}
-              value={form.lat}
+              value={String(lat)}
               stringMode
-              onChange={(value) => onValueChange(value, 'lat')}
+              onChange={(value) => latChanged(String(value))}
             />
           </Form.Item>
           <Form.Item<FieldType>
@@ -83,9 +85,9 @@ export const BenchFormCreate = () => {
               name={'lng'}
               min={'-180'}
               max={'180'}
-              value={form.lng}
+              value={String(lng)}
               stringMode
-              onChange={(value) => onValueChange(value, 'lng')}
+              onChange={(value) => lngChanged(String(value))}
             />
           </Form.Item>
         </Space>
@@ -95,10 +97,8 @@ export const BenchFormCreate = () => {
           name={'tags'}
           className={cn(cx('bench-form-create__tags'),)}
         >
-          <SSelect<{ label: string, value: string }>
-            onChange={(value) => {
-              console.log(value)
-            }}
+          <SSelect
+            onChange={(tagsIds) => tagsChanged(tagsIds)}
           />
         </Form.Item>
       </Space>

@@ -25,6 +25,7 @@ const rowSelection = {
 export const WTable = <T extends object>({ dataSource, columns }: IProps<T>) => {
   return (
     <Table
+      rowKey={'id'}
       className={cn(cx('w-table'))}
       columns={columns}
       dataSource={dataSource}

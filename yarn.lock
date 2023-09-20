@@ -1703,6 +1703,15 @@ available-typed-arrays@^1.0.5:
   resolved "https://registry.yarnpkg.com/available-typed-arrays/-/available-typed-arrays-1.0.5.tgz#92f95616501069d07d10edb2fc37d3e1c65123b7"
   integrity sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==
 
+axios@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.5.0.tgz#f02e4af823e2e46a9768cfc74691fdd0517ea267"
+  integrity sha512-D4DdjDo5CY50Qms0qGQTTw6Q44jl7zRwY7bthds06pUGfChBCTcQs+N743eFWGEd6pRTMd6A+I87aWyFV5wiZQ==
+  dependencies:
+    follow-redirects "^1.15.0"
+    form-data "^4.0.0"
+    proxy-from-env "^1.1.0"
+
 babel-jest@^29.6.4:
   version "29.6.4"
   resolved "https://registry.yarnpkg.com/babel-jest/-/babel-jest-29.6.4.tgz#98dbc45d1c93319c82a8ab4a478b670655dd2585"
@@ -2337,6 +2346,11 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
+detect-node@2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.0.4.tgz#014ee8f8f669c5c58023da64b8179c083a28c46c"
+  integrity sha512-ZIzRpLJrOj7jjP2miAtgqIfmzbxa4ZOr5jJc601zklsfEx9oTzmmj2nVpIPRpNlRTIh8lc1kyViIY7BWSGNmKw==
+
 diff-sequences@^29.6.3:
   version "29.6.3"
   resolved "https://registry.yarnpkg.com/diff-sequences/-/diff-sequences-29.6.3.tgz#4deaf894d11407c51efc8418012f9e70b84ea921"
@@ -2457,6 +2471,26 @@ domutils@^3.0.1:
     dom-serializer "^2.0.0"
     domelementtype "^2.3.0"
     domhandler "^5.0.3"
+
+effector-logger@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/effector-logger/-/effector-logger-0.14.0.tgz#9b38999ed5a9133217285cfd77a167be6ac0f188"
+  integrity sha512-Y8K6lH0rVrh5hGeqyN4fknMMkhYAO/z8VV35CVZo577T8U5A25l9H+684EILCecBbVXgF9DHw88x1YgIS7Hicg==
+  dependencies:
+    detect-node "2.0.4"
+    just-debounce-it "^1.1.0"
+
+effector-react@^22.5.4:
+  version "22.5.4"
+  resolved "https://registry.yarnpkg.com/effector-react/-/effector-react-22.5.4.tgz#356db979e34a0224e439e03de9034a725a3ca4eb"
+  integrity sha512-7HmtfD/vqmqvGnu6jMojmns9cxIW45JPBkGgHrwvbXGpbm0bz2fmVj6PIttv+Bamfmrf9FAy2bZhs+Rwj+3Mxw==
+  dependencies:
+    use-sync-external-store "^1.0.0"
+
+effector@^22.8.6:
+  version "22.8.6"
+  resolved "https://registry.yarnpkg.com/effector/-/effector-22.8.6.tgz#254af8966ba52f9abe2a9db703ec0e9d424bcb8e"
+  integrity sha512-Bkg/rlPs7J4dmOFGPLLcL7X0SZeA8WdRnyC2X4tGVo7i6M8oxYwtNOkEUact/zIT/MgqTGm9A8T40dPnr8oXmA==
 
 electron-to-chromium@^1.4.477:
   version "1.4.503"
@@ -2669,6 +2703,13 @@ eslint-module-utils@^2.8.0:
   integrity sha512-aWajIYfsqCKRDgUfjEXNN/JlrzauMuSEy5sbd7WXbtW3EH6A6MpwEh42c7qD+MqQo9QMJ6fWLAeIJynx0g6OAw==
   dependencies:
     debug "^3.2.7"
+
+eslint-plugin-effector@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-effector/-/eslint-plugin-effector-0.11.0.tgz#c5dbded40713fa84c949e3150d6b3daa8473b77d"
+  integrity sha512-iujBwqh8z09lxrnTF3jAj2WHwxdKYWzf2DXn6ambdBjx3wgHgLt2vjpzctXxWR1+PPyoj3GyQYY7tsnc/RTNTw==
+  dependencies:
+    prettier "^2.3.2"
 
 eslint-plugin-import@^2.28.1:
   version "2.28.1"
@@ -3000,6 +3041,11 @@ flatted@^3.2.7:
   version "3.2.7"
   resolved "https://registry.npmjs.org/flatted/-/flatted-3.2.7.tgz"
   integrity sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==
+
+follow-redirects@^1.15.0:
+  version "1.15.2"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.2.tgz#b460864144ba63f2681096f274c4e57026da2c13"
+  integrity sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==
 
 for-each@^0.3.3:
   version "0.3.3"
@@ -4324,6 +4370,11 @@ jsonfile@^6.0.1:
     object.assign "^4.1.4"
     object.values "^1.1.6"
 
+just-debounce-it@^1.1.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/just-debounce-it/-/just-debounce-it-1.5.0.tgz#2276448332dd5925e825ba3c524a71da707bf628"
+  integrity sha512-itSWJS5d2DTSCizVJ2Z0Djx/dGmUGfZe7WNfUfVP23+htGcIcPHbEjL4eB8ljojTs/+oYwLexImRRCP0A2WXjA==
+
 keyv@^4.5.3:
   version "4.5.3"
   resolved "https://registry.npmjs.org/keyv/-/keyv-4.5.3.tgz"
@@ -4915,6 +4966,11 @@ pathe@^0.2.0:
   resolved "https://registry.yarnpkg.com/pathe/-/pathe-0.2.0.tgz#30fd7bbe0a0d91f0e60bae621f5d19e9e225c339"
   integrity sha512-sTitTPYnn23esFR3RlqYBWn4c45WGeLcsKzQiUpXJAyfcWkolvlYpV8FLo7JishK946oQwMFUCHXQ9AjGPKExw==
 
+patronum@^1.19.2:
+  version "1.19.2"
+  resolved "https://registry.yarnpkg.com/patronum/-/patronum-1.19.2.tgz#17ad8d8e4aa3688c11b4fa2860799deccee5d7d3"
+  integrity sha512-pK0uZ1nLewzEibVxdWkiLRT87h7lwozurmn4+shm4q/9PJRW6nGdWlHKBszMK9R2EdMIv1jDg/1VQlqkGbkvzQ==
+
 picocolors@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/picocolors/-/picocolors-1.0.0.tgz"
@@ -5056,6 +5112,11 @@ prelude-ls@^1.2.1:
   resolved "https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.2.1.tgz"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
 
+prettier@^2.3.2:
+  version "2.8.8"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.8.8.tgz#e8c5d7e98a4305ffe3de2e1fc4aca1a71c28b1da"
+  integrity sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==
+
 prettier@^3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.0.3.tgz#432a51f7ba422d1469096c0fdc28e235db8f9643"
@@ -5086,6 +5147,11 @@ prop-types@^15.8.1:
     loose-envify "^1.4.0"
     object-assign "^4.1.1"
     react-is "^16.13.1"
+
+proxy-from-env@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/proxy-from-env/-/proxy-from-env-1.1.0.tgz#e102f16ca355424865755d2c9e8ea4f24d58c3e2"
+  integrity sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==
 
 psl@^1.1.33:
   version "1.9.0"
@@ -6587,6 +6653,11 @@ url-parse@^1.5.3:
   dependencies:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
+
+use-sync-external-store@^1.0.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
+  integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==
 
 use@^3.1.0:
   version "3.1.1"
