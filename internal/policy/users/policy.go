@@ -1,11 +1,13 @@
 package users
 
 import (
-	"benches/internal/apperror"
-	"benches/internal/domain"
-	"benches/internal/service/users"
 	"context"
 	"errors"
+
+	"benches/internal/apperror"
+	"benches/internal/domain"
+	"benches/internal/domain/roles"
+	"benches/internal/service/users"
 )
 
 type Policy struct {
@@ -17,7 +19,7 @@ func NewPolicy(usersService users.Service) *Policy {
 }
 
 func (policy *Policy) LoginViaTelegram(ctx context.Context, user domain.TelegramUser) (string, string, error) {
-	dbUser, errCreateUser := policy.usersService.GetOrCreate(ctx, domain.User{TelegramID: user.ID})
+	dbUser, errCreateUser := policy.usersService.GetOrCreate(ctx, domain.User{TelegramID: user.ID, Username: user.Username})
 	if errCreateUser != nil {
 		return "", "", errCreateUser
 	}
@@ -28,7 +30,7 @@ func (policy *Policy) LoginViaTelegram(ctx context.Context, user domain.Telegram
 func (policy *Policy) LoginViaTelegramByAdmin(ctx context.Context, telegramUser domain.TelegramUser) (string, string, error) {
 	user, errGetByTelegramID := policy.usersService.ByTelegramID(ctx, telegramUser.ID)
 
-	if errors.As(errGetByTelegramID, &apperror.ErrNotFound) || user.Role != "admin" {
+	if errors.As(errGetByTelegramID, &apperror.ErrNotFound) || user.Role != roles.Admin {
 		return "", "", apperror.ErrNotEnoughRights
 	}
 
