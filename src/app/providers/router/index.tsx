@@ -11,6 +11,7 @@ import { UIKitPage } from 'pages/UIKit'
 import { UsersPage } from 'pages/users'
 
 // TODO: Добавить динамический роутинг
+// TODO: Добавить atomic-router
 // const UIKitPage = SLoadable(lazy(() => import('pages/UIKit')))
 
 export const router: Router = createBrowserRouter([

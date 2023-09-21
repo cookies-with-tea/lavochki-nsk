@@ -16,7 +16,7 @@ export const tagsChanged = createEvent<Array<string>>()
 export const formSubmitted = createEvent()
 
 // TODO: Добавить тип возвращаемого значения
-export const createBenchFx = createEffect<CreateBenchPayloadType, any, Error>((payload) => {
+export const createBenchFx = createEffect<CreateBenchPayloadType, any, Error>(async (payload) => {
   const formData = new FormData()
 
   formData.append('lat', String(payload.lat))

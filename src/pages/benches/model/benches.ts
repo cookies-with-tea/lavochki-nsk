@@ -1,8 +1,8 @@
 import { createEffect, createEvent, createStore } from 'effector'
 
+import { getApiBenches } from 'pages/benches/api'
 import { INITIAL_BENCH_PAGE_PARAMS } from 'pages/benches/constants'
 
-import { benchesApi } from 'shared/api'
 import { INITIAL_PAGE_PARAMS } from 'shared/constants'
 import { BenchType } from 'shared/types'
 
@@ -22,7 +22,7 @@ export const tabChanged = createEvent()
 // ------ //
 
 // --- Инициализация основных эффектов страницы --- //
-export const getBenchesFx = createEffect(async () => benchesApi.getBenches())
+export const getBenchesFx = createEffect(() => getApiBenches())
 // ----- //
 
 export const $benches = createStore<Array<BenchType>>([])

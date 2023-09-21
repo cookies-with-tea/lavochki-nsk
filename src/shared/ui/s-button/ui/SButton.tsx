@@ -15,7 +15,7 @@ interface IProps {
   disabled?: boolean
   loading?: boolean
   block?: boolean
-  htmlType?: 'button' | 'submit' | 'reset' | undefined
+  htmlType?: 'button' | 'submit' | 'reset'
 
   onClick?: () => void
 }

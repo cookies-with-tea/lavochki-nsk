@@ -3,9 +3,9 @@ import cnBind from 'classnames/bind'
 
 import styles from 'features/f-telegram-auth/ui/styles.module.scss'
 
-// import { userApi } from 'shared/api'
 import { UserType } from 'shared/types'
 import { SIcon } from 'shared/ui'
+
 import { loginUserFx } from '../model/login'
 
 interface IProps {
