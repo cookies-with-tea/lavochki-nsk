@@ -1,16 +1,18 @@
 import { Modal } from 'antd'
+import { useUnit } from 'effector-react'
 import { ReactNode, useRef } from 'react'
 import { createPortal } from 'react-dom'
+import { $isOpenModal, closeModal } from '../model/dialog'
 
 interface IProps {
   title?: string
-  open: boolean
+  open?: boolean
   centered?: boolean
   children: ReactNode
   toBody?: boolean
 
-  onSuccess: () => void
-  onCancel: () => void
+  onSuccess?: () => void
+  onCancel?: () => void
 }
 
 // TODO: Либо написать свой диалог, либо исправить поведение
@@ -48,6 +50,10 @@ export const SDialog = ({
 }: IProps) => {
   const teleportTarget = toBody ? document.body : document.getElementById('dialogs-container') ?? document.body
   const dialogWrapperRef = useRef<HTMLDivElement | null>(null)
+
+  const handleCloseDialog = () => {
+    closeModal()
+  }
 
   return (
     <>

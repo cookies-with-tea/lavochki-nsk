@@ -1,10 +1,11 @@
 import { Space, Tabs } from 'antd'
 import { useUnit } from 'effector-react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { columns } from 'pages/benches/constants'
 import { selectors, getBenchesFx } from 'pages/benches/model/benches'
 import { changeTableEvents } from 'pages/benches/model/change-table'
+import { $isOpenModal, closeModal, openModal } from 'pages/benches/model/create-bench'
 import { BenchFormCreate } from 'pages/benches/ui/bench-form-create/BenchFormCreate'
 import styles from 'pages/benches/ui/styles.module.scss'
 
@@ -14,20 +15,19 @@ import { BenchType } from 'shared/types'
 import { SButton, SIcon, SDialog } from 'shared/ui'
 
 export const BenchesPage = () => {
-  const [isCreateBenchVisible, setIsCreateBenchVisible] = useState(false)
-
-  const benches = useUnit(selectors.benches)
+  const [benches] = useUnit([selectors.benches])
+  const [isModalOpen] = useUnit([$isOpenModal])
 
   const showModal = () => {
-    setIsCreateBenchVisible(true)
+    openModal()
   }
 
   const handleOk = () => {
-    setIsCreateBenchVisible(false)
+    closeModal()
   }
 
   const handleCancel = () => {
-    setIsCreateBenchVisible(false)
+    closeModal()
   }
 
   useEffect(() => {
@@ -78,7 +78,7 @@ export const BenchesPage = () => {
       onChange={(tab) => changeTableEvents.tabChanged(tab)}
       />
 
-      <SDialog title={'Создание лавочки'} open={isCreateBenchVisible} onSuccess={handleOk} onCancel={handleCancel}>
+      <SDialog title={'Создание лавочки'} open={isModalOpen} onSuccess={handleOk} onCancel={handleCancel}>
         <BenchFormCreate />
       </SDialog>
     </div>

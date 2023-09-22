@@ -1,15 +1,20 @@
 import { Form, Space, Upload } from 'antd'
-import type { UploadFile, UploadProps } from 'antd/es/upload/interface'
 import cn from 'classnames'
 import cnBind from 'classnames/bind'
-import { useState } from 'react'
+import { useUnit } from 'effector-react'
 
+import { 
+  $images,
+  $lat,
+  $lng,
+  formSubmitted,
+  imagesChanged,
+  latChanged,
+  lngChanged
+} from 'pages/benches/model/create-bench'
 import styles from 'pages/benches/ui/bench-form-create/styles.module.scss'
 
-import { BenchType } from 'shared/types'
-import { SButton, SInput, SInputNumber, SSelect } from 'shared/ui'
-import { useUnit } from 'effector-react'
-import { $lat, $lng, formSubmitted, latChanged, lngChanged, tagsChanged } from '../../model/create-bench'
+import { SButton, SInputNumber, SSelect } from 'shared/ui'
 
 type FieldType = {
   title?: string
@@ -22,50 +27,21 @@ type FieldType = {
 const cx = cnBind.bind(styles)
 
 export const BenchFormCreate = () => {
-  const [form, setForm] = useState<Partial<BenchType>>({
-    images: [],
-    is_active: false,
-    lat: 0,
-    lng: 0,
-    tags: [],
-  })
-
-  const [images, setImages] = useState<Array<UploadFile>>([])
-
-  const onValueChange = (value: number | string | null, formKey: string): void => {
-
-    if (!value) return
-
-    setForm({
-      ...form,
-      [formKey]: value
-    })
-  }
-
-  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
-    setImages(newFileList)
-  }
-
-  const [lat, lng] = useUnit([$lat, $lng])
-
-  // TODO: Добавить тип
-  const onFormSubmit = () => {
-    formSubmitted()
-  }
+  const [lat, lng, images] = useUnit([$lat, $lng, $images])
 
   return (
     <Form
       layout={'vertical'}
       autoComplete={'off'}
       className={cn(cx('bench-form-create'))}
-      onFinish={onFormSubmit}
+      onFinish={formSubmitted}
     >
       <Space className={'w-100'}>
         <Space>
           <Form.Item<FieldType>
             label="Долгота"
             name="lat"
-            rules={[{ required: false, message: 'Введите название лавочки!' }]}
+            rules={[{ required: false, message: 'Введите долготу!' }]}
           >
             <SInputNumber
               name={'lat'}
@@ -79,7 +55,7 @@ export const BenchFormCreate = () => {
           <Form.Item<FieldType>
             label="Широта"
             name="lng"
-            rules={[{ required: false, message: 'Введите название лавочки!' }]}
+            rules={[{ required: false, message: 'Введите широту!' }]}
           >
             <SInputNumber
               name={'lng'}
@@ -98,7 +74,7 @@ export const BenchFormCreate = () => {
           className={cn(cx('bench-form-create__tags'),)}
         >
           <SSelect
-            onChange={(tagsIds) => tagsChanged(tagsIds)}
+            onChange={(tagsIds) => (tagsIds)}
           />
         </Form.Item>
       </Space>
@@ -110,10 +86,10 @@ export const BenchFormCreate = () => {
       >
         {/* TODO: Добавить заместо текста "Картинка" какое-либо изображение */}
         <Upload
-          action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+          customRequest={({ onSuccess }) => onSuccess && onSuccess('ok')} // Отмена action
           listType="picture-card"
           fileList={images}
-          onChange={handleChange}
+          onChange={({ fileList }) => imagesChanged(fileList)}
         >
           Картинка
         </Upload>
