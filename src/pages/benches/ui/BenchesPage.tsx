@@ -18,10 +18,6 @@ export const BenchesPage = () => {
 
   const benches = useUnit(selectors.benches)
 
-  const onTabChange = (tab: string) => {
-    changeTableEvents.tabChanged(tab)
-  }
-
   const showModal = () => {
     setIsCreateBenchVisible(true)
   }
@@ -79,7 +75,7 @@ export const BenchesPage = () => {
           },
         ]
       } 
-      onChange={onTabChange}
+      onChange={(tab) => changeTableEvents.tabChanged(tab)}
       />
 
       <SDialog title={'Создание лавочки'} open={isCreateBenchVisible} onSuccess={handleOk} onCancel={handleCancel}>

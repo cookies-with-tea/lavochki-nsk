@@ -16,6 +16,13 @@ class UsersApi extends AxiosService {
       data: payload,
     })
   }
+
+  getMe = async () => {
+    return await this.axiosCall<AuthorizationResponseType>({
+      method: 'get',
+      url: '/v1/users/me',
+    })
+  }
 }
 
 export const usersApi = new UsersApi(API_CONFIG)

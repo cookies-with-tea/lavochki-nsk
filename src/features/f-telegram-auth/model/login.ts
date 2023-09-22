@@ -1,6 +1,6 @@
 import { notification } from 'antd'
 import { AxiosError } from 'axios'
-import { createEffect, createEvent, createStore, forward, sample } from 'effector'
+import { createEffect, createEvent, createStore, sample } from 'effector'
 
 import { authUser } from 'features/f-telegram-auth/api'
 
@@ -33,6 +33,8 @@ export const logoutFx = createEffect<void, void, void>(() => {
 
   remove('accessToken')
   remove('refreshToken')
+
+ location.assign('/login')
 })
 
 loginUserFx.failData.watch((error) => {
@@ -71,6 +73,12 @@ $refreshToken.on(loginUserFx.doneData, (_, { data }) => {
   return refreshToken
 })
 
+loginUserFx.doneData.watch(() => {
+  location.assign('/  ')
+})
+
+$user.reset(logoutFx)
+
 sample({
   clock: onAuthorized,
   source: { user: $user },
@@ -79,8 +87,5 @@ sample({
 
 export const effects = {
   loginUserFx,
+  logoutFx,
 }
-
-// export const selectors = {
-
-// }

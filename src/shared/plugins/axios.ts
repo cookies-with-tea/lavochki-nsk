@@ -1,4 +1,6 @@
+import { logoutFx } from '@/features/f-telegram-auth/model/login'
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 import { useLocalStorage } from 'shared/lib/hooks'
 
@@ -52,6 +54,8 @@ export class AxiosService {
         switch (error?.response?.status) {
           // Ошибка авторизации
           case 401: {
+            logoutFx()
+
             break
           }
 

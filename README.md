@@ -1,7 +1,8 @@
 # React + TypeScript + Vite
 
 ## TODO:
-SWC vs Babel
+- Подключить farfetched
+- Подключить Atomic Router
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

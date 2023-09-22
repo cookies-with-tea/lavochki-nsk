@@ -6,26 +6,23 @@ import { INITIAL_PAGE_PARAMS } from 'shared/constants'
 import { BenchType } from 'shared/types'
 
 // --- Инициализация данных страницы --- //
-export const $perPage = createStore(INITIAL_PAGE_PARAMS.perPage)
+export const $perPage = createStore<number>(INITIAL_PAGE_PARAMS.perPage)
 
-export const $totalPages = createStore(INITIAL_PAGE_PARAMS.totalPages)
+export const $totalPages = createStore<number>(INITIAL_PAGE_PARAMS.totalPages)
 // ------ //
 
 // --- Инициализация основных эвентов страницы --- //
-export const pageChanged = createEvent()
+export const pageChanged = createEvent<string>()
 // ------ //
 
 // --- Инициализация основных эффектов страницы --- //
-export const getBenchesFx = createEffect(() => getApiBenches())
+export const getBenchesFx = createEffect(async () => await getApiBenches())
 // ----- //
-
-// TODO: Починить типы.
 
 const $benches = createStore<Array<BenchType>>([])
 
-$benches.on(getBenchesFx.doneData, (oldData, { data }) => {
-  return data.items 
-})
+// TODO: Починить типы
+$benches.on(getBenchesFx.doneData, (_, { data }) => data.items)
 
 export const $isBenchesPending = getBenchesFx.pending
 
