@@ -1,9 +1,10 @@
-import { Space, Tabs, TabsProps } from 'antd'
+import { Space, Tabs } from 'antd'
 import { useUnit } from 'effector-react'
 import { useEffect, useState } from 'react'
 
 import { columns } from 'pages/benches/constants'
-import { $benches, getBenchesFx } from 'pages/benches/model/benches'
+import { selectors, getBenchesFx } from 'pages/benches/model/benches'
+import { changeTableEvents } from 'pages/benches/model/change-table'
 import { BenchFormCreate } from 'pages/benches/ui/bench-form-create/BenchFormCreate'
 import styles from 'pages/benches/ui/styles.module.scss'
 
@@ -15,35 +16,10 @@ import { SButton, SIcon, SDialog } from 'shared/ui'
 export const BenchesPage = () => {
   const [isCreateBenchVisible, setIsCreateBenchVisible] = useState(false)
 
-  const benches = useUnit($benches)
-
-  // const [items, setItems]  = useState<TabsProps['items']>([
-  //   {
-  //     key: '1',
-  //     label: 'Прошедшие модерацию',
-  //     children: <WTable<DataType>
-  //       dataSource={benches}
-  //       columns={columns}
-  //     />
-  //   },
-  //   {
-  //     key: '2',
-  //     label: 'На модерации',
-  //     children: <WTable<DataType>
-  //       dataSource={benches}
-  //       columns={columns}
-  //     />
-  //   },
-  // ])
+  const benches = useUnit(selectors.benches)
 
   const onTabChange = (tab: string) => {
-    console.log(tab)
-
-    if (tab === '1') {
-      // benchesQuery.refresh()
-    } else if (tab === '2') {
-      // moderationBenchesQuery.refresh()
-    }
+    changeTableEvents.tabChanged(tab)
   }
 
   const showModal = () => {
@@ -79,12 +55,31 @@ export const BenchesPage = () => {
         </SButton>
       </Space>
 
-      {/* TODO: Добавить табы */}
-      {/* <Tabs defaultActiveKey="1" items={items} onChange={onTabChange} /> */}
-
-      <WTable<BenchType>
-        dataSource={benches}
-        columns={columns}
+      {/* TODO: Вынести items */}
+      {/* TODO: Создать две отдельных таблицы */}
+      <Tabs
+       defaultActiveKey="1" 
+       items={
+        [
+          {
+            key: '1',
+            label: 'Прошедшие модерацию',
+            children: <WTable<BenchType>
+              dataSource={benches}
+              columns={columns}
+            />
+          },
+          {
+            key: '2',
+            label: 'На модерации',
+            children: <WTable<BenchType>
+              dataSource={benches}
+              columns={columns}
+            />
+          },
+        ]
+      } 
+      onChange={onTabChange}
       />
 
       <SDialog title={'Создание лавочки'} open={isCreateBenchVisible} onSuccess={handleOk} onCancel={handleCancel}>
