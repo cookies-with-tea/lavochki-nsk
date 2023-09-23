@@ -1,7 +1,7 @@
 .w-sidebar {
   min-width: 330px;
   position: relative;
-  box-shadow: 5px 5px 20px 0 rgb(188 188 188 / 0.25);
+  box-shadow: 5px 5px 20px 0 var(--color-box-shadow);
   background-color: var(--color-background);
   padding: 50px 0 20px;
   margin-right: 20px;
@@ -11,7 +11,7 @@
     position: relative;
     display: flex;
     align-items: center;
-    transition: background-color 0.15s ease-in-out;
+    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
 
     &:hover {
       color: var(--color-black-1);

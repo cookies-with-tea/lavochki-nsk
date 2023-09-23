@@ -29,6 +29,7 @@ $color--background: $color--white;
 $color--text: $color--black-2;
 $color--primary: $color--blue-1;
 $color--secondary: $color--blue-20;
+$color--box-shadow: rgb(188 188 188 / 0.25);
 
 $colors: (
   dark: $color--dark,
@@ -58,4 +59,5 @@ $colors: (
   text: $color--text,
   primary: $color--primary,
   secondary: $color--secondary,
+  box-shadow: $color--box-shadow
 )
