@@ -12,7 +12,7 @@ import {
   latChanged,
   lngChanged
 } from 'pages/benches/model/create-bench'
-import styles from 'pages/benches/ui/bench-form-create/styles.module.scss'
+import styles from 'pages/benches/ui/create/styles.module.scss'
 
 import { SButton, SInputNumber, SSelect } from 'shared/ui'
 

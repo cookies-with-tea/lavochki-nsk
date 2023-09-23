@@ -3,11 +3,7 @@ import { ColumnsType } from 'antd/es/table'
 
 import { BenchType } from 'shared/types'
 
-export const INITIAL_BENCH_PAGE_PARAMS = {
-  initialTab: '1',
-} as const
-
-export const columns: ColumnsType<BenchType> = [
+export const benchesModerationColumns: ColumnsType<BenchType> = [
   {
     title: 'ID',
     dataIndex: 'id',

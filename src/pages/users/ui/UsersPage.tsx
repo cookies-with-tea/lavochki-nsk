@@ -1,31 +1,27 @@
 import { Space, Tabs, TabsProps } from 'antd'
 import { useState } from 'react'
 
-import { columns } from 'pages/benches/constants'
-import { AFTER_MODERATION_TABLE_DATA, MODERATION_TABLE_DATA } from 'pages/benches/mock'
 import styles from 'pages/benches/ui/styles.module.scss'
 
 import { WTable } from 'widgets/w-table'
 
-import { SButton, SIcon, SDialog } from 'shared/ui'
-
-import { BenchFormCreate } from '@/pages/benches/ui/bench-form-create/BenchFormCreate'
+import { SDialog } from 'shared/ui'
 
 const items: TabsProps['items'] = [
   {
     key: '1',
     label: 'Пользователи',
     children: <WTable<any>
-      dataSource={AFTER_MODERATION_TABLE_DATA}
-      columns={columns}
+      dataSource={[]}
+      columns={[]}
     />
   },
   {
     key: '2',
     label: 'На модерации',
     children: <WTable<any>
-      dataSource={MODERATION_TABLE_DATA}
-      columns={columns}
+      dataSource={[]}
+      columns={[]}
     />
   },
 ]
