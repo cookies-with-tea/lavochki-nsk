@@ -7,10 +7,12 @@ import {
   $images,
   $lat,
   $lng,
+  $tagsOptions,
   formSubmitted,
   imagesChanged,
   latChanged,
-  lngChanged
+  lngChanged,
+  tagsChanged
 } from 'pages/benches/model/create-bench'
 import styles from 'pages/benches/ui/create/styles.module.scss'
 
@@ -30,7 +32,7 @@ const cx = cnBind.bind(styles)
 // TODO: Добавить обновление таблицы после закрытия создания формы.
 // TODO(возможно): Добавить сохранение черновика.
 export const BenchFormCreate = () => {
-  const [lat, lng, images] = useUnit([$lat, $lng, $images])
+  const [lat, lng, images, options] = useUnit([$lat, $lng, $images, $tagsOptions])
 
   return (
     <Form
@@ -77,7 +79,8 @@ export const BenchFormCreate = () => {
           className={cn(cx('bench-form-create__tags'),)}
         >
           <SSelect
-            onChange={(tagsIds) => (tagsIds)}
+            options={options}
+            onChange={(tagsIds) => tagsChanged(tagsIds)}
           />
         </Form.Item>
       </Space>

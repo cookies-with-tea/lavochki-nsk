@@ -61,27 +61,28 @@ function DebounceSelect<
   )
 }
 
-async function fetchUserList(username: string): Promise<any[]> {
-  console.log('fetching user', username)
+async function fetchUserList(options: Array<OptionType>) {
+  return options
 
-  return fetch('https://randomuser.me/api/?results=5')
-    .then((response) => response.json())
-    .then((body) =>
-      body.results.map(
-        (user: { name: { first: string; last: string }; login: { username: string } }) => ({
-          label: `${user.name.first} ${user.name.last}`,
-          value: user.login.username,
-        }),
-      ),
-    )
+  // return fetch('https://randomuser.me/api/?results=5')
+  //   .then((response) => response.json())
+  //   .then((body) =>
+  //     body.results.map(
+  //       (user: { name: { first: string; last: string }; login: { username: string } }) => ({
+  //         label: `${user.name.first} ${user.name.last}`,
+  //         value: user.login.username,
+  //       }),
+  //     ),
+  //   )
 }
 
 interface IProps {
-  onChange?: (items: string[]) => void;
+  onChange?: (items: string[]) => void
+  options?: any
 }
 
 
-export const SSelect = ({ onChange }: IProps) => {
+export const SSelect = ({ onChange, options }: IProps) => {
   const [value, setValue] = useState<Array<OptionType>>([])
 
   const onChangeSelect = (options: OptionType[]) => {
@@ -90,16 +91,24 @@ export const SSelect = ({ onChange }: IProps) => {
     onChange && onChange(options.map(({ value }) => value))
   }
 
-  return (
-    <DebounceSelect
-      mode={'multiple'}
-      value={value}
-      placeholder={'Выбрать теги'}
-      fetchOptions={fetchUserList}
-      onChange={(options) => {
-        onChangeSelect(options)
-      }}
-      style={{ width: '100%' }}
-    />
-  )
+  // return (
+  //   <DebounceSelect
+  //     mode={'multiple'}
+  //     value={value}
+  //     placeholder={'Выбрать теги'}
+  //     fetchOptions={options}
+  //     onChange={(options) => {
+  //       onChangeSelect(options)
+  //     }}
+  //     style={{ width: '100%' }}
+  //   />
+  // )
+
+  return  <Select
+    mode="multiple"
+    style={{ width: '100%' }}
+    placeholder="Please select"
+    onChange={onChange}
+    options={options}
+  />
 }

@@ -9,6 +9,7 @@ import { HomePage } from 'pages/home'
 import { LoginPage } from 'pages/login'
 import { UIKitPage } from 'pages/UIKit'
 import { UsersPage } from 'pages/users'
+import { TagsPage } from 'pages/tags'
 
 // TODO: Добавить динамический роутинг
 // TODO: Добавить atomic-router
@@ -34,7 +35,11 @@ export const router: Router = createBrowserRouter([
       {
         path: '/users',
         element: <UsersPage />,
-      }
+      },
+      {
+        path: '/tags',
+        element: <TagsPage />,
+      },
     ]
   },
   {

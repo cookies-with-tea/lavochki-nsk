@@ -18,5 +18,10 @@ export const ROUTES_MAP = [
     path: '/users',
     title: 'Пользователи',
     icon: 'user', // TODO: Заменить на users.
-  }
+  },
+  {
+    path: '/tags',
+    title: 'Теги',
+    icon: 'user', // TODO: Заменить на users.
+  },
 ] as const
