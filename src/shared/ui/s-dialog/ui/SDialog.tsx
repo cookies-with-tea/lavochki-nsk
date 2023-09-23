@@ -51,10 +51,6 @@ export const SDialog = ({
   const teleportTarget = toBody ? document.body : document.getElementById('dialogs-container') ?? document.body
   const dialogWrapperRef = useRef<HTMLDivElement | null>(null)
 
-  const handleCloseDialog = () => {
-    closeModal()
-  }
-
   return (
     <>
       { 

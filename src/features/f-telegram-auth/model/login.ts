@@ -4,8 +4,7 @@ import { createEffect, createEvent, createStore, sample } from 'effector'
 
 import { authUser } from 'features/f-telegram-auth/api'
 
-import { useDictionary } from 'shared/lib/hooks'
-import { useLocalStorage } from 'shared/lib/hooks'
+import { useDictionary, useLocalStorage } from 'shared/lib/hooks'
 import { ApiErrorResponseType } from 'shared/plugins/axios'
 import { UserType } from 'shared/types'
 

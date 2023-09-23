@@ -26,6 +26,9 @@ type FieldType = {
 
 const cx = cnBind.bind(styles)
 
+// TODO: Добавить обнуление формы после закрытия создания формы.
+// TODO: Добавить обновление таблицы после закрытия создания формы.
+// TODO(возможно): Добавить сохранение черновика.
 export const BenchFormCreate = () => {
   const [lat, lng, images] = useUnit([$lat, $lng, $images])
 

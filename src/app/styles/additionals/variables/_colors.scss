@@ -25,6 +25,11 @@ $color--red-light: #EB5757;
 
 $gradient-blue-violet: linear-gradient(90deg, #4CDFE8 -0.58%, #7947F7 101.51%);
 
+$color--background: $color--white;
+$color--text: $color--black-2;
+$color--primary: $color--blue-1;
+$color--secondary: $color--blue-20;
+
 $colors: (
   dark: $color--dark,
   black-1: $color--black-1,
@@ -48,4 +53,9 @@ $colors: (
   brown-1: $color--brown,
   red: $color--red,
   red-light: $color--red-light,
+
+  background: $color--background,
+  text: $color--text,
+  primary: $color--primary,
+  secondary: $color--secondary,
 )
