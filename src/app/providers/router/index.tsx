@@ -1,19 +1,18 @@
 import type { Router } from '@remix-run/router'
+import { lazy } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 
 import { BaseLayout } from 'app/layouts/base'
 import { GuestLayout } from 'app/layouts/guest'
 
-import { BenchesPage } from 'pages/benches'
-import { HomePage } from 'pages/home'
-import { LoginPage } from 'pages/login'
-import { UIKitPage } from 'pages/UIKit'
-import { UsersPage } from 'pages/users'
-import { TagsPage } from 'pages/tags'
+const BenchesPage = lazy(() => import('pages/benches'))
+const HomePage = lazy(() => import('pages/home'))
+const LoginPage = lazy(() => import('pages/login'))
+const TagsPage = lazy(() => import('pages/tags'))
+const UIKitPage = lazy(() => import('pages/UIKit'))
+const UsersPage = lazy(() => import('pages/users'))
 
-// TODO: Добавить динамический роутинг
 // TODO: Добавить atomic-router
-// const UIKitPage = SLoadable(lazy(() => import('pages/UIKit')))
 
 export const router: Router = createBrowserRouter([
   {

@@ -1,2 +1,3 @@
-export { UsersPage } from 'pages/users/ui/UsersPage'
+import { UsersPage } from 'pages/users/ui/UsersPage'
 
+export default UsersPage

@@ -1,1 +1,3 @@
-export { UIKitPage } from 'pages/UIKit/ui'
+import { UIKitPage } from 'pages/UIKit/ui'
+
+export default UIKitPage
