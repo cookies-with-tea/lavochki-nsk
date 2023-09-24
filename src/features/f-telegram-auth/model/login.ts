@@ -6,11 +6,11 @@ import { authUser } from 'features/f-telegram-auth/api'
 
 import { useDictionary, useLocalStorage } from 'shared/lib/hooks'
 import { ApiErrorResponseType } from 'shared/plugins/axios'
-import { UserType } from 'shared/types'
+import { UserTelegramType } from 'shared/types'
 
 // TODO: Добавить reset
 // TODO: Вынести user в entities/user/model
-export const $user = createStore<UserType | null>(null)
+export const $user = createStore<UserTelegramType | null>(null)
 export const $isAuthorized = createStore(false)
 export const $accessToken = createStore('')
 export const $refreshToken = createStore('')

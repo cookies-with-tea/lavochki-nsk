@@ -1,30 +1,11 @@
-import { Space, Tabs, TabsProps } from 'antd'
-import { useState } from 'react'
+import { Space } from 'antd'
+import { useEffect, useState } from 'react'
 
 import styles from 'pages/benches/ui/styles.module.scss'
-
-import { WTable } from 'widgets/w-table'
+import { getUsersFx } from 'pages/users/model/users'
+import { UsersTable } from 'pages/users/ui/table/UsersTable'
 
 import { SDialog } from 'shared/ui'
-
-const items: TabsProps['items'] = [
-  {
-    key: '1',
-    label: 'Пользователи',
-    children: <WTable<any>
-      dataSource={[]}
-      columns={[]}
-    />
-  },
-  {
-    key: '2',
-    label: 'На модерации',
-    children: <WTable<any>
-      dataSource={[]}
-      columns={[]}
-    />
-  },
-]
 
 export const UsersPage = () => {
   const [isCreateBenchVisible, setIsCreateBenchVisible] = useState(false)
@@ -45,6 +26,11 @@ export const UsersPage = () => {
     setIsCreateBenchVisible(false)
   }
 
+  // TODO: Убить за такое!
+  useEffect(() => {
+    getUsersFx()
+  })
+
   return (
     <div className={styles['benches-page']}>
       <Space className={styles['benches-page__header']}>
@@ -61,7 +47,7 @@ export const UsersPage = () => {
         </SButton> */}
       </Space>
 
-      <Tabs defaultActiveKey="1" items={items} onChange={onTabChange} />
+      <UsersTable />
 
       <SDialog title={'Создание лавочки'} open={isCreateBenchVisible} onSuccess={handleOk} onCancel={handleCancel}>
         Создание пользователя

@@ -3,13 +3,13 @@ import cnBind from 'classnames/bind'
 
 import styles from 'features/f-telegram-auth/ui/styles.module.scss'
 
-import { UserType } from 'shared/types'
+import { UserTelegramType } from 'shared/types'
 import { SIcon } from 'shared/ui'
 
 import { loginUserFx } from '../model/login'
 
 interface IProps {
-  onAuth?: (user: UserType) => void
+  onAuth?: (user: UserTelegramType) => void
 }
 
 const cx = cnBind.bind(styles)
@@ -20,7 +20,7 @@ export const FTelegramAuth = ({ onAuth }: IProps) => {
       bot_id: import.meta.env.VITE_BOT_ID,
       request_access: true
     }, 
-    (data: UserType) => {
+    (data: UserTelegramType) => {
       if (onAuth) {
         loginUserFx(data)
       }

@@ -1,4 +1,4 @@
-export type UserType = {
+export type UserTelegramType = {
   auth_date: number
   first_name: string
   hash: string
