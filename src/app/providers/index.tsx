@@ -1,10 +1,11 @@
 import { ConfigProvider, Radio, Space, theme } from 'antd'
-import { useCallback, useEffect, useState } from 'react'
+import {  useEffect, useState } from 'react'
 import { RouterProvider } from 'react-router-dom'
 
 import { router } from 'app/providers/router'
 import { themeConfig } from 'app/providers/theme'
-import { useLocalStorage } from '@/shared/lib/hooks'
+
+import { useLocalStorage } from 'shared/lib/hooks'
 
 export const Provider = () => {
   const { get, set } = useLocalStorage()
