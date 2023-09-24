@@ -1,12 +1,17 @@
 import { ConfigProvider, Radio, Space, theme } from 'antd'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { RouterProvider } from 'react-router-dom'
 
 import { router } from 'app/providers/router'
 import { themeConfig } from 'app/providers/theme'
+import { useLocalStorage } from '@/shared/lib/hooks'
 
 export const Provider = () => {
-  const [themeState, setThemeState] = useState('light')
+  const { get, set } = useLocalStorage()
+
+  // TODO: Вынести в другое место
+  // TODO: Использовать по умолчанию не белую тему, а тему системы.
+  const [themeState, setThemeState] = useState(get('theme') ?? 'dark')
 
   const { defaultAlgorithm, darkAlgorithm } = theme
 
@@ -21,6 +26,8 @@ export const Provider = () => {
   const handleThemeChange = (e: any) => {
     setThemeState(e.target.value)
 
+    set('theme', e.target.value)
+
     if (document.documentElement.classList.contains(e.target.value)) {
       return
     }
@@ -31,7 +38,7 @@ export const Provider = () => {
 
   useEffect(() => {
     document.documentElement.classList.add(themeState)
-  }, [])  
+  })  
 
   return (
     <ConfigProvider

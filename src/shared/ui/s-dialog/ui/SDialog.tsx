@@ -61,6 +61,7 @@ export const SDialog = ({
               open={open}
               centered={centered}
               footer={null}
+              getContainer={dialogWrapperRef.current ?? document.body}
               onOk={onSuccess}
               onCancel={onCancel}
             >

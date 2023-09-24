@@ -13,7 +13,7 @@ export const BaseLayout = () => {
 			<div className={styles['base-layout__content']}>
 				<WSidebar />
 
-				<div className={'w-100 container'}>
+				<div className={'container'}>
 					<WHeader />
 
 					<main>
