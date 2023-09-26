@@ -9,7 +9,7 @@ import { Provider } from 'app/providers'
 attachLogger()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider />
-  </React.StrictMode>,
+  // </React.StrictMode>,
 )

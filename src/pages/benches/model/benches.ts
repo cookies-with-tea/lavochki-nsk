@@ -1,9 +1,12 @@
-import { createEffect, createEvent, createStore } from 'effector'
+import { createEffect, createEvent, createStore, forward } from 'effector'
+import { createGate } from 'effector-react'
 
 import { getApiBenches } from 'pages/benches/api'
 
 import { INITIAL_PAGE_PARAMS } from 'shared/constants'
 import { BenchType } from 'shared/types'
+
+export const SampleCompGate = createGate()
 
 // --- Инициализация данных страницы --- //
 export const $perPage = createStore<number>(INITIAL_PAGE_PARAMS.perPage)
@@ -25,6 +28,11 @@ const $benches = createStore<Array<BenchType>>([])
 $benches.on(getBenchesFx.doneData, (_, { data }) => data.items)
 
 export const $isBenchesPending = getBenchesFx.pending
+
+forward({
+  from: SampleCompGate.open,
+  to: getBenchesFx,
+})
 
 export const selectors = {
   benches: $benches,

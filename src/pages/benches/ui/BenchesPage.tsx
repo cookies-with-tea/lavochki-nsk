@@ -1,9 +1,8 @@
 import { Space, Tabs } from 'antd'
-import { useUnit } from 'effector-react'
-import { useEffect } from 'react'
+import { useGate, useUnit } from 'effector-react'
 
 import { BENCHES_TABS } from 'pages/benches/constants'
-import { getBenchesFx } from 'pages/benches/model/benches'
+import {  SampleCompGate } from 'pages/benches/model/benches'
 import { changeTableEvents } from 'pages/benches/model/change-table'
 import { $isOpenModal, closeModal, openModal } from 'pages/benches/model/create-bench'
 import { BenchFormCreate } from 'pages/benches/ui/create/BenchFormCreate'
@@ -26,10 +25,7 @@ export const BenchesPage = () => {
     closeModal()
   }
 
-  useEffect(() => {
-    // TODO: Это плохо. Вынести запрос из useEffect
-    getBenchesFx()
-  }, [])
+  useGate(SampleCompGate)
 
   return (
     <div className={styles['benches-page']}>

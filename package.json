@@ -20,6 +20,7 @@
     "type-check": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
+    "@farfetched/core": "^0.10.0",
     "@remix-run/router": "^1.8.0",
     "@types/lodash.debounce": "^4.0.7",
     "antd": "^5.8.6",
