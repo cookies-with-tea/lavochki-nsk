@@ -6,7 +6,7 @@ import { getApiBenches } from 'pages/benches/api'
 import { INITIAL_PAGE_PARAMS } from 'shared/constants'
 import { BenchType } from 'shared/types'
 
-export const SampleCompGate = createGate()
+export const BenchesPageGate = createGate()
 
 // --- Инициализация данных страницы --- //
 export const $perPage = createStore<number>(INITIAL_PAGE_PARAMS.perPage)
@@ -30,7 +30,7 @@ $benches.on(getBenchesFx.doneData, (_, { data }) => data.items)
 export const $isBenchesPending = getBenchesFx.pending
 
 forward({
-  from: SampleCompGate.open,
+  from: BenchesPageGate.open,
   to: getBenchesFx,
 })
 

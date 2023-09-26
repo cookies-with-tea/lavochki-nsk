@@ -2,7 +2,7 @@ import { Space, Tabs } from 'antd'
 import { useGate, useUnit } from 'effector-react'
 
 import { BENCHES_TABS } from 'pages/benches/constants'
-import {  SampleCompGate } from 'pages/benches/model/benches'
+import {  BenchesPageGate } from 'pages/benches/model/benches'
 import { changeTableEvents } from 'pages/benches/model/change-table'
 import { $isOpenModal, closeModal, openModal } from 'pages/benches/model/create-bench'
 import { BenchFormCreate } from 'pages/benches/ui/create/BenchFormCreate'
@@ -13,6 +13,7 @@ import { SButton, SIcon, SDialog } from 'shared/ui'
 export const BenchesPage = () => {
   const [isModalOpen] = useUnit([$isOpenModal])
 
+  // TODO: Вынести модалки в фабрику (возможно)
   const showModal = () => {
     openModal()
   }
@@ -25,7 +26,7 @@ export const BenchesPage = () => {
     closeModal()
   }
 
-  useGate(SampleCompGate)
+  useGate(BenchesPageGate)
 
   return (
     <div className={styles['benches-page']}>
