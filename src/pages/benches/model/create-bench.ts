@@ -35,12 +35,14 @@ export const createBenchFx = createEffect<CreateBenchPayloadType, any, Error>(as
   formData.append('lat', String(payload.lat))
   formData.append('lng', String(payload.lng))
 
+  // TODO: tags -- необязтальное поле
   if (payload.tags.length) {
     payload.tags.forEach((tag) => {
       formData.append('tags', String(tag))
     })
   }
 
+  // TODO: images -- обязательное поле
   if (payload.images?.length) {
     payload.images.forEach((image) => {
       formData.append('images', image.originFileObj as File)
