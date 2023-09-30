@@ -2,7 +2,7 @@ import { Space, Tabs } from 'antd'
 import { useGate, useUnit } from 'effector-react'
 
 import { BENCHES_TABS } from 'pages/benches/constants'
-import {  BenchesPageGate } from 'pages/benches/model/benches'
+import { BenchesPageGate } from 'pages/benches/model/benches'
 import { changeTableEvents } from 'pages/benches/model/change-table'
 import { $isOpenModal, closeModal, openModal } from 'pages/benches/model/create-bench'
 import { BenchFormCreate } from 'pages/benches/ui/create/BenchFormCreate'

@@ -53,6 +53,8 @@ export class AxiosService {
           // Ошибка авторизации
           case 401: {
             // TODO: Используется, как logoutFx. Надо вынести.
+            if (window.location.pathname === '/login') return
+            
             const { remove } = useLocalStorage()
 
             remove('accessToken')
