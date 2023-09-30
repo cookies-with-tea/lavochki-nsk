@@ -1,6 +1,7 @@
 html {
   &.light {
     --color-primary: var(--color-blue-1);
+    --color-text: var(--color-dark);
   }
 
   &.dark {
@@ -9,5 +10,6 @@ html {
     --color-primary: var(--color-beige-1);
     --color-secondary: var(--color-beige-2);
     --color-box-shadow: rgba(var(--color-rgb-dark), 0.25);
+    --color-text: var(--color-white);
   }
 }

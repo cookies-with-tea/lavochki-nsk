@@ -22,12 +22,6 @@
     }
   }
 
-  &--primary {
-    &:hover {
-      background-color: var(--s-button-background-hover-color) !important;
-    }
-  }
-
   &--sm {
     --s-button-padding-vertical: 8px;
     --s-button-padding-horizontal: 12px;

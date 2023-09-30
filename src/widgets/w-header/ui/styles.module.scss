@@ -1,9 +1,18 @@
 .w-header {
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 68px 0 48px;
+  padding: 12px 0 48px;
+
+  &__top-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  &__bottom-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
   &__notifications {
     height: 37px;
@@ -20,7 +29,7 @@
       width: 16px;
       height: 16px;
       line-height: 1;
-      background-color: var(--color-blue-1);
+      background-color: var(--color-primary);
 
       :global(.ant-scroll-number-only) {
         height: 16px;
