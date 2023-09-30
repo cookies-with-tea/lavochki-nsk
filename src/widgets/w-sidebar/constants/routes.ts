@@ -20,8 +20,18 @@ export const ROUTES_MAP = [
     icon: 'user', // TODO: Заменить на users.
   },
   {
+    path: '/admins',
+    title: 'Администраторы',
+    icon: 'user', // TODO: Заменить на users.
+  },
+  {
     path: '/tags',
     title: 'Теги',
-    icon: 'user', // TODO: Заменить на users.
+    icon: 'user', // TODO: Заменить на tags.
+  },
+    {
+    path: '/reports-comments',
+    title: 'Жалобы на комментарии',
+    icon: 'user', // TODO: Заменить на .
   },
 ] as const

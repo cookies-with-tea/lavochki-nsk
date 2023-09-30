@@ -8,6 +8,13 @@ export type UserTelegramType = {
   username: string
 }
 
+export type UserType = {
+  id: string
+  role: 'user' | 'admin'
+  telegram_id: number
+  username: string
+}
+
 export type AuthorizationResponseType = { 
   access: string
   refresh: string

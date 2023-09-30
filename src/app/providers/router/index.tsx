@@ -11,6 +11,8 @@ const LoginPage = lazy(() => import('pages/login'))
 const TagsPage = lazy(() => import('pages/tags'))
 const UIKitPage = lazy(() => import('pages/UIKit'))
 const UsersPage = lazy(() => import('pages/users'))
+const AdminsPage = lazy(() => import('pages/admins'))
+const ReportsCommentsPage = lazy(() => import('pages/reports-comments'))
 
 // TODO: Добавить atomic-router
 
@@ -36,8 +38,16 @@ export const router: Router = createBrowserRouter([
         element: <UsersPage />,
       },
       {
+        path: '/admins',
+        element: <AdminsPage />,
+      },
+      {
         path: '/tags',
         element: <TagsPage />,
+      },
+      {
+        path: '/reports-comments',
+        element: <ReportsCommentsPage />,
       },
     ]
   },

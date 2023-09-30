@@ -4,9 +4,12 @@ import cnBind from 'classnames/bind'
 
 import EmptyAvatar from '/empty-avatar.png'
 
+import { useUnit } from 'effector-react'
 import { useState } from 'react'
 
 import styles from 'widgets/w-header/ui/styles.module.scss'
+
+import { selectors } from 'entities/user'
 
 import { SDrawer } from 'shared/ui'
 
@@ -16,16 +19,18 @@ const cx = cnBind.bind(styles)
 
 export const HeaderProfile = () => {
   const [isProfileVisible, setIsProfileVisible] = useState(false)
+  const user = useUnit(selectors.user)
+
   const src = undefined // TODO: Получить данное поле из user
-  const user = {
-    name: 'Олег',
-    src: 'https://photo.com/user.png'
-  }
+  // const user = {
+  //   name: 'Олег',
+  //   src: 'https://photo.com/user.png'
+  // }
 
   return (
     <>
       <div className={cn(cx('header-profile'))}>
-        <span className={cn(cx('header-profile__text'))}> { user.name } </span>
+        <span className={cn(cx('header-profile__text'))}> { user?.username } </span>
 
         <button className={cn(cx('header-profile__button'))} onClick={() => setIsProfileVisible(!isProfileVisible)}>
           { src ? <Avatar src={src} /> : <img src={EmptyAvatar} />}

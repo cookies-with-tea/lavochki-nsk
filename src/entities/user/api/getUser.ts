@@ -1,5 +1,7 @@
-import { usersApi } from 'shared/api/users'
+import { createEffect } from 'effector'
 
-export const getMe = async () => {
+import { usersApi } from 'shared/api'
+
+export const getUserFx = createEffect(async () => {
   return await usersApi.getMe()
-}
+})
