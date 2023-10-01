@@ -132,7 +132,7 @@ func (service *service) RefreshToken(ctx context.Context, token string) (string,
 	}
 
 	var newAccessToken string
-	newAccessToken, err = service.tokenManager.NewJWT(user.ID, user.Role, 15*time.Minute)
+	newAccessToken, err = service.tokenManager.NewJWT(user.ID, user.Role, service.tokenLifetime.Access*time.Minute)
 	if err != nil {
 		return "", "", err
 	}
@@ -142,7 +142,7 @@ func (service *service) RefreshToken(ctx context.Context, token string) (string,
 		return "", "", err
 	}
 
-	err = service.redisStorage.WriteRefreshToken(ctx, newRefreshToken, user.ID, 15*time.Minute)
+	err = service.redisStorage.WriteRefreshToken(ctx, newRefreshToken, user.ID, service.tokenLifetime.Refresh*time.Minute)
 	if err != nil {
 		return "", "", err
 	}
