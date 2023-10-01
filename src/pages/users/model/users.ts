@@ -30,6 +30,7 @@ export const getUsersFx = createEffect(async () => await getApiUsers())
 const $users = createStore<Array<UserType>>([])
 
 // TODO: Починить типы
+// @ts-ignore
 $users.on(getUsersFx.doneData, (_, { data }) => data)
 
 export const $isBenchesPending = getUsersFx.pending

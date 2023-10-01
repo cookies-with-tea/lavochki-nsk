@@ -1,5 +1,7 @@
+import { notification } from 'antd'
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
+import { usersApi } from 'shared/api'
 import { useLocalStorage } from 'shared/lib/hooks'
 
 export type ApiResponseType<T = unknown> = {
@@ -24,13 +26,14 @@ export type ServiceResponseTypeThree<T = unknown> = Promise<ApiResponseType<T> |
 
 export class AxiosService {
   private axiosInstance!: AxiosInstance
+  private stack: Array<any> = []
 
   constructor(config?: AxiosRequestConfig) {
     this.axiosInstance = axios.create({ ...config, timeout: 15000 })
 
     /** Request handler */
     this.axiosInstance.interceptors.request.use((config: any) => {
-      // Какая то дополнительная логика по настройке заголовков
+      // Какая-то дополнительная логика по настройке заголовков
 
       const { get } = useLocalStorage()
 
@@ -39,6 +42,8 @@ export class AxiosService {
       config.headers = {
         ...(accessToken ? { Authorization: 'Bearer ' + accessToken } : {}),
       }
+
+      this.stack.push(config)
 
       return config
     })
@@ -53,14 +58,29 @@ export class AxiosService {
           // Ошибка авторизации
           case 401: {
             // TODO: Используется, как logoutFx. Надо вынести.
-            if (window.location.pathname === '/login') return
-            
-            const { remove } = useLocalStorage()
+            // TODO: Добавить логику рефреш токена
+            // if (window.location.pathname === '/login') return
+            console.log(this.stack)
 
-            remove('accessToken')
-            remove('refreshToken')
-          
-            location.assign('/login')
+            const { get } = useLocalStorage()
+
+            const response = usersApi.getNewToken(get('accessToken') ?? '')
+
+            notification.open({
+              type: 'error',
+              message: 'Не авторизован'
+            })
+
+            // if (response) {
+            //   set('')
+            // }
+
+            // const { remove } = useLocalStorage()
+            //
+            // remove('accessToken')
+            // remove('refreshToken')
+
+            // location.assign('/login')
 
             break
           }
@@ -98,7 +118,7 @@ export class AxiosService {
     //   return data
     // } catch (error) {
     //   const axiosError = error as AxiosError
-      
+
 
     //   return axiosError.response?.data as ApiResponseType
     // }

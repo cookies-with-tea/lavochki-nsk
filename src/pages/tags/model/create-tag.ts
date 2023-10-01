@@ -1,8 +1,9 @@
-import { getTagsFx } from './tags'
 import { AxiosError } from 'axios'
 import { createEffect, createEvent, createStore, sample } from 'effector'
 
 import { createApiTag } from '../api/tags'
+
+import { getTagsFx } from './tags'
 
 export const tagNameChanged = createEvent<string>()
 export const formSubmitted = createEvent()

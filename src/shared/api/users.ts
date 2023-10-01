@@ -30,6 +30,16 @@ class UsersApi extends AxiosService {
       url: '/v1/users',
     })
   }
+
+  getNewToken = async (token: AuthorizationResponseType['access']) => {
+    return await this.axiosCall<AuthorizationResponseType>({
+      method: 'post',
+      url: '/v1/users/refresh',
+      data: {
+        token,
+      }
+    })
+  }
 }
 
 export const usersApi = new UsersApi(API_CONFIG)

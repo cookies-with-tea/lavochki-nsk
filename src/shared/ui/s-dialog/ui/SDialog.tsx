@@ -1,8 +1,6 @@
 import { Modal } from 'antd'
-import { useUnit } from 'effector-react'
 import { ReactNode, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import { $isOpenModal, closeModal } from '../model/dialog'
 
 interface IProps {
   title?: string
@@ -39,7 +37,7 @@ interface IProps {
 
 // Варианты transitionName | END
 
-export const SDialog = ({ 
+export const SDialog = ({
   title,
   open = false,
   children,
@@ -53,8 +51,8 @@ export const SDialog = ({
 
   return (
     <>
-      { 
-        createPortal( 
+      {
+        createPortal(
           <div ref={dialogWrapperRef}>
             <Modal
               title={title}
@@ -69,7 +67,7 @@ export const SDialog = ({
             </Modal>
           </div>,
           teleportTarget
-        ) 
+        )
       }
     </>
   )

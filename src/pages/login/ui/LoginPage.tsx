@@ -1,17 +1,10 @@
 import { Space } from 'antd'
-import { useNavigate } from 'react-router-dom'
 
 import styles from 'pages/login/ui/styles.module.scss'
 
 import { FTelegramAuth } from 'features/f-telegram-auth'
 
 export const LoginPage = () => {
-  const navigate = useNavigate()
-
-  const onSuccessAuth = () => {
-    // navigate('/')
-  }
-
   return (
     <div className={styles['login-page']}>
       <h1 className={styles['login-page__title']}>
@@ -24,8 +17,8 @@ export const LoginPage = () => {
             Fugit quo fugiat deserunt dignissimos, ad voluptatem dolorem sequi,
             quia pariatur similique totam, possimus placeat minima?
           </p>
-          
-          <FTelegramAuth onAuth={onSuccessAuth} />
+
+          <FTelegramAuth />
         </div>
 
         <div className={styles['login-page__form-item']}>

@@ -9,9 +9,11 @@ import { useState } from 'react'
 
 import styles from 'widgets/w-header/ui/styles.module.scss'
 
+import { logoutFx } from 'features/f-telegram-auth/model/login'
+
 import { selectors } from 'entities/user'
 
-import { SDrawer } from 'shared/ui'
+import { SButton, SDrawer } from 'shared/ui'
 
 const cx = cnBind.bind(styles)
 
@@ -36,10 +38,14 @@ export const HeaderProfile = () => {
           { src ? <Avatar src={src} /> : <img src={EmptyAvatar} />}
         </button>
       </div>
-     
+
 
       <SDrawer open={isProfileVisible} onClose={() => setIsProfileVisible(false)}>
         Profile
+
+        <SButton appearance={'dashed'} onClick={logoutFx}>
+          Выйти
+        </SButton>
       </SDrawer>
     </>
   )

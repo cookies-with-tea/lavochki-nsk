@@ -43,10 +43,10 @@ html {
 }
 
 body {
-  scroll-behavior: smooth;
-  overflow: auto;
   color: var(--color-text);
   background-color: var(--color-background);
+  scroll-behavior: smooth;
+  overflow: auto;
 }
 
 html, body, #root {

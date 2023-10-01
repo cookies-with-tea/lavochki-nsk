@@ -16,7 +16,6 @@ export const $accessToken = createStore('')
 export const $refreshToken = createStore('')
 
 export const onAuthorized = createEvent()
-export const logoutClicked = createEvent()
 export const getMe = createEvent()
 
 // TODO: Разобраться с типизацией
@@ -78,11 +77,13 @@ loginUserFx.doneData.watch(() => {
 
 $user.reset(logoutFx)
 
+// TODO: Сделать { ...$user }
 sample({
   clock: onAuthorized,
   source: { user: $user },
   target: loginUserFx
 })
+
 
 export const effects = {
   loginUserFx,

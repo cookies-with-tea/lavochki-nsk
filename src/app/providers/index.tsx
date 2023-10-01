@@ -1,5 +1,5 @@
 import { ConfigProvider, Radio, Space, theme } from 'antd'
-import {  useEffect, useState } from 'react'
+import {  useEffect, useRef, useState } from 'react'
 import { RouterProvider } from 'react-router-dom'
 
 import { router } from 'app/providers/router'
@@ -12,7 +12,7 @@ export const Provider = () => {
 
   const getPreferredColorScheme = () => {
     console.log(window.matchMedia('(prefers-color-scheme: dark)').matches)
-    
+
 
     if (window.matchMedia) {
       if(window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -27,6 +27,8 @@ export const Provider = () => {
   // TODO: Вынести в другое место
   // TODO: Использовать по умолчанию не белую тему, а тему системы.
   const [themeState, setThemeState] = useState(get('theme') ?? 'dark')
+
+  const modalContainerRef = useRef<HTMLElement | undefined>(undefined)
 
   const { defaultAlgorithm, darkAlgorithm } = theme
 
@@ -54,20 +56,21 @@ export const Provider = () => {
 
   useEffect(() => {
     document.documentElement.classList.add(themeState)
-  })  
+  })
 
   return (
     <ConfigProvider
       theme={
-        { 
+        {
           ...themeConfig,
-          token: { 
+          token: {
             ...themeConfig.token,
             ...(themeState === 'light' ? lightTheme : darkTheme)
           },
           algorithm: themeState === 'light' ? defaultAlgorithm : darkAlgorithm,
         }
       }
+      getPopupContainer={() => modalContainerRef.current as HTMLElement}
     >
       <Space direction={'vertical'} size={12}>
         <Radio.Group value={themeState} onChange={handleThemeChange}>
@@ -78,6 +81,10 @@ export const Provider = () => {
       </Space>
 
       <RouterProvider router={router} />
+
+      {/* TODO: Разобраться с типами */}
+      {/* @ts-ignore */}
+      <div className={'popup-container'} ref={modalContainerRef}></div>
     </ConfigProvider>
   )
 }

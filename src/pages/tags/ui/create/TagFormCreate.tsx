@@ -1,6 +1,7 @@
 import { Form, Input } from 'antd'
 
 import { SButton } from 'shared/ui'
+
 import { formSubmitted, tagNameChanged } from '../../model/create-tag'
 
 export const TagFormCreate = () => {

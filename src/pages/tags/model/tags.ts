@@ -21,4 +21,6 @@ export const getTagsFx = createEffect(async () => await getApiTags())
 
 export const $tags = createStore<Array<TagType>>([])
 
+// TODO: Разобраться с типами
+// @ts-ignore
 $tags.on(getTagsFx.doneData, (_, { data }) => data)

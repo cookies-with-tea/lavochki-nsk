@@ -1,19 +1,15 @@
 import { Table } from 'antd'
-import { ColumnsType } from 'antd/es/table'
+import { TableProps } from 'antd/es/table'
 import cn from 'classnames'
 import cnBind from 'classnames/bind'
+import { Key } from 'react'
 
 import styles from 'widgets/w-table/ui/styles.module.scss'
 
 const cx = cnBind.bind(styles)
 
-interface IProps<T> {
-  dataSource: Array<T>
-  columns: ColumnsType<T>
-}
-
 const rowSelection = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
+  onChange: (selectedRowKeys: Key[], selectedRows: any[]) => {
     console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows)
   },
   getCheckboxProps: (record: any) => ({
@@ -22,17 +18,16 @@ const rowSelection = {
   }),
 }
 
-export const WTable = <T extends object>({ dataSource, columns }: IProps<T>) => {
+export const WTable = <T extends object>(props: TableProps<T>) => {
   return (
     <Table
       rowKey={'id'}
       className={cn(cx('w-table'))}
-      columns={columns}
-      dataSource={dataSource}
       rowSelection={{
         ...rowSelection
       }}
-      pagination={{ position: ['bottomCenter'], hideOnSinglePage: true }} 
+      {...props}
+      pagination={{ position: ['bottomCenter'], hideOnSinglePage: true }}
     />
   )
 }

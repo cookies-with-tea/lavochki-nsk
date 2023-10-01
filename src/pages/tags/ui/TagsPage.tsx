@@ -47,7 +47,7 @@ export const TagsPage = () => {
           }
           onClick={showModal}
           >
-          Создать теги
+          Создать тег
         </SButton>
       </Space>
       

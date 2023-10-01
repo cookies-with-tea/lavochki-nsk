@@ -3,6 +3,6 @@ import { UploadFile } from 'antd'
 export type CreateBenchPayloadType = {
   lat: string
   lng: string
-  tags: Array<string>
-  images?: Array<UploadFile>
+  tags?: Array<string>
+  images: Array<UploadFile>
 }
