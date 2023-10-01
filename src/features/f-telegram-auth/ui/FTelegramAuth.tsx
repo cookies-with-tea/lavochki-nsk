@@ -8,22 +8,16 @@ import { SIcon } from 'shared/ui'
 
 import { loginUserFx } from '../model/login'
 
-interface IProps {
-  onAuth?: (user: UserTelegramType) => void
-}
-
 const cx = cnBind.bind(styles)
 
-export const FTelegramAuth = ({ onAuth }: IProps) => {
+export const FTelegramAuth = () => {
   const handleLogin = (): void => {
     window?.Telegram?.Login.auth({
       bot_id: import.meta.env.VITE_BOT_ID,
       request_access: true
-    }, 
-    (data: UserTelegramType) => {
-      if (onAuth) {
-        loginUserFx(data)
-      }
+    },
+    async (data: UserTelegramType) => {
+      await loginUserFx(data)
     })
   }
 
