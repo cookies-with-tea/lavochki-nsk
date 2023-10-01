@@ -55,7 +55,8 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 	// Удаление лавочки
 	routerModeration.HandleFunc("/{id}", apperror.Middleware(handler.deleteBench)).Methods("DELETE")
 
-	router.HandleFunc("/{id}", apperror.Middleware(handler.detailBench)).Methods("GET")
+	// Общий endpoint для получения детальной информации о лавочке
+	router.HandleFunc("/{id}", authManager.JWTMiddlewareHandler(apperror.Middleware(handler.detailBench))).Methods("GET")
 }
 
 // @Summary All list benches
@@ -115,14 +116,11 @@ func (handler *Handler) listBenches(writer http.ResponseWriter, request *http.Re
 // @Router /api/v1/benches/{id} [get]
 func (handler *Handler) detailBench(w http.ResponseWriter, r *http.Request) error {
 	id := mux.Vars(r)["id"]
-	bench, err := handler.policy.GetBenchByID(r.Context(), id)
+	bench, err := handler.policy.GetDetailBench(r.Context(), id, r.Context().Value("userID").(string))
 	if err != nil {
 		return err
 	}
 
-	if !bench.IsActive {
-		return apperror.ErrNotFound
-	}
 	handler.ResponseJson(w, bench, http.StatusOK)
 	return nil
 }
