@@ -34,8 +34,8 @@ export const DetailBench = () => {
       <Space>
         <Image.PreviewGroup items={bench.images}>
           {
-            bench.images?.length && bench.images.map((src) => (
-              <Image width={100} src={src} />
+            bench.images.map((src) => (
+              <Image key={src} width={100} src={src} />
             ))
           }
         </Image.PreviewGroup>
