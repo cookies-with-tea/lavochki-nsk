@@ -80,6 +80,16 @@ func (m *Manager) NewRefreshToken() (string, error) {
 	return fmt.Sprintf("%x", b), nil
 }
 
+func (m *Manager) JWTMiddlewareHandler(next http.HandlerFunc) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx, err := m.checkJWT(w, r)
+		if err != nil {
+			return
+		}
+		next(w, r.WithContext(ctx))
+	})
+}
+
 func (m *Manager) JWTMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx, err := m.checkJWT(w, r)
