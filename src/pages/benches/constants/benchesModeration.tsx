@@ -1,7 +1,10 @@
 import { Space } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 
+import { decisionMade } from 'pages/benches/model/benches'
+
 import { BenchType } from 'shared/types'
+import { SButton } from 'shared/ui'
 
 export const benchesModerationColumns: ColumnsType<BenchType> = [
   {
@@ -39,8 +42,23 @@ export const benchesModerationColumns: ColumnsType<BenchType> = [
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-        <a>Invite {record.id}</a>
-        <a>Delete</a>
+        <SButton
+          onClick={
+          () => decisionMade({
+            id: record.id,
+            decision: true,
+            message: 'Молодец'
+          })}>
+          Принять
+        </SButton>
+        <SButton
+          onClick={() => decisionMade({
+            id: record.id,
+            decision: false,
+            message: 'Не молодец'
+          })}>
+          Отклонить
+        </SButton>
       </Space>
     ),
   },

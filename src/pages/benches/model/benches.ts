@@ -1,11 +1,11 @@
-import {  createEvent, createStore, forward } from 'effector'
+import { createEvent, createStore, forward, sample } from 'effector'
 import { createGate } from 'effector-react'
 
 
 import { INITIAL_PAGE_PARAMS } from 'shared/constants'
-import { BenchType } from 'shared/types'
+import { BenchType, SetDecisionPayloadType } from 'shared/types'
 
-import { getBenchesFx } from '../api'
+import { getBenchesFx, setDecisionBenchFx } from '../api'
 
 // TODO: Реализовать пагинацию
 export const BenchesPageGate = createGate()
@@ -21,6 +21,7 @@ export const $totalPages = createStore<number>(INITIAL_PAGE_PARAMS.totalPages)
 // --- Инициализация основных эвентов страницы --- //
 export const pageChanged = createEvent<string>()
 
+export const decisionMade = createEvent<SetDecisionPayloadType>()
 
 const $benches = createStore<Array<BenchType>>([])
 
@@ -33,6 +34,13 @@ forward({
   from: BenchesPageGate.open,
   to: getBenchesFx,
 })
+
+sample({
+  clock: decisionMade,
+  target: setDecisionBenchFx,
+})
+
+// TODO: Добавить экспорт эвентов
 
 export const selectors = {
   benches: $benches,

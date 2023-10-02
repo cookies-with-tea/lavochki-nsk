@@ -12,7 +12,7 @@ class BenchesApi extends AxiosService {
 
   getBenches = async (payload: any) => {
     return await this.axiosCall<BenchesResponseType>({
-      method: '',
+      method: 'get',
       url: '/v1/benches',
       params: payload,
     })
@@ -38,7 +38,7 @@ class BenchesApi extends AxiosService {
     return await this.axiosCall<BenchesResponseType>({
       method: 'post',
       url: '/v1/benches/moderation',
-      params: payload,
+      data: payload,
     })
   }
 

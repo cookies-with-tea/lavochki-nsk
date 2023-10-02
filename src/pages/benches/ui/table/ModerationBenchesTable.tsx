@@ -1,6 +1,6 @@
 import { useUnit } from 'effector-react'
 
-import { benchesColumns } from 'pages/benches/constants'
+import { benchesModerationColumns } from 'pages/benches/constants'
 import { selectors } from 'pages/benches/model/benches'
 
 import { WTable } from 'widgets/w-table'
@@ -15,7 +15,7 @@ export const BenchesModerationTable = () => {
   return (
     <WTable<BenchType>
       dataSource={benches}
-      columns={benchesColumns}
+      columns={benchesModerationColumns}
       onRow={(record) => {
         return {
           onClick: async (event) => {
