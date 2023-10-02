@@ -1,8 +1,9 @@
 package benches
 
 import (
-	"benches/internal/domain"
 	"database/sql"
+
+	"benches/internal/domain"
 
 	"github.com/mitchellh/mapstructure"
 )
@@ -80,11 +81,9 @@ func (b *benchModel) ToMap() (map[string]interface{}, error) {
 		return updateBenchMap, err
 	}
 
-	// TODO: зарефакторить, чтобы Mapstructure сам преобразовывал sql.NullString к string или nil
+	// TODO: Зарефакторить, чтобы Mapstructure сам преобразовывал sql.NullString к string или nil
 	if updateBenchMap["Valid"] == true {
 		updateBenchMap["street"] = updateBenchMap["String"]
-	} else {
-		updateBenchMap["street"] = nil
 	}
 	delete(updateBenchMap, "String")
 	delete(updateBenchMap, "Valid")
