@@ -96,14 +96,14 @@ func (policy *Policy) GetListBenches(ctx context.Context, isActive bool, sortOpt
 	if count != 0 {
 		countAllPages = count / paginateOptions.PerPage
 	}
-	list := domain.NewBenchesList(all, count, len(all), countAllPages)
+	list := domain.NewBenchesList(all, count, len(all), countAllPages, paginateOptions.Page)
 
 	return list, nil
 }
 
 func (policy *Policy) CreateBench(ctx context.Context, ownerID string, byteImages [][]byte,
 	tags []string, bench domain.Bench) (*domain.Bench, error) {
-	// Сохраняем все фотографии, которые нам пришли в виде байт, в Minio
+	// Сохраняем все фотографии, которые нам пришли байтам, в Minio
 	images, err := policy.benchesService.SaveImages(ctx, byteImages)
 	if err != nil {
 		return nil, err
