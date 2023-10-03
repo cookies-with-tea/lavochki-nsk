@@ -11,17 +11,18 @@ type Bench struct {
 }
 
 type BenchesList struct {
-	Count         int      `json:"count"`
-	CountInPage   int      `json:"count_in_page"`
-	CountAllPages int      `json:"count_all_pages"`
-	Items         []*Bench `json:"items"`
+	Pagination Pagination `json:"pagination"`
+	Items      []*Bench   `json:"items"`
 }
 
-func NewBenchesList(benches []*Bench, count, countInPage, countAllPages int) BenchesList {
+func NewBenchesList(benches []*Bench, count, countInPage, countAllPages, currentPage int) BenchesList {
 	return BenchesList{
-		Count:         count,
-		Items:         benches,
-		CountInPage:   countInPage,
-		CountAllPages: countAllPages,
+		Items: benches,
+		Pagination: Pagination{
+			Count:         count,
+			CountAllPages: countAllPages,
+			PerPage:       countInPage,
+			CurrentPage:   currentPage,
+		},
 	}
 }
