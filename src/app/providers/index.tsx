@@ -1,4 +1,5 @@
 import { ConfigProvider, Radio, Space, theme } from 'antd'
+import frFR from 'antd/locale/ru_RU'
 import {  useEffect, useRef, useState } from 'react'
 import { RouterProvider } from 'react-router-dom'
 
@@ -70,6 +71,7 @@ export const Provider = () => {
           algorithm: themeState === 'light' ? defaultAlgorithm : darkAlgorithm,
         }
       }
+      locale={frFR}
       getPopupContainer={() => modalContainerRef.current as HTMLElement}
     >
       <Space direction={'vertical'} size={12}>

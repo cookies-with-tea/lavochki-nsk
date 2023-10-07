@@ -3,5 +3,5 @@ export * from 'pages/benches/constants/benchesModeration'
 export * from 'pages/benches/constants/tabs'
 
 export const INITIAL_BENCH_PAGE_PARAMS = {
-  initialTab: '1',
+  initialTab: 'benches',
 } as const

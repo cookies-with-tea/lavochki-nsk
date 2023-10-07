@@ -3,12 +3,12 @@ import { BenchesModerationTable } from 'pages/benches/ui/table/ModerationBenches
 
 export const BENCHES_TABS = [
   {
-    key: '1',
+    key: 'benches',
     label: 'Прошедшие модерацию',
     children: <BenchesTable />
   },
   {
-    key: '2',
+    key: 'moderation-benches',
     label: 'На модерации',
     children: <BenchesModerationTable />
   },

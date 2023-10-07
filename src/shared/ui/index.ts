@@ -13,3 +13,5 @@ export { SInput } from 'shared/ui/s-input'
 export { SInputNumber } from 'shared/ui/s-input-number'
 
 export { SSelect } from 'shared/ui/s-select'
+
+export { SLoader } from 'shared/ui/s-loader'

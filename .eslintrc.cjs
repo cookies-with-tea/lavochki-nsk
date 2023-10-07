@@ -4,9 +4,11 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:react-hooks/recommended',
     'prettier',
     'plugin:effector/react',
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended",
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
@@ -70,6 +72,11 @@ module.exports = {
     'no-useless-constructor': 'off',
     'linebreak-style': ['error', 'unix'],
     'object-curly-spacing': ['error', 'always', { objectsInObjects: true }],
+
+    // suppress errors for missing 'import React' in files
+    "react/react-in-jsx-scope": "off",
+   // allow jsx syntax in js files (for next.js project)
+    "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }], //should add ".ts" if typescript project
     'max-len': [
       'error',
       {

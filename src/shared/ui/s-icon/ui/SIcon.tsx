@@ -20,7 +20,8 @@ export const SIcon = ({ prefix = 'icon', reverse = false, className, name, width
 
   return (
     <>
-      <svg className={classNames}  width={width} height={height} aria-hidden="true">
+      <svg className={classNames} width={width}
+height={height} aria-hidden="true">
         <use href={symbolId} />
       </svg>
     </>

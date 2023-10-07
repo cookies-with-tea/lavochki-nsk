@@ -1,33 +1,24 @@
-import { Button } from 'antd'
+import { Button, ButtonProps } from 'antd'
 import cn from 'classnames'
 import cnBind from 'classnames/bind'
-import { ReactNode, ReactElement } from 'react'
+import { ReactElement } from 'react'
 
 import styles from 'shared/ui/s-button/ui/styles.module.scss'
 
-interface IProps {
-  className?: string
+interface IProps extends ButtonProps {
   appearance?: 'primary' | 'link' | 'text' | 'default' | 'dashed'
-  size?: 'sm' | 'md'
-  children: ReactNode
   prefixIcon?: ReactElement
   postfixIcon?: ReactElement
-  disabled?: boolean
-  loading?: boolean
-  block?: boolean
-  htmlType?: 'button' | 'submit' | 'reset'
-
-  onClick?: () => void
 }
 
 const cx = cnBind.bind(styles)
 
-export const SButton = ({
+export const SButton = <T = unknown>({
   appearance = 'default',
   children,
   className = '',
   htmlType = 'button',
-  size = 'md',
+  size = 'middle',
   prefixIcon,
   postfixIcon,
   disabled = false,

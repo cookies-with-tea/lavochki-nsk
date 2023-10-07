@@ -10,10 +10,15 @@ import { BenchType } from 'shared/types'
 import { getDetailBenchFx } from '../../api'
 
 export const BenchesModerationTable = () => {
-  const [benches, ] = useUnit([selectors.benches])
+  const [
+    benches,
+    pending,
+    pagination
+  ] = useUnit([selectors.moderationBenches, selectors.isModerationBenchesPending, selectors.pagination])
 
   return (
     <WTable<BenchType>
+      loading={pending}
       dataSource={benches}
       columns={benchesModerationColumns}
       onRow={(record) => {
@@ -24,6 +29,10 @@ export const BenchesModerationTable = () => {
             await getDetailBenchFx(record.id)
           }
         }
+      }}
+      pagination={{
+        total: pagination.total,
+        pageSize: pagination.perPage,
       }}
     />
   )

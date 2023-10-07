@@ -9,9 +9,14 @@ import { WTable } from 'widgets/w-table'
 import { BenchType } from 'shared/types'
 
 export const BenchesTable = () => {
+  const [benches, pending, pagination] = useUnit([selectors.benches, selectors.isBenchesPending, selectors.pagination])
+
   return (
-    <WTable<BenchType> dataSource={useUnit(selectors.benches)} columns={benchesColumns}
-    onRow={(record) => {
+    <>
+    <WTable<BenchType>
+     loading={pending} className={'benches-table'}
+      dataSource={benches} columns={benchesColumns}
+      onRow={(record) => {
       return {
         onClick: async (event) => {
           if (event.ctrlKey) return
@@ -20,6 +25,15 @@ export const BenchesTable = () => {
         }
       }
     }}
+    pagination={{
+      total: pagination.total,
+      pageSize: pagination.perPage,
+      onChange(page, pageSize) {
+          console.log(page)
+      },
+    }}
     />
+    </>
+    
   )
 }

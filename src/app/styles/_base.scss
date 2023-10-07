@@ -87,6 +87,7 @@ h5,
 .container {
   width: 100%;
   padding-right: var(--container-padding);
+  padding-bottom: var(--container-padding);
 
   &--footer,
   &--header {

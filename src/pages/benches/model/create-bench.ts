@@ -43,7 +43,7 @@ export const createBenchFx = createEffect<CreateBenchPayloadType, any, Error>(as
     formData.append('images', image.originFileObj as File)
   })
 
-  return benchesApi.createBench(formData)
+  return await benchesApi.createBench(formData)
 })
 
 export const getTagsOptionsFx = createEffect<void, any, AxiosError>(async () => await getApiTags())
@@ -75,6 +75,7 @@ sample({
   fn: () => closeModal(), // TODO: unit call from pure function is deprecated, use operators like sample instead
 })
 
+// TODO: Переделать
 sample({
   clock: createBenchFx.done,
   fn: () => getModerationBenchesFx({

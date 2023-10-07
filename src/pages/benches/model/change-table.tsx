@@ -6,10 +6,10 @@ import { selectors } from 'pages/benches/model/benches'
 import { getBenchesFx, getModerationBenchesFx } from '../api'
 export const $activeTab = createStore<string>(INITIAL_BENCH_PAGE_PARAMS.initialTab)
 
-export const tabChanged = createEvent<string>('')
+export const tabChanged = createEvent<string>('benches')
 
 export const tabChangeFx = createEffect((activeTab: string) => {
-  if (activeTab === '1') {
+  if (activeTab === 'benches') {
     return getBenchesFx({
       per_page: 100,
     })

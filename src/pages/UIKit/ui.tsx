@@ -12,7 +12,8 @@ export const UIKitPage = () => {
           <SButton appearance={'primary'}>Войти</SButton>
           <SButton appearance={'link'} className={'ml-16'}>Забыли пароль</SButton>
           
-          <SIcon name={'close'} reverse className={'ml-16'} />
+          <SIcon name={'close'} reverse
+className={'ml-16'} />
         </div>
 
         <div className={'mb-48'}>

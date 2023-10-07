@@ -44,19 +44,29 @@ export const benchesModerationColumns: ColumnsType<BenchType> = [
       <Space size="middle">
         <SButton
           onClick={
-          () => decisionMade({
-            id: record.id,
-            decision: true,
-            message: 'Молодец'
-          })}>
+          async (event: MouseEvent) => {
+            event.stopPropagation()
+
+            decisionMade({
+              id: record.id,
+              decision: true,
+              message: 'Молодец'
+            })
+          }}>
           Принять
         </SButton>
         <SButton
-          onClick={() => decisionMade({
-            id: record.id,
-            decision: false,
-            message: 'Не молодец'
-          })}>
+          onClick={
+          (event: MouseEvent): void => {
+            event.stopPropagation()
+
+            // TODO: Добавить вызов диалога с текстом
+            decisionMade({
+              id: record.id,
+              decision: false,
+              message: 'Не молодец'
+            })
+          }}>
           Отклонить
         </SButton>
       </Space>

@@ -11,7 +11,7 @@ import { events, selectors } from 'pages/benches/model/detail-bench'
 import { BenchFormCreate } from 'pages/benches/ui/create/BenchFormCreate'
 import styles from 'pages/benches/ui/styles.module.scss'
 
-import { SButton, SIcon, SDialog, SDrawer } from 'shared/ui'
+import { SButton, SIcon, SDialog, SDrawer, SLoader } from 'shared/ui'
 
 import { DetailBench } from './detail/DetailBench'
 
@@ -64,16 +64,18 @@ export const BenchesPage = () => {
       </Space>
 
       <Tabs
-        defaultActiveKey={'1'} 
+        defaultActiveKey={'benches'}
         items={BENCHES_TABS}
         onChange={(tab) => changeTableEvents.tabChanged(tab)}
       />
 
-      <SDialog title={'Создание лавочки'} open={isModalOpen} onSuccess={handleOk} onCancel={handleCancel}>
+      <SDialog title={'Создание лавочки'} open={isModalOpen}
+onSuccess={handleOk} onCancel={handleCancel}>
         <BenchFormCreate />
       </SDialog>
 
-      <SDrawer title={'Детальная лавочка'} open={isDrawerOpen} onClose={drawerClosed}>
+      <SDrawer title={'Детальная лавочка'} open={isDrawerOpen}
+onClose={drawerClosed}>
         <DetailBench />
       </SDrawer>
     </div>

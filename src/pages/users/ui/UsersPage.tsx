@@ -49,7 +49,8 @@ export const UsersPage = () => {
 
       <UsersTable />
 
-      <SDialog title={'Создание лавочки'} open={isCreateBenchVisible} onSuccess={handleOk} onCancel={handleCancel}>
+      <SDialog title={'Создание лавочки'} open={isCreateBenchVisible}
+onSuccess={handleOk} onCancel={handleCancel}>
         Создание пользователя
       </SDialog>
     </div>

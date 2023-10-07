@@ -102,7 +102,8 @@ export const BenchFormCreate = () => {
       </Form.Item>
 
       <Form.Item>
-        <SButton appearance={'primary'} htmlType={'submit'} size={'sm'}>
+        <SButton appearance={'primary'} htmlType={'submit'}
+size={'sm'}>
           Создать
         </SButton>
       </Form.Item>

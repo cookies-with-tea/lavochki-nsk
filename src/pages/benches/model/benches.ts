@@ -1,34 +1,42 @@
-import { createEvent, createStore, forward, sample } from 'effector'
+import { combine, createEvent, createStore, forward, sample } from 'effector'
 import { createGate } from 'effector-react'
-
 
 import { INITIAL_PAGE_PARAMS } from 'shared/constants'
 import { BenchType, SetDecisionPayloadType } from 'shared/types'
 
-import { getBenchesFx, setDecisionBenchFx } from '../api'
+import { getBenchesFx, getModerationBenchesFx, setDecisionBenchFx } from '../api'
+
 
 // TODO: Реализовать пагинацию
 export const BenchesPageGate = createGate()
 
 // --- Инициализация данных страницы --- //
-// export const $perPage = createStore<number>(INITIAL_PAGE_PARAMS.perPage)
-export const $perPage = createStore<number>(100)
+export const $perPage = createStore<number>(INITIAL_PAGE_PARAMS.perPage)
+export const $totalPages = createStore<number>(INITIAL_PAGE_PARAMS.total)
 
-export const $totalPages = createStore<number>(INITIAL_PAGE_PARAMS.totalPages)
+const $pagination = combine($perPage, $totalPages, (perPage, total) => {
+  return {
+    perPage,
+    total,
+  }
+})
 
 // ------ //
 
 // --- Инициализация основных эвентов страницы --- //
-export const pageChanged = createEvent<string>()
+export const pageChanged = createEvent<number>()
 
 export const decisionMade = createEvent<SetDecisionPayloadType>()
 
 const $benches = createStore<Array<BenchType>>([])
+const $moderationBenches = createStore<Array<BenchType>>([])
 
 // TODO: Починить типы
 $benches.on(getBenchesFx.doneData, (_, { data }) => data.items)
+$moderationBenches.on(getModerationBenchesFx.doneData, (_, { data }) => data.items)
 
-export const $isBenchesPending = getBenchesFx.pending
+const $isBenchesPending = getBenchesFx.pending
+const $isModerationBenchesPending = getModerationBenchesFx.pending
 
 forward({
   from: BenchesPageGate.open,
@@ -40,8 +48,21 @@ sample({
   target: setDecisionBenchFx,
 })
 
+sample({
+  clock: setDecisionBenchFx.done,
+  target: getModerationBenchesFx,
+})
+
+sample({
+  clock: pageChanged,
+})
+
 // TODO: Добавить экспорт эвентов
 
 export const selectors = {
   benches: $benches,
+  moderationBenches: $moderationBenches,
+  isBenchesPending: $isBenchesPending,
+  isModerationBenchesPending: $isModerationBenchesPending,
+  pagination: $pagination,
 }

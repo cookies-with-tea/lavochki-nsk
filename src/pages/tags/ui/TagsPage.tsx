@@ -64,7 +64,8 @@ export const TagsPage = () => {
         }
       ]} />
 
-      <SDialog title={'Создание лавочки'} open={isModalOpen} onSuccess={handleOk} onCancel={handleCancel}>
+      <SDialog title={'Создание лавочки'} open={isModalOpen}
+onSuccess={handleOk} onCancel={handleCancel}>
         <TagFormCreate />
       </SDialog>
     </div>
