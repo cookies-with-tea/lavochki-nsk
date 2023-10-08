@@ -9,7 +9,7 @@ import { useState } from 'react'
 
 import styles from 'widgets/w-header/ui/styles.module.scss'
 
-import { logoutFx } from 'features/f-telegram-auth/model/login'
+import { logoutFx } from 'features/telegram-auth/model/login'
 
 import { selectors } from 'entities/user'
 

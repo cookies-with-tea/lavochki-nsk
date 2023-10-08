@@ -1,11 +1,12 @@
 import { combine, createEvent, createStore, forward, sample } from 'effector'
 import { createGate } from 'effector-react'
 
+import { setDecisionBenchFx } from 'pages/benches/api'
+
+import { effects } from 'entities/bench/api'
+
 import { INITIAL_PAGE_PARAMS } from 'shared/constants'
 import { BenchType, SetDecisionPayloadType } from 'shared/types'
-
-import { getBenchesFx, getModerationBenchesFx, setDecisionBenchFx } from '../api'
-
 
 // TODO: Реализовать пагинацию
 export const BenchesPageGate = createGate()
@@ -32,15 +33,15 @@ const $benches = createStore<Array<BenchType>>([])
 const $moderationBenches = createStore<Array<BenchType>>([])
 
 // TODO: Починить типы
-$benches.on(getBenchesFx.doneData, (_, { data }) => data.items)
-$moderationBenches.on(getModerationBenchesFx.doneData, (_, { data }) => data.items)
+$benches.on(effects.getBenchesFx.doneData, (_, { data }) => data.items)
+$moderationBenches.on(effects.getModerationBenchesFx.doneData, (_, { data }) => data.items)
 
-const $isBenchesPending = getBenchesFx.pending
-const $isModerationBenchesPending = getModerationBenchesFx.pending
+const $isBenchesPending = effects.getBenchesFx.pending
+const $isModerationBenchesPending = effects.getModerationBenchesFx.pending
 
 forward({
   from: BenchesPageGate.open,
-  to: getBenchesFx,
+  to: effects.getBenchesFx,
 })
 
 sample({
@@ -50,7 +51,7 @@ sample({
 
 sample({
   clock: setDecisionBenchFx.done,
-  target: getModerationBenchesFx,
+  target: effects.getModerationBenchesFx,
 })
 
 sample({

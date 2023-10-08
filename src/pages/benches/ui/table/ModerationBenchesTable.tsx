@@ -2,12 +2,11 @@ import { useUnit } from 'effector-react'
 
 import { benchesModerationColumns } from 'pages/benches/constants'
 import { selectors } from 'pages/benches/model/benches'
+import { events } from 'pages/benches/model/detail-bench'
 
 import { WTable } from 'widgets/w-table'
 
 import { BenchType } from 'shared/types'
-
-import { getDetailBenchFx } from '../../api'
 
 export const BenchesModerationTable = () => {
   const [
@@ -26,7 +25,7 @@ export const BenchesModerationTable = () => {
           onClick: async (event) => {
             if (event.ctrlKey) return
 
-            await getDetailBenchFx(record.id)
+            events.drawerOpened(record.id)
           }
         }
       }}

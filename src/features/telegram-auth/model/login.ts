@@ -2,7 +2,7 @@ import { notification } from 'antd'
 import { AxiosError } from 'axios'
 import { createEffect, createEvent, createStore, sample } from 'effector'
 
-import { authUser } from 'features/f-telegram-auth/api'
+import { authUser } from 'features/telegram-auth/api'
 
 import { useDictionary, useLocalStorage } from 'shared/lib/hooks'
 import { ApiErrorResponseType } from 'shared/plugins/axios'

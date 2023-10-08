@@ -1,10 +1,10 @@
 import { UploadFile } from 'antd'
-import { AxiosError } from 'axios'
 import { createEffect, createEvent, createStore, sample } from 'effector'
 import { not } from 'patronum'
 
-import { getApiTags, getModerationBenchesFx } from 'pages/benches/api'
 import { CreateBenchPayloadType } from 'pages/benches/types/bench'
+
+import { effects } from 'entities/bench/api'
 
 import { benchesApi } from 'shared/api'
 import { OptionType } from 'shared/types'
@@ -12,7 +12,6 @@ import { OptionType } from 'shared/types'
 export const latChanged = createEvent<string>()
 export const lngChanged = createEvent<string>()
 export const tagsChanged = createEvent<Array<string>>()
-export const tagsOptionsChanged = createEvent()
 export const imagesChanged = createEvent<Array<UploadFile>>()
 export const formSubmitted = createEvent()
 export const openModal = createEvent()
@@ -27,6 +26,7 @@ export const $isFormDisabled = createStore(false) // TODO: Добавить ло
 export const $isOpenModal = createStore(false)
 
 // TODO: Добавить тип возвращаемого значения
+// TODO: Добавить валидацию
 export const createBenchFx = createEffect<CreateBenchPayloadType, any, Error>(async (payload) => {
   const formData = new FormData()
 
@@ -46,21 +46,20 @@ export const createBenchFx = createEffect<CreateBenchPayloadType, any, Error>(as
   return await benchesApi.createBench(formData)
 })
 
-export const getTagsOptionsFx = createEffect<void, any, AxiosError>(async () => await getApiTags())
-
 $lat.on(latChanged, (_, lat) => lat)
 $lng.on(lngChanged, (_, lng) => lng)
 $images.on(imagesChanged, (_, images) => images)
 $tags.on(tagsChanged, (_, tags) => tags)
 // TODO: Разобраться с типами
 // @ts-ignore
-$tagsOptions.on(getTagsOptionsFx.doneData, (_, { data }) => data.map((tag) => ({ label: tag.title, value: tag.id })))
+$tagsOptions.on(effects.getTagsOptionsFx.doneData, (_, { data }) => data.map((tag) =>
+  ({ label: tag.title, value: tag.id })))
 $isOpenModal.on(openModal, () => true)
 $isOpenModal.on(closeModal, () => false)
 
 sample({
   clock: openModal,
-  target: getTagsOptionsFx,
+  target: effects.getTagsOptionsFx,
 })
 
 sample({
@@ -78,7 +77,7 @@ sample({
 // TODO: Переделать
 sample({
   clock: createBenchFx.done,
-  fn: () => getModerationBenchesFx({
+  fn: () => effects.getModerationBenchesFx({
     per_page: 100
   })
 })

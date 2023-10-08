@@ -10,6 +10,8 @@ export type BenchType = {
 	street: string
 }
 
+export type UpdateBenchType = Pick<BenchType, 'id' | 'lat' | 'lng'> & { tags: Array<string> }
+
 export type BenchesResponseType = {
 	count: number
 	count_all_pages: number

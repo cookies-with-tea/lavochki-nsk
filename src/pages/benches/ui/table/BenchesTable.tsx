@@ -1,8 +1,8 @@
 import { useUnit } from 'effector-react'
 
-import { getDetailBenchFx } from 'pages/benches/api'
 import { benchesColumns } from 'pages/benches/constants'
 import { selectors } from 'pages/benches/model/benches'
+import { events } from 'pages/benches/model/detail-bench'
 
 import { WTable } from 'widgets/w-table'
 
@@ -14,14 +14,16 @@ export const BenchesTable = () => {
   return (
     <>
     <WTable<BenchType>
-     loading={pending} className={'benches-table'}
-      dataSource={benches} columns={benchesColumns}
-      onRow={(record) => {
+     loading={pending}
+     className={'benches-table'}
+     dataSource={benches}
+     columns={benchesColumns}
+     onRow={(record) => {
       return {
-        onClick: async (event) => {
+        onClick: (event) => {
           if (event.ctrlKey) return
 
-          await getDetailBenchFx(record.id)
+          events.drawerOpened(record.id)
         }
       }
     }}
@@ -34,6 +36,6 @@ export const BenchesTable = () => {
     }}
     />
     </>
-    
+
   )
 }

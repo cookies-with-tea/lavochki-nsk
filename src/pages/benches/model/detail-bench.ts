@@ -8,7 +8,7 @@ import { BenchType } from 'shared/types'
 export const $detailBench = createStore<BenchType | null>(null)
 export const $isDrawerOpen = createStore(false)
 
-export const drawerOpened = createEvent<string>()
+export const drawerOpened = createEvent<BenchType['id']>()
 export const drawerClosed = createEvent()
 
 // TODO: Сделать так, если приходит ошибка с backend'а,
@@ -18,8 +18,8 @@ $isDrawerOpen.on(drawerClosed, () => false)
 $detailBench.on(getDetailBenchFx.doneData, (_, { data }) => data)
 
 sample({
-  clock: getDetailBenchFx.doneData,
-  target: drawerOpened,
+  clock: drawerOpened,
+  target: getDetailBenchFx,
 })
 
 sample({

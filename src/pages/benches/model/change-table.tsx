@@ -3,19 +3,19 @@ import { createEffect, createEvent, createStore, sample } from 'effector'
 import { INITIAL_BENCH_PAGE_PARAMS } from 'pages/benches/constants'
 import { selectors } from 'pages/benches/model/benches'
 
-import { getBenchesFx, getModerationBenchesFx } from '../api'
+import { effects } from 'entities/bench/api'
 export const $activeTab = createStore<string>(INITIAL_BENCH_PAGE_PARAMS.initialTab)
 
 export const tabChanged = createEvent<string>('benches')
 
 export const tabChangeFx = createEffect((activeTab: string) => {
   if (activeTab === 'benches') {
-    return getBenchesFx({
+    return effects.getBenchesFx({
       per_page: 100,
     })
   }
 
-  return getModerationBenchesFx({
+  return effects.getModerationBenchesFx({
     per_page: 100,
     sort_by: 'id',
     sort_order: 'DESC'

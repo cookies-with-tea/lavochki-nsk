@@ -2,7 +2,7 @@ import { Space } from 'antd'
 
 import styles from 'pages/login/ui/styles.module.scss'
 
-import { FTelegramAuth } from 'features/f-telegram-auth'
+import { FTelegramAuth } from 'features/telegram-auth'
 
 export const LoginPage = () => {
   return (

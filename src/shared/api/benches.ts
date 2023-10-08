@@ -2,7 +2,7 @@ import { AxiosRequestConfig } from 'axios'
 
 import { API_CONFIG } from 'shared/configs/api'
 import { AxiosService } from 'shared/plugins'
-import { BenchType, SetDecisionPayloadType } from 'shared/types'
+import { BenchType, SetDecisionPayloadType, UpdateBenchType } from 'shared/types'
 import { BenchesResponseType } from 'shared/types/bench'
 
 class BenchesApi extends AxiosService {
@@ -47,6 +47,14 @@ class BenchesApi extends AxiosService {
       method: 'post',
       url: '/v1/benches',
       data: payload,
+    })
+  }
+
+  update = async (benchId: BenchType['id'], payload: FormData) => {
+    return await this.axiosCall<BenchType>({
+      method: 'patch',
+      url: `/v1/benches/${benchId}`,
+      data: payload
     })
   }
 }

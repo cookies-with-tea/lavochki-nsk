@@ -1,4 +1,4 @@
-import { FTelegramAuth } from 'features/f-telegram-auth'
+import { FTelegramAuth } from 'features/telegram-auth'
 
 import { SButton, SCheckbox, SIcon, SInput } from 'shared/ui'
 
@@ -11,7 +11,7 @@ export const UIKitPage = () => {
           <SButton className={'mr-16'} postfixIcon={<SIcon name={'close'} />} >Default</SButton>
           <SButton appearance={'primary'}>Войти</SButton>
           <SButton appearance={'link'} className={'ml-16'}>Забыли пароль</SButton>
-          
+
           <SIcon name={'close'} reverse
 className={'ml-16'} />
         </div>

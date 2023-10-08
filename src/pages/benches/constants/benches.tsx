@@ -1,5 +1,8 @@
-import { Space } from 'antd'
+import { SButton } from 'shared/ui'
+import { Space, Tag } from 'antd'
 import { ColumnsType } from 'antd/es/table'
+
+import { events } from 'entities/bench'
 
 import { BenchType } from 'shared/types'
 
@@ -35,12 +38,30 @@ export const benchesColumns: ColumnsType<BenchType> = [
     key: 'created_at',
   },
   {
-    title: 'Action',
+    title: '',
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-        <a>Invite {record.id}</a>
-        <a>Delete</a>
+        <SButton
+          onClick={
+            async (event) => {
+              events.dialogOpened(record.id)
+
+              event.stopPropagation()
+            }}
+        >
+          Редактировать
+        </SButton>
+        <SButton
+          onClick={
+            (event) => {
+              event.stopPropagation()
+
+              // TODO: Добавить удаление
+            }}
+        >
+          Удалить
+        </SButton>
       </Space>
     ),
   },

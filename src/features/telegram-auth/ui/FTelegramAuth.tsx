@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import cnBind from 'classnames/bind'
 
-import styles from 'features/f-telegram-auth/ui/styles.module.scss'
+import styles from 'features/telegram-auth/ui/styles.module.scss'
 
 import { UserTelegramType } from 'shared/types'
 import { SIcon } from 'shared/ui'

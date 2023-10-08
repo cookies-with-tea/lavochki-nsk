@@ -3,18 +3,9 @@ import cn from 'classnames'
 import cnBind from 'classnames/bind'
 import { useUnit } from 'effector-react'
 
-import { 
-  $images,
-  $lat,
-  $lng,
-  $tagsOptions,
-  formSubmitted,
-  imagesChanged,
-  latChanged,
-  lngChanged,
-  tagsChanged
-} from 'pages/benches/model/create-bench'
-import styles from 'pages/benches/ui/create/styles.module.scss'
+import styles from 'features/bench/edit/ui/styles.module.scss'
+
+import { events, selectors } from 'entities/bench/model/edit'
 
 import { SButton, SInputNumber, SSelect } from 'shared/ui'
 
@@ -31,15 +22,25 @@ const cx = cnBind.bind(styles)
 // TODO: Добавить обнуление формы после закрытия создания формы.
 // TODO: Добавить обновление таблицы после закрытия создания формы.
 // TODO(возможно): Добавить сохранение черновика.
-export const BenchFormCreate = () => {
-  const [lat, lng, images, options] = useUnit([$lat, $lng, $images, $tagsOptions])
+export const FBenchEdit = () => {
+  const [
+    lat,
+    lng,
+    images,
+    options
+  ] = useUnit([
+    selectors.lat,
+    selectors.lng,
+    selectors.images,
+    selectors.tagsOptions
+  ])
 
   return (
     <Form
       layout={'vertical'}
       autoComplete={'off'}
-      className={cn(cx('bench-form-create'))}
-      onFinish={formSubmitted}
+      className={cn(cx('bench-form-edit'))}
+      onFinish={events.formSubmitted}
     >
       <Space className={'w-100'}>
         <Space>
@@ -54,7 +55,7 @@ export const BenchFormCreate = () => {
               max={'180'}
               value={String(lat)}
               stringMode
-              onChange={(value) => latChanged(String(value))}
+              onChange={(value) => events.latChanged(String(value))}
             />
           </Form.Item>
           <Form.Item<FieldType>
@@ -68,7 +69,7 @@ export const BenchFormCreate = () => {
               max={'180'}
               value={String(lng)}
               stringMode
-              onChange={(value) => lngChanged(String(value))}
+              onChange={(value) => events.lngChanged(String(value))}
             />
           </Form.Item>
         </Space>
@@ -76,11 +77,11 @@ export const BenchFormCreate = () => {
         <Form.Item<FieldType>
           label={'Теги'}
           name={'tags'}
-          className={cn(cx('bench-form-create__tags'),)}
+          className={cn(cx('bench-form-edit__tags'),)}
         >
           <SSelect
             options={options}
-            onChange={(tagsIds) => tagsChanged(tagsIds)}
+            onChange={(tagsIds) => events.tagsChanged(tagsIds)}
           />
         </Form.Item>
       </Space>
@@ -95,7 +96,7 @@ export const BenchFormCreate = () => {
           customRequest={({ onSuccess }) => onSuccess && onSuccess('ok')} // Отмена action
           listType="picture-card"
           fileList={images}
-          onChange={({ fileList }) => imagesChanged(fileList)}
+          onChange={({ fileList }) => events.imagesChanged(fileList)}
         >
           Картинка
         </Upload>
@@ -103,7 +104,7 @@ export const BenchFormCreate = () => {
 
       <Form.Item>
         <SButton appearance={'primary'} htmlType={'submit'} size={'middle'}>
-          Создать
+          Сохранить
         </SButton>
       </Form.Item>
     </Form>
