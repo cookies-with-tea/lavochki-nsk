@@ -59,8 +59,6 @@ type Config struct {
 var instance *Config
 
 func GetConfig() *Config {
-	log.Print("Get config")
-
 	instance = &Config{}
 
 	if err := cleanenv.ReadConfig(".env", instance); err != nil {
