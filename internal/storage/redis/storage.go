@@ -29,9 +29,6 @@ func (s *storage) WriteRefreshToken(ctx context.Context, refreshToken string, us
 	if err != nil {
 		return err
 	}
-	if err != nil {
-		return err
-	}
 	return nil
 }
 
