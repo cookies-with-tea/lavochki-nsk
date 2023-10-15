@@ -69,7 +69,7 @@ func (handler *Handler) registerUser(writer http.ResponseWriter, request *http.R
 	handler.ResponseJson(writer, domain.TokenCredentials{
 		Access:  accessToken,
 		Refresh: refreshToken,
-	}, 200)
+	}, http.StatusOK)
 	return nil
 }
 
@@ -102,7 +102,7 @@ func (handler *Handler) authorizationAdmin(writer http.ResponseWriter, request *
 	handler.ResponseJson(writer, domain.TokenCredentials{
 		Access:  accessToken,
 		Refresh: refreshToken,
-	}, 200)
+	}, http.StatusOK)
 	return nil
 }
 
@@ -110,7 +110,6 @@ func (handler *Handler) authorizationAdmin(writer http.ResponseWriter, request *
 // @Summary User refresh token
 // @Tags Users
 // @Produce json
-// @Param Authorization header string true "Bearer"
 // @Param token body dto.RefreshToken true "token info"
 // @Success 200 {object} domain.TokenCredentials
 // @Failure 400
@@ -134,7 +133,7 @@ func (handler *Handler) refreshToken(writer http.ResponseWriter, request *http.R
 	handler.ResponseJson(writer, domain.TokenCredentials{
 		Access:  accessToken,
 		Refresh: refreshToken,
-	}, 200)
+	}, http.StatusOK)
 	return nil
 }
 
