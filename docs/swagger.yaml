@@ -1,5 +1,5 @@
 definitions:
-  apperror.AppError:
+  benches_internal_apperror.AppError:
     properties:
       details:
         items:
@@ -8,7 +8,7 @@ definitions:
       message:
         type: string
     type: object
-  domain.Bench:
+  benches_internal_domain.Bench:
     properties:
       id:
         type: string
@@ -27,20 +27,16 @@ definitions:
       street:
         type: string
     type: object
-  domain.BenchesList:
+  benches_internal_domain.BenchesList:
     properties:
-      count:
-        type: integer
-      count_all_pages:
-        type: integer
-      count_in_page:
-        type: integer
       items:
         items:
-          $ref: '#/definitions/domain.Bench'
+          $ref: '#/definitions/benches_internal_domain.Bench'
         type: array
+      pagination:
+        $ref: '#/definitions/benches_internal_domain.Pagination'
     type: object
-  domain.Comment:
+  benches_internal_domain.Comment:
     properties:
       author_id:
         type: string
@@ -52,12 +48,12 @@ definitions:
         type: string
       nested_comments:
         items:
-          $ref: '#/definitions/domain.Comment'
+          $ref: '#/definitions/benches_internal_domain.Comment'
         type: array
       parent_id:
         type: string
     type: object
-  domain.CommentReport:
+  benches_internal_domain.CommentReport:
     properties:
       ID:
         type: string
@@ -70,21 +66,32 @@ definitions:
       user_id:
         type: string
     type: object
-  domain.Tag:
+  benches_internal_domain.Pagination:
+    properties:
+      count:
+        type: integer
+      count_all_pages:
+        type: integer
+      current_page:
+        type: integer
+      per_page:
+        type: integer
+    type: object
+  benches_internal_domain.Tag:
     properties:
       id:
         type: string
       title:
         type: string
     type: object
-  domain.TokenCredentials:
+  benches_internal_domain.TokenCredentials:
     properties:
       access:
         type: string
       refresh:
         type: string
     type: object
-  domain.User:
+  benches_internal_domain.User:
     properties:
       id:
         type: string
@@ -95,14 +102,14 @@ definitions:
       username:
         type: string
     type: object
-  dto.AuthorizationBot:
+  benches_internal_dto.AuthorizationBot:
     properties:
       login:
         type: string
       password:
         type: string
     type: object
-  dto.CreateBench:
+  benches_internal_dto.CreateBench:
     properties:
       images:
         items:
@@ -121,7 +128,7 @@ definitions:
           type: string
         type: array
     type: object
-  dto.CreateBenchViaTelegram:
+  benches_internal_dto.CreateBenchViaTelegram:
     properties:
       images:
         items:
@@ -136,7 +143,7 @@ definitions:
       user_telegram_id:
         type: integer
     type: object
-  dto.CreateComment:
+  benches_internal_dto.CreateComment:
     properties:
       bench_id:
         type: string
@@ -145,7 +152,7 @@ definitions:
       parent_id:
         type: string
     type: object
-  dto.CreateReportComment:
+  benches_internal_dto.CreateReportComment:
     properties:
       cause:
         type: string
@@ -154,12 +161,12 @@ definitions:
       id:
         type: string
     type: object
-  dto.CreateTag:
+  benches_internal_dto.CreateTag:
     properties:
       title:
         type: string
     type: object
-  dto.CreateUser:
+  benches_internal_dto.CreateUser:
     properties:
       auth_date:
         type: integer
@@ -176,7 +183,7 @@ definitions:
       username:
         type: string
     type: object
-  dto.DecisionBench:
+  benches_internal_dto.DecisionBench:
     properties:
       decision:
         type: boolean
@@ -185,12 +192,12 @@ definitions:
       message:
         type: string
     type: object
-  dto.RefreshToken:
+  benches_internal_dto.RefreshToken:
     properties:
       token:
         type: string
     type: object
-  dto.UpdateBench:
+  benches_internal_dto.UpdateBench:
     properties:
       lat:
         type: number
@@ -201,7 +208,7 @@ definitions:
           type: string
         type: array
     type: object
-  dto.UpdateComment:
+  benches_internal_dto.UpdateComment:
     properties:
       content:
         type: string
@@ -235,11 +242,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.BenchesList'
+            $ref: '#/definitions/benches_internal_domain.BenchesList'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apperror.AppError'
+            $ref: '#/definitions/benches_internal_apperror.AppError'
       summary: List benches with filtering and pagination
       tags:
       - Benches
@@ -250,7 +257,7 @@ paths:
         name: Bench
         required: true
         schema:
-          $ref: '#/definitions/dto.CreateBench'
+          $ref: '#/definitions/benches_internal_dto.CreateBench'
       - description: Bearer
         in: header
         name: Authorization
@@ -288,7 +295,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apperror.AppError'
+            $ref: '#/definitions/benches_internal_apperror.AppError'
         "418":
           description: I'm a teapot
       summary: Delete bench
@@ -300,11 +307,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.Bench'
+            $ref: '#/definitions/benches_internal_domain.Bench'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apperror.AppError'
+            $ref: '#/definitions/benches_internal_apperror.AppError'
       summary: Detail bench
       tags:
       - Benches
@@ -315,7 +322,7 @@ paths:
         name: Bench
         required: true
         schema:
-          $ref: '#/definitions/dto.UpdateBench'
+          $ref: '#/definitions/benches_internal_dto.UpdateBench'
       - description: Bearer
         in: header
         name: Authorization
@@ -334,7 +341,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apperror.AppError'
+            $ref: '#/definitions/benches_internal_apperror.AppError'
         "418":
           description: I'm a teapot
       summary: Update bench
@@ -370,12 +377,12 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/domain.Bench'
+              $ref: '#/definitions/benches_internal_domain.Bench'
             type: array
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apperror.AppError'
+            $ref: '#/definitions/benches_internal_apperror.AppError'
       summary: Moderation list benches
       tags:
       - Benches
@@ -387,7 +394,7 @@ paths:
         name: Decision
         required: true
         schema:
-          $ref: '#/definitions/dto.DecisionBench'
+          $ref: '#/definitions/benches_internal_dto.DecisionBench'
       - description: Bearer
         in: header
         name: Authorization
@@ -399,7 +406,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apperror.AppError'
+            $ref: '#/definitions/benches_internal_apperror.AppError'
       summary: Decision bench
       tags:
       - Benches
@@ -418,7 +425,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apperror.AppError'
+            $ref: '#/definitions/benches_internal_apperror.AppError'
         "418":
           description: I'm a teapot
       summary: Get the nearest benches
@@ -432,7 +439,7 @@ paths:
         name: CreateBenchViaTelegram
         required: true
         schema:
-          $ref: '#/definitions/dto.CreateBenchViaTelegram'
+          $ref: '#/definitions/benches_internal_dto.CreateBenchViaTelegram'
       produces:
       - application/json
       responses:
@@ -451,7 +458,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/dto.AuthorizationBot'
+          $ref: '#/definitions/benches_internal_dto.AuthorizationBot'
       produces:
       - application/json
       responses:
@@ -475,7 +482,7 @@ paths:
         name: token
         required: true
         schema:
-          $ref: '#/definitions/dto.RefreshToken'
+          $ref: '#/definitions/benches_internal_dto.RefreshToken'
       produces:
       - application/json
       responses:
@@ -494,7 +501,7 @@ paths:
         name: UpdateComment
         required: true
         schema:
-          $ref: '#/definitions/dto.UpdateComment'
+          $ref: '#/definitions/benches_internal_dto.UpdateComment'
       produces:
       - application/json
       responses:
@@ -512,7 +519,7 @@ paths:
         name: CreateComment
         required: true
         schema:
-          $ref: '#/definitions/dto.CreateComment'
+          $ref: '#/definitions/benches_internal_dto.CreateComment'
       - description: Bearer
         in: header
         name: Authorization
@@ -548,7 +555,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apperror.AppError'
+            $ref: '#/definitions/benches_internal_apperror.AppError'
         "418":
           description: I'm a teapot
       summary: Delete comment
@@ -567,12 +574,12 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/domain.Comment'
+              $ref: '#/definitions/benches_internal_domain.Comment'
             type: array
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apperror.AppError'
+            $ref: '#/definitions/benches_internal_apperror.AppError'
       summary: List comments by bench
       tags:
       - Comments
@@ -591,7 +598,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/domain.CommentReport'
+              $ref: '#/definitions/benches_internal_domain.CommentReport'
             type: array
         "418":
           description: I'm a teapot
@@ -605,7 +612,7 @@ paths:
         name: CreateComment
         required: true
         schema:
-          $ref: '#/definitions/dto.CreateReportComment'
+          $ref: '#/definitions/benches_internal_dto.CreateReportComment'
       - description: Bearer
         in: header
         name: Authorization
@@ -631,12 +638,12 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/domain.Tag'
+              $ref: '#/definitions/benches_internal_domain.Tag'
             type: array
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apperror.AppError'
+            $ref: '#/definitions/benches_internal_apperror.AppError'
       summary: List tags
       tags:
       - Tags
@@ -648,16 +655,16 @@ paths:
         name: CreateTag
         required: true
         schema:
-          $ref: '#/definitions/dto.CreateTag'
+          $ref: '#/definitions/benches_internal_dto.CreateTag'
       responses:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apperror.AppError'
+            $ref: '#/definitions/benches_internal_apperror.AppError'
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/apperror.AppError'
+            $ref: '#/definitions/benches_internal_apperror.AppError'
       summary: Create tag
       tags:
       - Tags
@@ -676,7 +683,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/domain.User'
+              $ref: '#/definitions/benches_internal_domain.User'
             type: array
         "418":
           description: I'm a teapot
@@ -690,14 +697,14 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/dto.CreateUser'
+          $ref: '#/definitions/benches_internal_dto.CreateUser'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.TokenCredentials'
+            $ref: '#/definitions/benches_internal_domain.TokenCredentials'
         "400":
           description: Bad Request
       summary: User registration
@@ -711,14 +718,14 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/dto.CreateUser'
+          $ref: '#/definitions/benches_internal_dto.CreateUser'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.TokenCredentials'
+            $ref: '#/definitions/benches_internal_domain.TokenCredentials'
         "400":
           description: Bad Request
         "403":
@@ -747,24 +754,19 @@ paths:
   /api/v1/users/refresh:
     post:
       parameters:
-      - description: Bearer
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: token info
         in: body
         name: token
         required: true
         schema:
-          $ref: '#/definitions/dto.RefreshToken'
+          $ref: '#/definitions/benches_internal_dto.RefreshToken'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.TokenCredentials'
+            $ref: '#/definitions/benches_internal_domain.TokenCredentials'
         "400":
           description: Bad Request
       summary: User refresh token
