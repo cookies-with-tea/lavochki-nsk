@@ -26,12 +26,12 @@ func Middleware(h appHandler) http.HandlerFunc {
 					return
 				}
 				if errors.Is(err, ErrIncorrectDataToken) {
-					w.WriteHeader(http.StatusNotFound)
+					w.WriteHeader(http.StatusBadRequest)
 					w.Write(ErrIncorrectDataToken.Marshal())
 					return
 				}
 				if errors.Is(err, ErrDecodeData) {
-					w.WriteHeader(http.StatusNotFound)
+					w.WriteHeader(http.StatusBadRequest)
 					w.Write(ErrDecodeData.Marshal())
 					return
 				}
@@ -41,7 +41,7 @@ func Middleware(h appHandler) http.HandlerFunc {
 					return
 				}
 				if errors.Is(err, ErrFailedToCreate) {
-					w.WriteHeader(http.StatusNotFound)
+					w.WriteHeader(http.StatusBadRequest)
 					w.Write(ErrFailedToCreate.Marshal())
 					return
 				}
