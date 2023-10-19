@@ -94,6 +94,8 @@ export class AxiosService {
             } catch (error) {
               if (window.location.pathname === '/login') return
 
+              window.location.pathname = '/login'
+
               notification.open({
                 type: 'error',
                 message: 'Не авторизован'
@@ -110,6 +112,18 @@ export class AxiosService {
 
           // Ошибки наличия апи методов
           case 404: {
+            // TODO: Костыль, ибо backend не отдает нормальный статус
+            if (error?.response?.data?.message === 'incorrect token') {
+              if (window.location.pathname === '/login') return
+
+              window.location.pathname = '/login'
+
+              notification.open({
+                type: 'error',
+                message: 'Не авторизован'
+              })
+            }
+
             break
           }
 

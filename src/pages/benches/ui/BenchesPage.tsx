@@ -6,11 +6,10 @@ import { useSearchParams } from 'react-router-dom'
 import { BENCHES_TABS } from 'pages/benches/constants'
 import { BenchesPageGate } from 'pages/benches/model/benches'
 import { $activeTab, changeTableEvents } from 'pages/benches/model/change-table'
-import { $isOpenModal, closeModal, openModal } from 'pages/benches/model/create-bench'
 import { events as detailBenchEvents, selectors as detailBenchSelectors } from 'pages/benches/model/detail-bench'
-import { BenchFormCreate } from 'pages/benches/ui/create/BenchFormCreate'
 import styles from 'pages/benches/ui/styles.module.scss'
 
+import { FBenchCreate, createBenchSelectors, createBenchEvents } from 'features/bench/create'
 import { FBenchEdit } from 'features/bench/edit'
 
 import { events as editBenchEvents, selectors as editBenchSelectors } from 'entities/bench'
@@ -23,7 +22,7 @@ export const BenchesPage = () => {
   const [
     isCreateDialogOpen,
     activeTab,
-    ] = useUnit([$isOpenModal, $activeTab])
+    ] = useUnit([createBenchSelectors.isDialogOpen, $activeTab])
   const [isEditDialogOpen] = useUnit([editBenchSelectors.isDialogOpen])
   const [isDrawerOpen, drawerClosed] = useUnit([detailBenchSelectors.isDrawerOpen, detailBenchEvents.drawerClosed])
 
@@ -32,15 +31,15 @@ export const BenchesPage = () => {
 
   // TODO: Вынести модалки в фабрику (возможно)
   const showModal = () => {
-    openModal()
+    createBenchEvents.dialogOpened()
   }
 
   const handleOk = () => {
-    closeModal()
+    createBenchEvents.dialogClosed()
   }
 
   const handleCancel = () => {
-    closeModal()
+    createBenchEvents.dialogClosed()
   }
 
   useGate(BenchesPageGate)
@@ -81,7 +80,7 @@ export const BenchesPage = () => {
         onSuccess={handleOk}
         onCancel={handleCancel}
       >
-        <BenchFormCreate />
+        <FBenchCreate />
       </SDialog>
 
       <SDialog
