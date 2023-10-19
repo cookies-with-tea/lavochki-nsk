@@ -12,6 +12,8 @@ export const tabChangeFx = createEffect((activeTab: string) => {
   if (activeTab === 'benches') {
     return effects.getBenchesFx({
       per_page: 100,
+      sort_by: 'id',
+      sort_order: 'DESC'
     })
   }
 

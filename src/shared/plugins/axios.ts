@@ -3,6 +3,7 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } f
 
 import { usersApi } from 'shared/api'
 import { useLocalStorage } from 'shared/lib/hooks'
+import { AuthorizationResponseType } from 'shared/types'
 
 export type ApiResponseType<T = unknown> = {
   data: T
@@ -45,6 +46,12 @@ export class AxiosService {
 
       this.stack.push(config)
 
+      if (this.stack.length >= 4) {
+        this.stack.splice(0, 1)
+
+        this.stack.push(config)
+      }
+
       return config
     })
 
@@ -57,30 +64,41 @@ export class AxiosService {
         switch (error?.response?.status) {
           // Ошибка авторизации
           case 401: {
-            // TODO: Используется, как logoutFx. Надо вынести.
-            // TODO: Добавить логику рефреш токена
-            // if (window.location.pathname === '/login') return
-            console.log(this.stack)
+            const { get, set } = useLocalStorage()
 
-            const { get } = useLocalStorage()
+            try {
+              const refreshToken = get('refreshToken')
 
-            const response = usersApi.getNewToken(get('accessToken') ?? '')
+              if (!refreshToken) {
+                if (window.location.pathname === '/login') return
 
-            notification.open({
-              type: 'error',
-              message: 'Не авторизован'
-            })
+                notification.open({
+                  type: 'error',
+                  message: 'Не авторизован'
+                })
 
-            // if (response) {
-            //   set('')
-            // }
+                window.location.pathname = '/login'
 
-            // const { remove } = useLocalStorage()
-            //
-            // remove('accessToken')
-            // remove('refreshToken')
+                return
+              }
 
-            // location.assign('/login')
+              const response = await usersApi
+                .getNewToken(refreshToken) as ApiResponseType<AuthorizationResponseType>
+
+              set('accessToken', response.data.access)
+              set('refreshToken', response.data.refresh)
+
+              if (!this.stack.length) return
+
+              await this.axiosCall(this.stack.at(-1))
+            } catch (error) {
+              if (window.location.pathname === '/login') return
+
+              notification.open({
+                type: 'error',
+                message: 'Не авторизован'
+              })
+            }
 
             break
           }
@@ -110,76 +128,10 @@ export class AxiosService {
     )
   }
 
-  // TODO: Посмотреть поведение новых возвращаемых значений
+  // TODO: Переписать так, чтобы работало вместе с effector'ом
   protected async axiosCall<T = unknown>(config: AxiosRequestConfig): ServiceResponseTypeThree {
-    // try {
-    //   const { data } = await this.axiosInstance.request<ApiResponseType<T>>(config)
-
-    //   return data
-    // } catch (error) {
-    //   const axiosError = error as AxiosError
-
-
-    //   return axiosError.response?.data as ApiResponseType
-    // }
-
     const { data } = await this.axiosInstance.request<ApiResponseType<T>>(config)
 
     return { data }
   }
-
-  // protected async fakeAxiosCall<T = unknown>(mockData: T): ServiceResponseType<T> {
-  //   try {
-  //     const response = await apiMethod<T>(mockData, 1)
-
-  //     return [undefined, response]
-  //   } catch (error) {
-  //     return [error as AxiosError<ApiResponseType>]
-  //   }
-  // }
 }
-
-// const apiMethod = <T = unknown>(
-//   mockData: T,
-//   errorRandomRate = 4,
-//   random = 10
-// ): Promise<AxiosResponse<ApiResponseType<T>>> => {
-//   return new Promise((res, rej) => {
-//     const ResponseStatus = Math.floor(Math.random() * random) + 1
-
-//     setTimeout(() => {
-//       console.log(`Запрос ${ResponseStatus}`)
-
-//       if (ResponseStatus > errorRandomRate) {
-//         const response = {
-//           data: {},
-//         } as AxiosResponse<ApiResponseType<T>>
-
-//         if (response) {
-//           response.status = 200
-
-//           response.data.data = mockData
-
-//           res(response)
-//         }
-//       } else {
-//         const error = {} as AxiosError<ApiResponseType>
-
-//         if (error) {
-//           error.status = 500
-
-//           error.response = {
-//             data: {
-//               errors: {
-//                 message: ['Ошибка раз', 'Ошибка два'],
-//               },
-//             },
-//           } as typeof error.response
-
-//           rej([error])
-//         }
-//       }
-//     }, 1500)
-//   })
-// }
-

@@ -42,7 +42,7 @@ export const WTable = <T extends object>(props: IProps<T>) => {
         rowSelection={{
           ...rowSelection
         }}
-        pagination={{ 
+        pagination={{
           position: ['bottomCenter'],
           hideOnSinglePage: true,
           ...props.pagination

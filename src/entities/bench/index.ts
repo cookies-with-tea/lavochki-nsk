@@ -1,1 +1,1 @@
-export * from 'entities/bench/model/edit'
+export * from 'features/bench/edit/model/edit'

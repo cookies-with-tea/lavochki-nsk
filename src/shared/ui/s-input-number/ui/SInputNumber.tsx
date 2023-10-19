@@ -16,7 +16,7 @@ interface IProps {
 
 // TODO: Добавить способ, чтобы не вводились строки
 // TODO: Добавлять дженерик динамически
-export const SInputNumber = ({ 
+export const SInputNumber = ({
   min = 0,
   max = 99,
   size = 'large',
@@ -36,14 +36,14 @@ export const SInputNumber = ({
           min={String(min)}
           max={String(max)}
           stringMode={stringMode}
-          step={step}
           defaultValue={String(defaultValue)}
+          step={step}
           size={size}
           name={name}
           value={String(value)}
           onChange={onChange}
         />
-      ) 
+      )
         : (
           <InputNumber
             min={min}

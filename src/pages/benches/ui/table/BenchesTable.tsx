@@ -13,28 +13,28 @@ export const BenchesTable = () => {
 
   return (
     <>
-    <WTable<BenchType>
-     loading={pending}
-     className={'benches-table'}
-     dataSource={benches}
-     columns={benchesColumns}
-     onRow={(record) => {
-      return {
-        onClick: (event) => {
-          if (event.ctrlKey) return
+      <WTable<BenchType>
+       loading={pending}
+       className={'benches-table'}
+       dataSource={benches}
+       columns={benchesColumns}
+       onRow={(record) => {
+        return {
+          onClick: (event) => {
+            if (event.ctrlKey) return
 
-          events.drawerOpened(record.id)
+            events.drawerOpened(record.id)
+          }
         }
-      }
-    }}
-    pagination={{
-      total: pagination.total,
-      pageSize: pagination.perPage,
-      onChange(page, pageSize) {
-          console.log(page)
-      },
-    }}
-    />
+      }}
+      pagination={{
+        // total: pagination.total,
+        pageSize: pagination.perPage,
+        onChange(page, pageSize) {
+            console.log(page)
+        },
+      }}
+      />
     </>
 
   )

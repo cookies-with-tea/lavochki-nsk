@@ -15,10 +15,9 @@ import { FBenchEdit } from 'features/bench/edit'
 
 import { events as editBenchEvents, selectors as editBenchSelectors } from 'entities/bench'
 
-import { SButton, SIcon, SDialog, SDrawer, SLoader } from 'shared/ui'
+import { SButton, SIcon, SDialog, SDrawer } from 'shared/ui'
 
 import { DetailBench } from './detail/DetailBench'
-
 
 export const BenchesPage = () => {
   const [

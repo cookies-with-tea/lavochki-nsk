@@ -30,7 +30,7 @@ export const BenchesModerationTable = () => {
         }
       }}
       pagination={{
-        total: pagination.total,
+        // total: pagination.total,
         pageSize: pagination.perPage,
       }}
     />

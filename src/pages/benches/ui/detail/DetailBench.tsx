@@ -3,6 +3,7 @@ import { useUnit } from 'effector-react'
 
 import { $detailBench } from '../../model/detail-bench'
 
+
 export const DetailBench = () => {
   const bench = useUnit($detailBench)
 
@@ -31,12 +32,13 @@ export const DetailBench = () => {
         </div>
       </Space>
 
+			<div className="divider my-12" />
+
       <Space>
         <Image.PreviewGroup items={bench.images}>
           {
             bench.images.map((src) => (
-              <Image key={src} width={100}
-src={src} />
+              <Image key={src} width={100} src={src} />
             ))
           }
         </Image.PreviewGroup>

@@ -15,7 +15,7 @@ import { INITIAL_PAGE_PARAMS } from 'shared/constants'
 // --- Инициализация данных страницы --- //
 export const $perPage = createStore<number>(INITIAL_PAGE_PARAMS.perPage)
 
-export const $totalPages = createStore<number>(INITIAL_PAGE_PARAMS.totalPages)
+export const $totalPages = createStore<number>(INITIAL_PAGE_PARAMS.total)
 // ------ //
 
 // --- Инициализация основных эвентов страницы --- //
