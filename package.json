@@ -20,7 +20,7 @@
     "type-check": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
-    "@farfetched/core": "^0.10.0",
+    "@farfetched/core": "^0.10.4",
     "@remix-run/router": "^1.8.0",
     "@types/lodash.debounce": "^4.0.7",
     "antd": "^5.9.4",
@@ -66,7 +66,7 @@
     "stylelint-config-prettier-scss": "^1.0.0",
     "stylelint-config-recess-order": "^4.3.0",
     "stylelint-config-standard-scss": "^10.0.0",
-    "typescript": "5.1",
+    "typescript": "^5.2.2",
     "vite": "^4.4.5",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-stylelint": "^5.1.1",

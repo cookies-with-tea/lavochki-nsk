@@ -4,7 +4,8 @@ import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import { BENCHES_TABS } from 'pages/benches/constants'
-import { BenchesPageGate } from 'pages/benches/model/benches'
+// import { BenchesPageGate } from 'pages/benches/model/benches'
+import { benchesEvents, benchesPageGates } from 'pages/benches/model/benches'
 import { $activeTab, changeTableEvents } from 'pages/benches/model/change-table'
 import { events as detailBenchEvents, selectors as detailBenchSelectors } from 'pages/benches/model/detail-bench'
 import styles from 'pages/benches/ui/styles.module.scss'
@@ -17,6 +18,7 @@ import { events as editBenchEvents, selectors as editBenchSelectors } from 'enti
 import { SButton, SIcon, SDialog, SDrawer } from 'shared/ui'
 
 import { DetailBench } from './detail/DetailBench'
+import { BenchesTabsType } from 'pages/benches/types'
 
 export const BenchesPage = () => {
   const [
@@ -42,7 +44,7 @@ export const BenchesPage = () => {
     createBenchEvents.dialogClosed()
   }
 
-  useGate(BenchesPageGate)
+  useGate(benchesPageGates.BenchesPageGate)
 
   // TODO: Мне не нравится данный подход. Надо переработать.
   // TODO: Добавить способ, который позвонит инициализировать стейт исходя из кверей
@@ -71,34 +73,34 @@ export const BenchesPage = () => {
       <Tabs
         defaultActiveKey={'benches'}
         items={BENCHES_TABS}
-        onChange={(tab) => changeTableEvents.tabChanged(tab)}
+        onChange={(tab) => benchesEvents.tabChanged({ tab: tab as BenchesTabsType })}
       />
 
-      <SDialog
-        title={'Создание лавочки'}
-        open={isCreateDialogOpen}
-        onSuccess={handleOk}
-        onCancel={handleCancel}
-      >
-        <FBenchCreate />
-      </SDialog>
+      {/*<SDialog*/}
+      {/*  title={'Создание лавочки'}*/}
+      {/*  open={isCreateDialogOpen}*/}
+      {/*  onSuccess={handleOk}*/}
+      {/*  onCancel={handleCancel}*/}
+      {/*>*/}
+      {/*  <FBenchCreate />*/}
+      {/*</SDialog>*/}
 
-      <SDialog
-        title={'Редактирование лавочки'}
-        open={isEditDialogOpen}
-        onSuccess={editBenchEvents.dialogClosed}
-        onCancel={editBenchEvents.dialogClosed}
-      >
-        <FBenchEdit />
-      </SDialog>
+      {/*<SDialog*/}
+      {/*  title={'Редактирование лавочки'}*/}
+      {/*  open={isEditDialogOpen}*/}
+      {/*  onSuccess={editBenchEvents.dialogClosed}*/}
+      {/*  onCancel={editBenchEvents.dialogClosed}*/}
+      {/*>*/}
+      {/*  <FBenchEdit />*/}
+      {/*</SDialog>*/}
 
-      <SDrawer
-        title={'Детальная лавочка'}
-        open={isDrawerOpen}
-        onClose={drawerClosed}
-      >
-        <DetailBench />
-      </SDrawer>
+      {/*<SDrawer*/}
+      {/*  title={'Детальная лавочка'}*/}
+      {/*  open={isDrawerOpen}*/}
+      {/*  onClose={drawerClosed}*/}
+      {/*>*/}
+      {/*  <DetailBench />*/}
+      {/*</SDrawer>*/}
     </div>
   )
 }

@@ -57,6 +57,13 @@ class BenchesApi extends AxiosService {
       data: payload
     })
   }
+
+  delete = async (benchId: BenchType['id']) => {
+    return await this.axiosCall<BenchType>({
+      method: 'delete',
+      url: `/v1/benches/${benchId}`,
+    })
+  }
 }
 
 export const benchesApi = new BenchesApi(API_CONFIG)

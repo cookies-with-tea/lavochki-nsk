@@ -1,10 +1,11 @@
 import { Space } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 
-import { decisionMade } from 'pages/benches/model/benches'
+// import { decisionMade } from 'pages/benches/model/benches'
 
 import { BenchType } from 'shared/types'
 import { SButton } from 'shared/ui'
+import { FBenchDelete } from 'features/bench/delete/ui/FBenchDelete'
 
 export const benchesModerationColumns: ColumnsType<BenchType> = [
   {
@@ -47,11 +48,11 @@ export const benchesModerationColumns: ColumnsType<BenchType> = [
             async (event) => {
               event.stopPropagation()
 
-              decisionMade({
-                id: record.id,
-                decision: true,
-                message: 'Молодец'
-              })
+              // decisionMade({
+              //   id: record.id,
+              //   decision: true,
+              //   message: 'Молодец'
+              // })
             }}
         >
           Принять
@@ -62,15 +63,16 @@ export const benchesModerationColumns: ColumnsType<BenchType> = [
               event.stopPropagation()
 
               // TODO: Добавить вызов диалога с текстом
-              decisionMade({
-                id: record.id,
-                decision: false,
-                message: 'Не молодец'
-              })
+              // decisionMade({
+              //   id: record.id,
+              //   decision: false,
+              //   message: 'Не молодец'
+              // })
             }}
         >
           Отклонить
         </SButton>
+        <FBenchDelete id={record.id} />
       </Space>
     ),
   },

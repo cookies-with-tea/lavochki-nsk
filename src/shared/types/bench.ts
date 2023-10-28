@@ -10,7 +10,7 @@ export type BenchType = {
 	street: string
 }
 
-export type UpdateBenchType = Pick<BenchType, 'id' | 'lat' | 'lng'> & { tags: Array<string> }
+export type UpdateBenchType = Pick<BenchType, 'id' | 'lat' | 'lng'> & { tags: Array<string> } & { images: any }
 
 export type BenchesResponseType = {
 	count: number

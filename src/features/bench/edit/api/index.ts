@@ -16,8 +16,6 @@ export const editBenchFx = createEffect<UpdateBenchType, any, any>(async (payloa
     })
   }
 
-  console.log(payload.images)
-
   // TODO: Добавить редактирование изображений
   for (const image of payload.images) {
     if (!image?.originFileObj) {

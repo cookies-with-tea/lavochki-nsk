@@ -5,7 +5,7 @@ import { getDetailBenchFx } from 'pages/benches/api'
 
 import { editBenchFx } from 'features/bench/edit/api'
 
-import { effects } from 'entities/bench/api'
+// import { effects } from 'entities/bench/api'
 
 import { urlToObject } from 'shared/lib/utils'
 import { BenchType, OptionType } from 'shared/types'
@@ -59,14 +59,14 @@ $tags.on(tagsChanged, (_, tags) => tags)
 $detailBenchId.on(getDetailBenchFx.doneData, (_, { data }) => data.id)
 // TODO: Разобраться с типами
 // @ts-ignore
-$tagsOptions.on(effects.getTagsOptionsFx.doneData, (_, { data }) => data.map((tag) =>
-  ({ label: tag.title, value: tag.id })))
+// $tagsOptions.on(effects.getTagsOptionsFx.doneData, (_, { data }) => data.map((tag) =>
+//   ({ label: tag.title, value: tag.id })))
 $isDialogOpen.on(dialogOpened, () => true)
 $isDialogOpen.on(dialogClosed, () => false)
 
 sample({
   clock: dialogOpened,
-  target: [effects.getTagsOptionsFx, getDetailBenchFx],
+  // target: [effects.getTagsOptionsFx, getDetailBenchFx],
 })
 
 sample({
@@ -98,9 +98,9 @@ sample({
 
 sample({
   clock: editBenchFx.done,
-  fn: () => effects.getBenchesFx({
-    per_page: 100,
-  })
+  // fn: () => effects.getBenchesFx({
+  //   per_page: 100,
+  // })
 })
 
 export const events = {

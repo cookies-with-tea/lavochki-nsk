@@ -4,7 +4,7 @@ import { not } from 'patronum'
 
 import { createBenchFx } from 'features/bench/create/api'
 
-import { effects } from 'entities/bench/api'
+// import { effects } from 'entities/bench/api'
 
 import { OptionType } from 'shared/types'
 
@@ -34,14 +34,14 @@ $images.on(imagesChanged, (_, images) => images)
 $tags.on(tagsChanged, (_, tags) => tags)
 // TODO: Разобраться с типами
 // @ts-ignore
-$tagsOptions.on(effects.getTagsOptionsFx.doneData, (_, { data }) => data.map((tag) =>
-  ({ label: tag.title, value: tag.id })))
+// $tagsOptions.on(effects.getTagsOptionsFx.doneData, (_, { data }) => data.map((tag) =>
+//   ({ label: tag.title, value: tag.id })))
 $isDialogOpen.on(dialogOpened, () => true)
 $isDialogOpen.on(dialogClosed, () => false)
 
 sample({
   clock: dialogOpened,
-  target: effects.getTagsOptionsFx,
+  // target: effects.getTagsOptionsFx,
 })
 
 sample({
@@ -57,12 +57,12 @@ sample({
 })
 
 // TODO: Переделать
-sample({
-  clock: createBenchFx.done,
-  fn: () => effects.getModerationBenchesFx({
-    per_page: 100
-  })
-})
+// sample({
+//   clock: createBenchFx.done,
+//   // fn: () => effects.getModerationBenchesFx({
+//   //   per_page: 100
+//   // })
+// })
 
 export const createBenchSelectors = {
   tags: $tags,

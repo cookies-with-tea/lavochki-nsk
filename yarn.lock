@@ -576,10 +576,10 @@
   resolved "https://registry.npmjs.org/@eslint/js/-/js-8.48.0.tgz"
   integrity sha512-ZSjtmelB7IJfWD2Fvb7+Z+ChTIKWq6kjda95fLcQKNS5aheVHn4IkfgRQE3sIIzTcSLwLcLZUD9UBt+V7+h+Pw==
 
-"@farfetched/core@^0.10.0":
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/@farfetched/core/-/core-0.10.0.tgz#84cc24f0938934ab8eda1888d82685fa7deddfe6"
-  integrity sha512-8oHMBPEvpMG3dBCUGfjlWeQwn32erQM57OAnnVVHH8zeVk0VRnjXvsS7GhOgS0J9CFnXPBz9LU+2e/VWk4g2Gw==
+"@farfetched/core@^0.10.4":
+  version "0.10.4"
+  resolved "https://registry.yarnpkg.com/@farfetched/core/-/core-0.10.4.tgz#646dffa2299c1ed86bf938226f729882e10b6b48"
+  integrity sha512-sNhsuTL5/DPrpgp7JLN3rKJRxX6PHHG0h2Xlq4JjS2BzOGoJC/SB5iEr3kJyZLN4tjdXa2C0G/L7awf6sPh/4g==
 
 "@humanwhocodes/config-array@^0.11.10":
   version "0.11.10"
@@ -6666,10 +6666,10 @@ typed-array-length@^1.0.4:
     for-each "^0.3.3"
     is-typed-array "^1.1.9"
 
-typescript@5.1:
-  version "5.1.6"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.1.6.tgz#02f8ac202b6dad2c0dd5e0913745b47a37998274"
-  integrity sha512-zaWCozRZ6DLEWAWFrVDz1H6FVXzUSfTy5FUMWsQlU8Ym5JP9eO4xkTIROFCQvhQf61z6O/G6ugw3SgAnvvm+HA==
+typescript@^5.2.2:
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.2.2.tgz#5ebb5e5a5b75f085f22bc3f8460fba308310fa78"
+  integrity sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==
 
 unbox-primitive@^1.0.2:
   version "1.0.2"

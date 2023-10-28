@@ -132,6 +132,19 @@ export class AxiosService {
             break
           }
 
+          // Ошибки сервера
+          case 500: {
+            if (location.href.includes('?')) {
+              window.history.pushState({}, document.title, window.location.pathname)
+            }
+
+            if (window.location.pathname === '/error-500') return
+
+            window.location.pathname = '/error-500'
+
+            break
+          }
+
           default: {
             break
           }

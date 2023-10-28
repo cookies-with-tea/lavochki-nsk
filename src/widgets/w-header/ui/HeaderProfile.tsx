@@ -43,6 +43,7 @@ export const HeaderProfile = () => {
       <SDrawer open={isProfileVisible} onClose={() => setIsProfileVisible(false)}>
         Profile
 
+        {/* @ts-ignore */}
         <SButton appearance={'dashed'} onClick={logoutFx}>
           Выйти
         </SButton>
