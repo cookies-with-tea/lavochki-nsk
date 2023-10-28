@@ -1,0 +1,36 @@
+.error-500 {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  &__gears {
+    left: -10px;
+    position: relative;
+  }
+
+  &__gear {
+    top: 0;
+    left: 0;
+    position: absolute;
+    color: var(--color-text);
+
+    &:first-child {
+      width: 200px;
+      height: 200px;
+      font-size: 200px;
+    }
+
+    &:nth-child(2) {
+      top: -3px;
+      left: 172px;
+      width: 140px;
+      height: 140px;
+      font-size: 140px;
+      transform: rotateZ(146deg);
+    }
+  }
+}
