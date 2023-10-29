@@ -11,7 +11,7 @@ const $total = createStore<number>(INITIAL_PAGE_PARAMS.total)
 const $benches = createStore<Array<BenchType>>([])
 
 // TODO: Добавить $pagination.on
-export const $pagination = combine($perPage, $page, $total, (perPage, page, total) => ({ perPage, page, total }))
+const $pagination = combine($perPage, $page, $total, (perPage, page, total) => ({ perPage, page, total }))
 
 const $isBenchesPending = benchesEffects.getBenchesFx.pending
 
