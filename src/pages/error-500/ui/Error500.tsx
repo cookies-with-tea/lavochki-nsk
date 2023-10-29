@@ -4,6 +4,8 @@ import styles from 'pages/error-500/ui/styles.module.scss'
 
 import { SIcon } from 'shared/ui'
 
+// TODO: Добавить 3-ую шестерню
+// TODO: Заезжают пиксели, надо поправить
 export const Error500 = () => {
   const gearRefs = useRef<Array<HTMLDivElement>>([])
   const startTime = useRef(performance.now())

@@ -77,7 +77,7 @@ export class AxiosService {
                   message: 'Не авторизован'
                 })
 
-                window.location.pathname = '/login'
+                // window.location.pathname = '/login'
 
                 return
               }
@@ -94,7 +94,7 @@ export class AxiosService {
             } catch (error) {
               if (window.location.pathname === '/login') return
 
-              window.location.pathname = '/login'
+              // window.location.pathname = '/login'
 
               notification.open({
                 type: 'error',
@@ -116,7 +116,7 @@ export class AxiosService {
             if (error?.response?.data?.message === 'incorrect token') {
               if (window.location.pathname === '/login') return
 
-              window.location.pathname = '/login'
+              // window.location.pathname = '/login'
 
               notification.open({
                 type: 'error',
@@ -140,7 +140,7 @@ export class AxiosService {
 
             if (window.location.pathname === '/error-500') return
 
-            window.location.pathname = '/error-500'
+            // window.location.pathname = '/error-500'
 
             break
           }

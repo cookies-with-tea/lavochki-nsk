@@ -1,11 +1,15 @@
 
-import {  createEvent, createStore, forward, split } from 'effector'
+import { combine, createEvent, createStore, forward, split } from 'effector'
 import { createGate } from 'effector-react'
 
 import { BenchesTabsType } from 'pages/benches/types'
 
 import { benchesEffects } from 'entities/bench/api'
 
+import { moderationBenchesSelectors } from './moderation-benches'
+import { simpleBenchesSelectors } from './simple-benches'
+
+// TODO: Странная типизация. Надо поправить.
 type StoreType = {
   tab: {
     tab: BenchesTabsType
@@ -26,15 +30,29 @@ $activeTab.on(tabChanged, (_, tab) => tab)
 // condition from 'patronum'
 forward({
 	from: BenchesPageGate.open,
-  to: benchesEffects.getBenchesFx,
+  to: benchesEffects.getBenchesFx
 })
 
 split({
 	clock: tabChanged,
-  source: $activeTab,
+  source: combine(
+    $activeTab, 
+    simpleBenchesSelectors.pagination,
+    moderationBenchesSelectors.pagination,
+    (
+      activeTab,
+      simpleBenchesPagination,
+      moderationBenchesPagination
+    ) => {
+      return { 
+        activeTab,
+        simpleBenchesPagination,
+        moderationBenchesPagination 
+      }
+  }),
 	match: {
-    benches: (tab) => tab.tab === 'benches',
-    'moderation-benches': (tab) => tab.tab === 'moderation-benches',
+    benches: (tab) => tab.activeTab.tab === 'benches',
+    'moderation-benches': (tab) => tab.activeTab.tab === 'moderation-benches',
   },
   cases: {
     'moderation-benches': benchesEffects.getBenchesFx,
