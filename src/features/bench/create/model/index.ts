@@ -4,8 +4,6 @@ import { not } from 'patronum'
 
 import { createBenchFx } from 'features/bench/create/api'
 
-// import { effects } from 'entities/bench/api'
-
 import { OptionType } from 'shared/types'
 
 // TOOD: Добавить attach

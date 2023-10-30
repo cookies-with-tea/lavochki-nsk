@@ -7,13 +7,18 @@ import { events } from 'pages/benches/model/detail-bench'
 import { WTable } from 'widgets/w-table'
 
 import { BenchType } from 'shared/types'
-import { moderationBenchesSelectors } from 'pages/benches/model/moderation-benches'
+import { moderationBenchesSelectors, moderationBenchesEvents } from 'pages/benches/model/moderation-benches'
 
 export const BenchesModerationTable = () => {
   const [
     benches,
+    pagination,
     pending,
-  ] = useUnit([moderationBenchesSelectors.benches, moderationBenchesSelectors.isBenchesPending])
+  ] = useUnit([
+    moderationBenchesSelectors.benches,
+    moderationBenchesSelectors.pagination,
+    moderationBenchesSelectors.isBenchesPending,
+  ])
 
   return (
     <WTable<BenchType>
@@ -27,6 +32,13 @@ export const BenchesModerationTable = () => {
 
             // events.drawerOpened(record.id)
           }
+        }
+      }}
+      pagination={{
+        total: pagination.total,
+        pageSize: pagination.perPage,
+        onChange: (page) => {
+          moderationBenchesEvents.pageChanged(page)
         }
       }}
     />

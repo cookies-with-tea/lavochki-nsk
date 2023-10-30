@@ -1,5 +1,4 @@
 import { attachLogger } from 'effector-logger'
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 
 import 'virtual:svg-icons-register'

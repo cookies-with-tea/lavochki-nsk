@@ -36,7 +36,7 @@ forward({
 split({
 	clock: tabChanged,
   source: combine(
-    $activeTab, 
+    $activeTab,
     simpleBenchesSelectors.pagination,
     moderationBenchesSelectors.pagination,
     (
@@ -44,10 +44,10 @@ split({
       simpleBenchesPagination,
       moderationBenchesPagination
     ) => {
-      return { 
+      return {
         activeTab,
         simpleBenchesPagination,
-        moderationBenchesPagination 
+        moderationBenchesPagination
       }
   }),
 	match: {
@@ -66,4 +66,8 @@ export const benchesPageGates = {
 
 export const benchesEvents = {
   tabChanged,
+}
+
+export const benchesSelectors = {
+  activeTab: $activeTab,
 }

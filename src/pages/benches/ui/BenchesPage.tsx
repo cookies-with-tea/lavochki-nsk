@@ -5,7 +5,7 @@ import { useSearchParams } from 'react-router-dom'
 
 import { BENCHES_TABS } from 'pages/benches/constants'
 // import { BenchesPageGate } from 'pages/benches/model/benches'
-import { benchesEvents, benchesPageGates } from 'pages/benches/model/benches'
+import { benchesEvents, benchesPageGates, benchesSelectors } from 'pages/benches/model/benches'
 import { $activeTab, changeTableEvents } from 'pages/benches/model/change-table'
 import { events as detailBenchEvents, selectors as detailBenchSelectors } from 'pages/benches/model/detail-bench'
 import { BenchesTabsType } from 'pages/benches/types'
@@ -26,7 +26,7 @@ export const BenchesPage = () => {
   const [
     isCreateDialogOpen,
     activeTab,
-    ] = useUnit([createBenchSelectors.isDialogOpen, $activeTab])
+    ] = useUnit([createBenchSelectors.isDialogOpen,benchesSelectors.activeTab])
   const [isEditDialogOpen] = useUnit([editBenchSelectors.isDialogOpen])
   const [isDrawerOpen, drawerClosed] = useUnit([detailBenchSelectors.isDrawerOpen, detailBenchEvents.drawerClosed])
 
@@ -54,7 +54,7 @@ export const BenchesPage = () => {
   // TODO: Добавить способ, который позвонит инициализировать стейт исходя из кверей
   useEffect(() => {
     setSearchParams({
-      activeTab,
+      activeTab: activeTab.tab,
     })
   }, [activeTab, setSearchParams])
 
@@ -80,14 +80,14 @@ export const BenchesPage = () => {
         onChange={(tab) => benchesEvents.tabChanged({ tab: tab as BenchesTabsType })}
       />
 
-      {/*<SDialog*/}
-      {/*  title={'Создание лавочки'}*/}
-      {/*  open={isCreateDialogOpen}*/}
-      {/*  onSuccess={handleOk}*/}
-      {/*  onCancel={handleCancel}*/}
-      {/*>*/}
-      {/*  <FBenchCreate />*/}
-      {/*</SDialog>*/}
+      <SDialog
+        title={'Создание лавочки'}
+        open={isCreateDialogOpen}
+        onSuccess={handleOk}
+        onCancel={handleCancel}
+      >
+        <FBenchCreate />
+      </SDialog>
 
       {/*<SDialog*/}
       {/*  title={'Редактирование лавочки'}*/}

@@ -4,6 +4,7 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } f
 import { usersApi } from 'shared/api'
 import { useLocalStorage } from 'shared/lib/hooks'
 import { AuthorizationResponseType } from 'shared/types'
+import { errorsDictionary } from 'shared/constants'
 
 export type ApiResponseType<T = unknown> = {
   data: T
@@ -64,6 +65,18 @@ export class AxiosService {
         switch (error?.response?.status) {
           // Ошибка авторизации
           case 401: {
+            setTimeout(() => {
+              // TODO: Static function can not consume context like dynamic theme. Please use 'App' component instead.
+              notification.open({
+                type: 'error',
+                message: errorsDictionary[error.response.data.message as string]
+              })
+            }, 1000)
+
+            if (window.location.pathname === '/login') return
+
+            window.location.pathname = '/login'
+
             const { get, set } = useLocalStorage()
 
             try {
@@ -77,7 +90,7 @@ export class AxiosService {
                   message: 'Не авторизован'
                 })
 
-                // window.location.pathname = '/login'
+                window.location.pathname = '/login'
 
                 return
               }
@@ -94,7 +107,7 @@ export class AxiosService {
             } catch (error) {
               if (window.location.pathname === '/login') return
 
-              // window.location.pathname = '/login'
+              window.location.pathname = '/login'
 
               notification.open({
                 type: 'error',
@@ -112,17 +125,7 @@ export class AxiosService {
 
           // Ошибки наличия апи методов
           case 404: {
-            // TODO: Костыль, ибо backend не отдает нормальный статус
-            if (error?.response?.data?.message === 'incorrect token') {
-              if (window.location.pathname === '/login') return
-
-              // window.location.pathname = '/login'
-
-              notification.open({
-                type: 'error',
-                message: 'Не авторизован'
-              })
-            }
+            // TODO: Добавить страницу 404
 
             break
           }
@@ -140,7 +143,7 @@ export class AxiosService {
 
             if (window.location.pathname === '/error-500') return
 
-            // window.location.pathname = '/error-500'
+            window.location.pathname = '/error-500'
 
             break
           }
@@ -156,6 +159,7 @@ export class AxiosService {
   }
 
   // TODO: Переписать так, чтобы работало вместе с effector'ом
+  // TODO: axiosInstance.request возвращает undefined, если ошибка
   protected async axiosCall<T = unknown>(config: AxiosRequestConfig): ServiceResponseTypeThree {
     const { data } = await this.axiosInstance.request<ApiResponseType<T>>(config)
 
