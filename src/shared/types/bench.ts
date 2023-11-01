@@ -31,3 +31,7 @@ export type SetDecisionPayloadType = {
   message: string
 }
 
+export type DecisionFormModelType = {
+  message: string
+  decision: boolean
+}

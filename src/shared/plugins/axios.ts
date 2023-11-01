@@ -73,7 +73,7 @@ export class AxiosService {
               })
             }, 1000)
 
-            if (window.location.pathname === '/login') return
+            if (window.location.pathname === '/login' || window.location.pathname === '/error-500') return
 
             window.location.pathname = '/login'
 
@@ -161,8 +161,12 @@ export class AxiosService {
   // TODO: Переписать так, чтобы работало вместе с effector'ом
   // TODO: axiosInstance.request возвращает undefined, если ошибка
   protected async axiosCall<T = unknown>(config: AxiosRequestConfig): ServiceResponseTypeThree {
-    const { data } = await this.axiosInstance.request<ApiResponseType<T>>(config)
+    try {
+      const { data } = await this.axiosInstance.request<ApiResponseType<T>>(config)
 
-    return { data }
+      return { data }
+    } catch (error) {
+      return error as any
+    }
   }
 }

@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import styles from 'pages/error-500/ui/styles.module.scss'
 
-import { SIcon } from 'shared/ui'
+import { SButton, SIcon } from 'shared/ui'
 
 // TODO: Добавить 3-ую шестерню
 // TODO: Заезжают пиксели, надо поправить
 export const Error500 = () => {
+  const navigate = useNavigate()
+
   const gearRefs = useRef<Array<HTMLDivElement>>([])
   const startTime = useRef(performance.now())
   const [rAF, setRAF] = useState<number>()
@@ -53,7 +56,7 @@ export const Error500 = () => {
 
   return (
     <div className={styles['error-500']}>
-      <div>
+      <div className={styles['error-500__content']}>
         <h1>Произошла ошибка</h1>
         <h2 className={'mt-28'}>Ведутся технические работы</h2>
 
@@ -65,6 +68,8 @@ export const Error500 = () => {
             <SIcon name={'gear'} />
           </div>
         </div>
+
+        <SButton className={'mt-16'} appearance={'dashed'} onClick={() => { navigate('/') }}>На главную</SButton>
       </div>
     </div>
   )

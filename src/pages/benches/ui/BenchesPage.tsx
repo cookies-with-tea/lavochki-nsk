@@ -6,7 +6,6 @@ import { useSearchParams } from 'react-router-dom'
 import { BENCHES_TABS } from 'pages/benches/constants'
 // import { BenchesPageGate } from 'pages/benches/model/benches'
 import { benchesEvents, benchesPageGates, benchesSelectors } from 'pages/benches/model/benches'
-import { $activeTab, changeTableEvents } from 'pages/benches/model/change-table'
 import { events as detailBenchEvents, selectors as detailBenchSelectors } from 'pages/benches/model/detail-bench'
 import { BenchesTabsType } from 'pages/benches/types'
 import styles from 'pages/benches/ui/styles.module.scss'
@@ -21,6 +20,7 @@ import { SButton, SIcon, SDialog, SDrawer } from 'shared/ui'
 import { simpleBenchesSelectors } from '../model/simple-benches'
 
 import { DetailBench } from './detail/DetailBench'
+import { FRejectDecision } from 'features/bench/reject'
 
 export const BenchesPage = () => {
   const [
@@ -46,8 +46,10 @@ export const BenchesPage = () => {
     createBenchEvents.dialogClosed()
   }
 
-  useGate(benchesPageGates.BenchesPageGate, {
-    pagination: useUnit(simpleBenchesSelectors.pagination)
+  useGate(
+    benchesPageGates.BenchesPageGate,
+    {
+      pagination: useUnit(simpleBenchesSelectors.pagination)
   })
 
   // TODO: Мне не нравится данный подход. Надо переработать.
@@ -88,6 +90,8 @@ export const BenchesPage = () => {
       >
         <FBenchCreate />
       </SDialog>
+
+      <FRejectDecision title={'Отклонить лавочку'} />
 
       {/*<SDialog*/}
       {/*  title={'Редактирование лавочки'}*/}

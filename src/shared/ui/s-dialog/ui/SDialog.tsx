@@ -2,7 +2,7 @@ import { Modal } from 'antd'
 import { ReactNode, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
-interface IProps {
+export interface IDialogProps {
   title?: string
   open?: boolean
   centered?: boolean
@@ -45,7 +45,7 @@ export const SDialog = ({
   onCancel,
   onSuccess,
   toBody = false
-}: IProps) => {
+}: IDialogProps) => {
   const teleportTarget = toBody ? document.body : document.getElementById('dialogs-container') ?? document.body
   const dialogWrapperRef = useRef<HTMLDivElement | null>(null)
 

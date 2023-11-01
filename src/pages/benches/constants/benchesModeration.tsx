@@ -5,7 +5,7 @@ import { ColumnsType } from 'antd/es/table'
 
 import { BenchType } from 'shared/types'
 import { SButton } from 'shared/ui'
-import { FBenchDelete } from 'features/bench/delete/ui/FBenchDelete'
+import { rejectDecisionEvents } from 'features/bench/reject/model'
 
 export const benchesModerationColumns: ColumnsType<BenchType> = [
   {
@@ -62,17 +62,11 @@ export const benchesModerationColumns: ColumnsType<BenchType> = [
             (event): void => {
               event.stopPropagation()
 
-              // TODO: Добавить вызов диалога с текстом
-              // decisionMade({
-              //   id: record.id,
-              //   decision: false,
-              //   message: 'Не молодец'
-              // })
+              rejectDecisionEvents.dialogOpened()
             }}
         >
           Отклонить
         </SButton>
-        <FBenchDelete id={record.id} />
       </Space>
     ),
   },

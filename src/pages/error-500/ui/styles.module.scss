@@ -7,9 +7,17 @@
   justify-content: center;
   text-align: center;
 
-  &__gears {
-    left: -10px;
+  &__content {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__gears {
+    left: 0;
+    bottom: 0;
+    position: absolute;
   }
 
   &__gear {

@@ -49,7 +49,7 @@ export const FBenchCreate = () => {
           <Form.Item<FieldType>
             label="Долгота"
             name="lat"
-            rules={[{ required: false, message: 'Введите долготу!' }]}
+            rules={[{ required: true, message: 'Введите долготу!' }]}
           >
             <SInputNumber
               name={'lat'}
@@ -63,7 +63,7 @@ export const FBenchCreate = () => {
           <Form.Item<FieldType>
             label="Широта"
             name="lng"
-            rules={[{ required: false, message: 'Введите широту!' }]}
+            rules={[{ required: true, message: 'Введите широту!' }]}
           >
             <SInputNumber
               name={'lng'}

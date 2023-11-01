@@ -13,6 +13,8 @@ const userChanged = createEvent()
 // TODO: Разобраться с типами
 // @ts-ignore
 $user.on(getUserFx.doneData, (_, { data }: { data: UserType }) => {
+  if (!data) return null
+
   if (data.role === 'user') {
     setTimeout(() => {
       notification.open({
