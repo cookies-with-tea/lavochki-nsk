@@ -1,0 +1,50 @@
+import { Form } from 'antd'
+import { useUnit } from 'effector-react'
+
+import { acceptDecisionEvents, acceptDecisionSelectors } from 'features/bench/accept/model'
+
+import { DecisionFormModelType } from 'shared/types'
+import { SButton, SInput } from 'shared/ui'
+import { IDialogProps, SDialog } from 'shared/ui/s-dialog/ui/SDialog'
+
+export const FAcceptDecision = (props: Omit<IDialogProps, 'children'>) => {
+  const [isVisible, message] = useUnit([acceptDecisionSelectors.isDialogVisible, acceptDecisionSelectors.message])
+
+  return (
+    <SDialog
+      open={isVisible}
+      onSuccess={acceptDecisionEvents.dialogClosed}
+      onCancel={acceptDecisionEvents.dialogClosed}
+      {...props}
+    >
+      <div className="f-reject-decision">
+        <Form>
+          <Form.Item<DecisionFormModelType['message']>
+            label={'Пояснение'}
+            name={'reason'}
+            rules={[{ required: true, message: 'Введите пояснение' }]}
+          >
+            <SInput
+              name={'reason'}
+              value={message}
+              onChange={
+                (event) => {
+                  acceptDecisionEvents.messageChanged(event.target.value)
+                }
+              }
+            />
+          </Form.Item>
+
+          <SButton
+            htmlType={'submit'}
+            onClick={
+              () => acceptDecisionEvents.formSubmitted()
+            }
+          >
+            Принять
+          </SButton>
+        </Form>
+      </div>
+    </SDialog>
+  )
+}

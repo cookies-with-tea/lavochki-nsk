@@ -1,13 +1,11 @@
 import { useUnit } from 'effector-react'
 
 import { benchesModerationColumns } from 'pages/benches/constants'
-// import { selectors } from 'pages/benches/model/benches'
-import { events } from 'pages/benches/model/detail-bench'
+import { moderationBenchesSelectors, moderationBenchesEvents } from 'pages/benches/model/moderation-benches'
 
 import { WTable } from 'widgets/w-table'
 
 import { BenchType } from 'shared/types'
-import { moderationBenchesSelectors, moderationBenchesEvents } from 'pages/benches/model/moderation-benches'
 
 export const BenchesModerationTable = () => {
   const [
@@ -35,6 +33,7 @@ export const BenchesModerationTable = () => {
         }
       }}
       pagination={{
+        current: pagination.page,
         total: pagination.total,
         pageSize: pagination.perPage,
         onChange: (page) => {

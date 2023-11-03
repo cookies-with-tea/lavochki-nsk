@@ -1,11 +1,11 @@
 import { Space } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 
-// import { decisionMade } from 'pages/benches/model/benches'
+import { acceptDecisionEvents } from 'features/bench/accept/model'
+import { rejectDecisionEvents } from 'features/bench/reject/model'
 
 import { BenchType } from 'shared/types'
 import { SButton } from 'shared/ui'
-import { rejectDecisionEvents } from 'features/bench/reject/model'
 
 export const benchesModerationColumns: ColumnsType<BenchType> = [
   {
@@ -48,11 +48,7 @@ export const benchesModerationColumns: ColumnsType<BenchType> = [
             async (event) => {
               event.stopPropagation()
 
-              // decisionMade({
-              //   id: record.id,
-              //   decision: true,
-              //   message: 'Молодец'
-              // })
+              acceptDecisionEvents.dialogOpened(record.id)
             }}
         >
           Принять
@@ -62,7 +58,7 @@ export const benchesModerationColumns: ColumnsType<BenchType> = [
             (event): void => {
               event.stopPropagation()
 
-              rejectDecisionEvents.dialogOpened()
+              rejectDecisionEvents.dialogOpened(record.id)
             }}
         >
           Отклонить

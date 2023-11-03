@@ -10,8 +10,10 @@ import { events as detailBenchEvents, selectors as detailBenchSelectors } from '
 import { BenchesTabsType } from 'pages/benches/types'
 import styles from 'pages/benches/ui/styles.module.scss'
 
+import { FAcceptDecision } from 'features/bench/accept'
 import { FBenchCreate, createBenchSelectors, createBenchEvents } from 'features/bench/create'
 import { FBenchEdit } from 'features/bench/edit'
+import { FRejectDecision } from 'features/bench/reject'
 
 import { events as editBenchEvents, selectors as editBenchSelectors } from 'entities/bench'
 
@@ -20,7 +22,6 @@ import { SButton, SIcon, SDialog, SDrawer } from 'shared/ui'
 import { simpleBenchesSelectors } from '../model/simple-benches'
 
 import { DetailBench } from './detail/DetailBench'
-import { FRejectDecision } from 'features/bench/reject'
 
 export const BenchesPage = () => {
   const [
@@ -92,6 +93,7 @@ export const BenchesPage = () => {
       </SDialog>
 
       <FRejectDecision title={'Отклонить лавочку'} />
+      <FAcceptDecision title={'Принять лавочку'} />
 
       {/*<SDialog*/}
       {/*  title={'Редактирование лавочки'}*/}

@@ -35,3 +35,31 @@ export type DecisionFormModelType = {
   message: string
   decision: boolean
 }
+
+declare namespace BenchTypes {
+  type One = {
+    id: string
+    lat: number
+    lng: number
+    images: Array<string>
+    owner: string
+    is_active: boolean
+    tags: Array<BenchTagType>
+    street: string
+  }
+
+  type All = Array<One>
+
+  type Response = {
+    items: BenchTypes.All
+    pagination: CommonTypes.Pagination
+  }
+
+  type Update = Pick<BenchTypes.One, 'id' | 'lat' | 'lng'> & { tags: Array<string> } & { images: any }
+
+  type DecisionFormModel = {
+    message: string
+    id: string
+    decision: boolean
+  }
+}

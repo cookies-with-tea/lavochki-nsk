@@ -1,10 +1,10 @@
 import { attach, createEvent, createStore, sample } from 'effector'
 
-import { rejectBenchFx } from 'features/bench/reject/api'
+import { acceptBenchFx } from 'features/bench/accept/api'
 
 import { BenchTypes, DecisionFormModelType } from 'shared/types'
 
-const localRejectBenchFx = attach({ effect: rejectBenchFx })
+const localAcceptBenchFx = attach({ effect: acceptBenchFx })
 
 const messageChanged = createEvent<DecisionFormModelType['message']>()
 const dialogOpened = createEvent<string>('')
@@ -13,7 +13,7 @@ const formSubmitted = createEvent()
 
 const $benchId = createStore<BenchTypes.One['id']>('')
 const $message = createStore<BenchTypes.DecisionFormModel['message']>('')
-const $decision = createStore<BenchTypes.DecisionFormModel['decision']>(false)
+const $decision = createStore<BenchTypes.DecisionFormModel['decision']>(true)
 const $isDialogVisible = createStore(false)
 
 $benchId.on(dialogOpened, (_, id) => id)
@@ -25,26 +25,26 @@ $isDialogVisible
 sample({
   clock: formSubmitted,
   source: { message: $message, decision: $decision, id: $benchId },
-  target: localRejectBenchFx,
+  target: localAcceptBenchFx,
 })
 
 sample({
-  clock: localRejectBenchFx.done,
+  clock: localAcceptBenchFx.done,
   target: dialogClosed,
 })
 
-export const rejectDecisionEffects = {
-  localRejectBenchFx,
+export const acceptDecisionEffects = {
+  localAcceptBenchFx,
 }
 
-export const rejectDecisionEvents = {
+export const acceptDecisionEvents = {
   dialogOpened,
   dialogClosed,
   messageChanged,
   formSubmitted,
 }
 
-export const rejectDecisionSelectors = {
+export const acceptDecisionSelectors = {
   isDialogVisible: $isDialogVisible,
   message: $message,
 }

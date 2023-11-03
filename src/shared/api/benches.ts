@@ -2,7 +2,7 @@ import { AxiosRequestConfig } from 'axios'
 
 import { API_CONFIG } from 'shared/configs/api'
 import { AxiosService } from 'shared/plugins'
-import { BenchType, SetDecisionPayloadType, UpdateBenchType } from 'shared/types'
+import { BenchType, BenchTypes, SetDecisionPayloadType, UpdateBenchType } from 'shared/types'
 import { BenchesResponseType } from 'shared/types/bench'
 
 class BenchesApi extends AxiosService {
@@ -34,7 +34,7 @@ class BenchesApi extends AxiosService {
     })
   }
 
-  setDecision = async (payload: SetDecisionPayloadType) => {
+  setDecision = async (payload: BenchTypes.DecisionFormModel) => {
     return await this.axiosCall<BenchesResponseType>({
       method: 'post',
       url: '/v1/benches/moderation',
