@@ -1,8 +1,8 @@
 import { createEffect } from 'effector/effector.umd'
 
 import { benchesApi } from 'shared/api'
-import { UpdateBenchType } from 'shared/types'
 import { urlToObject } from 'shared/lib/utils'
+import { UpdateBenchType } from 'shared/types'
 
 export const editBenchFx = createEffect<UpdateBenchType, any, any>(async (payload) => {
   const formData = new FormData()

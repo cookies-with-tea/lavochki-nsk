@@ -18,4 +18,6 @@ declare namespace CommonTypes {
     page: number
     perPage: number
   }
+
+  type PayloadPagination = Omit<Pagination, 'total'>
 }

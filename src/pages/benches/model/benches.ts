@@ -2,9 +2,9 @@
 import { combine, createEvent, createStore, forward, split } from 'effector'
 import { createGate } from 'effector-react'
 
-import { BenchesTabsType } from 'pages/benches/types'
-
 import { benchesEffects } from 'entities/bench/api'
+
+import { BenchTypes } from 'shared/types'
 
 import { moderationBenchesSelectors } from './moderation-benches'
 import { simpleBenchesSelectors } from './simple-benches'
@@ -12,7 +12,7 @@ import { simpleBenchesSelectors } from './simple-benches'
 // TODO: Странная типизация. Надо поправить.
 type StoreType = {
   tab: {
-    tab: BenchesTabsType
+    tab: BenchTypes.Variants
   }
 }
 

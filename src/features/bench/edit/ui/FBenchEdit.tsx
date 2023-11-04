@@ -3,9 +3,9 @@ import cn from 'classnames'
 import cnBind from 'classnames/bind'
 import { useUnit } from 'effector-react'
 
+import { events, selectors } from 'features/bench/edit/model/edit'
 import styles from 'features/bench/edit/ui/styles.module.scss'
 
-import { events, selectors } from 'features/bench/edit/model/edit'
 
 import { SButton, SInputNumber, SSelect } from 'shared/ui'
 

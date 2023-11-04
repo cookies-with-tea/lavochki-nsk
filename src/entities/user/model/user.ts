@@ -3,8 +3,8 @@ import { createEvent, createStore, sample } from 'effector'
 
 import { getUserFx } from 'entities/user/api/getUser'
 
-import { UserType } from 'shared/types'
 import { errorsDictionary } from 'shared/constants'
+import { UserType } from 'shared/types'
 
 const $user = createStore<UserType | null>(null)
 

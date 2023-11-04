@@ -1,5 +1,4 @@
 import { createEffect } from 'effector'
-
 import { CreateBenchPayloadType } from 'src/features/bench/create/types'
 
 import { benchesApi } from 'shared/api'

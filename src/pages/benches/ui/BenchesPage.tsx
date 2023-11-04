@@ -7,7 +7,6 @@ import { BENCHES_TABS } from 'pages/benches/constants'
 // import { BenchesPageGate } from 'pages/benches/model/benches'
 import { benchesEvents, benchesPageGates, benchesSelectors } from 'pages/benches/model/benches'
 import { events as detailBenchEvents, selectors as detailBenchSelectors } from 'pages/benches/model/detail-bench'
-import { BenchesTabsType } from 'pages/benches/types'
 import styles from 'pages/benches/ui/styles.module.scss'
 
 import { FAcceptDecision } from 'features/bench/accept'
@@ -17,6 +16,7 @@ import { FRejectDecision } from 'features/bench/reject'
 
 import { events as editBenchEvents, selectors as editBenchSelectors } from 'entities/bench'
 
+import { BenchTypes } from 'shared/types'
 import { SButton, SIcon, SDialog, SDrawer } from 'shared/ui'
 
 import { simpleBenchesSelectors } from '../model/simple-benches'
@@ -80,7 +80,7 @@ export const BenchesPage = () => {
       <Tabs
         defaultActiveKey={'benches'}
         items={BENCHES_TABS}
-        onChange={(tab) => benchesEvents.tabChanged({ tab: tab as BenchesTabsType })}
+        onChange={(tab) => benchesEvents.tabChanged({ tab: tab as BenchTypes.Variants })}
       />
 
       <SDialog

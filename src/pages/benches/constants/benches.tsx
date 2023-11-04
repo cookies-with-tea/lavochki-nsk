@@ -1,36 +1,33 @@
-import { SButton } from 'shared/ui'
 import { Space, Tag } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 
-import { events } from 'entities/bench'
-
-import { BenchType } from 'shared/types'
 import { FBenchDelete } from 'features/bench/delete/ui/FBenchDelete'
 
-export const benchesColumns: ColumnsType<BenchType> = [
+import { events } from 'entities/bench'
+
+import { BenchType, BenchTypes } from 'shared/types'
+import { SButton } from 'shared/ui'
+
+export const benchesColumns: ColumnsType<BenchTypes.One> = [
   {
     title: 'ID',
     dataIndex: 'id',
     key: 'id',
-    width: 330,
   },
   {
     title: 'ID владельца',
     dataIndex: 'owner',
     key: 'owner',
-    width: 330,
   },
   {
     title: 'Широта',
     dataIndex: 'lat',
     key: 'lat',
-    width: 120,
   },
   {
     title: 'Долгота',
     dataIndex: 'lng',
     key: 'lng',
-    width: 120,
   },
   {
     title: 'Адрес',
@@ -57,6 +54,7 @@ export const benchesColumns: ColumnsType<BenchType> = [
         >
           Редактировать
         </SButton>
+
         <FBenchDelete id={record.id} />
       </Space>
     ),

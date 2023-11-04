@@ -1,5 +1,7 @@
 import { AxiosRequestConfig } from 'axios'
 
+import Benches from 'pages/benches'
+
 import { API_CONFIG } from 'shared/configs/api'
 import { AxiosService } from 'shared/plugins'
 import { BenchType, BenchTypes, SetDecisionPayloadType, UpdateBenchType } from 'shared/types'
@@ -10,24 +12,23 @@ class BenchesApi extends AxiosService {
     super(config)
   }
 
-  getBenches = async (payload: any) => {
-    return await this.axiosCall<BenchesResponseType>({
-      method: 'get',
-      url: '/v1/benches',
-      params: payload,
-    })
-  }
-
   getDetail = async (id: BenchType['id']) => {
-    return await this.axiosCall<BenchType>({
+    return await this.axiosCall<BenchTypes.One>({
       method: 'get',
       url: `/v1/benches/${id}`,
     })
   }
 
+  getBenches = async (payload: CommonTypes.PayloadPagination) => {
+    return await this.axiosCall<BenchTypes.Response>({
+      method: 'get',
+      url: '/v1/benches',
+      params: payload,
+    })
+  }
   // TODO: Добавить тип
-  getModerationBenches = async (payload: any) => {
-    return await this.axiosCall<BenchesResponseType>({
+  getModerationBenches = async (payload: CommonTypes.PayloadPagination) => {
+    return await this.axiosCall<BenchTypes.Response>({
       method: 'get',
       url: '/v1/benches/moderation',
       params: payload,
@@ -35,7 +36,7 @@ class BenchesApi extends AxiosService {
   }
 
   setDecision = async (payload: BenchTypes.DecisionFormModel) => {
-    return await this.axiosCall<BenchesResponseType>({
+    return await this.axiosCall<void>({
       method: 'post',
       url: '/v1/benches/moderation',
       data: payload,

@@ -5,7 +5,7 @@ import { moderationBenchesSelectors, moderationBenchesEvents } from 'pages/bench
 
 import { WTable } from 'widgets/w-table'
 
-import { BenchType } from 'shared/types'
+import { BenchTypes } from 'shared/types'
 
 export const BenchesModerationTable = () => {
   const [
@@ -19,7 +19,7 @@ export const BenchesModerationTable = () => {
   ])
 
   return (
-    <WTable<BenchType>
+    <WTable<BenchTypes.One>
       loading={pending}
       dataSource={benches}
       columns={benchesModerationColumns}

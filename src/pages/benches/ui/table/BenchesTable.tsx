@@ -1,21 +1,26 @@
 import { useUnit } from 'effector-react'
 
 import { benchesColumns } from 'pages/benches/constants'
-// import { selectors } from 'pages/benches/model/benches'
-// import { events } from 'pages/benches/model/detail-bench'
-
-import { simpleBenchesSelectors } from 'pages/benches/model/simple-benches'
+import { simpleBenchesEvents, simpleBenchesSelectors } from 'pages/benches/model/simple-benches'
 
 import { WTable } from 'widgets/w-table'
 
-import { BenchType } from 'shared/types'
+import { BenchTypes } from 'shared/types'
 
 export const BenchesTable = () => {
-  const [benches, pending] = useUnit([simpleBenchesSelectors.benches, simpleBenchesSelectors.isBenchesPending])
+  const [
+    benches,
+    pagination,
+    pending,
+  ] = useUnit([
+    simpleBenchesSelectors.benches,
+    simpleBenchesSelectors.pagination,
+    simpleBenchesSelectors.isBenchesPending,
+  ])
 
   return (
     <>
-      <WTable<BenchType>
+      <WTable<BenchTypes.One>
        loading={pending}
        className={'benches-table'}
        dataSource={benches}
@@ -29,13 +34,14 @@ export const BenchesTable = () => {
           }
         }
       }}
-      // pagination={{
-      //   // total: pagination.total,
-      //   pageSize: pagination.perPage,
-      //   onChange(page, pageSize) {
-      //       console.log(page)
-      //   },
-      // }}
+       pagination={{
+         current: pagination.page,
+         total: pagination.total,
+         pageSize: pagination.perPage,
+         onChange: (page) => {
+           simpleBenchesEvents.pageChanged(page)
+         }
+       }}
       />
     </>
 
