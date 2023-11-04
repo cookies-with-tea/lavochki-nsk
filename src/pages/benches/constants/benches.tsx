@@ -12,32 +12,26 @@ export const benchesColumns: ColumnsType<BenchTypes.One> = [
   {
     title: 'ID',
     dataIndex: 'id',
-    key: 'id',
   },
   {
     title: 'ID владельца',
     dataIndex: 'owner',
-    key: 'owner',
   },
   {
     title: 'Широта',
     dataIndex: 'lat',
-    key: 'lat',
   },
   {
     title: 'Долгота',
     dataIndex: 'lng',
-    key: 'lng',
   },
   {
     title: 'Адрес',
     dataIndex: 'street',
-    key: 'street',
   },
   {
     title: 'Дата создания',
     dataIndex: 'created_at',
-    key: 'created_at',
   },
   {
     title: '',

@@ -25,7 +25,7 @@ sample({
 sample({
   clock: getDetailBenchFx.fail,
   fn: () => {
-    // TODO: detail-index.ts:28 Warning: [antd: notification]
+    // TODO: detail-index.tsx:28 Warning: [antd: notification]
     // Static function can not consume context like dynamic theme. Please use 'App' component instead.
     notification.open({
       type: 'error',

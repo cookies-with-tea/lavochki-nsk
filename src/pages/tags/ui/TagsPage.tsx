@@ -35,14 +35,12 @@ export const TagsPage = () => {
 
       {/*TODO: Вынести в отдельный компонент*/}
 
-      <WTable<TagType> dataSource={useUnit($tags)} columns={[
+      <WTable<TagType> rowKey={'id'} dataSource={useUnit($tags)} columns={[
         {
-          key: 'id',
           title: 'ID',
           dataIndex: 'id',
         },
         {
-          key: 'title',
           title: 'Название',
           dataIndex: 'title',
         }

@@ -30,7 +30,7 @@ export const ROUTES_MAP = [
     icon: 'user', // TODO: Заменить на tags.
   },
     {
-    path: '/reports-comments',
+    path: '/reported-comments',
     title: 'Жалобы на комментарии',
     icon: 'user', // TODO: Заменить на .
   },

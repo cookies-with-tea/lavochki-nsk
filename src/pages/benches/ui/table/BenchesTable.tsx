@@ -19,31 +19,30 @@ export const BenchesTable = () => {
   ])
 
   return (
-    <>
-      <WTable<BenchTypes.One>
-       loading={pending}
-       className={'benches-table'}
-       dataSource={benches}
-       columns={benchesColumns}
-       onRow={(record) => {
-        return {
-          onClick: (event) => {
-            if (event.ctrlKey) return
+    <WTable<BenchTypes.One>
+     loading={pending}
+     className={'benches-table'}
+     dataSource={benches}
+     columns={benchesColumns}
+     rowKey={'id'}
+     onRow={(record) => {
+      return {
+        onClick: (event) => {
+          if (event.ctrlKey) return
 
-            // events.drawerOpened(record.id)
-          }
+          // events.drawerOpened(record.id)
         }
-      }}
-       pagination={{
-         current: pagination.page,
-         total: pagination.total,
-         pageSize: pagination.perPage,
-         onChange: (page) => {
-           simpleBenchesEvents.pageChanged(page)
-         }
-       }}
-      />
-    </>
+      }
+    }}
+     pagination={{
+       current: pagination.page,
+       total: pagination.total,
+       pageSize: pagination.perPage,
+       onChange: (page) => {
+         simpleBenchesEvents.pageChanged(page)
+       }
+     }}
+    />
 
   )
 }

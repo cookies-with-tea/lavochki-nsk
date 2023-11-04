@@ -23,6 +23,7 @@ export const BenchesModerationTable = () => {
       loading={pending}
       dataSource={benches}
       columns={benchesModerationColumns}
+      rowKey={'id'}
       onRow={(record) => {
         return {
           onClick: async (event) => {
