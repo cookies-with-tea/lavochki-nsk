@@ -1,12 +1,14 @@
 import { UploadFile } from 'antd'
 import { createEvent, createStore, sample } from 'effector'
+import { attach } from 'effector/effector.umd'
 import { not } from 'patronum'
 
 import { createBenchFx } from 'features/bench/create/api'
 
-import { OptionType } from 'shared/types'
+import { getTagsFx } from 'entities/tag'
 
-// TOOD: Добавить attach
+const localGetTagsFx = attach({ effect: getTagsFx })
+
 const latChanged = createEvent<string>()
 const lngChanged = createEvent<string>()
 const tagsChanged = createEvent<Array<string>>()
@@ -16,30 +18,28 @@ const dialogOpened = createEvent()
 const dialogClosed = createEvent()
 
 const $tags = createStore<Array<string>>([])
-const $tagsOptions = createStore<Array<OptionType>>([])
+const $tagsOptions = createStore<Array<CommonTypes.OptionType>>([])
 const $lat = createStore('')
 const $lng = createStore('')
 const $images = createStore<Array<UploadFile>>([])
 const $isFormDisabled = createStore(false) // TODO: Добавить логику для блокировки формы
 const $isDialogOpen = createStore(false)
 
-// TODO: Добавить тип возвращаемого значения
 // TODO: Добавить валидацию
 
 $lat.on(latChanged, (_, lat) => lat)
 $lng.on(lngChanged, (_, lng) => lng)
 $images.on(imagesChanged, (_, images) => images)
 $tags.on(tagsChanged, (_, tags) => tags)
-// TODO: Разобраться с типами
-// @ts-ignore
-// $tagsOptions.on(effects.getTagsOptionsFx.doneData, (_, { data }) => data.map((tag) =>
-//   ({ label: tag.title, value: tag.id })))
+$tagsOptions.on(localGetTagsFx.doneData, (_, tags) => {
+  return tags.map((tag) => ({ label: tag.title, value: tag.id }))
+})
 $isDialogOpen.on(dialogOpened, () => true)
 $isDialogOpen.on(dialogClosed, () => false)
 
 sample({
   clock: dialogOpened,
-  // target: effects.getTagsOptionsFx,
+  target: localGetTagsFx,
 })
 
 sample({
@@ -51,16 +51,8 @@ sample({
 
 sample({
   clock: createBenchFx.done,
-  fn: () => dialogClosed(), // TODO: unit call from pure function is deprecated, use operators like sample instead
+  target: dialogClosed,
 })
-
-// TODO: Переделать
-// sample({
-//   clock: createBenchFx.done,
-//   // fn: () => effects.getModerationBenchesFx({
-//   //   per_page: 100
-//   // })
-// })
 
 export const createBenchSelectors = {
   tags: $tags,

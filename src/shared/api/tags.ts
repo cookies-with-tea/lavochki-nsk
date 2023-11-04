@@ -9,8 +9,8 @@ class TagsApi extends AxiosService {
     super(config)
   }
 
-  get = async () => {
-    return this.axiosCall<TagsResponseType>({
+  get = () => {
+    return this.requestFx({
       url: '/v1/tags',
       method: 'get',
     })
