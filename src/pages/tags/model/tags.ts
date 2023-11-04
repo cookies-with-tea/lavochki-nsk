@@ -1,25 +1,22 @@
-import { createEffect, createStore, forward, sample } from 'effector'
+import { createStore, forward, sample } from 'effector'
+import { attach } from 'effector'
 import { createGate } from 'effector-react'
-
-import { getApiTags } from 'pages/tags/api/tags'
 
 import { createBenchTagEffects } from 'features/tag/model'
 
-import { TagType } from 'shared/types'
+import { getTagsFx } from 'entities/tag'
+
+const localGetTagsFx = attach({ effect: getTagsFx })
 
 const TagsPageGate = createGate()
 
-export const getTagsFx = createEffect(async () => await getApiTags())
+export const $tags = createStore<TagTypes.All>([])
 
-export const $tags = createStore<Array<TagType>>([])
-
-// TODO: Разобраться с типами
-// @ts-ignore
-$tags.on(getTagsFx.doneData, (_, { data }) => data)
+$tags.on(localGetTagsFx.doneData, (_, data) => data)
 
 forward({
   from: TagsPageGate.open,
-  to: getTagsFx,
+  to: localGetTagsFx,
 })
 
 sample({

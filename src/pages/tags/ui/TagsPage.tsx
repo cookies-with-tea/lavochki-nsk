@@ -10,9 +10,7 @@ import { FTagCreate } from 'features/tag/ui/create/FTagCreate'
 
 import { $tags, tagsPageGates } from '../model/tags'
 
-import { TagType } from '@/shared/types'
 import { SButton, SIcon } from '@/shared/ui'
-
 
 export const TagsPage = () => {
   useGate(tagsPageGates.TagsPageGate)
@@ -35,7 +33,7 @@ export const TagsPage = () => {
 
       {/*TODO: Вынести в отдельный компонент*/}
 
-      <WTable<TagType> rowKey={'id'} dataSource={useUnit($tags)} columns={[
+      <WTable<TagTypes.One> rowKey={'id'} dataSource={useUnit($tags)} columns={[
         {
           title: 'ID',
           dataIndex: 'id',

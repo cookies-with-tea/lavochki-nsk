@@ -1,11 +1,11 @@
 import { notification } from 'antd'
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import { createEffect } from 'effector'
 
 import { usersApi } from 'shared/api'
 import { errorsDictionary } from 'shared/constants'
 import { useLocalStorage } from 'shared/lib/hooks'
 import { AuthorizationResponseType } from 'shared/types'
-import { createEffect } from 'effector'
 
 export type ApiResponseType<T = unknown> = {
   data: T

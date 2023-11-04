@@ -5,7 +5,6 @@ import cnBind from 'classnames/bind'
 import debounce from 'lodash.debounce'
 import React, { useMemo, useRef, useState } from 'react'
 
-import { OptionType } from 'shared/types'
 import styles from 'shared/ui/s-select/ui/styles.module.scss'
 
 const cx = cnBind.bind(styles)
@@ -61,7 +60,7 @@ function DebounceSelect<
   )
 }
 
-async function fetchUserList(options: Array<OptionType>) {
+async function fetchUserList(options: Array<CommonTypes.OptionType>) {
   return options
 
   // return fetch('https://randomuser.me/api/?results=5')
@@ -83,9 +82,9 @@ interface IProps {
 
 
 export const SSelect = ({ onChange, options }: IProps) => {
-  const [value, setValue] = useState<Array<OptionType>>([])
+  const [value, setValue] = useState<Array<CommonTypes.OptionType>>([])
 
-  const onChangeSelect = (options: OptionType[]) => {
+  const onChangeSelect = (options: Array<CommonTypes.OptionType>) => {
     setValue(options)
 
     onChange && onChange(options.map(({ value }) => value))

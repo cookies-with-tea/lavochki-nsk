@@ -1,6 +1,6 @@
 import { UploadFile } from 'antd'
 import { createEvent, createStore, sample } from 'effector'
-import { attach } from 'effector/effector.umd'
+import { attach } from 'effector'
 import { not } from 'patronum'
 
 import { createBenchFx } from 'features/bench/create/api'

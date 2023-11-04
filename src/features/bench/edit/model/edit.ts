@@ -8,7 +8,7 @@ import { editBenchFx } from 'features/bench/edit/api'
 // import { effects } from 'entities/bench/api'
 
 import { urlToObject } from 'shared/lib/utils'
-import { BenchType, OptionType } from 'shared/types'
+import { BenchType } from 'shared/types'
 
 
 // TODO: Перенести
@@ -27,7 +27,7 @@ const dialogClosed = createEvent()
 const $detailBench = createStore<BenchType | null>(null)
 const $detailBenchId = createStore<BenchType['id'] | null>(null)
 const $tags = createStore<Array<string>>([])
-const $tagsOptions = createStore<Array<OptionType>>([])
+const $tagsOptions = createStore<Array<CommonTypes.OptionType>>([])
 const $lat = createStore('')
 const $lng = createStore('')
 const $images = createStore<Array<UploadFile>>([])

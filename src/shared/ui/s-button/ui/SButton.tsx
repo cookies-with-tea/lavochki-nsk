@@ -13,7 +13,7 @@ interface IProps extends ButtonProps {
 
 const cx = cnBind.bind(styles)
 
-export const SButton = <T = unknown>({
+export const SButton = ({
   appearance = 'default',
   children,
   className = '',

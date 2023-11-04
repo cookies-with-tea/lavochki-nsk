@@ -1,18 +1,15 @@
 import { AxiosRequestConfig } from 'axios'
 
-import Benches from 'pages/benches'
-
 import { API_CONFIG } from 'shared/configs/api'
 import { AxiosService } from 'shared/plugins'
-import { BenchType, BenchTypes, SetDecisionPayloadType, UpdateBenchType } from 'shared/types'
-import { BenchesResponseType } from 'shared/types/bench'
+import { BenchTypes } from 'shared/types'
 
 class BenchesApi extends AxiosService {
   constructor(config?: AxiosRequestConfig) {
     super(config)
   }
 
-  getDetail = async (id: BenchType['id']) => {
+  getDetail = async (id: BenchTypes.One['id']) => {
     return await this.axiosCall<BenchTypes.One>({
       method: 'get',
       url: `/v1/benches/${id}`,
@@ -51,16 +48,16 @@ class BenchesApi extends AxiosService {
     })
   }
 
-  update = async (benchId: BenchType['id'], payload: FormData) => {
-    return await this.axiosCall<BenchType>({
+  update = async (benchId: BenchTypes.One['id'], payload: FormData) => {
+    return await this.axiosCall<BenchTypes.One>({
       method: 'patch',
       url: `/v1/benches/${benchId}`,
       data: payload
     })
   }
 
-  delete = async (benchId: BenchType['id']) => {
-    return await this.axiosCall<BenchType>({
+  delete = async (benchId: BenchTypes.One['id']) => {
+    return await this.axiosCall<BenchTypes.One>({
       method: 'delete',
       url: `/v1/benches/${benchId}`,
     })
