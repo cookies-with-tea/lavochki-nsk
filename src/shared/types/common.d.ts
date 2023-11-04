@@ -1,4 +1,3 @@
-
 declare namespace CommonTypes {
   type OptionType = {
     label: string

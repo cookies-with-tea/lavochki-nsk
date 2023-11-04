@@ -4,10 +4,9 @@ import { useUnit } from 'effector-react'
 import { acceptDecisionEvents, acceptDecisionSelectors } from 'features/bench/accept/model'
 
 import { DecisionFormModelType } from 'shared/types'
-import { SButton, SInput } from 'shared/ui'
-import { IDialogProps, SDialog } from 'shared/ui/s-dialog/ui/SDialog'
+import { SButton, SInput, SDialog } from 'shared/ui'
 
-export const FAcceptDecision = (props: Omit<IDialogProps, 'children'>) => {
+export const FAcceptDecision = (props: CommonInterfaces.IDialogWithoutChildren) => {
   const [isVisible, message] = useUnit([acceptDecisionSelectors.isDialogVisible, acceptDecisionSelectors.message])
 
   return (
@@ -34,15 +33,16 @@ export const FAcceptDecision = (props: Omit<IDialogProps, 'children'>) => {
               }
             />
           </Form.Item>
-
-          <SButton
-            htmlType={'submit'}
-            onClick={
-              () => acceptDecisionEvents.formSubmitted()
-            }
-          >
-            Принять
-          </SButton>
+          <Form.Item>
+            <SButton
+              htmlType={'submit'}
+              onClick={
+                () => acceptDecisionEvents.formSubmitted()
+              }
+            >
+              Принять
+            </SButton>
+          </Form.Item>
         </Form>
       </div>
     </SDialog>

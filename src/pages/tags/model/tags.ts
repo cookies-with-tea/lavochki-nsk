@@ -1,26 +1,32 @@
-import { createEffect, createEvent, createStore } from 'effector'
+import { createEffect, createStore, forward, sample } from 'effector'
+import { createGate } from 'effector-react'
 
 import { getApiTags } from 'pages/tags/api/tags'
 
-import { INITIAL_PAGE_PARAMS } from 'shared/constants'
+import { createBenchTagEffects } from 'features/tag/model'
+
 import { TagType } from 'shared/types'
 
-// --- Инициализация данных страницы --- //
-export const $perPage = createStore<number>(INITIAL_PAGE_PARAMS.perPage)
+const TagsPageGate = createGate()
 
-export const $totalPages = createStore<number>(INITIAL_PAGE_PARAMS.total)
-// ------ //
-
-// --- Инициализация основных эвентов страницы --- //
-export const pageChanged = createEvent<string>()
-// ------ //
-
-// --- Инициализация основных эффектов страницы --- //
 export const getTagsFx = createEffect(async () => await getApiTags())
-// ----- //
 
 export const $tags = createStore<Array<TagType>>([])
 
 // TODO: Разобраться с типами
 // @ts-ignore
 $tags.on(getTagsFx.doneData, (_, { data }) => data)
+
+forward({
+  from: TagsPageGate.open,
+  to: getTagsFx,
+})
+
+sample({
+  clock: createBenchTagEffects.localCreateTagFx.done,
+  target: getTagsFx,
+})
+
+export const tagsPageGates = {
+  TagsPageGate,
+}
