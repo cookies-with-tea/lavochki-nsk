@@ -1,0 +1,31 @@
+@use '../variables/index.scss' as *;
+@import 'responsive';
+
+@mixin generate-text-classes($text-sizes) {
+  @each $key-size, $value-size in $text-sizes {
+    .text-#{$key-size} {
+      font-size: $value-size;
+    }
+    @each $key, $value in $breakpoints {
+      .text-#{$key}-#{$key-size} {
+        @include responsive($key, $breakpoints) {
+          font-size: $value-size;
+        }
+      }
+    }
+    @each $key, $value in $breakpoints-with-max {
+      .text-only-#{$key}-#{$key-size} {
+        @include responsive($key, $breakpoints-with-max) {
+          font-size: $value-size;
+        }
+      }
+    }
+    @each $key, $value in $breakpoints-only-max {
+      .text-max-#{$key}-#{$key-size} {
+        @include responsive($key, $breakpoints-only-max) {
+          font-size: $value-size;
+        }
+      }
+    }
+  }
+}

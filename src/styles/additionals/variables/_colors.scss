@@ -1,0 +1,18 @@
+@use 'sass:color';
+
+$color--dark: #111;
+$color--white: #fff;
+$color--background: #fffcf7;
+$color--brown-1: #49260a;
+$color--brown-2: #9e8567;
+
+$color--box-shadow: rgb(188 188 188 / 0.25);
+
+$colors: (
+  dark: $color--dark,
+  white: $color--white,
+  box-shadow: $color--box-shadow,
+  brown-1: $color--brown-1,
+  brown-2: $color--brown-2,
+  background: $color--background,
+)

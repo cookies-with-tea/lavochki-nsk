@@ -1,0 +1,64 @@
+@use '../variables/index.scss' as *;
+@import 'responsive';
+
+@mixin generate-margin-classes($list) {
+  @each $size, $size-value in $list {
+    .mx-#{$size} {
+      margin-right: #{$size-value};
+      margin-left: #{$size-value};
+    }
+    .my-#{$size} {
+      margin-top: #{$size-value};
+      margin-bottom: #{$size-value};
+    }
+    .mb-#{$size} {
+      margin-bottom: #{$size-value};
+    }
+    .mt-#{$size} {
+      margin-top: #{$size-value};
+    }
+    .mr-#{$size} {
+      margin-right: #{$size-value};
+    }
+    .ml-#{$size} {
+      margin-left: #{$size-value};
+    }
+  }
+
+  @each $size, $size-value in $list {
+    @each $key, $point in $breakpoints {
+      .mx-#{$key}-#{$size} {
+        @include responsive($key) {
+          margin-right: $size-value;
+          margin-left: $size-value;
+        }
+      }
+      .my-#{$key}-#{$size} {
+        @include responsive($key) {
+          margin-top: $size-value;
+          margin-bottom: $size-value;
+        }
+      }
+      .mb-#{$key}-#{$size} {
+        @include responsive($key) {
+          margin-bottom: $size-value;
+        }
+      }
+      .mt-#{$key}-#{$size} {
+        @include responsive($key) {
+          margin-top: $size-value;
+        }
+      }
+      .mr-#{$key}-#{$size} {
+        @include responsive($key) {
+          margin-right: $size-value;
+        }
+      }
+      .ml-#{$key}-#{$size} {
+        @include responsive($key) {
+          margin-left: $size-value;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+.base-button {
+  font-weight: 500;
+  border-radius: 100px;
+
+  &--primary {
+    background-color: var(--color-brown-1);
+    color: var(--color-background);
+  }
+
+  &--secondary {
+    box-shadow: 0 0 0 2px var(--color-brown-1);
+  }
+
+  &--only-button {
+    border-radius: 50%;
+  }
+
+  &--md {
+    padding: 14px 22px;
+    font-size: var(--font-size--xl);
+    line-height: 26px;
+    height: 54px;
+  }
+
+  &--sm {
+    padding: 12px 17px;
+    font-size: var(--font-size--md);
+    line-height: 18px;
+    height: 44px;
+  }
+}

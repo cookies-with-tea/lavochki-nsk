@@ -1,0 +1,21 @@
+@use 'sass:color';
+@use '../variables/index.scss' as *;
+
+@function hexToRGBString($hexColor) {
+  @return "#{red($hexColor)} #{green($hexColor)} #{blue($hexColor)}";
+}
+
+@mixin generate-color-classes() {
+  @each $color-key, $color in $colors {
+    .color-#{'' + $color-key} {
+      color: $color;
+    }
+  }
+}
+
+@mixin generate-color-root-variables() {
+  @each $color-key, $color in $colors {
+    --color-#{'' + $color-key}: #{$color};
+    --color-rgb-#{'' + $color-key}: #{hexToRGBString($color)};
+  }
+}

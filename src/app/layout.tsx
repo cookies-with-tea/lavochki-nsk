@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-import '@/styles/base.scss'
+import '@/styles/index.scss'
 
 export default function RootLayout({
   children,

@@ -1,0 +1,62 @@
+@use '../variables/index.scss' as *;
+@import 'responsive';
+
+@mixin generate-padding-classes($list) {
+  @each $size, $size-value in $list {
+    .px-#{$size} {
+      padding-right: #{$size-value};
+      padding-left: #{$size-value};
+    }
+    .py-#{$size} {
+      padding-top: #{$size-value};
+      padding-bottom: #{$size-value};
+    }
+    .pb-#{$size} {
+      padding-bottom: #{$size-value};
+    }
+    .pt-#{$size} {
+      padding-top: #{$size-value};
+    }
+    .pr-#{$size} {
+      padding-right: #{$size-value};
+    }
+    .pl-#{$size} {
+      padding-left: #{$size-value};
+    }
+
+    @each $key, $point in $breakpoints {
+      .px-#{$key}-#{$size} {
+        @include responsive($key, $breakpoints) {
+          padding-right: $size-value;
+          padding-left: $size-value;
+        }
+      }
+      .py-#{$key}-#{$size} {
+        @include responsive($key, $breakpoints) {
+          padding-top: $size-value;
+          padding-bottom: $size-value;
+        }
+      }
+      .pb-#{$key}-#{$size} {
+        @include responsive($key, $breakpoints) {
+          padding-bottom: $size-value;
+        }
+      }
+      .pt-#{$key}-#{$size} {
+        @include responsive($key, $breakpoints) {
+          padding-top: $size-value;
+        }
+      }
+      .pr-#{$key}-#{$size} {
+        @include responsive($key, $breakpoints) {
+          padding-right: $size-value;
+        }
+      }
+      .pl-#{$key}-#{$size} {
+        @include responsive($key, $breakpoints) {
+          padding-left: $size-value;
+        }
+      }
+    }
+  }
+}
