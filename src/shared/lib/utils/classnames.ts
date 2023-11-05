@@ -5,10 +5,11 @@ type Props = {
   path: { readonly [key: string]: string }
   classNames: cn.ArgumentArray
   additionalClasses?: string
+  baseClassName?: string
 }
 
-export const classnames = ({ path, additionalClasses, classNames }: Props): string => {
+export const classnames = ({ path, additionalClasses, classNames, baseClassName }: Props): string => {
   const cx = cnBind.bind(path)
 
-  return cn(additionalClasses ?? '', cx(...classNames)).trim()
+  return cn(baseClassName, cx(...classNames), additionalClasses)
 }

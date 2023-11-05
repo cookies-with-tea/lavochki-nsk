@@ -38,6 +38,6 @@ export async function generateMetadata({ params }: Props): Promise<Promise<Metad
 // }
 export default function DetailBench({ params }: Props) {
   return (
-	<h1>Bench №{params.id}</h1>
+    <h1>Bench №{params.id}</h1>
   )
 }

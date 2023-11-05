@@ -43,7 +43,8 @@
       { "maximum": 1, "when": "multiline" }
     ],
     "react/jsx-equals-spacing": [2, "never"],
-    "react/jsx-indent": [2, "tab", {"checkAttributes": true, "indentLogicalExpressions": true}],
+    "react/jsx-indent": [2, 2, {"checkAttributes": true, "indentLogicalExpressions": true}],
+    "react/jsx-indent-props": [2, 2],
     "react/jsx-sort-props": [2, {
       "callbacksLast": true,
       "shorthandFirst": true,
@@ -54,7 +55,6 @@
       "reservedFirst": false,
       "locale": "auto"
     }],
-    "react/jsx-indent-props": [2, 2],
     "react/jsx-closing-bracket-location": [
       2,
       "tag-aligned"

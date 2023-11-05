@@ -26,9 +26,6 @@ const nextConfig = {
     config.module.rules.push({
       test: /\.svg$/,
       loader: 'svg-sprite-loader',
-      options: {
-        runtimeCompat: true
-      }
     })
 
     config.plugins.push(new SpriteLoaderPlugin())

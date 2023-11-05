@@ -2,6 +2,8 @@
   font-weight: 500;
   border-radius: 100px;
 
+  $root: &;
+
   &--primary {
     background-color: var(--color-brown-1);
     color: var(--color-background);
@@ -27,5 +29,31 @@
     font-size: var(--font-size--md);
     line-height: 18px;
     height: 44px;
+  }
+
+  &--xs {
+    padding: 7px 20px;
+    font-size: var(--font-size--sm);
+    line-height: 18px;
+    font-weight: 400;
+  }
+
+  &.icon-only {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    &#{$root} {
+      &--md {
+        width: 48px;
+        height: 48px;
+
+        :global(.base-icon) {
+          font-size: var(--font-size--icon-md);
+        }
+      }
+    }
   }
 }
