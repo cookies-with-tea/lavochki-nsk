@@ -1,3 +1,112 @@
 {
-  "extends": "next/core-web-vitals"
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "next",
+    "next/core-web-vitals",
+
+    "plugin:@next/next/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+
+    "eslint:recommended",
+    "prettier"
+  ],
+  "globals": {
+    "__WebpackModuleApi": "readonly"
+  },
+  "plugins": [
+    "import",
+    "react",
+    "jsx-a11y",
+    "react-hooks"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "warnOnUnsupportedTypeScriptVersion": true
+  },
+  "rules": {
+    "react/jsx-first-prop-new-line": [2, "multiline"],
+    "react/jsx-newline": [2, { "prevent": true, "allowMultilines": true }],
+    "react/jsx-max-props-per-line": [
+      2,
+      { "maximum": 1, "when": "multiline" }
+    ],
+    "react/jsx-equals-spacing": [2, "never"],
+    "react/jsx-indent": [2, "tab", {"checkAttributes": true, "indentLogicalExpressions": true}],
+    "react/jsx-sort-props": [2, {
+      "callbacksLast": true,
+      "shorthandFirst": true,
+      "shorthandLast": true,
+      "multiline": "ignore",
+      "ignoreCase": true,
+      "noSortAlphabetically": true,
+      "reservedFirst": false,
+      "locale": "auto"
+    }],
+    "react/jsx-indent-props": [2, 2],
+    "react/jsx-closing-bracket-location": [
+      2,
+      "tag-aligned"
+    ],
+    "import/no-anonymous-default-export": "warn",
+    "react/no-unknown-property": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    "jsx-a11y/alt-text": [
+      "warn",
+      {
+        "elements": ["img"],
+        "img": ["Image"]
+      }
+    ],
+    "semi": [
+      "error", "never"
+    ],
+    "quotes": [
+      "error", "single"
+    ],
+    "object-curly-spacing": [
+      "error", "always", { "objectsInObjects": true }],
+    "jsx-a11y/aria-props": "warn",
+    "jsx-a11y/aria-proptypes": "warn",
+    "jsx-a11y/aria-unsupported-elements": "warn",
+    "jsx-a11y/role-has-required-aria-props": "warn",
+    "jsx-a11y/role-supports-aria-props": "warn",
+    "react/jsx-no-target-blank": "off",
+    "max-len": [
+      "error",
+      {
+        "code": 120,
+        "tabWidth": 2,
+        "ignoreComments": true,
+        "ignoreUrls": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true
+      }
+    ],
+    "@typescript-eslint/no-var-requires": 0,
+    "@typescript-eslint/ban-ts-comment": 0,
+    "@typescript-eslint/no-explicit-any": 0
+  }
+//  "overrides": [
+//    // Only uses Testing Library lint rules in test files
+//    {
+//      "files": [
+//        "**/__tests__/**/*.[jt]s?(x)",
+//        "**/?(*.)+(spec|test).[jt]s?(x)"
+//      ],
+//      "extends": ["plugin:testing-library/react"]
+//    }
+//  ]
 }
