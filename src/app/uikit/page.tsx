@@ -1,5 +1,4 @@
-import { BaseButton } from '@/components/shared'
-import { BaseIcon } from '@/components/shared/icon'
+import { BaseButton, BaseIcon } from '@/components/shared'
 
 export default function Uikit() {
   return (
