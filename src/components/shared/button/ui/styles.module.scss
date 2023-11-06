@@ -54,6 +54,15 @@
           font-size: var(--font-size--icon-md);
         }
       }
+
+      &--sm {
+        width: 36px;
+        height: 36px;
+
+        :global(.base-icon) {
+          font-size: var(--font-size--icon-sm);
+        }
+      }
     }
   }
 }

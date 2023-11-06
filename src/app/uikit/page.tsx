@@ -1,4 +1,5 @@
-import { BaseButton, BaseIcon } from '@/components/shared'
+import { BaseButton, BaseIcon, ButtonLink } from '@/components/shared'
+import { TelegramAuth } from '@/components/features/telegram-auth'
 
 export default function Uikit() {
   return (
@@ -31,6 +32,14 @@ export default function Uikit() {
         <BaseIcon name={'profile'} />
         <BaseIcon name={'arrow'} />
         <BaseIcon reversed name={'arrow'} className={'color-dark'} />
+      </div>
+
+      <div className="d-flex" style={{ gap: 30, alignItems: 'center' }}>
+        <ButtonLink href={'/'}>Все лавочки</ButtonLink>
+      </div>
+
+      <div className="d-flex" style={{ gap: 30, alignItems: 'center' }}>
+        <TelegramAuth />
       </div>
     </div>
   )

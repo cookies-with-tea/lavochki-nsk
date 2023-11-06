@@ -12,7 +12,7 @@ interface IButtonProps extends ButtonHTMLAttributes<any> {
 
 export const BaseButton = (props: IButtonProps) => {
   const {
-    size = 'md',
+    size = 'sm',
     appearance = 'primary',
     className = '',
     type = 'button',
