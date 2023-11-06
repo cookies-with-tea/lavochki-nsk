@@ -8,7 +8,7 @@ import { TelegramAuth } from '@/components/features/telegram-auth'
 const cx = cb.bind(styles)
 
 export const Header = () => {
-  const isAuth = true
+  const isAuth = false
 
   return (
     <header className={cx('header')}>
@@ -22,7 +22,10 @@ export const Header = () => {
           {
             isAuth ? <TelegramAuth/> :
             <>
-              <Badge />
+              <Badge content={0}>
+                <Icon name={'notifications'} />
+              </Badge>
+
               <HeaderProfile />
             </>
           }

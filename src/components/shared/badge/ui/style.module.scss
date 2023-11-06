@@ -1,0 +1,39 @@
+.badge {
+  position: relative;
+  z-index: 1;
+
+  &__content {
+    display: flex;
+    flex-flow: wrap;
+    place-content: center;
+    align-items: center;
+    position: absolute;
+    font-weight: 500;
+    font-size: 12px;
+    min-width: 16px;
+    line-height: 1;
+    padding: 0 4px;
+    height: 16px;
+    border-radius: 10px;
+    transition: transform 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    background-color: var(--color-yellow);
+    color: var(--color-brown-1);
+    top: 4px;
+    right: 7px;
+    transform: scale(1) translate(50%, -50%);
+    transform-origin: 100% 0;
+    z-index: 3;
+  }
+
+  &::after {
+    position: absolute;
+    z-index: 2;
+    content: '';
+    background-color: var(--color-brown-3);
+    height: 19px;
+    width: 16px;
+    right: 2px;
+    top: -4px;
+    border-radius: 50%;
+  }
+}

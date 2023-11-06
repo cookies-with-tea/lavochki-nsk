@@ -13,9 +13,22 @@
     align-items: center;
   }
 
+  :global(.badge) {
+    margin-right: 16px;
+  }
+
   :global(.base-icon--logo) {
     width: 260px;
     height: 32px;
     margin-right: 26px;
   }
+
+  :global(.base-icon--notifications) {
+    font-size: 38px;
+  }
+}
+
+.header-profile {
+  display: flex;
+  align-items: center;
 }
