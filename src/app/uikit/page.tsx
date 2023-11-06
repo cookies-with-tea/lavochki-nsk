@@ -1,45 +1,41 @@
-import { BaseButton, BaseIcon, ButtonLink } from '@/components/shared'
+import { Button, Icon, ButtonLink } from '@/components/shared'
 import { TelegramAuth } from '@/components/features/telegram-auth'
 
 export default function Uikit() {
   return (
     <div className={'uikit'}>
       <div className="d-flex" style={{ gap: 30, alignItems: 'center' }}>
-        <BaseButton className={'mt-10'}>
+        <Button className={'mt-10'}>
           Смотреть все
-        </BaseButton>
+        </Button>
 
-        <BaseButton appearance={'secondary'} size={'sm'}>
+        <Button appearance={'secondary'} size={'sm'}>
           Все лавочки
-        </BaseButton>
+        </Button>
 
-        <BaseButton appearance={'secondary'} size={'xs'}>
+        <Button appearance={'secondary'} size={'xs'}>
           Открыть
-        </BaseButton>
+        </Button>
 
-        <BaseButton appearance={'primary'} size={'xs'}>
+        <Button appearance={'primary'} size={'xs'}>
           Открыть
-        </BaseButton>
+        </Button>
       </div>
 
       <div className="d-flex" style={{ gap: 30, alignItems: 'center' }}>
-        <BaseButton icon={<BaseIcon name={'arrow'} />} />
-        <BaseButton icon={<BaseIcon reversed name={'arrow'} />} />
+        <Button icon={<Icon name={'arrow'} />} />
+        <Button icon={<Icon reversed name={'arrow'} />} />
       </div>
 
       <div className="d-flex" style={{ gap: 30, alignItems: 'center' }}>
-        <BaseIcon name={'profile'} />
-        <BaseIcon name={'profile'} />
-        <BaseIcon name={'arrow'} />
-        <BaseIcon reversed name={'arrow'} className={'color-dark'} />
+        <Icon name={'profile'} />
+        <Icon name={'profile'} />
+        <Icon name={'arrow'} />
+        <Icon reversed name={'arrow'} className={'color-dark'} />
       </div>
 
       <div className="d-flex" style={{ gap: 30, alignItems: 'center' }}>
         <ButtonLink href={'/'}>Все лавочки</ButtonLink>
-      </div>
-
-      <div className="d-flex" style={{ gap: 30, alignItems: 'center' }}>
-        <TelegramAuth />
       </div>
     </div>
   )

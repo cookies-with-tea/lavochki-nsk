@@ -1,1 +1,1 @@
-export { BaseButton } from '@/components/shared/button/ui/BaseButton'
+export { Button } from '@/components/shared/button/ui/Button'

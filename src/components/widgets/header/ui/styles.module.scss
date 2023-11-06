@@ -1,0 +1,21 @@
+.header {
+  padding: 20px 0;
+  background-color: var(--color-brown-3);
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+  }
+
+  :global(.base-icon--logo) {
+    width: 260px;
+    height: 32px;
+    margin-right: 16px;
+  }
+}

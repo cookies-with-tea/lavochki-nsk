@@ -1,1 +1,1 @@
-export { TelegramAuth } from '@/components/features/telegram-auth/ui/FTelegramAuth'
+export { TelegramAuth } from '@/components/features/telegram-auth/ui/TelegramAuth'

@@ -1,10 +1,12 @@
 
 export const requireSvg = (): void => {
-  const requireAll = (
-    requireContext: __WebpackModuleApi.RequireContext
-  ): void => {
-    requireContext.keys().forEach(requireContext)
-  }
+  if (typeof window === 'undefined') {
+    const requireAll = (
+      requireContext: __WebpackModuleApi.RequireContext
+    ): void => {
+      requireContext.keys().forEach(requireContext)
+    }
 
-  requireAll((require).context('@/assets/icons/', true, /\.svg$/))
+    requireAll((require).context('@/assets/icons/', true, /\.svg$/))
+  }
 }

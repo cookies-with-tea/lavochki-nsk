@@ -1,1 +1,1 @@
-export { BaseBadge } from '@/components/shared/badge/ui/BaseBadge'
+export { Badge } from '@/components/shared/badge/ui/Badge'

@@ -1,1 +1,1 @@
-export { BaseIcon } from '@/components/shared/icon/ui/BaseIcon'
+export { Icon } from '@/components/shared/icon/ui/Icon'

@@ -49,6 +49,20 @@ body {
   overflow: auto;
 }
 
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  padding-right: var(--container-padding);
+  padding-left: var(--container-padding);
+  margin-right: auto;
+  margin-left: auto;
+
+  &--footer,
+  &--header {
+    max-width: var(--container-max-header-footer);
+  }
+}
+
 html, body, #root {
   height: 100%;
 }

@@ -1,16 +1,19 @@
 import { ButtonHTMLAttributes, ReactElement, ReactNode } from 'react'
+import cn from 'classnames'
+import cb from 'classnames/bind'
 
-import { cl } from '@/shared/lib/utils'
 import styles from '@/components/shared/button/ui/styles.module.scss'
 
-interface IButtonProps extends ButtonHTMLAttributes<any> {
+const cx = cb.bind(styles)
+
+interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'md' | 'sm' | 'xs'
   appearance?: 'primary' | 'secondary'
   icon?: ReactElement
   children?: ReactNode
 }
 
-export const BaseButton = (props: IButtonProps) => {
+export const Button = (props: IButtonProps) => {
   const {
     size = 'sm',
     appearance = 'primary',
@@ -24,17 +27,12 @@ export const BaseButton = (props: IButtonProps) => {
 
   delete formattedProps.icon
 
-  const classNames = cl({
-    path: styles,
-    classNames: [
-      'base-button',
-      `base-button--${size}`,
-      `base-button--${appearance}`,
-      { 'icon-only': icon && !children }
-    ],
-    baseClassName: 'base-button',
-    additionalClasses: className
-  })
+  const classNames = cn('base-button', cx(
+    'base-button',
+    `base-button--${size}`,
+    `base-button--${appearance}`,
+    { 'icon-only': icon && !props.children }
+  ), className)
 
   return (
     <button {...formattedProps} className={classNames} type={type}>

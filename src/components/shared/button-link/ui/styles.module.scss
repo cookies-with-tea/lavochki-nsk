@@ -2,6 +2,8 @@
   font-weight: 500;
   border-radius: 100px;
   box-shadow: 0 0 0 2px var(--color-brown-1);
+  display: inline-block;
+  color: var(--color-brown-1);
 
   &--md {
     padding: 14px 22px;

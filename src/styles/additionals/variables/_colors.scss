@@ -5,6 +5,7 @@ $color--white: #fff;
 $color--background: #fffcf7;
 $color--brown-1: #49260a;
 $color--brown-2: #9e8567;
+$color--brown-3: #DDC9B2;
 
 $color--box-shadow: rgb(188 188 188 / 0.25);
 
@@ -14,5 +15,6 @@ $colors: (
   box-shadow: $color--box-shadow,
   brown-1: $color--brown-1,
   brown-2: $color--brown-2,
+  brown-3: $color--brown-3,
   background: $color--background,
 )

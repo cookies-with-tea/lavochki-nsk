@@ -14,7 +14,14 @@ const nextConfig = {
           `
   },
   images : {
-    domains : ['localhost']
+    remotePatterns: [
+      {
+        hostname: 'localhost'
+      },
+      {
+        hostname: 'gas-kvas.com'
+      }
+    ]
   },
   env: {
     BOT_USERNAME: process.env.BOT_USERNAME,
