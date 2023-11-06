@@ -8,5 +8,5 @@ const buildEslintCommand = (filenames) =>
 
 module.exports = {
   '*.{css, scss}': 'yar n stylelint \"**/*.{css,scss}\"',
-  // '*.{js,jsx,ts,tsx}': [buildEslintCommand],
+  '*.{js,jsx,ts,tsx}': [buildEslintCommand],
 }
