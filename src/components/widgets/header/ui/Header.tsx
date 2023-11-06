@@ -15,7 +15,7 @@ export const Header = () => {
       <div className={cx('header__inner', 'container')}>
         <div className={cx('header__item')}>
           <Icon name={'logo'} />
-          <ButtonLink href={'/benches'} size={'xs'}>Все лавочки</ButtonLink>
+          <ButtonLink href={'/benches'} size={'sm'}>Все лавочки</ButtonLink>
         </div>
 
         <div className={cx('header__item')}>
