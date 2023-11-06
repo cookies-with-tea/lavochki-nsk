@@ -1,5 +1,4 @@
 import { Button, Icon, ButtonLink } from '@/components/shared'
-import { TelegramAuth } from '@/components/features/telegram-auth'
 
 export default function Uikit() {
   return (

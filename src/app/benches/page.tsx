@@ -1,5 +1,4 @@
 import { Button } from '@/components/shared'
-import { TelegramAuth } from '@/components/features/telegram-auth'
 
 export default function BenchesPage() {
   return (
