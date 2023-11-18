@@ -1,0 +1,34 @@
+name: Build and publish
+
+on:
+  push:
+    branches:
+      - backend/development
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Build Go Application
+        run: go build
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Executing remote command
+
+        uses: appleboy/ssh-action@master
+        with:
+          HOST: ${{ secrets.BACKEND_DEPLOY_HOST }}
+          USERNAME: ${{ secrets.BACKEND_DEPLOY_USER }}
+          PORT: ${{ secrets.BACKEND_DEPLOY_PORT }}
+          KEY: ${{ secrets.BACKEND_DEPLOY_SSH_KEY }}
+          script: cd ${{ secrets.BACKEND_PWD }} && git pull && docker-compose down && docker-compose up -d
