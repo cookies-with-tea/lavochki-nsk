@@ -59,6 +59,8 @@ type App struct {
 }
 
 func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
+	// TODO: Переделать router на chi.
+
 	logger.Info("router initializing")
 	router := mux.NewRouter()
 
