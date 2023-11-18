@@ -44,6 +44,7 @@ import (
 
 	"github.com/go-redis/redis/v9"
 	"github.com/gorilla/mux"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	"github.com/rs/cors"
@@ -60,6 +61,9 @@ type App struct {
 
 func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	// TODO: Переделать router на chi.
+	// TODO: Сделать логгирование запросов.
+	// TODO: Разобраться со swagger'ом. Он почему-то не работает с nginx.
+	// TODO: Разделить router для администратора и для обычного пользователя.
 
 	logger.Info("router initializing")
 	router := mux.NewRouter()
@@ -67,41 +71,11 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	logger.Info("swagger initializing")
 	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
-	logger.Info("database initializing")
-	postgresConfig := postgresClient.NewConfig(
-		cfg.PostgreSQL.Username, cfg.PostgreSQL.Password,
-		cfg.PostgreSQL.Host, cfg.PostgreSQL.Port, cfg.PostgreSQL.Database)
-	db, errInitPostgres := postgresClient.NewClient(context.Background(), 5, time.Second*5, postgresConfig)
-	if errInitPostgres != nil {
-		logger.Fatal("create postgres client", zap.Error(errInitPostgres))
-	}
+	db := initPostgreSQL(cfg, logger)
 
-	logger.Info("minio initializing")
-	minioClient, err := minio.New(cfg.Minio.Endpoint, &minio.Options{
-		Creds:  credentials.NewStaticV4(cfg.Minio.AccessKey, cfg.Minio.SecretKey, ""),
-		Secure: false,
-	})
-	if err != nil {
-		logger.Fatal("creating minio client", zap.Error(err))
-	}
-	err = minioClient.MakeBucket(context.Background(), cfg.Minio.Bucket, minio.MakeBucketOptions{
-		Region:        "",
-		ObjectLocking: false,
-	})
-	if err != nil {
-		exists, errBucketExists := minioClient.BucketExists(context.Background(), cfg.Minio.Bucket)
-		if errBucketExists == nil && exists {
-			logger.Info("we already own", zap.String("bucket", cfg.Minio.Bucket))
-		} else {
-			logger.Fatal("run minio client: ", zap.Error(err))
-		}
-	}
-	logger.Info("redis initializing")
-	redisClient := redis.NewClient(&redis.Options{
-		Addr:     cfg.Redis.Host,
-		Password: cfg.Redis.Password,
-		DB:       cfg.Redis.DB,
-	})
+	minioClient := initMinio(cfg, logger)
+
+	redisClient := initRedis(cfg, logger)
 
 	authManager, err := auth.NewManager(cfg.SigningKey)
 	if err != nil {
@@ -198,7 +172,7 @@ func (a *App) startHTTP() {
 		a.logger.Fatal("", zap.Error(err))
 	}
 
-	// TODO: Вынести "AllowedOrigins" в .env
+	// TODO: Вынести "AllowedOrigins" в .env.
 	c := cors.New(cors.Options{
 		AllowedMethods:     []string{http.MethodGet, http.MethodPost, http.MethodPatch, http.MethodPut, http.MethodOptions, http.MethodDelete},
 		AllowedOrigins:     []string{"http://localhost:3000", "http://localhost:8080"},
@@ -235,4 +209,53 @@ func (a *App) startHTTP() {
 
 func (a *App) Run() {
 	a.startHTTP()
+}
+
+func initPostgreSQL(cfg *config.Config, logger *zap.Logger) *pgxpool.Pool {
+	logger.Info("database initializing")
+	postgresConfig := postgresClient.NewConfig(
+		cfg.PostgreSQL.Username, cfg.PostgreSQL.Password,
+		cfg.PostgreSQL.Host, cfg.PostgreSQL.Port, cfg.PostgreSQL.Database)
+	db, errInitPostgres := postgresClient.NewClient(context.Background(), 5, time.Second*5, postgresConfig)
+	if errInitPostgres != nil {
+		logger.Fatal("create postgres client", zap.Error(errInitPostgres))
+	}
+
+	return db
+}
+
+func initMinio(cfg *config.Config, logger *zap.Logger) *minio.Client {
+	logger.Info("minio initializing")
+	minioClient, err := minio.New(cfg.Minio.Endpoint, &minio.Options{
+		Creds:  credentials.NewStaticV4(cfg.Minio.AccessKey, cfg.Minio.SecretKey, ""),
+		Secure: false,
+	})
+	if err != nil {
+		logger.Fatal("creating minio client", zap.Error(err))
+	}
+	err = minioClient.MakeBucket(context.Background(), cfg.Minio.Bucket, minio.MakeBucketOptions{
+		Region:        "",
+		ObjectLocking: false,
+	})
+	if err != nil {
+		exists, errBucketExists := minioClient.BucketExists(context.Background(), cfg.Minio.Bucket)
+		if errBucketExists == nil && exists {
+			logger.Info("we already own", zap.String("bucket", cfg.Minio.Bucket))
+		} else {
+			logger.Fatal("run minio client: ", zap.Error(err))
+		}
+	}
+
+	return minioClient
+}
+
+func initRedis(cfg *config.Config, logger *zap.Logger) *redis.Client {
+	logger.Info("redis initializing")
+	redisClient := redis.NewClient(&redis.Options{
+		Addr:     cfg.Redis.Host,
+		Password: cfg.Redis.Password,
+		DB:       cfg.Redis.DB,
+	})
+
+	return redisClient
 }
