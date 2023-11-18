@@ -2,7 +2,7 @@
 FROM golang:1.19.1-alpine as builder
 
 WORKDIR /build
-COPY go.mod .
+COPY app/go.mod .
 RUN go mod download
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -o /app/build/app ./cmd/initiator/main.go
