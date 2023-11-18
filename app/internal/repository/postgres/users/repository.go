@@ -99,10 +99,7 @@ func (repository *repository) Create(ctx context.Context, user domain.User) (*do
 	createUserModel.FromDomain(user)
 	createUserModel.ID = ulid.Make().String()
 
-	modelMap, errToMap := createUserModel.ToMap()
-	if errToMap != nil {
-		return nil, errToMap
-	}
+	modelMap := createUserModel.ToMap()
 
 	sql, args, errBuild := repository.queryBuilder.Insert(tableScheme).SetMap(modelMap).
 		PlaceholderFormat(squirrel.Dollar).

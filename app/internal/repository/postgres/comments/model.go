@@ -2,8 +2,6 @@ package comments
 
 import (
 	"benches/internal/domain"
-
-	"github.com/mitchellh/mapstructure"
 )
 
 type commentModel struct {
@@ -32,14 +30,16 @@ func commentModelToDomain(model commentModel) domain.Comment {
 	}
 }
 
-func (comment *commentModel) ToMap() (map[string]interface{}, error) {
-	var updateCommentMap map[string]interface{}
-	err := mapstructure.Decode(comment, &updateCommentMap)
-	if err != nil {
-		return updateCommentMap, err
-	}
+func (comment *commentModel) ToMap() map[string]interface{} {
+	commentMap := make(map[string]interface{})
 
-	return updateCommentMap, nil
+	commentMap["id"] = comment.ID
+	commentMap["bench_id"] = comment.BenchID
+	commentMap["parent_id"] = comment.ParentID
+	commentMap["author_id"] = comment.AuthorID
+	commentMap["content"] = comment.Content
+
+	return commentMap
 }
 
 func commentModelsToDomain(models []commentModel) []domain.Comment {

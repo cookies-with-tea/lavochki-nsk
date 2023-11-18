@@ -79,10 +79,7 @@ func (repository *repository) Create(ctx context.Context, tag domain.Tag) error 
 	createTagModel.FromDomain(tag)
 	createTagModel.ID = ulid.Make().String()
 
-	modelMap, errToMap := createTagModel.ToMap()
-	if errToMap != nil {
-		return errToMap
-	}
+	modelMap := createTagModel.ToMap()
 
 	sql, args, errBuild := repository.queryBuilder.Insert(tableScheme).SetMap(modelMap).
 		PlaceholderFormat(squirrel.Dollar).ToSql()
@@ -104,10 +101,7 @@ func (repository *repository) CreateTagToBench(ctx context.Context, tagBench dom
 	createTagBenchModel := tagBenchModel{}
 	createTagBenchModel.FromDomain(tagBench)
 
-	modelMap, errToMap := createTagBenchModel.ToMap()
-	if errToMap != nil {
-		return errToMap
-	}
+	modelMap := createTagBenchModel.ToMap()
 
 	sql, args, errBuild := repository.queryBuilder.Insert(tableToBench).SetMap(modelMap).
 		PlaceholderFormat(squirrel.Dollar).ToSql()

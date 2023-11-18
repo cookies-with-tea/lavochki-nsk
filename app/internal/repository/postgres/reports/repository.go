@@ -76,10 +76,7 @@ func (repository *reportsRepository) CreateReportComment(ctx context.Context, re
 	createReportCommentModel.FromDomain(report)
 	createReportCommentModel.ID = ulid.Make().String()
 
-	modelMap, errToMap := createReportCommentModel.ToMap()
-	if errToMap != nil {
-		return errToMap
-	}
+	modelMap := createReportCommentModel.ToMap()
 
 	sql, args, errBuild := repository.queryBuilder.Insert(tableScheme).SetMap(modelMap).
 		PlaceholderFormat(squirrel.Dollar).ToSql()

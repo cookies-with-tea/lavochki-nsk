@@ -146,10 +146,7 @@ func (repository *repository) Create(ctx context.Context, comment domain.Comment
 	createCommentModel.FromDomain(comment)
 	createCommentModel.ID = ulid.Make().String()
 
-	modelMap, errToMap := createCommentModel.ToMap()
-	if errToMap != nil {
-		return errToMap
-	}
+	modelMap := createCommentModel.ToMap()
 
 	sql, args, errBuild := repository.queryBuilder.Insert(tableScheme).SetMap(modelMap).
 		PlaceholderFormat(squirrel.Dollar).ToSql()
@@ -171,10 +168,7 @@ func (repository *repository) Update(ctx context.Context, id string, comment dom
 	updateCommentModel := commentModel{}
 	updateCommentModel.FromDomain(comment)
 
-	modelMap, errToMap := updateCommentModel.ToMap()
-	if errToMap != nil {
-		return errToMap
-	}
+	modelMap := updateCommentModel.ToMap()
 
 	sql, args, errBuild := repository.queryBuilder.Update(tableScheme).SetMap(modelMap).
 		Where(squirrel.Eq{"id": id}).

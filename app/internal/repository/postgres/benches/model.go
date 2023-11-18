@@ -4,18 +4,16 @@ import (
 	"database/sql"
 
 	"benches/internal/domain"
-
-	"github.com/mitchellh/mapstructure"
 )
 
 type benchModel struct {
-	ID       string         `mapstructure:"id,omitempty"`
-	Lat      float64        `mapstructure:"lat,omitempty"`
-	Lng      float64        `mapstructure:"lng,omitempty"`
-	Street   sql.NullString `mapstructure:"street,omitempty,squash"`
-	Images   []string       `mapstructure:"images,omitempty"`
-	IsActive bool           `mapstructure:"is_active,omitempty"`
-	OwnerID  string         `mapstructure:"owner_id,omitempty"`
+	ID       string
+	Lat      float64
+	Lng      float64
+	Street   sql.NullString
+	Images   []string
+	IsActive bool
+	OwnerID  string
 }
 
 func (b *benchModel) FromDomain(bench domain.Bench) {
@@ -65,28 +63,18 @@ func benchModelsToDomain(models []benchModel) []*domain.Bench {
 }
 
 func (b *benchModel) ToMap() (map[string]interface{}, error) {
-	var updateBenchMap map[string]interface{}
+	benchMap := make(map[string]interface{})
 
-	configMapstructure := &mapstructure.DecoderConfig{
-		Result: &updateBenchMap,
+	benchMap["id"] = b.ID
+	benchMap["lat"] = b.Lat
+	benchMap["lng"] = b.Lng
+	benchMap["images"] = b.Images
+	benchMap["is_active"] = b.IsActive
+	benchMap["owner_id"] = b.OwnerID
+
+	if b.Street.Valid {
+		benchMap["street"] = b.Street.String
 	}
 
-	decoder, errCreateDecoder := mapstructure.NewDecoder(configMapstructure)
-	if errCreateDecoder != nil {
-		return nil, errCreateDecoder
-	}
-
-	err := decoder.Decode(b)
-	if err != nil {
-		return updateBenchMap, err
-	}
-
-	// TODO: Зарефакторить, чтобы Mapstructure сам преобразовывал sql.NullString к string или nil
-	if updateBenchMap["Valid"] == true {
-		updateBenchMap["street"] = updateBenchMap["String"]
-	}
-	delete(updateBenchMap, "String")
-	delete(updateBenchMap, "Valid")
-
-	return updateBenchMap, nil
+	return benchMap, nil
 }

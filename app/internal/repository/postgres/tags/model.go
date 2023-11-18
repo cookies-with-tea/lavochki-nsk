@@ -2,8 +2,6 @@ package tags
 
 import (
 	"benches/internal/domain"
-
-	"github.com/mitchellh/mapstructure"
 )
 
 type tagModel struct {
@@ -26,14 +24,13 @@ func (tagBench *tagBenchModel) FromDomain(tagBenchDomain domain.TagBench) {
 	tagBench.BenchID = tagBenchDomain.BenchID
 }
 
-func (tagBench *tagBenchModel) ToMap() (map[string]interface{}, error) {
-	var tagBenchMap map[string]interface{}
-	err := mapstructure.Decode(tagBench, &tagBenchMap)
-	if err != nil {
-		return tagBenchMap, err
-	}
+func (tagBench *tagBenchModel) ToMap() map[string]interface{} {
+	tagBenchMap := make(map[string]interface{})
 
-	return tagBenchMap, nil
+	tagBenchMap["bench_id"] = tagBench.BenchID
+	tagBenchMap["tag_id"] = tagBench.TagID
+
+	return tagBenchMap
 }
 
 func tagModelToDomain(model tagModel) domain.Tag {
@@ -43,14 +40,13 @@ func tagModelToDomain(model tagModel) domain.Tag {
 	}
 }
 
-func (tag *tagModel) ToMap() (map[string]interface{}, error) {
-	var updateTagMap map[string]interface{}
-	err := mapstructure.Decode(tag, &updateTagMap)
-	if err != nil {
-		return updateTagMap, err
-	}
+func (tag *tagModel) ToMap() map[string]interface{} {
+	tagMap := make(map[string]interface{})
 
-	return updateTagMap, nil
+	tagMap["id"] = tag.ID
+	tagMap["title"] = tag.Title
+
+	return tagMap
 }
 
 func tagModelsToDomain(models []tagModel) []domain.Tag {

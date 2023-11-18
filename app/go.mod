@@ -14,7 +14,6 @@ require (
 	github.com/jackc/pgx/v5 v5.1.1
 	github.com/lib/pq v1.10.7
 	github.com/minio/minio-go/v7 v7.0.38
-	github.com/mitchellh/mapstructure v1.5.0
 	github.com/oklog/ulid/v2 v2.1.0
 	github.com/rs/cors v1.8.2
 	github.com/swaggo/http-swagger v1.3.3

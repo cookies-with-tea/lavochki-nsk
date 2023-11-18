@@ -2,16 +2,14 @@ package reports
 
 import (
 	"benches/internal/domain"
-
-	"github.com/mitchellh/mapstructure"
 )
 
 type reportCommentModel struct {
-	ID        string `mapstructure:"id,omitempty"`
-	Cause     string `mapstructure:"cause,omitempty"`
-	CommentID string `mapstructure:"comment_id,omitempty"`
-	UserID    string `mapstructure:"user_id,omitempty"`
-	IsActive  bool   `mapstructure:"is_active,omitempty"`
+	ID        string
+	Cause     string
+	CommentID string
+	UserID    string
+	IsActive  bool
 }
 
 func (report *reportCommentModel) FromDomain(reportDomain domain.CommentReport) {
@@ -41,12 +39,14 @@ func reportsCommentModelsToDomain(models []reportCommentModel) []domain.CommentR
 	return reports
 }
 
-func (report *reportCommentModel) ToMap() (map[string]interface{}, error) {
-	var updateReportCommentMap map[string]interface{}
-	err := mapstructure.Decode(report, &updateReportCommentMap)
-	if err != nil {
-		return updateReportCommentMap, err
-	}
+func (report *reportCommentModel) ToMap() map[string]interface{} {
+	reportCommentMap := make(map[string]interface{})
 
-	return updateReportCommentMap, nil
+	reportCommentMap["id"] = report.ID
+	reportCommentMap["cause"] = report.Cause
+	reportCommentMap["comment_id"] = report.CommentID
+	reportCommentMap["user_id"] = report.UserID
+	reportCommentMap["is_active"] = report.IsActive
+
+	return reportCommentMap
 }

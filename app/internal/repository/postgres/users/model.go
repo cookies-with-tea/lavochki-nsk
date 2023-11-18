@@ -2,8 +2,6 @@ package users
 
 import (
 	"benches/internal/domain"
-
-	"github.com/mitchellh/mapstructure"
 )
 
 type userModel struct {
@@ -20,14 +18,15 @@ func (user *userModel) FromDomain(userDomain domain.User) {
 	user.Role = userDomain.Role
 }
 
-func (user *userModel) ToMap() (map[string]interface{}, error) {
-	var updateUserMap map[string]interface{}
-	err := mapstructure.Decode(user, &updateUserMap)
-	if err != nil {
-		return updateUserMap, err
-	}
+func (user *userModel) ToMap() map[string]interface{} {
+	userMap := make(map[string]interface{})
 
-	return updateUserMap, nil
+	userMap["id"] = user.ID
+	userMap["username"] = user.Username
+	userMap["telegram_id"] = user.TelegramID
+	userMap["role"] = user.Role
+
+	return userMap
 }
 
 func userModelToDomain(model userModel) domain.User {
