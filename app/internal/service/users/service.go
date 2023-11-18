@@ -9,7 +9,7 @@ import (
 	"benches/internal/apperror"
 	"benches/internal/domain"
 	"benches/internal/repository/postgres/users"
-	redisStorage "benches/internal/storage/redis"
+	redisStorage "benches/internal/repository/redis"
 	"benches/pkg/auth"
 	"benches/pkg/telegram"
 

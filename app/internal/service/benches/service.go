@@ -7,9 +7,9 @@ import (
 
 	"benches/internal/apperror"
 	"benches/internal/domain"
+	storage "benches/internal/repository/minio"
 	"benches/internal/repository/model"
 	"benches/internal/repository/postgres/benches"
-	storage "benches/internal/storage/minio"
 	"benches/pkg/api/paginate"
 	"benches/pkg/api/sort"
 	"benches/pkg/geo"

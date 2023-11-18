@@ -6,7 +6,7 @@ import (
 
 	"benches/internal/apperror"
 	"benches/internal/domain"
-	redisStorage "benches/internal/storage/redis"
+	redisStorage "benches/internal/repository/redis"
 	"benches/pkg/auth"
 
 	"go.uber.org/zap"
