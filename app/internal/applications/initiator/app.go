@@ -48,7 +48,6 @@ import (
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	"github.com/rs/cors"
 	httpSwagger "github.com/swaggo/http-swagger"
-	"github.com/uptrace/bun"
 	"go.uber.org/zap"
 )
 
@@ -56,7 +55,6 @@ type App struct {
 	cfg        *config.Config
 	logger     *zap.Logger
 	router     *mux.Router
-	database   *bun.DB
 	httpServer *http.Server
 }
 
