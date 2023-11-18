@@ -6,16 +6,6 @@ on:
       - backend/development
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Build Go Application
-        run: go build
-
   deploy:
     runs-on: ubuntu-latest
 
