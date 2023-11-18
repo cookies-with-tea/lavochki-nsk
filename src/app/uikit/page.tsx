@@ -1,4 +1,4 @@
-import { Button, Icon, ButtonLink } from '@/components/shared'
+import { Button, Icon } from '@/components/shared'
 
 export default function Uikit() {
   return (
@@ -34,8 +34,7 @@ export default function Uikit() {
       </div>
 
       <div className="d-flex" style={{ gap: 30, alignItems: 'center' }}>
-        <ButtonLink href={'/'}>Все лавочки</ButtonLink>
-      </div>
+        <Button as={'a'} href={'/'}>Все лавочки</Button></div>
     </div>
   )
 }
