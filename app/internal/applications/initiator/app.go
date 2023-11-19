@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"time"
 
+	"benches/docs"
 	_ "benches/docs"
 	"benches/internal/config"
 	"benches/internal/domain"
@@ -68,8 +69,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	logger.Info("router initializing")
 	router := mux.NewRouter()
 
-	logger.Info("swagger initializing")
-	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
+	initSwagger(logger, router)
 
 	db := initPostgreSQL(cfg, logger)
 
@@ -258,4 +258,14 @@ func initRedis(cfg *config.Config, logger *zap.Logger) *redis.Client {
 	})
 
 	return redisClient
+}
+
+func initSwagger(logger *zap.Logger, router *mux.Router) {
+	logger.Info("swagger initializing")
+
+	docs.SwaggerInfo.Title = "Лавочки"
+	docs.SwaggerInfo.BasePath = "/api/v1"
+	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+
+	router.PathPrefix("/api/swagger").Handler(httpSwagger.WrapHandler)
 }
