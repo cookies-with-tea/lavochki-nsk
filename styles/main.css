@@ -48,6 +48,9 @@ main {
   .content__subtitle {
     font-size: 16px;
   }
+  .content__media {
+    max-width: 90%;
+  }
 }
 
 @media (max-width: 360px) {
@@ -56,5 +59,11 @@ main {
   }
   .content__subtitle {
     font-size: 16px;
+  }
+}
+
+@media (max-width: 300px) {
+  .content__title {
+    text-align: center;
   }
 }
