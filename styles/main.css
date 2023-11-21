@@ -1,0 +1,60 @@
+@import 'reset.css';
+@import 'colors.css';
+@import 'base.css';
+
+html {
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-background);
+  height: 100%;
+}
+
+main {
+  height: 100%;
+}
+
+.content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.content__title {
+  margin-top: 24px;
+  color: var(--color-brown-1);
+}
+
+.content__subtitle {
+  margin-top: 12px;
+  color: var(--color-brown-1);
+  margin-bottom: 12px;
+}
+
+.content__media img {
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 480px) {
+  .content__title {
+    font-size: 24px;
+  }
+  .content__subtitle {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 360px) {
+  .content__title {
+    font-size: 20px;
+  }
+  .content__subtitle {
+    font-size: 16px;
+  }
+}
