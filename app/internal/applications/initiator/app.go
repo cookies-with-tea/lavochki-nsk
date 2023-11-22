@@ -38,6 +38,7 @@ import (
 	"benches/internal/transport/httpv1/reports"
 	"benches/internal/transport/httpv1/tags"
 	"benches/internal/transport/httpv1/users"
+	"benches/internal/transport/middlewares"
 	"benches/pkg/auth"
 	postgresClient "benches/pkg/client/postgres"
 	"benches/pkg/maps"
@@ -68,6 +69,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 
 	logger.Info("router initializing")
 	router := mux.NewRouter()
+	router.Use(middlewares.Logging(logger))
 
 	initSwagger(logger, router)
 
