@@ -17,6 +17,11 @@ type Handler struct {
 	policy *botPolicy.Policy
 }
 
+const (
+	urlAuthBot      = "/auth"
+	urlRefreshToken = "/refresh"
+)
+
 func NewHandler(policy *botPolicy.Policy) *Handler {
 	return &Handler{
 		policy: policy,
@@ -25,8 +30,8 @@ func NewHandler(policy *botPolicy.Policy) *Handler {
 
 func (handler *Handler) Register(router *mux.Router) {
 	// Авторизация бота
-	router.HandleFunc("/auth", apperror.Middleware(handler.authorization))
-	router.HandleFunc("/refresh", apperror.Middleware(handler.refreshToken))
+	router.HandleFunc(urlAuthBot, apperror.Middleware(handler.authorization))
+	router.HandleFunc(urlRefreshToken, apperror.Middleware(handler.refreshToken))
 }
 
 // @Summary Authorization bot

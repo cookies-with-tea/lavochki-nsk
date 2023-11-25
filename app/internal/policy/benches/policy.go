@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"benches/internal/apperror"
+	"benches/internal/constants/roles"
 	"benches/internal/domain"
-	"benches/internal/domain/roles"
 	benchesService "benches/internal/service/benches"
 	notificationsService "benches/internal/service/notifications"
 	tagsService "benches/internal/service/tags"

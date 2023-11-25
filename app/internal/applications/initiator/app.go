@@ -32,12 +32,17 @@ import (
 	reportsService "benches/internal/service/reports"
 	tagsService "benches/internal/service/tags"
 	usersService "benches/internal/service/users"
-	"benches/internal/transport/httpv1/benches"
-	"benches/internal/transport/httpv1/bot"
-	"benches/internal/transport/httpv1/comments"
-	"benches/internal/transport/httpv1/reports"
-	"benches/internal/transport/httpv1/tags"
-	"benches/internal/transport/httpv1/users"
+	tagsPrivate "benches/internal/transport/httpv1/private/tags"
+	benchesPublic "benches/internal/transport/httpv1/public/benches"
+	botPublic "benches/internal/transport/httpv1/public/bot"
+	commentsPublic "benches/internal/transport/httpv1/public/comments"
+	tagsPublic "benches/internal/transport/httpv1/public/tags"
+	usersPublic "benches/internal/transport/httpv1/public/users"
+
+	benchesPrivate "benches/internal/transport/httpv1/private/benches"
+	commentsPrivate "benches/internal/transport/httpv1/private/comments"
+	reportsPrivate "benches/internal/transport/httpv1/private/reports"
+	usersPrivate "benches/internal/transport/httpv1/private/users"
 	"benches/internal/transport/middlewares"
 	"benches/pkg/auth"
 	postgresClient "benches/pkg/client/postgres"
@@ -66,6 +71,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	// TODO: Сделать логгирование запросов.
 	// TODO: Разобраться со swagger'ом. Он почему-то не работает с nginx.
 	// TODO: Разделить router для администратора и для обычного пользователя.
+	// TODO: Сделать функционал "Ближайшие метро".
 
 	logger.Info("router initializing")
 	router := mux.NewRouter()
@@ -100,10 +106,14 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appTagsRepository := tagsRepository.NewTagsRepository(db)
 	appTagsService := tagsService.NewService(appTagsRepository, logger)
 	appTagsPolicy := tagsPolicy.NewPolicy(appTagsService)
-	appHandlerTags := tags.NewHandler(appTagsPolicy)
+
+	appHandlerTags := tagsPublic.NewHandler(appTagsPolicy)
 	appHandlerTags.Register(appTagsRouter)
+	appPrivateHandlerTags := tagsPrivate.NewHandler(appTagsPolicy)
+	appPrivateHandlerTags.Register(appTagsRouter, authManager)
 
 	// Пользователи
+	appUsersRouter := router.PathPrefix("/api/v1/users").Subrouter()
 	appUsersRedisStorage := redisStorage.NewRedisStorage(redisClient)
 	appUsersTelegramManager := telegram.NewTelegramManager(cfg.Telegram.Token)
 	appUsersRepository := usersRepository.NewUsersRepository(db)
@@ -116,8 +126,11 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 		logger,
 	)
 	appUsersPolicy := usersPolicy.NewPolicy(appUsersService)
-	appHandlerUsers := users.NewHandler(appUsersPolicy)
-	appHandlerUsers.Register(router, authManager)
+
+	appHandlerUsers := usersPublic.NewHandler(appUsersPolicy)
+	appHandlerUsers.Register(appUsersRouter)
+	appPrivateHandlerUsers := usersPrivate.NewHandler(appUsersPolicy)
+	appPrivateHandlerUsers.Register(appUsersRouter, authManager)
 
 	// Лавочки
 	appBenchesRouter := router.PathPrefix("/api/v1/benches").Subrouter()
@@ -132,15 +145,19 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 		geoCoder,
 		logger,
 	)
-	appHandlerBenches := benches.NewHandler(appBenchesPolicy)
+
+	appHandlerBenches := benchesPublic.NewHandler(appBenchesPolicy)
 	appHandlerBenches.Register(appBenchesRouter, authManager)
+	appPrivateHandlerBenches := benchesPrivate.NewHandler(appBenchesPolicy)
+	appPrivateHandlerBenches.Register(appBenchesRouter, authManager)
 
 	// Бот
 	appBotRouter := router.PathPrefix("/api/v1/bot").Subrouter()
 	appBotService := botService.NewService(cfg.Telegram.Login, cfg.Telegram.Password,
 		logger, authManager, appUsersRedisStorage)
 	appBotPolicy := botPolicy.NewPolicy(appBotService)
-	appBotHandler := bot.NewHandler(appBotPolicy)
+
+	appBotHandler := botPublic.NewHandler(appBotPolicy)
 	appBotHandler.Register(appBotRouter)
 
 	// Комментарии
@@ -148,15 +165,19 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	appCommentsRepository := commentsRepository.NewCommentsRepository(db)
 	appCommentsService := commentsService.NewService(appCommentsRepository, logger)
 	appCommentsPolicy := commentsPolicy.NewPolicy(appCommentsService, appUsersService)
-	appHandlerComments := comments.NewHandler(appCommentsPolicy)
+
+	appHandlerComments := commentsPublic.NewHandler(appCommentsPolicy)
 	appHandlerComments.Register(appCommentsRouter, authManager)
+	appPrivateHandlerComments := commentsPrivate.NewHandler(appCommentsPolicy)
+	appPrivateHandlerComments.Register(appCommentsRouter, authManager)
 
 	// Жалобы
 	appReportsRouter := router.PathPrefix("/api/v1/reports").Subrouter()
 	appReportsRepository := reportsRepository.NewReportsRepository(db)
 	appReportsService := reportsService.NewService(appReportsRepository, logger)
 	appReportsPolicy := reportsPolicy.NewPolicy(appReportsService)
-	appHandlerReports := reports.NewHandler(appReportsPolicy)
+
+	appHandlerReports := reportsPrivate.NewHandler(appReportsPolicy)
 	appHandlerReports.Register(appReportsRouter, authManager)
 
 	return &App{cfg: cfg, logger: logger, router: router}, nil

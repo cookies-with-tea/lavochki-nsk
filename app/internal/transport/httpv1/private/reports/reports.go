@@ -20,14 +20,18 @@ type Handler struct {
 	policy *reportsPolicy.Policy
 }
 
-func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) {
-	usersReportsRouter := router.NewRoute().Subrouter()
-	usersReportsRouter.Use(authManager.JWTMiddleware)
-	usersReportsRouter.HandleFunc("/comments", apperror.Middleware(handler.createReportComment)).Methods("POST")
+const (
+	urlCreateReportForComment = "/comments"
+	urlListReportsOnComments  = "/comments"
+)
 
-	moderationReportsRouter := router.NewRoute().Subrouter()
-	moderationReportsRouter.HandleFunc("/comments", apperror.Middleware(handler.listReportsComments)).
-		Methods("GET")
+func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) {
+	router.Use(authManager.JWTMiddleware)
+
+	router.HandleFunc(urlCreateReportForComment, apperror.Middleware(handler.createReportComment)).Methods("POST")
+
+	// TODO: Список жалоб может просматривать только администратор
+	router.HandleFunc(urlListReportsOnComments, apperror.Middleware(handler.listReportsComments)).Methods("GET")
 }
 
 func NewHandler(policy *reportsPolicy.Policy) *Handler {

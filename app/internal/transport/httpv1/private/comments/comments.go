@@ -2,24 +2,27 @@ package comments
 
 import (
 	"encoding/json"
-	"errors"
 	"net/http"
 
 	"benches/internal/apperror"
-	_ "benches/internal/domain"
 	"benches/internal/dto"
 	commentsPolicy "benches/internal/policy/comments"
 	"benches/internal/transport/httpv1"
 	"benches/pkg/auth"
 
 	"github.com/gorilla/mux"
-	"github.com/jackc/pgx/v5"
 )
 
 type Handler struct {
 	httpv1.BaseHandler
 	policy *commentsPolicy.Policy
 }
+
+const (
+	urlCreateComment = ""
+	urlUpdateComment = ""
+	urlDeleteComment = "/{id}"
+)
 
 func NewHandler(policy *commentsPolicy.Policy) *Handler {
 	return &Handler{
@@ -28,35 +31,10 @@ func NewHandler(policy *commentsPolicy.Policy) *Handler {
 }
 
 func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) {
-	router.HandleFunc("/{id}", apperror.Middleware(handler.listCommentsByBench))
-
-	interactionCommentRouter := router.NewRoute().Subrouter()
-	interactionCommentRouter.Use(authManager.JWTMiddleware)
-	interactionCommentRouter.HandleFunc("", apperror.Middleware(handler.createComment)).Methods("POST")
-	interactionCommentRouter.HandleFunc("", apperror.Middleware(handler.updateComment)).Methods("PATCH")
-	interactionCommentRouter.HandleFunc("/{id}", apperror.Middleware(handler.deleteComment)).Methods("DELETE")
-}
-
-// @Summary List comments by bench
-// @Description Get list comments by bench
-// @Tags Comments
-// @Param id path string true "Bench ID"
-// @Success 200 {object} []domain.Comment
-// @Failure 400 {object} apperror.AppError
-// @Router /api/v1/comments/{id} [get]
-func (handler *Handler) listCommentsByBench(writer http.ResponseWriter, request *http.Request) error {
-	id := mux.Vars(request)["id"]
-
-	comments, err := handler.policy.GetAllCommentByBench(request.Context(), id)
-	if err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			return apperror.ErrNotFound
-		}
-		return err
-	}
-
-	handler.ResponseJson(writer, comments, http.StatusOK)
-	return nil
+	router.Use(authManager.JWTMiddleware)
+	router.HandleFunc(urlCreateComment, apperror.Middleware(handler.createComment)).Methods("POST")
+	router.HandleFunc(urlUpdateComment, apperror.Middleware(handler.updateComment)).Methods("PATCH")
+	router.HandleFunc(urlDeleteComment, apperror.Middleware(handler.deleteComment)).Methods("DELETE")
 }
 
 // @Summary Create comment

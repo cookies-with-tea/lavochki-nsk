@@ -8,6 +8,7 @@ import (
 	"benches/internal/dto"
 	tagsPolicy "benches/internal/policy/tags"
 	"benches/internal/transport/httpv1"
+	"benches/pkg/auth"
 
 	"github.com/gorilla/mux"
 
@@ -19,30 +20,21 @@ type Handler struct {
 	policy *tagsPolicy.Policy
 }
 
+const (
+	urlCreateTag = ""
+)
+
 func NewHandler(policy *tagsPolicy.Policy) *Handler {
 	return &Handler{
 		policy: policy,
 	}
 }
 
-func (handler *Handler) Register(router *mux.Router) {
-	router.HandleFunc("", apperror.Middleware(handler.listTags)).Methods("GET")
-	router.HandleFunc("", apperror.Middleware(handler.createTag)).Methods("POST")
-}
+func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) {
+	router.Use(authManager.JWTMiddleware)
 
-// @Summary List tags
-// @Description Get list tags
-// @Tags Tags
-// @Success 200 {object} []domain.Tag
-// @Failure 400 {object} apperror.AppError
-// @Router /api/v1/tags [get]
-func (handler *Handler) listTags(w http.ResponseWriter, r *http.Request) error {
-	listTags, err := handler.policy.GetAllTags(r.Context())
-	if err != nil {
-		return err
-	}
-	handler.ResponseJson(w, listTags, http.StatusOK)
-	return nil
+	// TODO: Создавать может только администратор
+	router.HandleFunc(urlCreateTag, apperror.Middleware(handler.createTag)).Methods("POST")
 }
 
 // @Summary Create tag

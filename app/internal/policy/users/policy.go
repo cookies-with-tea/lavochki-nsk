@@ -5,8 +5,8 @@ import (
 	"errors"
 
 	"benches/internal/apperror"
+	"benches/internal/constants/roles"
 	"benches/internal/domain"
-	"benches/internal/domain/roles"
 	"benches/internal/service/users"
 )
 
