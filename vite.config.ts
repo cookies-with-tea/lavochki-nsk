@@ -37,6 +37,8 @@ export default defineConfig(({ mode }) => {
       svgIconsConfig,
     ],
     server: {
+      host: '0.0.0.0',
+      port: 4173,
       proxy: {
         '/api': {
           target: env.VITE_BASE_URL,

@@ -1,0 +1,5 @@
+.vscode
+.idea
+.editorconfig
+node_modules
+*.md

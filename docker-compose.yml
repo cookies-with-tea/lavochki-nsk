@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  front-web:
+    container_name: benches-web
+    build:
+      context: ./
+      dockerfile: ./containers/app/Dockerfile
+    ports:
+      - "4173:80"
+    volumes:
+      - ./:/opt/benches/front
