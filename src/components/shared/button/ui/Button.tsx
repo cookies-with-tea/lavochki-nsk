@@ -10,7 +10,7 @@ const cx = cb.bind(styles)
 interface ButtonOwnProps<E extends ElementType = ElementType> {
 	size?: 'md' | 'sm' | 'xs'
 	className?: string
-	appearance?: 'primary' | 'secondary'
+	appearance?: 'primary' | 'secondary' | 'link' | 'link-underline'
 	icon?: ReactElement
 	children?: ReactNode
 	as?: E | typeof Link

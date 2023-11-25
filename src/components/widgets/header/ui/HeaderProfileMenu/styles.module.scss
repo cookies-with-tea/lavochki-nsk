@@ -1,0 +1,32 @@
+.header-profile-menu {
+  width: 238px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  background-color: var(--color-brown-3);
+
+  &__item {
+    :global(.base-button) {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+			font-weight: 500;
+			font-size: var(--font-size--xl);
+			line-height: normal;
+      padding: 10px 20px;
+    }
+
+    :global(.base-icon) {
+      font-size: var(--font-size--icon-md);
+      color: var(--color-brown-1);
+    }
+
+    &:not(:last-child) {
+      border-bottom: 2px solid var(--color-background);
+    }
+
+    &:hover {
+      background-color: rgb(var(--color-rgb-brown-2) / 0.2);
+    }
+  }
+}

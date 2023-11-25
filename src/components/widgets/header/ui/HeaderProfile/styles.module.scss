@@ -1,0 +1,8 @@
+.header-profile {
+  display: flex;
+  align-items: center;
+
+	:global(.tooltip-hover) {
+		--tooltip-spacing: 250px;
+	}
+}

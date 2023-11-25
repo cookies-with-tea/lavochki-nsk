@@ -507,7 +507,7 @@ module.exports = {
     'selector-nested-pattern': null,
     'selector-no-qualifying-type': null,
     'selector-no-vendor-prefix': true,
-    'selector-pseudo-class-no-unknown': [true, { ignorePseudoClasses: ['deep'] }],
+    'selector-pseudo-class-no-unknown': [true, { ignorePseudoClasses: ['deep', 'global'] }],
     'selector-pseudo-element-colon-notation': 'double',
     'selector-pseudo-element-no-unknown': [true, { ignorePseudoElements: ['input-placeholder'] }],
     'selector-type-case': 'lower',

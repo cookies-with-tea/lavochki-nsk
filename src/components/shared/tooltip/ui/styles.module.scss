@@ -1,6 +1,6 @@
 .tooltip {
 	align-items: center;
-	background-color: #040005;
+  background-color: 5px solid var(--color-brown-2);
 	border-radius: 8px;
 	display: flex;
 	justify-content: center;
@@ -8,6 +8,8 @@
 	position: absolute;
 	white-space: normal;
 	z-index: 100;
+
+  --tooltip-spacing: 220px
 }
 
 .tooltip-wrapper {
@@ -15,14 +17,14 @@
 	display: flex;
 	justify-content: center;
 	position: relative;
+	cursor: pointer;
 }
 
+// TODO: Добавить проп на показывание стрелки.
+// TODO: Добавить возможность передавать кастомную стрелку.
 .tooltip::before {
-	content: "";
-	border: solid transparent;
-	border-color: #040005;
-	border-width: 5px;
-	height: 0;
+  border: 5px solid var(--color-brown-3);
+  height: 0;
 	position: absolute;
 	pointer-events: none;
 	transform: rotate(45deg);
@@ -31,7 +33,7 @@
 }
 
 .tooltip-content {
-	color: white;
+	color: var(--color-white);
 	font-size: 16px;
 }
 
@@ -58,6 +60,7 @@
 
 .tooltip.tooltip-bottom {
 	bottom: calc(var(--tooltip-spacing, 50px) * -1);
+  left: -178px;
 }
 
 .tooltip.tooltip-bottom::before {

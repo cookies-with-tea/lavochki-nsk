@@ -6,7 +6,6 @@
   height: 62px;
   position: relative;
   border: 2px solid transparent;
-  background: none;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
 
@@ -46,6 +45,7 @@
     position: absolute;
     border-radius: 50%;
     color: var(--color-brown-1);
+		background-color: var(--color-brown-3);
     margin-left: auto;
   }
 

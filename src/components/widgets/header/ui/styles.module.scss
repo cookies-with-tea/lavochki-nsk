@@ -1,6 +1,6 @@
 .header {
-  padding: 15px 0;
   background-color: var(--color-brown-3);
+  padding: 15px 0;
 
   &__inner {
     display: flex;
@@ -15,6 +15,10 @@
 
   :global(.badge) {
     margin-right: 16px;
+
+    :global(.base-icon--notifications) {
+      font-size: 38px;
+    }
   }
 
   :global(.base-icon--logo) {
@@ -22,13 +26,5 @@
     height: 32px;
     margin-right: 26px;
   }
-
-  :global(.base-icon--notifications) {
-    font-size: 38px;
-  }
 }
 
-.header-profile {
-  display: flex;
-  align-items: center;
-}

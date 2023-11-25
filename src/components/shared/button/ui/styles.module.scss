@@ -1,49 +1,20 @@
 .base-button {
-  font-weight: 500;
-  border-radius: 100px;
 
   $root: &;
 
-  &--primary {
-    background-color: var(--color-brown-1);
-    color: var(--color-background);
-  }
-
-  &--secondary {
-    box-shadow: 0 0 0 2px var(--color-brown-1);
-  }
-
-  &--only-button {
-    border-radius: 50%;
-  }
-
-  &--md {
-    padding: 14px 22px;
-    font-size: var(--font-size--xl);
-    line-height: 26px;
-    height: 54px;
-  }
-
-  &--sm {
-    padding: 12px 17px;
-    font-size: var(--font-size--md);
-    line-height: 18px;
-    height: 44px;
-  }
-
-  &--xs {
-    padding: 7px 20px;
-    font-size: var(--font-size--sm);
-    line-height: 18px;
-    font-weight: 400;
-  }
+	display: flex;
+	align-items: center;
+  border-radius: 100px;
+  font-weight: 500;
+	font-size: var(--font-size--md);
+	color: var(--color-brown-1);
 
   &.icon-only {
-    padding: 0;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
+    padding: 0;
 
     &#{$root} {
       &--md {
@@ -63,6 +34,51 @@
           font-size: var(--font-size--icon-sm);
         }
       }
+    }
+  }
+
+  &--only-button {
+    border-radius: 50%;
+  }
+
+  &--md {
+    height: 54px;
+    font-size: var(--font-size--xl);
+    line-height: 26px;
+    padding: 14px 22px;
+  }
+
+  &--sm {
+    height: 44px;
+    font-size: var(--font-size--md);
+    line-height: 18px;
+    padding: 12px 17px;
+  }
+
+  &--xs {
+    font-weight: 400;
+    font-size: var(--font-size--sm);
+    line-height: 18px;
+    padding: 7px 20px;
+  }
+
+  &--primary {
+    color: var(--color-background);
+    background-color: var(--color-brown-1);
+  }
+
+  &--secondary {
+    box-shadow: 0 0 0 2px var(--color-brown-1);
+  }
+
+  &--link {
+    height: fit-content;
+    color: var(--color-brown-1);
+    background-color: transparent;
+    padding: 0;
+
+    &-underline {
+      text-decoration: underline;
     }
   }
 }

@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import classNames from 'classnames'
 import styles from './styles.module.scss'
+import { TooltipContent } from '@/components/shared/tooltip/ui/TooltipContent'
+import { useClickOutside } from '@/shared/lib/hooks'
 
 // interface ITooltipProps {
 // 	showArrow?: boolean
@@ -13,30 +15,38 @@ import styles from './styles.module.scss'
 // 	trigger: 'hover' | 'click'
 // }
 
-export const Tooltip = ({ content, children, position = 'top', customClassName }: any) => {
+// TODO: check https://codesandbox.io/p/sandbox/react-compound-components-hr6n1?file=%2Fsrc%2FApp.js
+
+export function Tooltip ({ content, children, position = 'bottom', customClassName }: any) {
 	const [isHovered, setIsHovered] = useState(false)
 
+  const ref = useClickOutside(() => setIsHovered(false))
+
+	const hoverTooltipClasses = classNames(
+		styles.tooltip,
+		styles[`tooltip-${position}`],
+		customClassName
+	)
+
 	return (
-  <div className={styles['tooltip-wrapper']}>
+  <div className={styles['tooltip-wrapper']} ref={ref}>
     <div
       className={styles['tooltip-children']}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onClick={() => setIsHovered(!isHovered)}
     >
       {children}
     </div>
 
     {isHovered && (
       <div
-        className={classNames(
-						styles.tooltip,
-						styles[`tooltip-${position}`],
-						customClassName
-        )}
+        className={[hoverTooltipClasses, 'tooltip-hover'].join(' ').trim()}
       >
-        <div className={styles['tooltip-content']}>{content}</div>
+        { content }
       </div>
-			)}
+        )}
   </div>
 	)
 }
+
+Tooltip.Content = TooltipContent
+
