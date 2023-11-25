@@ -147,7 +147,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	)
 
 	appHandlerBenches := benchesPublic.NewHandler(appBenchesPolicy)
-	appHandlerBenches.Register(appBenchesRouter, authManager)
+	appHandlerBenches.Register(appBenchesRouter)
 	appPrivateHandlerBenches := benchesPrivate.NewHandler(appBenchesPolicy)
 	appPrivateHandlerBenches.Register(appBenchesRouter, authManager)
 
