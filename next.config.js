@@ -3,6 +3,7 @@ const SpriteLoaderPlugin = require('svg-sprite-loader/plugin')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
   experimental: {
     forceSwcTransforms: true,
   },
