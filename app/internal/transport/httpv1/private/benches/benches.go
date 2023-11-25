@@ -31,6 +31,7 @@ const (
 	urlCreateBench             = ""
 	urlUpdateBench             = "/{id}"
 	urlDeleteBench             = "/{id}"
+	urlDetailBench             = "/{id}"
 )
 
 func NewHandler(benches *benches.Policy) *Handler {
@@ -57,6 +58,8 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 	routerModeration.HandleFunc(urlUpdateBench, apperror.Middleware(handler.updateBench)).Methods("PATCH")
 	// Удаление лавочки
 	routerModeration.HandleFunc(urlDeleteBench, apperror.Middleware(handler.deleteBench)).Methods("DELETE")
+	// Получение детальной информации о лавочки
+	routerModeration.HandleFunc(urlDetailBench, apperror.Middleware(handler.detailBench))
 }
 
 // @Summary Create bench via telegram
@@ -273,5 +276,22 @@ func (handler *Handler) deleteBench(writer http.ResponseWriter, request *http.Re
 
 	writer.WriteHeader(http.StatusOK)
 
+	return nil
+}
+
+// @Summary Detail bench
+// @Description Get detail active bench
+// @Tags Benches
+// @Success 200 {object} domain.Bench
+// @Failure 400 {object} apperror.AppError
+// @Router /api/v1/benches/{id} [get]
+func (handler *Handler) detailBench(w http.ResponseWriter, r *http.Request) error {
+	id := mux.Vars(r)["id"]
+	bench, err := handler.policy.GetDetailBench(r.Context(), id, roles.Admin)
+	if err != nil {
+		return err
+	}
+
+	handler.ResponseJson(w, bench, http.StatusOK)
 	return nil
 }

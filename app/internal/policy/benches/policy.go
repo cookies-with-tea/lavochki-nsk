@@ -202,18 +202,13 @@ func (policy *Policy) DecisionBench(ctx context.Context, benchID string, decisio
 	return nil
 }
 
-func (policy *Policy) GetDetailBench(ctx context.Context, id string, userID string) (*domain.Bench, error) {
+func (policy *Policy) GetDetailBench(ctx context.Context, id string, userRole string) (*domain.Bench, error) {
 	bench, err := policy.GetBenchByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
 
-	user, errGetUser := policy.usersService.GetUserByID(ctx, userID)
-	if errGetUser != nil {
-		return nil, errGetUser
-	}
-
-	if !bench.IsActive && user.Role != roles.Admin {
+	if !bench.IsActive && userRole != roles.Admin {
 		return nil, apperror.ErrNotFound
 	}
 

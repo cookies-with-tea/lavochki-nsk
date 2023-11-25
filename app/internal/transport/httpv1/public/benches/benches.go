@@ -4,12 +4,12 @@ import (
 	"net/http"
 
 	"benches/internal/apperror"
+	"benches/internal/constants/roles"
 	_ "benches/internal/domain"
 	"benches/internal/policy/benches"
 	"benches/internal/transport/httpv1"
 	"benches/pkg/api/paginate"
 	"benches/pkg/api/sort"
-	"benches/pkg/auth"
 
 	"github.com/gorilla/mux"
 )
@@ -30,14 +30,12 @@ func NewHandler(benches *benches.Policy) *Handler {
 	return &Handler{policy: benches}
 }
 
-func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) {
+func (handler *Handler) Register(router *mux.Router) {
 	router.HandleFunc(urlAllBenches, apperror.Middleware(handler.allListBenches)).Methods("GET")
 	router.HandleFunc(urlNearestBenches, apperror.Middleware(handler.nearestBenches)).Methods("GET")
 	router.HandleFunc(urlListBenches, paginate.Middleware(sort.Middleware(
 		apperror.Middleware(handler.listBenches), "id", sort.ASC), 1, 10)).Methods("GET")
-
-	// Общий endpoint для получения детальной информации о лавочке
-	router.HandleFunc(urlDetailBench, authManager.JWTMiddlewareHandler(apperror.Middleware(handler.detailBench))).Methods("GET")
+	router.HandleFunc(urlDetailBench, apperror.Middleware(handler.detailBench)).Methods("GET")
 }
 
 // @Summary All list benches
@@ -97,7 +95,7 @@ func (handler *Handler) listBenches(writer http.ResponseWriter, request *http.Re
 // @Router /api/v1/benches/{id} [get]
 func (handler *Handler) detailBench(w http.ResponseWriter, r *http.Request) error {
 	id := mux.Vars(r)["id"]
-	bench, err := handler.policy.GetDetailBench(r.Context(), id, r.Context().Value("userID").(string))
+	bench, err := handler.policy.GetDetailBench(r.Context(), id, roles.User)
 	if err != nil {
 		return err
 	}
