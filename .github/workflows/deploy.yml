@@ -1,9 +1,9 @@
-name: Benches Admin-Panel Build & Deploy
+name: Benches Site Build & Deploy
 
 on:
   push:
     branches:
-      - admin-panel/development
+      - frontend/development
 
 jobs:
   build:
