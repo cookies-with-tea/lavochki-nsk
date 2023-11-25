@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - admin-panel/development
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,7 +22,7 @@ jobs:
 
     steps:
       - name: Deploy
-      - uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@master
 
         with:
           HOST: ${{ secrets.FRONTEND_DEPLOY_HOST }}
