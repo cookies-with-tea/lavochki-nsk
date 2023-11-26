@@ -16,6 +16,7 @@
     "pre-commit": "lint-staged"
   },
   "dependencies": {
+    "@pbe/react-yandex-maps": "^1.2.5",
     "classnames": "^2.3.2",
     "next": "14.0.1",
     "react": "^18",
@@ -49,6 +50,6 @@
     "stylelint-config-standard": "^34.0.0",
     "stylelint-config-standard-scss": "^11.1.0",
     "svg-sprite-loader": "^6.0.11",
-    "typescript": "^5"
+    "typescript": "5.1"
   }
 }

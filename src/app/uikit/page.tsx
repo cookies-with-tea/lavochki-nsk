@@ -23,13 +23,17 @@ export default function Uikit() {
 
       <div className="d-flex" style={{ gap: 30, alignItems: 'center' }}>
         <Button icon={<Icon name={'arrow'} />} />
+
         <Button icon={<Icon reversed name={'arrow'} />} />
       </div>
 
       <div className="d-flex" style={{ gap: 30, alignItems: 'center' }}>
         <Icon name={'profile'} />
+
         <Icon name={'profile'} />
+
         <Icon name={'arrow'} />
+
         <Icon reversed name={'arrow'} className={'color-dark'} />
       </div>
 

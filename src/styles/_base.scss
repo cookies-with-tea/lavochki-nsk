@@ -6,9 +6,9 @@
   --font-size--lg: 18px;
   --font-size--md: 16px;
   --font-size--sm: 12px;
-  --font-size--h1: 24px;
-  --font-size--h2: 20px;
-  --font-size--h3: 16px;
+  --font-size--h1: 52px;
+  --font-size--h2: 36px;
+  --font-size--h3: 34px;
   --font-size--h4: 14px;
   --font-size--h5: 12px;
   --font-size--icon-xs: 16px;
@@ -61,6 +61,10 @@ h1, h2, h3, h4, h5, h6,
 h1,
 .h1 {
   font-size: var(--font-size--h1);
+
+  @include responsive(md, $breakpoints-only-max) {
+    font-size: var(--font-size--h3);
+  }
 }
 
 h2,

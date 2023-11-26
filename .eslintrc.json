@@ -20,6 +20,7 @@
   "globals": {
     "__WebpackModuleApi": "readonly"
   },
+  "ignorePatterns": ["dist", ".eslintrc.cjs"],
   "plugins": [
     "import",
     "react",
@@ -37,7 +38,7 @@
   },
   "rules": {
     "react/jsx-first-prop-new-line": [2, "multiline"],
-    "react/jsx-newline": [2, { "prevent": true, "allowMultilines": true }],
+    "react/jsx-newline": [2, { "prevent": false  }],
     "react/jsx-max-props-per-line": [
       2,
       { "maximum": 1, "when": "multiline" }
@@ -95,9 +96,11 @@
         "ignoreTemplateLiterals": true
       }
     ],
-    "@typescript-eslint/no-var-requires": 0,
+    "@typescript-eslint/no-var-requires": 1,
     "@typescript-eslint/ban-ts-comment": 0,
-    "@typescript-eslint/no-explicit-any": 0
+    "@typescript-eslint/no-explicit-any": 0,
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn"
   }
 //  "overrides": [
 //    // Only uses Testing Library lint rules in test files

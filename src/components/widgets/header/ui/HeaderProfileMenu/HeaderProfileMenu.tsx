@@ -21,6 +21,7 @@ export const HeaderProfileMenu = () => {
       <li className={styles['header-profile-menu__item']}>
         <Button appearance={'link'}>
           <span>Выйти</span>
+
           <Icon name={'logout'} />
         </Button>
       </li>

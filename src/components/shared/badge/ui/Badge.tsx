@@ -22,6 +22,7 @@ export const Badge = ({
   return (
     <div className={cn('badge', cx('badge', `badge--${size}`))}>
       { !hidden && <span className={cx('badge__content')}>{content}</span> }
+
       { children }
     </div>
   )

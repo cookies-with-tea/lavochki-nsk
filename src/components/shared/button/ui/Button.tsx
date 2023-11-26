@@ -53,6 +53,7 @@ export const Button = <E extends ElementType = typeof defaultElement>(
 	return (
   <TagName {...formattedProps} className={classNames}>
     { icon && !children && icon }
+
     { children && children }
   </TagName>
 	)

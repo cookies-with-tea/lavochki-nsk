@@ -28,7 +28,9 @@ export default function RootLayout({
     <html lang={'ru'} className={poppins.className}>
       <body>
         <Header />
+
         <main>{children}</main>
+
         <script async src={'https://telegram.org/js/telegram-widget.js?27'} />
       </body>
     </html>

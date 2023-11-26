@@ -10,12 +10,12 @@ import { Icon } from '@/components/shared'
 const cx = cnBind.bind(styles)
 
 export const TelegramAuth = () => {
-  const handleLogin = (): void => {
+  const handleLogin = () => {
     window?.Telegram?.Login.auth({
       bot_id: process.env.BOT_ID,
       request_access: true
     },
-    async (data: any) => {
+    async (data) => {
       console.log(data)
     })
   }
