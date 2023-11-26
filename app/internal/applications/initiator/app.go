@@ -10,49 +10,19 @@ import (
 
 	"benches/docs"
 	_ "benches/docs"
+	"benches/internal/composites"
 	"benches/internal/config"
-	"benches/internal/domain"
-	benchesPolicy "benches/internal/policy/benches"
-	botPolicy "benches/internal/policy/bot"
-	commentsPolicy "benches/internal/policy/comments"
-	reportsPolicy "benches/internal/policy/reports"
-	tagsPolicy "benches/internal/policy/tags"
-	usersPolicy "benches/internal/policy/users"
 	minioStorage "benches/internal/repository/minio"
-	benchesRepository "benches/internal/repository/postgres/benches"
-	commentsRepository "benches/internal/repository/postgres/comments"
-	reportsRepository "benches/internal/repository/postgres/reports"
-	tagsRepository "benches/internal/repository/postgres/tags"
-	usersRepository "benches/internal/repository/postgres/users"
 	redisStorage "benches/internal/repository/redis"
-	benchesService "benches/internal/service/benches"
-	botService "benches/internal/service/bot"
-	commentsService "benches/internal/service/comments"
-	"benches/internal/service/notifications"
-	reportsService "benches/internal/service/reports"
-	tagsService "benches/internal/service/tags"
-	usersService "benches/internal/service/users"
-	tagsPrivate "benches/internal/transport/httpv1/private/tags"
-	benchesPublic "benches/internal/transport/httpv1/public/benches"
-	botPublic "benches/internal/transport/httpv1/public/bot"
-	commentsPublic "benches/internal/transport/httpv1/public/comments"
-	tagsPublic "benches/internal/transport/httpv1/public/tags"
-	usersPublic "benches/internal/transport/httpv1/public/users"
-
-	benchesPrivate "benches/internal/transport/httpv1/private/benches"
-	commentsPrivate "benches/internal/transport/httpv1/private/comments"
-	reportsPrivate "benches/internal/transport/httpv1/private/reports"
-	usersPrivate "benches/internal/transport/httpv1/private/users"
 	"benches/internal/transport/middlewares"
-	"benches/pkg/auth"
 	postgresClient "benches/pkg/client/postgres"
 	"benches/pkg/maps"
-	"benches/pkg/telegram"
 
 	"github.com/go-redis/redis/v9"
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/minio/minio-go/v7"
+
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	"github.com/rs/cors"
 	httpSwagger "github.com/swaggo/http-swagger"
@@ -82,103 +52,63 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	db := initPostgreSQL(cfg, logger)
 
 	minioClient := initMinio(cfg, logger)
+	minioContainer := minioStorage.NewMinioStorage(minioClient, cfg.Minio.Bucket, cfg.Images.PublicEndpoint)
 
 	redisClient := initRedis(cfg, logger)
+	redisContainer := redisStorage.NewRedisStorage(redisClient)
 
-	authManager, err := auth.NewManager(cfg.SigningKey)
+	databases := composites.NewDatabaseComposite(db, redisContainer, minioContainer)
+
+	managers, err := composites.NewManagerComposite(cfg.SigningKey, cfg.Telegram.Token)
 	if err != nil {
-		logger.Fatal("init auth manager", zap.Error(err))
+		logger.Fatal("failed managers initializing", zap.Error(err))
 	}
 
 	geoCoder := maps.NewYandexGeoCoder(cfg.Yandex.Token)
 
-	var appNotificationsService notifications.Service
-	if cfg.IsDevelopment {
-		appNotificationsService = notifications.NewServiceMock(logger, cfg.Telegram.NotificationToken)
-	} else {
-		appNotificationsService = notifications.NewService(logger, cfg.Telegram.NotificationToken)
-	}
-
-	// TODO: Вынести инициализацию приложений куда-нибудь в "стратегии".
+	// Уведомления
+	notificationsComposite := composites.NewNotificationComposite(cfg, logger)
 
 	// Теги
 	appTagsRouter := router.PathPrefix("/api/v1/tags").Subrouter()
-	appTagsRepository := tagsRepository.NewTagsRepository(db)
-	appTagsService := tagsService.NewService(appTagsRepository, logger)
-	appTagsPolicy := tagsPolicy.NewPolicy(appTagsService)
-
-	appHandlerTags := tagsPublic.NewHandler(appTagsPolicy)
-	appHandlerTags.Register(appTagsRouter)
-	appPrivateHandlerTags := tagsPrivate.NewHandler(appTagsPolicy)
-	appPrivateHandlerTags.Register(appTagsRouter, authManager)
+	tagsComposite := composites.NewTagComposite(databases, logger)
+	tagsComposite.PublicHandler.Register(appTagsRouter)
+	tagsComposite.PrivateHandler.Register(appTagsRouter, managers.AuthManager)
 
 	// Пользователи
 	appUsersRouter := router.PathPrefix("/api/v1/users").Subrouter()
-	appUsersRedisStorage := redisStorage.NewRedisStorage(redisClient)
-	appUsersTelegramManager := telegram.NewTelegramManager(cfg.Telegram.Token)
-	appUsersRepository := usersRepository.NewUsersRepository(db)
-	appUsersService := usersService.NewService(
-		appUsersRepository,
-		appUsersRedisStorage,
-		authManager,
-		appUsersTelegramManager,
-		domain.CreateTokenLifetime(cfg.AppConfig.LifetimeAccessTokenMinutes, cfg.AppConfig.LifetimeRefreshTokenMinutes),
-		logger,
-	)
-	appUsersPolicy := usersPolicy.NewPolicy(appUsersService)
-
-	appHandlerUsers := usersPublic.NewHandler(appUsersPolicy)
-	appHandlerUsers.Register(appUsersRouter)
-	appPrivateHandlerUsers := usersPrivate.NewHandler(appUsersPolicy)
-	appPrivateHandlerUsers.Register(appUsersRouter, authManager)
+	usersComposite := composites.NewUserComposite(databases, managers, cfg, logger)
+	usersComposite.PrivateHandler.Register(appUsersRouter, managers.AuthManager)
+	usersComposite.PublicHandler.Register(appUsersRouter)
 
 	// Лавочки
 	appBenchesRouter := router.PathPrefix("/api/v1/benches").Subrouter()
-	appBenchesStorage := minioStorage.NewMinioStorage(minioClient, cfg.Minio.Bucket, cfg.Images.PublicEndpoint)
-	appBenchesRepository := benchesRepository.NewBenchesRepository(db)
-	appBenchesService := benchesService.NewService(appBenchesRepository, appBenchesStorage, logger)
-	appBenchesPolicy := benchesPolicy.NewPolicy(
-		appBenchesService,
-		appUsersService,
-		appNotificationsService,
-		appTagsService,
+	benchesComposite := composites.NewBenchComposite(
+		databases,
+		usersComposite,
+		notificationsComposite,
+		tagsComposite,
 		geoCoder,
 		logger,
 	)
-
-	appHandlerBenches := benchesPublic.NewHandler(appBenchesPolicy)
-	appHandlerBenches.Register(appBenchesRouter)
-	appPrivateHandlerBenches := benchesPrivate.NewHandler(appBenchesPolicy)
-	appPrivateHandlerBenches.Register(appBenchesRouter, authManager)
+	benchesComposite.PrivateHandler.Register(appBenchesRouter, managers.AuthManager)
+	benchesComposite.PublicHandler.Register(appBenchesRouter)
 
 	// Бот
 	appBotRouter := router.PathPrefix("/api/v1/bot").Subrouter()
-	appBotService := botService.NewService(cfg.Telegram.Login, cfg.Telegram.Password,
-		logger, authManager, appUsersRedisStorage)
-	appBotPolicy := botPolicy.NewPolicy(appBotService)
-
-	appBotHandler := botPublic.NewHandler(appBotPolicy)
-	appBotHandler.Register(appBotRouter)
+	botComposite := composites.NewBotComposite(databases, managers, cfg, logger)
+	botComposite.PublicHandler.Register(appBotRouter)
 
 	// Комментарии
 	appCommentsRouter := router.PathPrefix("/api/v1/comments").Subrouter()
-	appCommentsRepository := commentsRepository.NewCommentsRepository(db)
-	appCommentsService := commentsService.NewService(appCommentsRepository, logger)
-	appCommentsPolicy := commentsPolicy.NewPolicy(appCommentsService, appUsersService)
-
-	appHandlerComments := commentsPublic.NewHandler(appCommentsPolicy)
-	appHandlerComments.Register(appCommentsRouter, authManager)
-	appPrivateHandlerComments := commentsPrivate.NewHandler(appCommentsPolicy)
-	appPrivateHandlerComments.Register(appCommentsRouter, authManager)
+	commentsComposite := composites.NewCommentComposite(databases, usersComposite, logger)
+	commentsComposite.PrivateHandler.Register(appCommentsRouter, managers.AuthManager)
+	commentsComposite.PublicHandler.Register(appCommentsRouter)
 
 	// Жалобы
 	appReportsRouter := router.PathPrefix("/api/v1/reports").Subrouter()
-	appReportsRepository := reportsRepository.NewReportsRepository(db)
-	appReportsService := reportsService.NewService(appReportsRepository, logger)
-	appReportsPolicy := reportsPolicy.NewPolicy(appReportsService)
-
-	appHandlerReports := reportsPrivate.NewHandler(appReportsPolicy)
-	appHandlerReports.Register(appReportsRouter, authManager)
+	reportsComposite := composites.NewReportComposite(databases, logger)
+	reportsComposite.PrivateHandler.Register(appReportsRouter, managers.AuthManager)
 
 	return &App{cfg: cfg, logger: logger, router: router}, nil
 }
@@ -197,10 +127,28 @@ func (a *App) startHTTP() {
 
 	// TODO: Вынести "AllowedOrigins" в .env.
 	c := cors.New(cors.Options{
-		AllowedMethods:     []string{http.MethodGet, http.MethodPost, http.MethodPatch, http.MethodPut, http.MethodOptions, http.MethodDelete},
-		AllowedOrigins:     []string{"http://localhost:3000", "http://localhost:8080"},
-		AllowCredentials:   true,
-		AllowedHeaders:     []string{"Location", "Charset", "Access-Control-Allow-Origin", "Content-Type", "content-type", "Origin", "Accept", "Content-Length", "Accept-Encoding", "X-CSRF-Token"},
+		AllowedMethods: []string{
+			http.MethodGet,
+			http.MethodPost,
+			http.MethodPatch,
+			http.MethodPut,
+			http.MethodOptions,
+			http.MethodDelete,
+		},
+		AllowedOrigins:   []string{"http://localhost:3000", "http://localhost:8080"},
+		AllowCredentials: true,
+		AllowedHeaders: []string{
+			"Location",
+			"Charset",
+			"Access-Control-Allow-Origin",
+			"Content-Type",
+			"content-type",
+			"Origin",
+			"Accept",
+			"Content-Length",
+			"Accept-Encoding",
+			"X-CSRF-Token",
+		},
 		OptionsPassthrough: true,
 		ExposedHeaders:     []string{"Location", "Authorization", "Content-Disposition"},
 		Debug:              false,
@@ -236,9 +184,7 @@ func (a *App) Run() {
 
 func initPostgreSQL(cfg *config.Config, logger *zap.Logger) *pgxpool.Pool {
 	logger.Info("database initializing")
-	postgresConfig := postgresClient.NewConfig(
-		cfg.PostgreSQL.Username, cfg.PostgreSQL.Password,
-		cfg.PostgreSQL.Host, cfg.PostgreSQL.Port, cfg.PostgreSQL.Database)
+	postgresConfig := postgresClient.NewConfig(cfg.PostgreSQL.Username, cfg.PostgreSQL.Password, cfg.PostgreSQL.Host, cfg.PostgreSQL.Port, cfg.PostgreSQL.Database)
 	db, errInitPostgres := postgresClient.NewClient(context.Background(), 5, time.Second*5, postgresConfig)
 	if errInitPostgres != nil {
 		logger.Fatal("create postgres client", zap.Error(errInitPostgres))

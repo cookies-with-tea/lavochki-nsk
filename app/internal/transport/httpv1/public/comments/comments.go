@@ -8,7 +8,6 @@ import (
 	_ "benches/internal/domain"
 	commentsPolicy "benches/internal/policy/comments"
 	"benches/internal/transport/httpv1"
-	"benches/pkg/auth"
 
 	"github.com/gorilla/mux"
 	"github.com/jackc/pgx/v5"
@@ -29,7 +28,7 @@ func NewHandler(policy *commentsPolicy.Policy) *Handler {
 	}
 }
 
-func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) {
+func (handler *Handler) Register(router *mux.Router) {
 	router.HandleFunc(urlListComments, apperror.Middleware(handler.listCommentsByBench))
 }
 
