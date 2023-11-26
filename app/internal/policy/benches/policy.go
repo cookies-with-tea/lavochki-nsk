@@ -144,7 +144,7 @@ func (policy *Policy) CreateBench(ctx context.Context, ownerID string, byteImage
 	return newBench, nil
 }
 
-func (policy *Policy) UpdateBench(ctx context.Context, id string, tags []string, bench domain.Bench) error {
+func (policy *Policy) UpdateBench(ctx context.Context, id string, tags []string, bench domain.Bench, byteImages [][]byte) error {
 	// Удаляем старые теги
 	errDeleteTags := policy.tagsService.DeleteByBench(ctx, id)
 	if errDeleteTags != nil {
@@ -161,6 +161,13 @@ func (policy *Policy) UpdateBench(ctx context.Context, id string, tags []string,
 		if errAddTag != nil {
 			return errAddTag
 		}
+	}
+
+	// Сохраняем все фотографии, которые нам пришли в виде байт, в Minio
+	_, err := policy.benchesService.SaveImages(ctx, byteImages)
+	if err != nil {
+		policy.logger.Error("error save image", zap.Error(err))
+		return err
 	}
 
 	return policy.benchesService.UpdateBench(ctx, id, bench)

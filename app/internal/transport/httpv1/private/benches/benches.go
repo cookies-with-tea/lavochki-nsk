@@ -229,7 +229,7 @@ func (handler *Handler) createBench(writer http.ResponseWriter, request *http.Re
 
 // @Summary Update bench
 // @Tags Benches
-// @Produce json
+// @Produce mpfd
 // @Param Bench body dto.UpdateBench true "bench data"
 // @Param Authorization header string true "Bearer"
 // @Param id path string true "Bench ID"
@@ -238,16 +238,59 @@ func (handler *Handler) createBench(writer http.ResponseWriter, request *http.Re
 // @Failure 418
 // @Router /api/v1/benches/{id} [patch]
 func (handler *Handler) updateBench(writer http.ResponseWriter, request *http.Request) error {
-	// TODO: Добавить обновление картинок.
-	var bench dto.UpdateBench
+	errParseMultipartForm := request.ParseMultipartForm(0)
+	if errParseMultipartForm != nil {
+		return errParseMultipartForm
+	}
 
-	if err := json.NewDecoder(request.Body).Decode(&bench); err != nil {
-		return apperror.ErrDecodeData
+	bench := dto.UpdateBench{}
+
+	var errParseFloat error
+	if value := request.PostForm.Get("lat"); value != "" {
+		var lat float64
+		if lat, errParseFloat = strconv.ParseFloat(value, 64); errParseFloat != nil {
+			return apperror.ErrDecodeData
+		}
+
+		bench.Lat = lat
+	}
+
+	if value := request.PostForm.Get("lng"); value != "" {
+		var lng float64
+		if lng, errParseFloat = strconv.ParseFloat(request.PostForm.Get("lng"), 64); errParseFloat != nil {
+			return apperror.ErrDecodeData
+		}
+
+		bench.Lng = lng
+	}
+
+	var images [][]byte
+	for _, image := range request.MultipartForm.File["images"] {
+		buffer := bytes.NewBuffer(nil)
+
+		// Открываем файл
+		openFile, errOpenFile := image.Open()
+		if errOpenFile != nil {
+			return apperror.ErrDecodeData
+		}
+
+		// Делаем список байт из файла
+		if _, err := io.Copy(buffer, openFile); err != nil {
+			return apperror.ErrDecodeData
+		}
+
+		// Закрываем файл
+		errCloseFile := openFile.Close()
+		if errCloseFile != nil {
+			return errCloseFile
+		}
+
+		images = append(images, buffer.Bytes())
 	}
 
 	idBench := mux.Vars(request)["id"]
 
-	errUpdate := handler.policy.UpdateBench(request.Context(), idBench, bench.Tags, bench.ToDomain())
+	errUpdate := handler.policy.UpdateBench(request.Context(), idBench, bench.Tags, bench.ToDomain(), images)
 	if errUpdate != nil {
 		return errUpdate
 	}
