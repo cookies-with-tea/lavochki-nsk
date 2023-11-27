@@ -19,6 +19,23 @@ export default function Uikit() {
         <Button appearance={'primary'} size={'xs'}>
           Открыть
         </Button>
+
+        <Button
+          appearance={'primary'}
+          size={'xs'}
+          prefixIcon={<Icon reversed name={'arrow'} /> }
+          suffixIcon={<Icon name={'arrow'} />}
+        >
+          Смотреть все
+        </Button>
+
+        <Button
+          appearance={'primary'}
+          size={'xs'}
+          prefixIcon={<Icon reversed name={'arrow'} /> }
+        >
+          Смотреть все
+        </Button>
       </div>
 
       <div className="d-flex" style={{ gap: 30, alignItems: 'center' }}>
