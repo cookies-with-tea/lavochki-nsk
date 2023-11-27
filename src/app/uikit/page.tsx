@@ -24,7 +24,7 @@ export default function Uikit() {
           appearance={'primary'}
           size={'xs'}
           prefixIcon={<Icon reversed name={'arrow'} /> }
-          suffixIcon={<Icon name={'arrow'} />}
+          postfixIcon={<Icon name={'arrow'} />}
         >
           Смотреть все
         </Button>
