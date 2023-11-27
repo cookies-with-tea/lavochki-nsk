@@ -58,7 +58,6 @@ export const Button = <E extends ElementType = typeof defaultElement>(
   <TagName {...formattedProps} className={classNames}>
     { icon && !children && icon }
 
-
     { prefixIcon && (
       <div className={cn('base-button__prefix-icon', cx('base-button__prefix-icon'))}>
         { prefixIcon }
