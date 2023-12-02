@@ -13,7 +13,7 @@ interface ButtonOwnProps<E extends ElementType = ElementType> {
 	appearance?: 'primary' | 'secondary' | 'link' | 'link-underline'
 	icon?: ReactElement
   prefixIcon?: ReactElement
-  postfixIcon?: ReactElement
+  suffixIcon?: ReactElement
 	children?: ReactNode
 	as?: E | typeof Link
 }
@@ -34,7 +34,7 @@ export const Button = <E extends ElementType = typeof defaultElement>(
 		as,
 		children,
     prefixIcon,
-    postfixIcon,
+    suffixIcon,
 		...restProps
 	} = props
 
@@ -66,9 +66,9 @@ export const Button = <E extends ElementType = typeof defaultElement>(
 
     { children && children }
 
-    { postfixIcon && (
+    { suffixIcon && (
       <div className={cn('base-button__suffix-icon', cx('base-button__suffix-icon'))}>
-        { postfixIcon }
+        { suffixIcon }
       </div>
     ) }
   </TagName>
