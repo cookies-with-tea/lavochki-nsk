@@ -43,13 +43,13 @@ html {
 }
 
 body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   color: var(--color-brown-1);
   background-color: var(--color-background);
   scroll-behavior: smooth;
   overflow: auto;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
 }
 
 html, body, #root {
@@ -171,8 +171,8 @@ h5,
 }
 
 .main {
-  margin-bottom: 20px;
   flex-grow: 1;
+  margin-bottom: 20px;
 
   @include responsive(md) {
     margin-bottom: 40px;

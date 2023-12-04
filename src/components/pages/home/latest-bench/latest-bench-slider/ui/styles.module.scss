@@ -1,6 +1,6 @@
 .latest-bench-slider {
-  max-width: 731px;
   width: 100%;
+  max-width: 731px;
   position: relative;
   margin-left: auto;
 
@@ -14,12 +14,12 @@
   }
 
   &__button {
+    top: 50%;
     width: 62px;
     height: 62px;
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
     font-size: 24px;
+    transform: translateY(-50%);
 
     &:first-child {
       left: -22px;
@@ -35,8 +35,8 @@
   }
 
   :global(.swiper-button-disabled) {
-    cursor: default;
-    background-color: var(--color-brown-5);
     color: var(--color-white-2);
+    background-color: var(--color-brown-5);
+    cursor: default;
   }
 }
