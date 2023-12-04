@@ -48,7 +48,7 @@ export const LatestBenchSlider = ({ images }: ILatestBenchSliderProps) => {
         {
           images.map((image, index) => (
             <SwiperSlide key={index}>
-              <Image className={styles['latest-bench-slider__image']} src={image} alt={''} width={190} height={190} />
+              <Image className={styles['latest-bench-slider__image']} src={image} alt={''} width={190} height={190} objectFit={'cover'} />
             </SwiperSlide>
           ))
         }

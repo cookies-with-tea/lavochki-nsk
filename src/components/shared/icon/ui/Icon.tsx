@@ -8,11 +8,19 @@ interface IIconProps {
   name: string
   className?: string
   reversed?: boolean
+  width?: string | number
+  height?: string | number
 }
 
 const cx = cb.bind(styles)
 
-export const Icon = ({ className = '', reversed = false, name }: IIconProps) => {
+export const Icon = ({
+   className = '',
+   reversed = false,
+   name,
+   width = '1em',
+   height = '1em'
+}: IIconProps) => {
   const classNames = cn(
     'base-icon',
     cx(
@@ -28,8 +36,8 @@ export const Icon = ({ className = '', reversed = false, name }: IIconProps) => 
       xmlns="http://www.w3.org/2000/svg"
       className={classNames}
       aria-hidden="true"
-      width={'1em'}
-      height={'1em'}
+      width={width}
+      height={height}
     >
       <use xlinkHref={`#${name}`} href={`#${name}`} />
     </svg>

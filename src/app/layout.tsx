@@ -5,6 +5,7 @@ import { requireSvg } from '@/shared/lib/utils'
 import { Header } from '@/components/widgets/header'
 import { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
+import { Footer } from '@/components/widgets/footer'
 
 requireSvg()
 
@@ -30,7 +31,9 @@ export default function RootLayout({
       <body>
         <Header />
 
-        <main>{children}</main>
+        <main className={'main'}>{children}</main>
+
+        <Footer />
 
         <script async src={'https://telegram.org/js/telegram-widget.js?27'} />
       </body>

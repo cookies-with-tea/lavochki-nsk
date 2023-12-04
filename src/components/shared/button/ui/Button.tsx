@@ -23,7 +23,7 @@ const defaultElement = 'button'
 
 const InnerButton  = <E extends ElementType = typeof defaultElement>(
   props: ButtonProps<E>,
-  ref: Ref<E>
+  ref?: Ref<E> | null
 ) => {
   const {
     size = 'md',
@@ -74,4 +74,5 @@ const InnerButton  = <E extends ElementType = typeof defaultElement>(
   )
 }
 
-export const Button = forwardRef(InnerButton)
+// TODO: Типизировать.
+export const Button = forwardRef<any, any>(InnerButton)

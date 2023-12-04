@@ -29,4 +29,14 @@
       right: -22px;
     }
   }
+
+  :global(.swiper-button-lock) {
+    display: none;
+  }
+
+  :global(.swiper-button-disabled) {
+    cursor: default;
+    background-color: var(--color-brown-5);
+    color: var(--color-white-2);
+  }
 }
