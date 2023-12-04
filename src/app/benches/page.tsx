@@ -3,7 +3,14 @@ import styles from '@/styles/pages/benches.module.scss'
 import { AllBenchesSort } from '@/components/pages/benches/all-benches-sort'
 import { BENCHES_MOCK_DATA } from '@/shared/mocks/benches'
 import { BenchCard } from '@/components/pages/benches/bench'
+import { Metadata } from 'next'
 
+export const metadata: Metadata = {
+  title: 'Все лавочки',
+  openGraph: {
+    title: 'Все лавочки',
+  },
+}
 export default function BenchesPage() {
   return (
     <div className={styles['benches-page']}>

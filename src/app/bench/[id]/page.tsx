@@ -4,13 +4,21 @@ type Props = {
   params: { id: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
-export async function generateMetadata({ params }: Props): Promise<Promise<Metadata> | any> {
-  const id = params.id
 
-    return {
-    id,
-  }
+export const metadata: Metadata = {
+  title: 'Детальная лавочка',
+  openGraph: {
+    title: 'Детальная лавочка',
+  },
 }
+
+// export async function generateMetadata({ params }: Props): Promise<Promise<Metadata> | any> {
+//   const id = params.id
+//
+//     return {
+//     id,
+//   }
+// }
 
 // export async function generateMetadata(
 //   { params, searchParams }: Props,

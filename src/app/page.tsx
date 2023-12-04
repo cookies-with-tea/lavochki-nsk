@@ -2,6 +2,14 @@ import styles from '@/styles/pages/home-page.module.scss'
 import { generateClassNames } from '@/shared/lib/utils'
 import { YandexMap } from '@/components/widgets/map'
 import { LatestBenches } from '@/components/pages/home/latest-benches'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Главная',
+  openGraph: {
+    title: 'Главная',
+  },
+}
 
 export default function Home() {
   return (
