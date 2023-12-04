@@ -7,7 +7,14 @@ export const BENCHES_MOCK_DATA: BenchTypes.Response = {
       id: '3',
       lat: 55.0415,
       lng: 82.9346,
-      images: ['image5.jpg', 'image6.jpg'],
+      images: [
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png'
+      ],
       owner: 'Alex Johnson',
       is_active: true,
       tags: [
@@ -20,7 +27,68 @@ export const BENCHES_MOCK_DATA: BenchTypes.Response = {
       id: '4',
       lat: 54.9630,
       lng: 82.9371,
-      images: ['image7.jpg', 'image8.jpg'],
+      images: [
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png'
+      ],
+      owner: 'Elena Petrova',
+      is_active: false,
+      tags: [
+        { id: 'tag7', title: 'Historic', active: true },
+        { id: 'tag8', title: 'Bustling', active: true },
+      ],
+      street: 'Soviet Street',
+    },
+    {
+      id: '5',
+      lat: 54.9630,
+      lng: 82.9371,
+      images: [
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png'
+      ],
+      owner: 'Elena Petrova',
+      is_active: false,
+      tags: [
+        { id: 'tag7', title: 'Historic', active: true },
+        { id: 'tag8', title: 'Bustling', active: true },
+      ],
+      street: 'Soviet Street',
+    },
+    {
+      id: '6',
+      lat: 54.9630,
+      lng: 82.9371,
+      images: [
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png'
+      ],
+      owner: 'Elena Petrova',
+      is_active: false,
+      tags: [
+        { id: 'tag7', title: 'Historic', active: true },
+        { id: 'tag8', title: 'Bustling', active: true },
+      ],
+      street: 'Soviet Street',
+    },
+    {
+      id: '7',
+      lat: 54.9630,
+      lng: 82.9371,
+      images: [
+        'https://gas-kvas.com/uploads/posts/2023-01/1673412890_gas-kvas-com-p-ulibayushchayasya-devushka-risunki-anime-37.png',
+      ],
       owner: 'Elena Petrova',
       is_active: false,
       tags: [

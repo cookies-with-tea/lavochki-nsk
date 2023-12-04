@@ -9,6 +9,14 @@
 	font-size: var(--font-size--md);
 	color: var(--color-brown-1);
 
+  &__prefix-icon {
+    margin-right: 12px;
+  }
+
+  &__suffix-icon {
+    margin-left: 12px;
+  }
+
   &.icon-only {
     display: flex;
     flex-direction: column;
@@ -84,16 +92,8 @@
 
   &__prefix-icon,
   &__suffix-icon {
-    font-size: var(--font-size--icon-xs);
     display: flex;
     align-items: center;
-  }
-
-  &__prefix-icon {
-    margin-right: 12px;
-  }
-
-  &__suffix-icon {
-    margin-left: 12px;
+    font-size: var(--font-size--icon-xs);
   }
 }

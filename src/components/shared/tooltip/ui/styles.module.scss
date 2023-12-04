@@ -1,40 +1,40 @@
 .tooltip {
-	align-items: center;
-  background-color: 5px solid var(--color-brown-2);
-	border-radius: 8px;
-	display: flex;
-	justify-content: center;
-	padding: 5px;
-	position: absolute;
-	white-space: normal;
-	z-index: 100;
-
   --tooltip-spacing: 220px
-}
+;
+
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 8px;
+	white-space: normal;
+  background-color: 5px solid var(--color-brown-2);
+	padding: 5px;
+	z-index: 100;}
 
 .tooltip-wrapper {
-	align-items: center;
-	display: flex;
-	justify-content: center;
 	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	cursor: pointer;
 }
 
 // TODO: Добавить проп на показывание стрелки.
 // TODO: Добавить возможность передавать кастомную стрелку.
 .tooltip::before {
-  border: 5px solid var(--color-brown-3);
+	width: 0;
   height: 0;
 	position: absolute;
-	pointer-events: none;
+  border: 5px solid var(--color-brown-3);
 	transform: rotate(45deg);
-	width: 0;
+	pointer-events: none;
 	z-index: -1;
 }
 
 .tooltip-content {
-	color: var(--color-white);
 	font-size: 16px;
+	color: var(--color-white);
 }
 
 .tooltip.tooltip-top {
@@ -42,40 +42,40 @@
 }
 
 .tooltip.tooltip-top::before {
-	bottom: -5px;
 	left: 50%;
+	bottom: -5px;
 	margin-left: -5px;
 }
 
 .tooltip.tooltip-right {
-	left: calc(100% + var(--tooltip-spacing, 40px));
 	top: 0;
+	left: calc(100% + var(--tooltip-spacing, 40px));
 }
 
 .tooltip.tooltip-right::before {
+	top: calc(50% - 5px);
 	left: 0;
 	margin-left: -5px;
-	top: calc(50% - 5px);
 }
 
 .tooltip.tooltip-bottom {
-	bottom: calc(var(--tooltip-spacing, 50px) * -1);
   left: -178px;
+	bottom: calc(var(--tooltip-spacing, 50px) * -1);
 }
 
 .tooltip.tooltip-bottom::before {
+	top: -5px;
 	left: 50%;
 	margin-left: -5px;
-	top: -5px;
 }
 
 .tooltip.tooltip-left {
-	right: calc(100% + var(--tooltip-spacing, 40px));
 	top: 0;
+	right: calc(100% + var(--tooltip-spacing, 40px));
 }
 
 .tooltip.tooltip-left::before {
-	margin-right: -5px;
-	right: 0;
 	top: calc(50% - 5px);
+	right: 0;
+	margin-right: -5px;
 }

@@ -10,6 +10,8 @@ $color--yellow: #ffB21d;
 
 $color--box-shadow: rgb(188 188 188 / 0.25);
 
+$color--brown-4: rgba($color--brown-3, 0.5);
+
 $colors: (
   dark: $color--dark,
   white: $color--white,
@@ -17,6 +19,7 @@ $colors: (
   brown-1: $color--brown-1,
   brown-2: $color--brown-2,
   brown-3: $color--brown-3,
+  brown-4: $color--brown-4,
   background: $color--background,
   yellow: $color--yellow,
 )

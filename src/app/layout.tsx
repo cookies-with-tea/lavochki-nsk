@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-
+import 'swiper/css'
 import '@/styles/index.scss'
 import { requireSvg } from '@/shared/lib/utils'
 import { Header } from '@/components/widgets/header'
@@ -11,7 +11,8 @@ requireSvg()
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
   style: ['normal', 'italic'],
-  display: 'swap',subsets: ['latin']
+  display: 'swap',
+  subsets: ['latin']
 })
 
 export const metadata: Metadata = {

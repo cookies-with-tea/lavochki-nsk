@@ -1,0 +1,42 @@
+.latest-bench {
+  width: 100%;
+  display: flex;
+  border-radius: 20px;
+  background-color: var(--color-brown-4);
+  padding: 30px 0 30px 25px;
+
+  &__info {
+    min-width: 390px;
+
+    :global(.base-button) {
+      margin-top: 18px;
+    }
+  }
+
+  &__title {
+    font-size: 30px;
+    line-height: 110%;
+  }
+
+  &__street {
+    display: flex;
+    align-items: center;
+    margin-top: 38px;
+
+    > p {
+      font-size: 22px;
+      line-height: 145%;
+      margin-right: 14px;
+    }
+
+    > button {
+      width: 24px;
+      height: 32px;
+    }
+
+    :global(.base-icon) {
+      width: 24px;
+      height: 32px;
+    }
+  }
+}

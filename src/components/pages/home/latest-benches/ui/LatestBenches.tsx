@@ -2,6 +2,7 @@ import { Button } from '@/components/shared'
 import Link from 'next/link'
 import { LatestBench } from '@/components/pages/home/latest-bench'
 import styles from './styles.module.scss'
+import { BENCHES_MOCK_DATA } from '@/shared/mocks/benches'
 
 export const LatestBenches = () => {
   return (
@@ -12,8 +13,10 @@ export const LatestBenches = () => {
         <Button as={Link} href={'/benches'}>Смотреть все</Button>
       </div>
 
-      <div className="latest-benches__content">
-        <LatestBench />
+      <div className={styles['latest-benches__content']}>
+        { BENCHES_MOCK_DATA.items.map((bench, index) => (
+          <LatestBench key={index} bench={bench} />
+        )) }
       </div>
     </section>
   )
