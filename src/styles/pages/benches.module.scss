@@ -1,0 +1,20 @@
+.benches-page {
+  &__header-top {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  &__title {
+    margin-right: 40px;
+  }
+
+  &__content {
+    display: flex;
+  }
+
+  &__filters {
+    width: 300px;
+    margin-top: 110px;
+    margin-right: 70px;
+  }
+}

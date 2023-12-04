@@ -1,0 +1,30 @@
+.all-benches-sort {
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+
+  &__title {
+    margin-right: 40px;
+  }
+
+  &__list {
+    display: flex;
+    align-items: center;
+  }
+
+  &__item {
+    position: relative;
+    border-bottom: 1px dashed var(--color-brown-1);
+    cursor: pointer;
+
+    &:not(:last-child) {
+      margin-right: 53px;
+    }
+
+    :global(.base-icon) {
+      right: -13px;
+      bottom: 4px;
+      position: absolute;
+    }
+  }
+}
