@@ -11,8 +11,8 @@ export const AllBenchesFilters = () => {
     setRadioValue(value)
   }
 
-  const handleCheckboxValueChange = (value: string) => {
-    setCheckboxValue((oldValues) => [...oldValues, value])
+  const handleCheckboxValueChange = (value: Array<string>) => {
+    setCheckboxValue(value)
   }
 
   return (

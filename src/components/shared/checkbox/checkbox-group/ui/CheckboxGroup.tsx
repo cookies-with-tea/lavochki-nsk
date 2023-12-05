@@ -10,7 +10,7 @@ interface ICheckboxGroupProps {
   value?: Array<string>
   size?: 'sm' | 'md'
   defaultValue?: Array<string>
-  onChange?: (value: string) => void
+  onChange?: (value: Array<string>) => void
   name?: string
 }
 
@@ -29,9 +29,17 @@ export const CheckboxGroup = (props: ICheckboxGroupProps) => {
   const _name = name
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue((oldValues) => [...oldValues, event.target.value])
+    if (event.target.checked) {
+      setValue([
+        ..._value,
+        event.target.value
+      ])
 
-    onChange(event.target.value)
+    } else {
+      setValue(_value.filter((oldValue) => oldValue !== event.target.value))
+    }
+
+    onChange(_value)
   }
 
   useEffect(() => {
