@@ -34,7 +34,6 @@ export const CheckboxGroup = (props: ICheckboxGroupProps) => {
         ..._value,
         event.target.value
       ])
-
     } else {
       setValue(_value.filter((oldValue) => oldValue !== event.target.value))
     }
