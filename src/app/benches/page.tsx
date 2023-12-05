@@ -4,6 +4,7 @@ import { AllBenchesSort } from '@/components/pages/benches/all-benches-sort'
 import { BENCHES_MOCK_DATA } from '@/shared/mocks/benches'
 import { BenchCard } from '@/components/pages/benches/bench'
 import { Metadata } from 'next'
+import { AllBenchesFilters } from '@/components/pages/benches/all-benches-filters'
 
 export const metadata: Metadata = {
   title: 'Все лавочки',
@@ -26,9 +27,10 @@ export default function BenchesPage() {
         </div>
 
         <div className={styles['benches-page__content']}>
-          <aside className={styles['benches-page__filters']}>
-            Aside
-          </aside>
+          <div className={styles['benches-page__filters']}>
+            {/* TODO: Вынести отступ */}
+            <AllBenchesFilters />
+          </div>
 
           <div className={styles['benches-page__benches-content']}>
             <AllBenchesSort />
