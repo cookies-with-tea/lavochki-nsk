@@ -28,13 +28,13 @@ export const AllBenchesFilters = () => {
       </Radio.Group>
 
       <Checkbox.Group onChange={handleCheckboxValueChange}>
-        <Checkbox label={'сегодня'} value={'today'} />
+        <Checkbox label={'сегодня'} value={'today'} name={'today'} />
 
-        <Checkbox label={'на этой неделе'} value={'upThisWeek'} />
+        <Checkbox label={'на этой неделе'} value={'upThisWeek'} name={'upThisWeek'} />
 
-        <Checkbox label={'в этом месяце'} value={'thisMonth'} />
+        <Checkbox label={'в этом месяце'} value={'thisMonth'} name={'thisMonth'} />
 
-        <Checkbox label={'в этом году'} value={'thisYear'} />
+        <Checkbox label={'в этом году'} value={'thisYear'} name={'thisYear'} />
       </Checkbox.Group>
     </aside>
   )
