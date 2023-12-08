@@ -42,3 +42,7 @@ next-env.d.ts
 
 
 .github
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
