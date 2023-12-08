@@ -1,0 +1,21 @@
+.all-benches-filters {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+
+  &__header {
+    display: flex;
+  }
+
+  @include responsive(md) {
+    row-gap: 24px;
+  }
+
+  @include responsive(lg) {
+    row-gap: 36px;
+  }
+
+  @include responsive(xl) {
+    row-gap: 54px;
+  }
+}

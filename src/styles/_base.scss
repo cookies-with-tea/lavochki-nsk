@@ -9,7 +9,7 @@
   --font-size--h1: 52px;
   --font-size--h2: 36px;
   --font-size--h3: 34px;
-  --font-size--h4: 14px;
+  --font-size--h4: 22px;
   --font-size--h5: 12px;
   --font-size--icon-xs: 16px;
   --font-size--icon-sm: 20px;
@@ -85,6 +85,7 @@ h3,
 h4,
 .h4 {
   font-size: var(--font-size--h4);
+  font-weight: 600;
 }
 
 h5,

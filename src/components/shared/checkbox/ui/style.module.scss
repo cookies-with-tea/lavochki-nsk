@@ -82,6 +82,7 @@ $checkbox-selected: var(--color-brown-1);
     }
   }
 
+  // TODO: Добавить состояние disabled
   // Disabled
   &:disabled{
     + label{

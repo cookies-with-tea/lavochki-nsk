@@ -8,7 +8,7 @@ const cx = cb.bind(styles)
 
 interface ButtonOwnProps<E extends ElementType = ElementType> {
 	size?: 'md' | 'sm' | 'xs'
-	appearance?: 'primary' | 'secondary' | 'link' | 'link-underline'
+	appearance?: 'primary' | 'secondary' | 'link' | 'link-underline' | 'dashed'
 	icon?: ReactElement
   prefixIcon?: ReactElement
   suffixIcon?: ReactElement
@@ -63,7 +63,9 @@ const InnerButton  = <E extends ElementType = typeof defaultElement>(
         </div>
       ) }
 
-      { children && children }
+      <span className={cn('base-button__content', cx('base-button__content'))}>
+        { children && children }
+      </span>
 
       { suffixIcon && (
         <div className={cn('base-button__suffix-icon', cx('base-button__suffix-icon'))}>
