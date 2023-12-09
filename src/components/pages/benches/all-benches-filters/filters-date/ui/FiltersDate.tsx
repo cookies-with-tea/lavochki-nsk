@@ -17,7 +17,7 @@ export const FiltersDate = () => {
         <Button appearance={'dashed'} className={'ml-12'}>Сбросить</Button>
       </div>
 
-      <Radio.Group defaultValue="today" onChange={handleRadioValueChange}>
+      <Radio.Group defaultValue="today" className={'mt-24'} onChange={handleRadioValueChange}>
         <Radio label={'сегодня'} value={'today'}/>
 
         <Radio label={'на этой неделе'} value={'upThisWeek'}/>

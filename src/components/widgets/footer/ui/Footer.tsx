@@ -1,12 +1,12 @@
 import styles from './styles.module.scss'
-import { generateClassNames } from '@/shared/lib/utils'
 import { Button, Icon } from '@/components/shared'
 import Link from 'next/link'
+import cn from 'classnames'
 
 export const Footer = () => {
   return (
     <footer className={styles['footer']}>
-      <div className={generateClassNames([styles['footer__wrapper']])}>
+      <div className={cn(styles['footer__wrapper'])}>
         <div className={styles['footer__info']}>
           <Button appearance={'link'} as={Link} href={'/'}>
             <Icon name={'logo'} width={260} height={32} />

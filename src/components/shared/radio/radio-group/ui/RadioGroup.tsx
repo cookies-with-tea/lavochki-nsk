@@ -2,13 +2,14 @@
 
 import { ChangeEvent, ReactNode, useEffect, useState } from 'react'
 import { RadioGroupProvider } from '@/components/shared/radio/context'
-import { generateClassNames } from '@/shared/lib/utils'
 import styles from './styles.module.scss'
+import cn from 'classnames'
 
 interface IRadioGroupProps {
   children: ReactNode
   value?: string
   size?: 'sm' | 'md'
+  className?: string
   defaultValue?: string
   onChange?: (value: string) => void
   name?: string
@@ -19,9 +20,10 @@ export const RadioGroup = (props: IRadioGroupProps) => {
     children,
     value,
     defaultValue = '',
-    onChange,
     name,
-    size = 'md'
+    size = 'md',
+    className = '',
+    onChange,
   } = props
 
   const [_value, setValue] = useState('')
@@ -40,7 +42,7 @@ export const RadioGroup = (props: IRadioGroupProps) => {
 
   return (
     <RadioGroupProvider value={{ state: _value, onChange: handleChange, size, name: _name }}>
-      <div role="radiogroup" className={generateClassNames([styles['radio-group'], 'radio-group'])}>{children}</div>
+      <div role="radiogroup" className={cn(styles['radio-group'], 'radio-group', className)}>{children}</div>
     </RadioGroupProvider>
   )
 }

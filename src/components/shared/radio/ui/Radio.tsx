@@ -1,8 +1,8 @@
 import { RadioGroup } from '@/components/shared/radio/radio-group'
 import { ReactNode } from 'react'
 import { useRadioGroupContext } from '@/components/shared/radio/context'
-import { generateClassNames } from '@/shared/lib/utils'
 import styles from './style.module.scss'
+import cn from 'classnames'
 
 interface IRadioProps {
   label?: ReactNode
@@ -18,7 +18,7 @@ export const Radio = ({ value, label, name, children }: IRadioProps) => {
   const checked = value === state
 
   return (
-    <label className={generateClassNames([styles['radio'], 'radio'])}>
+    <label className={cn(styles['radio'], 'radio')}>
       <input
         value={value}
         checked={checked}

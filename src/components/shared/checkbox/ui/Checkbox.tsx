@@ -1,8 +1,8 @@
 import { CheckboxGroup } from '@/components/shared/checkbox/checkbox-group'
 import { ReactNode } from 'react'
 import { useCheckboxGroupContext } from '@/components/shared/checkbox/context'
-import { generateClassNames } from '@/shared/lib/utils'
 import styles from './style.module.scss'
+import cn from 'classnames'
 
 interface ICheckboxProps {
   label?: ReactNode
@@ -30,7 +30,7 @@ export const Checkbox = ({ value, label, name, children }: ICheckboxProps) => {
         checked={checked}
         type="checkbox"
         id={generateId()}
-        className={generateClassNames([styles['checkbox'], 'checkbox'])}
+        className={cn(styles['checkbox'], 'checkbox')}
         onChange={onChange}
       />
 

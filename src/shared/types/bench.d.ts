@@ -8,7 +8,7 @@ export namespace BenchTypes {
     images: Array<string>
     owner: string
     is_active: boolean
-    tags: Array<Tag>
+    tags: BenchTypes.Tags
     street: string
   }
 
@@ -22,6 +22,8 @@ export namespace BenchTypes {
   type Tag = {
     id: string
     title: string
-    active: boolean
+    selected?: boolean
   }
+
+  type Tags = Array<Tag>
 }

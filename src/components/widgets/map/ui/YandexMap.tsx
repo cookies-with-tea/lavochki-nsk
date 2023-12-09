@@ -5,7 +5,7 @@ import { Map, YMaps } from '@pbe/react-yandex-maps'
 import { mapConfig } from '@/components/widgets/map/config'
 import { YandexMapClusterer } from '@/components/widgets/map/YandexMapClusterer'
 import { BENCHES_MOCK_DATA } from '@/shared/mocks/benches'
-import { generateClassNames } from '@/shared/lib/utils'
+import cn from 'classnames'
 
 interface IYandexMapProps {
   height?: number
@@ -14,7 +14,7 @@ interface IYandexMapProps {
 
 export const YandexMap = ({ height = 396, className = '' }: IYandexMapProps) => {
   return (
-    <div className={generateClassNames([styles['yandex-map'], className])}>
+    <div className={cn(styles['yandex-map'], className)}>
       <YMaps query={mapConfig.MAP_QUERY}>
         <Map
           width={'100%'}

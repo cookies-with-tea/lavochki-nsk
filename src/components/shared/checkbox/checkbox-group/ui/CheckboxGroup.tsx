@@ -2,7 +2,7 @@
 
 import { ChangeEvent, ReactNode, useEffect, useState } from 'react'
 import { CheckboxGroupProvider } from '@/components/shared/checkbox/context'
-import { generateClassNames } from '@/shared/lib/utils'
+import cn from 'classnames'
 import styles from './styles.module.scss'
 
 interface ICheckboxGroupProps {
@@ -10,6 +10,7 @@ interface ICheckboxGroupProps {
   value?: Array<string>
   size?: 'sm' | 'md'
   defaultValue?: Array<string>
+  className: string
   onChange?: (value: Array<string>) => void
   name?: string
 }
@@ -19,16 +20,23 @@ export const CheckboxGroup = (props: ICheckboxGroupProps) => {
     children,
     value,
     defaultValue,
-    onChange,
+    className = '',
     name,
-    size = 'md'
+    size = 'md',
+    onChange,
   } = props
 
   const [_value, setValue] = useState<Array<string>>([])
 
   const _name = name
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement> | []) => {
+    if (Array.isArray(event)) {
+      onChange([])
+
+      return
+    }
+
     if (event.target.checked) {
       setValue([
         ..._value,
@@ -49,7 +57,7 @@ export const CheckboxGroup = (props: ICheckboxGroupProps) => {
 
   return (
     <CheckboxGroupProvider value={{ state: _value, onChange: handleChange, size, name: _name }}>
-      <div role="checkboxgroup" className={generateClassNames([styles['checkbox-group'], 'checkbox-group'])}>{children}</div>
+      <div role="checkboxgroup" className={cn(styles['checkbox-group'], 'checkbox-group', className)}>{children}</div>
     </CheckboxGroupProvider>
   )
 }
