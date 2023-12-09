@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { allBenchesSort } from 'src/components/pages/benches/all-benches-sort/config'
+import { allBenchesSort } from '../config'
 import { Icon } from '@/components/shared'
 import styles from './style.module.scss'
 

@@ -3,7 +3,7 @@ const SpriteLoaderPlugin = require('svg-sprite-loader/plugin')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  // output: 'standalone',
   experimental: {
     forceSwcTransforms: true,
   },
@@ -12,17 +12,17 @@ const nextConfig = {
     prependData: `
             @use "@/styles/additionals/variables/index.scss" as *;
             @use "@/styles/additionals/mixins/index.scss" as *;
-          `
+          `,
   },
-  images : {
+  images: {
     remotePatterns: [
       {
-        hostname: 'localhost'
+        hostname: 'localhost',
       },
       {
-        hostname: 'gas-kvas.com'
-      }
-    ]
+        hostname: 'gas-kvas.com',
+      },
+    ],
   },
   env: {
     BOT_USERNAME: process.env.BOT_USERNAME,
@@ -37,6 +37,7 @@ const nextConfig = {
     })
 
     config.plugins.push(new SpriteLoaderPlugin())
+    config.resolve.alias['@'] = join(__dirname, 'src')
 
     return config
   },
@@ -45,7 +46,7 @@ const nextConfig = {
     return [
       {
         source: '/api/v1/:path*',
-        destination: `${process.env.BASE_URL}/api/v1/:path*`
+        destination: `${process.env.BASE_URL}/api/v1/:path*`,
       },
     ]
   },
