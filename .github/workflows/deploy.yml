@@ -13,11 +13,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Create .env file
+        uses: SpicyPizza/create-envfile@v2
+        with:
+          BOT_USERNAME: ${{ secrets.BOT_USERNAME }}
+          file_name: .env.local
+
       - name: Build container
-        run: |
-          touch .env.local
-          echo BOT_USERNAME=${{ secrets.BOT_USERNAME }}
-          docker-compose up -d --build
+        run: docker-compose up -d --build
 
 #  deploy:
 #    runs-on: ubuntu-latest
