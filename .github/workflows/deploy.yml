@@ -17,7 +17,9 @@ jobs:
         run: |
           touch .env.local
           echo BOT_USERNAME=${{ secrets.BOT_USERNAME }} >> .env
-          echo API_KEY=${{ secrets.API_KEY }} >> .env
+          echo BASE_URL=${{ secrets.BASE_URL }} >> .env
+          echo YANDEX_KEY=${{ secrets.YANDEX_KEY }} >> .env
+          echo BOT_ID=${{ secrets.BOT_ID }} >> .env
           cat .env
 
       - name: Build container
