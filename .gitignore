@@ -41,7 +41,6 @@ next-env.d.ts
 .idea
 
 
-.github
 /test-results/
 /playwright-report/
 /blob-report/
