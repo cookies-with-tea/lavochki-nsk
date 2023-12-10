@@ -8,7 +8,7 @@ const cx = cb.bind(styles)
 
 interface ButtonOwnProps<E extends ElementType = ElementType> {
 	size?: 'md' | 'sm' | 'xs'
-	appearance?: 'primary' | 'secondary' | 'link' | 'link-underline' | 'dashed'
+	appearance?: 'primary' | 'secondary' | 'link' | 'link-underline' | 'link-button' | 'dashed'
 	icon?: ReactElement
   prefixIcon?: ReactElement
   suffixIcon?: ReactElement

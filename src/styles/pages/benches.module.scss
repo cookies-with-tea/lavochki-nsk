@@ -1,4 +1,6 @@
 .benches-page {
+  margin-top: 62px;
+
   &__header-top {
     display: flex;
     align-items: flex-end;
@@ -12,9 +14,10 @@
     display: flex;
   }
 
-  &__filters {
-    width: 300px;
-    margin-top: 110px;
-    margin-right: 70px;
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 42px;
+    gap: 42px;
   }
 }

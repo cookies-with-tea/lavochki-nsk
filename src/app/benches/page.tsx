@@ -13,6 +13,10 @@ export const metadata: Metadata = {
   },
 }
 export default function BenchesPage() {
+  const benchesList = BENCHES_MOCK_DATA.items.map((bench) => (
+    <BenchCard key={bench.id} bench={bench} />
+  ))
+
   return (
     <div className={styles['benches-page']}>
       <div className={'container'}>
@@ -27,21 +31,16 @@ export default function BenchesPage() {
         </div>
 
         <div className={styles['benches-page__content']}>
-          <div className={styles['benches-page__filters']}>
-            {/* TODO: Вынести отступ */}
-            <AllBenchesFilters />
-          </div>
+          <AllBenchesFilters />
 
           <div className={styles['benches-page__benches-content']}>
             <AllBenchesSort />
 
             <div className={styles['benches-page__list']}>
-              {
-                BENCHES_MOCK_DATA.items.map((bench) => (
-                  <BenchCard key={bench.id} bench={bench} />
-                ))
-              }
+              { benchesList }
             </div>
+
+            {/*  TODO: Добавить компонент пагинации*/}
           </div>
         </div>
       </div>

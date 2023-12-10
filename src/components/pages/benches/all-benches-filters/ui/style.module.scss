@@ -1,6 +1,9 @@
 .all-benches-filters {
   display: flex;
+  flex: 1 0 300px;
   flex-direction: column;
+  margin-top: 110px;
+  margin-right: 70px;
   row-gap: 12px;
 
   &__header {
