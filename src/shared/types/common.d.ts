@@ -12,9 +12,9 @@ export namespace CommonTypes {
   }
 
   type Pagination = {
-    total: number
-    countPages: number
+    total?: number
+    countPages?: number
     page: number
-    perPage: number
+    perPage:? number
   }
 }

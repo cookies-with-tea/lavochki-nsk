@@ -18,6 +18,12 @@ export const LatestBenchSlider = ({ images }: ILatestBenchSliderProps) => {
   const nextRef = useRef<HTMLButtonElement | null>(null)
   const [swiper, setSwiper] = useState<SwiperClass | null>(null)
 
+  const latestBenchSlides = images.map((image, index) => (
+    <SwiperSlide key={index}>
+      <Image className={styles['latest-bench-slider__image']} src={image} alt={''} width={190} height={190} />
+    </SwiperSlide>
+  ))
+
   useEffect(() => {
     if (swiper) {
       // @ts-ignore
@@ -45,13 +51,7 @@ export const LatestBenchSlider = ({ images }: ILatestBenchSliderProps) => {
         }}
         onSwiper={setSwiper}
       >
-        {
-          images.map((image, index) => (
-            <SwiperSlide key={index}>
-              <Image className={styles['latest-bench-slider__image']} src={image} alt={''} width={190} height={190} />
-            </SwiperSlide>
-          ))
-        }
+        { latestBenchSlides }
       </Swiper>
 
       <div className={styles['latest-bench-slider__navigation']}>

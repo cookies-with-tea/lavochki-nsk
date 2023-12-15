@@ -15,6 +15,7 @@ interface ICheckboxGroupProps {
   name?: string
 }
 
+// TODO: Возвращать event, а не строчку
 export const CheckboxGroup = (props: ICheckboxGroupProps) => {
   const {
     children,

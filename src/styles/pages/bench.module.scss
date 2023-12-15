@@ -1,0 +1,35 @@
+.bench-page {
+  margin-top: 62px;
+
+  &__create-info {
+    display: flex;
+    font-size: 20px;
+    line-height: 100%;
+    color: var(--color-brown-2);
+    margin-top: 14px;
+    gap: 20px;
+  }
+
+  &__header-tags {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 30px;
+    gap: 14px;
+  }
+
+  &__header-tag {
+    font-size: var(--font-size--xl);
+    line-height: 24px;
+  }
+
+  &__comments {
+    margin-top: 40px;
+  }
+
+  &__create-tags {
+    display: flex;
+    font-size: var(--font-size--md);
+    margin-top: 24px;
+    gap: 14px;
+  }
+}

@@ -1,4 +1,9 @@
 import { Metadata } from 'next'
+import styles from '@/styles/pages/bench.module.scss'
+import { BenchSlider } from '@/components/pages/bench/bench-slider'
+import { BenchMap } from '@/components/pages/bench/bench-map'
+import { Button } from '@/components/shared'
+import Link from 'next/link'
 
 type Props = {
   params: { id: string }
@@ -46,6 +51,32 @@ export const metadata: Metadata = {
 // }
 export default function DetailBench({ params }: Props) {
   return (
-    <h1>Bench №{params.id}</h1>
+    <div className={styles['bench-page']}>
+      <div className={'container'}>
+        <h1>Лавочка №1</h1>
+
+        <div className={styles['bench-page__create-info']}>
+          <p>Добавлено: 15 октября 2022</p>
+
+          <p>Автор: Дмитрий</p>
+        </div>
+
+        <div className={styles['bench-page__create-tags']}>
+          <Button as={Link} appearance={'link'} size={'sm'} href={'/benches?tags=nearShops'} className={styles['bench-page__create-tag']}>
+            #Магазин рядом
+          </Button>
+
+          <Button as={Link} appearance={'link'} size={'sm'} href={'/benches?tags=nearShops'} className={styles['bench-page__create-tag']}>
+            #Магазин рядом
+          </Button>
+        </div>
+
+        <div>
+          <BenchSlider />
+
+          <BenchMap />
+        </div>
+      </div>
+    </div>
   )
 }
