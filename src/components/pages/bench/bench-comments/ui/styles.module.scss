@@ -1,0 +1,50 @@
+.bench-comments {
+  margin-top: 40px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+  }
+
+  &__header-title {
+    display: flex;
+    align-items: center;
+
+    h3 {
+      line-height: 50px;
+      margin-right: 16px;
+    }
+
+    p {
+      font-weight: 500;
+      font-size: 26px;
+      line-height: 1;
+    }
+  }
+
+  &__send-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    :global(.base-icon--image) {
+      font-size: 32px;
+    }
+  }
+
+  &__content {
+    margin-top: 24px;
+  }
+
+  &__benches-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 24px;
+    row-gap: 20px;
+  }
+
+  &__show-more-button {
+    margin-top: 16px;
+    margin-inline: auto;
+  }
+}

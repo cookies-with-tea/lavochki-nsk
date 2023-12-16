@@ -2,6 +2,7 @@ import styles from './styles.module.scss'
 import { BenchTypes } from '@/shared/types/bench'
 import { Button, Icon } from '@/components/shared'
 import { LatestBenchSlider } from '@/components/pages/home/latest-bench/latest-bench-slider'
+import Link from 'next/link'
 
 interface IBenchProps {
   bench: BenchTypes.One
@@ -25,7 +26,7 @@ export const LatestBench = ({ bench }: IBenchProps) => {
           </button>
         </div>
 
-        <Button appearance={'secondary'}>
+        <Button as={Link} appearance={'secondary'} size={'sm'} href={`/bench/${bench.id}`} className={styles['latest-bench__link-button']}>
           Смотреть
         </Button>
       </div>

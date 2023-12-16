@@ -18,6 +18,10 @@
     line-height: 110%;
   }
 
+  &__link-button {
+    width: fit-content;
+  }
+
   &__street {
     display: flex;
     align-items: center;

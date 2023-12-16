@@ -14,7 +14,7 @@ interface IYandexMapProps {
 
 export const YandexMap = ({ height = 396, className = '' }: IYandexMapProps) => {
   return (
-    <div className={cn(styles['yandex-map'], className)}>
+    <div className={cn('yandex-map', styles['yandex-map'], className)}>
       <YMaps query={mapConfig.MAP_QUERY}>
         <Map
           width={'100%'}

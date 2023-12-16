@@ -1,0 +1,56 @@
+.input {
+  --input-placeholder-color: var(--color-brown-2);
+  --input-color: var(--color-brown-1);
+  --input-font-size: 20px;
+  --input-line-height: 22px;
+  --color-background: var(--color-brown-7);
+
+  $root: &;
+
+  border-radius: 20px;
+  font-size: var(--input-font-size);
+  line-height: var(--input-line-height);
+  color: var(--input-color);
+  background-color: var(--color-background);
+  padding: 18px 24px;
+
+  &__inner {
+    width: 100%;
+    outline: none;
+    border: none;
+    background: none;
+
+    &.textarea {
+      font-size: 20px;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+  }
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+
+
+
+    &::placeholder {
+      color: var(--input-placeholder-color);
+    }
+  }
+
+  &__action {
+    display: flex;
+    justify-content: flex-end;
+    white-space: nowrap;
+    padding: 1px;
+  }
+
+  &.with-footer {
+    #{$root}__inner {
+      padding-bottom: 40px;
+    }
+  }
+}

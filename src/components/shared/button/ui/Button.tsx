@@ -1,7 +1,7 @@
 import { ComponentProps, ElementType, forwardRef, ReactElement, ReactNode, Ref } from 'react'
 import cn from 'classnames'
 import cb from 'classnames/bind'
-import styles from '@/components/shared/button/ui/styles.module.scss'
+import styles from './styles.module.scss'
 import Link from 'next/link'
 
 const cx = cb.bind(styles)

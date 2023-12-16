@@ -2,8 +2,12 @@ import { Metadata } from 'next'
 import styles from '@/styles/pages/bench.module.scss'
 import { BenchSlider } from '@/components/pages/bench/bench-slider'
 import { BenchMap } from '@/components/pages/bench/bench-map'
-import { Button } from '@/components/shared'
+import { Button, Icon } from '@/components/shared'
 import Link from 'next/link'
+import { BenchTypes } from '@/shared/types/bench'
+import { BENCHES_MOCK_DATA } from '@/shared/mocks/benches'
+import { BenchComments } from '@/components/pages/bench/bench-comments'
+import { BenchBack } from '@/components/pages/bench/bench-back'
 
 type Props = {
   params: { id: string }
@@ -50,10 +54,17 @@ export const metadata: Metadata = {
 //   }
 // }
 export default function DetailBench({ params }: Props) {
+  const bench = BENCHES_MOCK_DATA.items.find((_bench) => params.id === _bench.id)
+
   return (
     <div className={styles['bench-page']}>
       <div className={'container'}>
-        <h1>Лавочка №1</h1>
+        <div className={styles['bench-page__header']}>
+          <h1>Лавочка №1</h1>
+
+          <BenchBack />
+        </div>
+
 
         <div className={styles['bench-page__create-info']}>
           <p>Добавлено: 15 октября 2022</p>
@@ -72,9 +83,11 @@ export default function DetailBench({ params }: Props) {
         </div>
 
         <div>
-          <BenchSlider />
+          <BenchSlider images={bench.images} />
 
           <BenchMap />
+
+          <BenchComments />
         </div>
       </div>
     </div>

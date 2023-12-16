@@ -8,9 +8,9 @@ export const Footer = () => {
     <footer className={styles['footer']}>
       <div className={cn(styles['footer__wrapper'])}>
         <div className={styles['footer__info']}>
-          <Button appearance={'link'} as={Link} href={'/'}>
+          <Link href={'/'}>
             <Icon name={'logo'} width={260} height={32} />
-          </Button>
+          </Link>
 
           <div className={styles['footer__policy']}>
             <span>Ознакомиться с&nbsp;</span>

@@ -6,7 +6,7 @@ import { Button, Pagination } from '@/components/shared'
 import styles from '@/styles/pages/benches.module.scss'
 import { AllBenchesSort } from '@/components/pages/benches/all-benches-sort'
 import { BENCHES_MOCK_DATA } from '@/shared/mocks/benches'
-import { BenchCard } from '@/components/pages/benches/bench'
+import { BenchCard } from 'src/components/entities/bench'
 import { Metadata } from 'next'
 import { AllBenchesFilters } from '@/components/pages/benches/all-benches-filters'
 import { CommonTypes } from '@/shared/types/common'
@@ -61,7 +61,8 @@ export default function BenchesPage() {
               Все лавочки
             </h1>
 
-            <Button appearance={'link-underline'}>Показать на карте</Button>
+            {/* DEBT: Узнать что будет происходить */}
+            {/*<Button appearance={'link-underline'}>Показать на карте</Button>*/}
           </div>
         </div>
 

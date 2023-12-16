@@ -72,16 +72,31 @@
   &--primary {
     color: var(--color-background);
     background-color: var(--color-brown-1);
+    transition: background-color 0.15s linear, color 0.15s linear;
+
+    &:not(.base-button.icon-only) {
+      &:hover {
+        box-shadow: 0 0 0 2px var(--color-brown-1);
+        color: var(--color-brown-1);
+        background-color: transparent;
+      }
+    }
   }
 
   &--secondary {
     box-shadow: 0 0 0 2px var(--color-brown-1);
+    transition: background-color 0.15s linear, color 0.1s linear;
+
+    &:hover {
+      color: var(--color-background);
+      background-color: var(--color-brown-1);
+    }
   }
 
   &--link {
     height: fit-content;
     border-color: transparent;
-    border-bottom: 1px solid;
+    border-bottom: 1px solid transparent;
     border-radius: 0;
     color: var(--color-brown-1);
     background-color: transparent;

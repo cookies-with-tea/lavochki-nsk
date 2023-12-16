@@ -1,4 +1,74 @@
 .bench-slider {
+  width: 100%;
+  position: relative;
   margin-top: 50px;
+  margin-left: auto;
 
+  &__image {
+    border-radius: 20px;
+  }
+
+  &__content {
+    max-width: 1280px;
+    position: relative;
+    z-index: 0;
+  }
+
+  &__button {
+    top: 50%;
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    font-size: 24px;
+    transform: translateY(-50%);
+    z-index: 3;
+
+    &:first-child {
+      left: -16px;
+    }
+
+    &:last-child {
+      right: -16px;
+    }
+  }
+
+  :global(.swiper-button-lock) {
+    display: none;
+  }
+
+  :global(.swiper-button-disabled) {
+    color: var(--color-white-2);
+    background-color: var(--color-brown-5);
+    cursor: default;
+  }
+
+  &__gradient {
+    top: -1px;
+    bottom: 0;
+    width: 24%;
+    height: 100%;
+    position: absolute;
+    pointer-events: none;
+    z-index: 2;
+
+    &:first-of-type {
+      right: 32px;
+      background: linear-gradient(
+          -90deg,
+          rgba(255,255,255,0) -50%,
+          rgba(255,252,247,1) 4%,
+          rgba(255,255,255,0) 23%
+      );
+    }
+
+    &:last-of-type {
+      left: 32px;
+      background: linear-gradient(
+          90deg,
+          rgba(255,255,255,0) -50%,
+          rgba(255,252,247,1) 4%,
+          rgba(255,255,255,0) 23%
+      );
+    }
+  }
 }

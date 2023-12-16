@@ -106,3 +106,43 @@ export const BENCHES_MOCK_DATA: BenchTypes.Response = {
     per_page: 10, // Количество элементов на странице
   },
 }
+
+export const COMMENTS_MOCK_DATA: Array<BenchTypes.Comment> = [
+  {
+    author_id: 'qwerty-12345-1',
+    bench_id: 'qwe-12345-1',
+    content: 'Крутой коммент 1',
+    id: 'q-12345-1',
+    nested_comments: [
+      {
+        author_id: 'qwerty-12345-2',
+        bench_id: 'qwe-12345-1',
+        content: 'Ответ на крутой коммент 1',
+        id: 'q-12345-2',
+        nested_comments: null,
+      },
+    ],
+  },
+  {
+    author_id: 'qwerty-12345-2',
+    bench_id: 'qwe-12345-1',
+    content: 'Крутой коммент 2',
+    id: 'q-12345-3',
+    nested_comments: [
+      {
+        author_id: 'qwerty-12345-1',
+        bench_id: 'qwe-12345-1',
+        content: 'Ответ на крутой коммент 2',
+        id: 'q-12345-4',
+        nested_comments: null,
+      },
+      {
+        author_id: 'qwerty-12345-1',
+        bench_id: 'qwe-12345-1',
+        content: '2 Ответ на крутой коммент 2',
+        id: 'q-12345-5',
+        nested_comments: null,
+      }
+    ],
+  }
+]

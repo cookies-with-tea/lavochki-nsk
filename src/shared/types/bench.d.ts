@@ -26,4 +26,13 @@ export namespace BenchTypes {
   }
 
   type Tags = Array<Tag>
+
+  type Comment = {
+    author_id: string
+    bench_id: string
+    content: string
+    id: string
+    nested_comments: Array<BenchTypes.Comment> | null
+    parent_id?: string
+  }
 }

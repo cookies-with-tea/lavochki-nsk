@@ -1,23 +1,16 @@
+'use client'
+
 import { ReactNode } from 'react'
 import cn from 'classnames'
 import cb from 'classnames/bind'
 import styles from './styles.module.scss'
+import { IPaginationProps } from '@/components/shared/pagination/interfaces'
 
 const cx = cb.bind(styles)
 
-interface IPaginationProps {
-  page: number
-  total?: number
-  pageCount?: number
-  pageSize?: number
-  prevIcon?: ReactNode
-  nextIcon?: ReactNode
-  disabled?: boolean
-  hideOnSinglePage?: boolean
-  background?: boolean
-
-  onChange?: (page: number) => void
-}
+// const generateAriaLabel = () => {
+//
+// }
 
 export const Pagination = (props: IPaginationProps) => {
   const { page, total, onChange } = props

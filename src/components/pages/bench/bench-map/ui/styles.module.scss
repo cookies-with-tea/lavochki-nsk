@@ -1,3 +1,14 @@
 .bench-map {
   margin-top: 60px;
+
+  &__coordinates {
+    font-size: 20px;
+    line-height: 1;
+    color: var(--color-brown-2);
+    margin-top: 24px;
+  }
+
+  :global(.yandex-map) {
+    margin-top: 28px;
+  }
 }

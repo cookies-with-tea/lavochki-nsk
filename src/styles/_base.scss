@@ -1,6 +1,5 @@
 :root {
   --container-max: 100%;
-  --container-max-header-footer: 100%;
   --container-padding: 36px;
   --font-size--xl: 22px;
   --font-size--lg: 18px;
@@ -18,19 +17,15 @@
   --font-size--icon-xl: 32px;
   --line-height--primary: 1.2;
   --line-height--secondary: 0.8;
-  --layout-padding-bottom: 40px;
 
   @include generate-color-root-variables;
 
   @include responsive(md) {
     --container-padding: 32px;
-    --layout-padding-bottom: 60px;
   }
   @include responsive(xl) {
     --container-max: #{$breakpoint--xl};
-    --container-max-header-footer: #{$breakpoint--xl};
     --container-padding: 36px;
-    --layout-padding-bottom: 100px;
   }
 }
 
@@ -100,11 +95,6 @@ h5,
   padding-left: var(--container-padding);
   margin-right: auto;
   margin-left: auto;
-
-  &--footer,
-  &--header {
-    max-width: var(--container-max-header-footer);
-  }
 }
 
 .divider {
