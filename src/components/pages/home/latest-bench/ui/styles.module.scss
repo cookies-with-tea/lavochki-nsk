@@ -5,6 +5,15 @@
   background-color: var(--color-brown-4);
   padding: 30px 0 30px 25px;
 
+  :global(.benches-slider) {
+    max-width: 731px;
+    margin-left: auto;
+  }
+
+  &__image {
+    border-radius: 20px;
+  }
+
   &__info {
     min-width: 390px;
 

@@ -63,7 +63,7 @@ const InnerButton  = <E extends ElementType = typeof defaultElement>(
         </div>
       ) }
 
-      <span className={cn('base-button__content', cx('base-button__content'))}>
+      <span className={cn('base-button__content')}>
         { children && children }
       </span>
 

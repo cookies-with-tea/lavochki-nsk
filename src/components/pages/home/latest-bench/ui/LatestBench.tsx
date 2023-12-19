@@ -1,14 +1,25 @@
+'use client'
+
 import styles from './styles.module.scss'
 import { BenchTypes } from '@/shared/types/bench'
 import { Button, Icon } from '@/components/shared'
-import { LatestBenchSlider } from '@/components/pages/home/latest-bench/latest-bench-slider'
 import Link from 'next/link'
+import { BenchesSlider } from '@/components/widgets/benches-slider'
+import { latestBenchSliderConfig } from 'src/components/pages/home/latest-bench/config'
+import Image from 'next/image'
+import { SwiperSlide } from 'swiper/react'
 
 interface IBenchProps {
   bench: BenchTypes.One
 }
 
 export const LatestBench = ({ bench }: IBenchProps) => {
+  const slides = bench.images.map((image, index) => (
+    <SwiperSlide key={index}>
+      <Image className={styles['latest-bench__image']} src={image} alt={''} width={190} height={190} />
+    </SwiperSlide>
+  ))
+
   return (
     <div className={styles['latest-bench']}>
       <div className={styles['latest-bench__info']}>
@@ -31,7 +42,7 @@ export const LatestBench = ({ bench }: IBenchProps) => {
         </Button>
       </div>
 
-      <LatestBenchSlider images={bench.images} />
+      <BenchesSlider breakpoints={latestBenchSliderConfig.BREAKPOINTS} slides={slides} />
     </div>
   )
 }
