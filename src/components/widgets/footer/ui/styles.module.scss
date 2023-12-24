@@ -52,6 +52,7 @@
     :global(.base-button) {
       font-weight: 600;
       font-size: var(--font-size--md);
+      letter-spacing: 1.3px;
       color: var(--color-background);
       text-underline-offset: 5px;
     }

@@ -5,15 +5,11 @@ import styles from '@/components/pages/benches/all-benches-filters/ui/style.modu
 
 export const FiltersDistricts = () => {
   const [districts, setDistricts] = useState(filtersDistricts.ALL_DISTRICTS)
+  const [checkedDistricts, setCheckedDistricts] = useState<Array<string>>([])
   const [sliceDistrictValue, setSliceDistrictValue] = useState(filtersDistricts.DEFAULT_VISIBLE_DISTRICTS)
   const [allDistrictsShow, setAllDistrictsShow] = useState(filtersDistricts.ALL_DISTRICTS_SHOW)
-  const [checkedValues, setCheckedValues] = useState<Array<string>>([])
 
   const [isExpandButtonVisible, setIsExpandButtonVisible] = useState(false)
-
-  const handleCheckboxValueChange = (value: Array<string>) => {
-    setCheckedValues(value)
-  }
 
   const handleDistrictsVisibleToggle = () => {
     allDistrictsShow
@@ -36,7 +32,7 @@ export const FiltersDistricts = () => {
 
   // TODO: Добавить сброс районов
   const handleDistrictsReset = () => {
-    handleCheckboxValueChange([])
+    setCheckedDistricts([])
   }
 
   useEffect(() => {
@@ -57,7 +53,7 @@ export const FiltersDistricts = () => {
         </Button>
       </div>
 
-      <Checkbox.Group className={'mt-24'} onChange={handleCheckboxValueChange}>
+      <Checkbox.Group value={checkedDistricts} className={'mt-24'} onChange={setCheckedDistricts}>
         {
           districts.map((district) => (
             <Checkbox key={district.id} label={district.label} value={district.value} name={district.value} />
@@ -76,7 +72,6 @@ export const FiltersDistricts = () => {
           </Button>
         )
       }
-
     </div>
   )
 }

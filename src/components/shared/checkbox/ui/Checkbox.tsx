@@ -1,5 +1,7 @@
+'use client'
+
 import { CheckboxGroup } from '@/components/shared/checkbox/checkbox-group'
-import { ReactNode } from 'react'
+import { ReactNode, useId } from 'react'
 import { useCheckboxGroupContext } from '@/components/shared/checkbox/context'
 import styles from './style.module.scss'
 import cn from 'classnames'
@@ -19,9 +21,7 @@ export const Checkbox = ({ value, label, name, children }: ICheckboxProps) => {
 
   const checked = state.includes(value)
 
-  const random = Math.random() * 1000 // 1000 - Максимальный порог рандомного числа
-
-  const generateId = () => `${random}--${Date.now()}--${name}`
+  const id = useId()
 
   return (
     <div>
@@ -29,12 +29,12 @@ export const Checkbox = ({ value, label, name, children }: ICheckboxProps) => {
         value={value}
         checked={checked}
         type="checkbox"
-        id={generateId()}
+        id={id}
         className={cn(styles['checkbox'], 'checkbox')}
         onChange={onChange}
       />
 
-      <label htmlFor={generateId()}>
+      <label htmlFor={id}>
         { children || label }
       </label>
     </div>

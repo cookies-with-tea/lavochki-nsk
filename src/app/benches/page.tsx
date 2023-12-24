@@ -21,17 +21,20 @@ import { useEffect, useState } from 'react'
 
 export default function BenchesPage() {
   const paginationData = {
-    count: 10,
-    count_all_pages: 1,
+    count: 100,
+    count_all_pages: 10,
     current_page: 1,
     per_page: 10
   }
 
   const [pagination, setPagination] = useState<Partial<CommonTypes.Pagination>>({
     page: 1,
+    perPage: 10,
+    countPages: 100,
+    total: 1000,
   })
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (event: any, page: number) => {
     setPagination({
       ...pagination,
       page,
@@ -39,14 +42,14 @@ export default function BenchesPage() {
   }
 
   // TODO: Избавиться от этого безобразия
-  useEffect(() => {
-    setPagination({
-      total: paginationData.count,
-      countPages: paginationData.count_all_pages,
-      page: paginationData.current_page,
-      perPage: paginationData.per_page,
-    })
-  }, [])
+  // useEffect(() => {
+  //   setPagination({
+  //     total: paginationData.count,
+  //     countPages: paginationData.count_all_pages,
+  //     page: paginationData.current_page,
+  //     perPage: paginationData.per_page,
+  //   })
+  // }, [])
 
   const benchesList = BENCHES_MOCK_DATA.items.map((bench) => (
     <BenchCard key={bench.id} bench={bench} />
@@ -76,7 +79,14 @@ export default function BenchesPage() {
               { benchesList }
             </div>
 
-            <Pagination page={pagination.page} total={pagination.total} onChange={handlePageChange} />
+            <Pagination
+              showFirstButton
+              showLastButton
+              page={pagination.page}
+              countPages={pagination.countPages}
+              total={pagination.total}
+              onChange={handlePageChange}
+            />
           </div>
         </div>
       </div>

@@ -29,8 +29,12 @@
   }
 }
 
+* {
+  font-family: var(--font-poppins);
+}
+
 html {
-  font-family: $font;
+  font-family: var(--font-poppins);
   font-weight: 400;
   font-size: var(--font-size--xl);
   line-height: var(--line-height--primary);
@@ -42,6 +46,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  font-family: var(--font-poppins);
   color: var(--color-brown-1);
   background-color: var(--color-background);
   scroll-behavior: smooth;
