@@ -33,7 +33,7 @@ export const BenchCard = ({ bench }: IBenchCardProps) => {
           { tagsList }
         </div>
 
-        <Button appearance={'link-button'} size={'xs'} as={Link} href={`/bench/${bench.id}`} className={styles['bench-card__open-link']}>
+        <Button appearance={'secondary'} size={'xs'} as={Link} href={`/bench/${bench.id}`} className={styles['bench-card__open-link']}>
           Открыть
         </Button>
       </div>

@@ -21,8 +21,9 @@
   }
 
   &__open-link {
+    width: fit-content;
     font-size: var(--font-size--md);
-    margin-top: 18px
+    margin-top: 18px;
   }
 
   &__content {

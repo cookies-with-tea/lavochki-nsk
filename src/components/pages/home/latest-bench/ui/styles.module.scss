@@ -1,6 +1,7 @@
 .latest-bench {
   width: 100%;
   display: flex;
+  flex-direction: column;
   border-radius: 20px;
   background-color: var(--color-brown-4);
   padding: 30px 0 30px 25px;
@@ -8,6 +9,10 @@
   :global(.benches-slider) {
     max-width: 731px;
     margin-left: auto;
+    
+    // :global(.swiper) {
+    //   max-width: 731px;
+    // }
   }
 
   &__image {
@@ -51,5 +56,9 @@
       width: 24px;
       height: 32px;
     }
+  }
+
+  @include responsive(md) {
+   flex-direction: row; 
   }
 }

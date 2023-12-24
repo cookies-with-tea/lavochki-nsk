@@ -8,12 +8,15 @@ import { BenchesSlider } from '@/components/widgets/benches-slider'
 import { latestBenchSliderConfig } from 'src/components/pages/home/latest-bench/config'
 import Image from 'next/image'
 import { SwiperSlide } from 'swiper/react'
+import { useScreen } from '@/shared/lib/hooks/use-screen'
 
 interface IBenchProps {
   bench: BenchTypes.One
 }
 
 export const LatestBench = ({ bench }: IBenchProps) => {
+  const { isMobile } = useScreen()
+
   const slides = bench.images.map((image, index) => (
     <SwiperSlide key={index}>
       <Image className={styles['latest-bench__image']} src={image} alt={''} width={190} height={190} />
@@ -42,7 +45,7 @@ export const LatestBench = ({ bench }: IBenchProps) => {
         </Button>
       </div>
 
-      <BenchesSlider breakpoints={latestBenchSliderConfig.BREAKPOINTS} slides={slides} />
+      <BenchesSlider breakpoints={latestBenchSliderConfig.BREAKPOINTS} slides={slides} slidesPerView={'auto'} />
     </div>
   )
 }
