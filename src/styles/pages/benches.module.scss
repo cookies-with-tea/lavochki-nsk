@@ -20,4 +20,10 @@
     margin-top: 42px;
     gap: 42px;
   }
+
+  :global(.pagination) {
+    display: flex;
+    justify-content: center;
+    margin-top: 94px;
+  }
 }

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import styles from '@/components/pages/benches/all-benches-filters/ui/style.module.scss'
 
 export const FiltersDate = () => {
-   const [radioValue, setRadioValue] = useState('today')
+   const [radioValue, setRadioValue] = useState('')
 
   const handleRadioValueChange = (value: string) => {
     setRadioValue(value)
@@ -12,12 +12,20 @@ export const FiltersDate = () => {
   return (
     <div>
       <div className={styles['all-benches-filters__header']}>
-        <h4>Район</h4>
+        <h4>Дата добавления</h4>
 
-        <Button appearance={'dashed'} className={'ml-12'}>Сбросить</Button>
+        <Button
+          appearance={'dashed'}
+          className={'ml-12'}
+          onClick={() => {
+            handleRadioValueChange('today')
+          }}
+        >
+          Сбросить
+        </Button>
       </div>
 
-      <Radio.Group defaultValue="today" className={'mt-24'} onChange={handleRadioValueChange}>
+      <Radio.Group className={'mt-24'} onChange={handleRadioValueChange}>
         <Radio label={'сегодня'} value={'today'}/>
 
         <Radio label={'на этой неделе'} value={'upThisWeek'}/>

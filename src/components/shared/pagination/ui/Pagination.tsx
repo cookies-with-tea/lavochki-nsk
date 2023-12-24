@@ -5,49 +5,44 @@ import cn from 'classnames'
 import cb from 'classnames/bind'
 import styles from './styles.module.scss'
 import { IPaginationProps } from '@/components/shared/pagination/interfaces'
+import { usePagination } from '@/components/shared/pagination/hooks/usePagination'
+import { PaginationItem } from '../pagination-item'
 
 const cx = cb.bind(styles)
 
-// const generateAriaLabel = () => {
-//
-// }
+// DEBT: Сделать генерация aria-label
+function getItemAriaLabel(type, page, selected) {
+  if (type === 'page') {
+    return `${selected ? '' : 'Go to '}page ${page}`
+  }
+  return `Go to ${type} page`
+}
 
 export const Pagination = (props: IPaginationProps) => {
-  const { page, total, onChange } = props
+  const { items } = usePagination({ ...props })
 
-  const paginationPages = [...Array(total).keys()].map((_page) => {
-    const index = ++_page
-    const isPageActive = page === index
-
+  const paginationPages = items.map((item, index) => {
     return (
+      // @ts-ignore
+      // DEBT: Исправить типы
       <li
-        aria-current={isPageActive}
-        aria-label={`page ${index}`}
+        aria-label={getItemAriaLabel(item.type, item.page, item.selected)}
         tabIndex={0}
         key={index}
-        className={cn(cx(styles['pagination__page'], { active: isPageActive }))}
+        className={cn(cx(styles['pagination__page']))}
+        {...item}
       >
-        <button type={'button'} onClick={() => onChange(index)}>
-          { index }
-        </button>
+        <PaginationItem {...item} />
       </li>
     )
   })
 
   return (
-    <div className={styles['pagination']}>
+    <div className={cn('pagination', cx('pagination'))}>
       <nav className={styles['pagination__content']}>
-        <button type={'button'}>
-          {'<'}
-        </button>
-
         <ul className={styles['pagination__pages']}>
           { paginationPages }
         </ul>
-
-        <button type={'button'}>
-          {'>'}
-        </button>
       </nav>
     </div>
   )
