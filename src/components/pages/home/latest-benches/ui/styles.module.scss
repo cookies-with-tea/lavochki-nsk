@@ -1,5 +1,5 @@
 .latest-benches {
-  margin-top: 52px;
+  margin-top: 24px;
 
   &__header {
     display: flex;
@@ -11,7 +11,16 @@
   &__content {
     display: flex;
     flex-direction: column;
-    margin-top: 40px;
-    row-gap: 45px;
+    margin-top: 20px;
+    row-gap: 12px;
+
+    @include responsive(md) {
+      margin-top: 40px;
+      row-gap: 44px;
+    }
+  }
+
+  @include responsive(md) {
+    margin-top: 52px;
   }
 }
