@@ -8,6 +8,7 @@ import { ReactNode, useEffect, useRef, useState } from 'react'
 import { Navigation } from 'swiper/modules'
 import { SwiperOptions } from 'swiper/types'
 import cn from 'classnames'
+import { useScreen } from '@/shared/lib/hooks/use-screen'
 
 interface ILatestBenchSliderProps extends SwiperOptions {
   slides: ReactNode
@@ -15,6 +16,8 @@ interface ILatestBenchSliderProps extends SwiperOptions {
 
 export const BenchesSlider = (props: ILatestBenchSliderProps) => {
   const { slides, ...restProps } = props
+
+  const { isMobile } = useScreen()
 
 	const prevRef = useRef<HTMLButtonElement | null>(null)
   const nextRef = useRef<HTMLButtonElement | null>(null)
@@ -50,11 +53,24 @@ export const BenchesSlider = (props: ILatestBenchSliderProps) => {
         { slides }
       </Swiper>
 
-      <div className={styles['benches-slider__navigation']}>
-        <Button icon={<Icon reversed name={'arrow'} />} className={cn('benches-slider__button', styles['benches-slider__button'])} ref={prevRef} />
+      {
+        isMobile ? null
+          : (
+            <div className={styles['benches-slider__navigation']}>
+              <Button
+                icon={<Icon reversed name={'arrow'}/>}
+                className={cn('benches-slider__button', styles['benches-slider__button'])}
+                ref={prevRef}
+              />
 
-        <Button icon={<Icon name={'arrow'} />} className={cn('benches-slider__button', styles['benches-slider__button'])} ref={nextRef} />
-      </div>
+              <Button
+                icon={<Icon name={'arrow'}/>}
+                className={cn('benches-slider__button', styles['benches-slider__button'])}
+                ref={nextRef}
+              />
+            </div>
+          )
+      }
     </div>
   )
 }

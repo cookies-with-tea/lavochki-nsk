@@ -1,9 +1,8 @@
 .f-telegram-auth {
-
   $root: &;
 
-  width: 62px;
-  height: 62px;
+  width: 48px;
+  height: 48px;
   position: relative;
   border: 2px solid transparent;
   transition: all 0.2s ease-in-out;
@@ -14,8 +13,9 @@
     right: 0;
     position: absolute;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 12px;
     line-height: 18px;
+    white-space: nowrap;
     text-transform: none;
     color: var(--color-brown-1);
     transform: translate(-15%, -50%);
@@ -23,43 +23,66 @@
     transition-delay: 0.02s;
     visibility: hidden;
     opacity: 0;
+
+    @include responsive(md) {
+      font-size: 16px;
+    }
   }
 
   &__inner {
     top: 0;
     right: 0;
-    width: 62px;
-    height: 62px;
+    width: 48px;
+    height: 48px;
     position: absolute;
     display: flex;
     align-items: center;
     border-radius: 50%;
     transition: width 0.2s ease-in-out;
+
+    @include responsive(md) {
+      width: 62px;
+      height: 62px;
+    }
   }
 
   :global(.base-icon) {
     top: -2px;
     right: -2px;
-    width: 62px;
-    height: 62px;
+    width: 48px;
+    height: 48px;
     position: absolute;
     border-radius: 50%;
     color: var(--color-brown-1);
 		background-color: var(--color-brown-3);
     margin-left: auto;
+
+    @include responsive(md) {
+      width: 62px;
+      height: 62px;
+    }
   }
 
   &:hover {
-    width: 157px;
+    width: 120px;
     border: 2px solid var(--color-brown-1);
     border-radius: 100px;
 
     #{$root}__text {
       top: 50%;
       right: 0;
-      transform: translate(-142%, -50%);
+      transform: translate(-145%, -57%);
       visibility: visible;
       opacity: 1;
     }
+
+    @include responsive(md) {
+      width: 157px;
+    }
+  }
+
+  @include responsive(md) {
+    width: 64px;
+    height: 64px;
   }
 }

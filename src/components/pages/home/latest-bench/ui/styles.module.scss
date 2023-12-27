@@ -2,34 +2,31 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  border-radius: 20px;
+  border-radius: 16px;
   background-color: var(--color-brown-4);
-  padding: 30px 0 30px 25px;
-
-  :global(.benches-slider) {
-    max-width: 731px;
-    margin-left: auto;
-    
-    // :global(.swiper) {
-    //   max-width: 731px;
-    // }
-  }
+  padding: 16px;
 
   &__image {
     border-radius: 20px;
   }
 
   &__info {
-    min-width: 390px;
-
     :global(.base-button) {
       margin-top: 18px;
+    }
+
+    @include responsive(md) {
+      min-width: 390px;
     }
   }
 
   &__title {
-    font-size: 30px;
+    font-size: 22px;
     line-height: 110%;
+
+    @include responsive(md) {
+      font-size: 30px;
+    }
   }
 
   &__link-button {
@@ -39,7 +36,7 @@
   &__street {
     display: flex;
     align-items: center;
-    margin-top: 38px;
+    margin-top: 22px;
 
     > p {
       font-size: 22px;
@@ -56,9 +53,25 @@
       width: 24px;
       height: 32px;
     }
+
+    @include responsive(md) {
+      margin-top: 38px;
+    }
+  }
+
+  :global(.benches-slider) {
+    max-width: 731px;
+    margin-top: 20px;
+    margin-left: auto;
+
+    @include responsive(md) {
+      margin-top: 0;
+    }
   }
 
   @include responsive(md) {
-   flex-direction: row; 
+    flex-direction: row;
+    border-radius: 20px;
+    padding: 30px 0 30px 25px;
   }
 }

@@ -1,3 +1,20 @@
 .home-page {
-  margin-top: 62px;
+  margin-top: 20px;
+
+  :global(.yandex-map) {
+    padding: 0;
+    margin-top: 20px;
+    margin-right: 0;
+    margin-left: 0;
+
+    @include responsive(md) {
+      margin-top: 40px;
+      margin-right: auto;
+      margin-left: auto;
+    }
+  }
+
+  @include responsive(md) {
+    margin-top: 62px;
+  }
 }

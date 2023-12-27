@@ -78,3 +78,5 @@ const InnerButton  = <E extends ElementType = typeof defaultElement>(
 
 // TODO: Типизировать.
 export const Button = forwardRef<any, any>(InnerButton)
+
+export default Button

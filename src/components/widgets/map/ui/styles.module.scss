@@ -1,6 +1,10 @@
 .yandex-map {
   width: 100%;
   position: relative;
-  border-radius: 20px;
   overflow: hidden;
+
+  @include responsive(md) {
+    border-radius: 20px;
+
+  }
 }

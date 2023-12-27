@@ -1,5 +1,5 @@
 .bench-page {
-  margin-top: 62px;
+  margin-top: 20px;
 
   &__header {
     display: flex;
@@ -37,5 +37,9 @@
     font-size: var(--font-size--md);
     margin-top: 24px;
     gap: 14px;
+  }
+
+  @include responsive(md) {
+    margin-top: 62px;
   }
 }

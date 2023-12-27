@@ -14,11 +14,23 @@
 
   &__item {
     display: flex;
-    align-items: center;
 
     &:first-child {
+      flex-direction: column;
+
+      :global(.base-button) {
+        justify-content: center;
+      }
+
       a:first-child {
-        margin-right: 24px;
+        @include responsive(md) {
+          margin-right: 24px;
+        }
+      }
+
+      @include responsive(md) {
+        flex-direction: row;
+        align-items: center;
       }
     }
   }
@@ -32,9 +44,13 @@
   }
 
   :global(.base-icon--logo) {
-    width: 260px;
+    width: 130px;
     height: 32px;
     color: var(--color-brown-1);
+
+    @include responsive(md) {
+      width: 260px;
+    }
   }
 }
 

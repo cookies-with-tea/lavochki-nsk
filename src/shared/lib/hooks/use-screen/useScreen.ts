@@ -72,7 +72,7 @@ export const useScreen = () => {
 
   return {
     size: screen.size,
-    isMobile: screen,
+    isMobile: screen.isMobile,
     isTablet: screen.isTablet,
     isLaptop: screen.isLaptop,
     isDesktop: screen.isDesktop,

@@ -11,7 +11,7 @@ const BREAKPOINTS: SwiperOptions['breakpoints'] = {
     spaceBetween: 16,
   },
   320: {
-    slidesPerView: 1.2,
+    slidesPerView: 1.4,
     spaceBetween: 8,
   }
 }

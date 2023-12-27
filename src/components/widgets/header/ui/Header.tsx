@@ -1,14 +1,19 @@
-import styles from '@/components/widgets/header/ui/styles.module.scss'
+'use client'
+
+import styles from './styles.module.scss'
 
 import cb from 'classnames/bind'
 import { Icon, Badge, Button } from '@/components/shared'
 import { HeaderProfile } from '@/components/widgets/header/ui/HeaderProfile/HeaderProfile'
 import { TelegramAuth } from '@/components/features/telegram-auth'
 import Link from 'next/link'
+import { useScreen } from '@/shared/lib/hooks/use-screen'
 
 const cx = cb.bind(styles)
 
 export const Header = () => {
+  const { isMobile } = useScreen()
+
   const isAuth = false
 
   return (
@@ -19,7 +24,7 @@ export const Header = () => {
             <Icon name={'logo'} />
           </Link>
 
-          <Button as={Link} href={'/benches'} size={'sm'} appearance={'secondary'}>Все лавочки</Button>
+          <Button as={Link} href={'/benches'} size={isMobile ? 'xs' : 'sm'} appearance={'secondary'}>Все лавочки</Button>
         </div>
 
         <div className={cx('header__item')}>

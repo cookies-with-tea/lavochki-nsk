@@ -13,14 +13,18 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <div className={cn(styles['home-page'], 'container')}>
-      <h1>
-        Расположение лавочек
-      </h1>
+    <div className={cn(styles['home-page'])}>
+      <div className={'container'}>
+        <h1>
+          Расположение лавочек
+        </h1>
+      </div>
 
-      <YandexMap className={'mt-40'} />
+      <YandexMap className={'container'} />
 
-      <LatestBenches />
+      <div className={'container'}>
+        <LatestBenches />
+      </div>
     </div>
   )
 }

@@ -28,11 +28,11 @@ export const Footer = () => {
         <div className={styles['footer__contacts']}>
           <div className={styles['footer__contacts-socials']}>
             <Link className={styles['footer__contacts-socials-item']} href='#'>
-              <Icon name={'vk'} width={48} height={48} className="mr-22"/>
+              <Icon name={'vk'} />
             </Link>
 
             <Link className={styles['footer__contacts-socials-item']} href='#'>
-              <Icon name={'telegram-rect'} width={48} height={48} />
+              <Icon name={'telegram-rect'} />
             </Link>
           </div>
 

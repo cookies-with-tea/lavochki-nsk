@@ -1,5 +1,5 @@
 .benches-page {
-  margin-top: 62px;
+  margin-top: 20px;
 
   &__header-top {
     display: flex;
@@ -25,5 +25,9 @@
     display: flex;
     justify-content: center;
     margin-top: 94px;
+  }
+
+  @include responsive(md) {
+    margin-top: 62px;
   }
 }
