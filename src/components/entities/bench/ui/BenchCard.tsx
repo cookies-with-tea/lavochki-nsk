@@ -4,6 +4,9 @@ import { BaseImage } from '@/components/shared/image'
 import { Button } from '@/components/shared'
 import Link from 'next/link'
 import cn from 'classnames'
+import cb from 'classnames/bind'
+
+const cx = cb.bind(styles)
 
 interface IBenchCardProps {
   bench: BenchTypes.One
@@ -26,7 +29,7 @@ export const BenchCard = ({ bench }: IBenchCardProps) => {
         height={202}
       />
 
-      <div className={styles['bench-card__content']}>
+      <div className={cn('bench-card__content', cx('bench-card__content'))}>
         <h5 className={styles['bench-card__title']}>Лавочка #{bench.id}</h5>
 
         <div className={styles['bench-card__tags']}>

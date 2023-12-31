@@ -1,12 +1,12 @@
 'use client'
 
-import { ReactNode } from 'react'
 import cn from 'classnames'
 import cb from 'classnames/bind'
 import styles from './styles.module.scss'
 import { IPaginationProps } from '@/components/shared/pagination/interfaces'
 import { usePagination } from '@/components/shared/pagination/hooks/usePagination'
 import { PaginationItem } from '../pagination-item'
+import { useScreen } from '@/shared/lib/hooks/use-screen'
 
 const cx = cb.bind(styles)
 
@@ -19,6 +19,11 @@ function getItemAriaLabel(type, page, selected) {
 }
 
 export const Pagination = (props: IPaginationProps) => {
+  const { size } = props
+  const { isMobile } = useScreen()
+
+  const _size = size ?? isMobile ? 'xs' : 'md'
+
   const { items } = usePagination({ ...props })
 
   const paginationPages = items.map((item, index) => {
@@ -37,8 +42,14 @@ export const Pagination = (props: IPaginationProps) => {
     )
   })
 
+  const classes = cn('pagination', cx(
+    'pagination',
+    `pagination--${_size}`
+    )
+  )
+
   return (
-    <div className={cn('pagination', cx('pagination'))}>
+    <div className={classes}>
       <nav className={styles['pagination__content']}>
         <ul className={styles['pagination__pages']}>
           { paginationPages }

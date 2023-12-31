@@ -17,6 +17,7 @@
   --font-size--icon-xl: 32px;
   --line-height--primary: 1.2;
   --line-height--secondary: 0.8;
+  --animation--time: 0.15s;
 
   @include generate-color-root-variables;
 

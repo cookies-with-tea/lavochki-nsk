@@ -11,20 +11,54 @@
   }
 
   &__content {
+    position: relative;
     display: flex;
   }
 
   &__list {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 42px;
-    gap: 42px;
+    margin-top: 24px;
+    gap: 16px;
+
+    :global(.bench-card) {
+      width: 260px;
+
+      :global(.bench-card__content) {
+        padding: 0 16px 12px;
+
+        @include responsive(md) {
+          padding: 0 32px 26px;
+        }
+      }
+
+      @include responsive(md) {
+        width: 300px;
+      }
+    }
+
+    @include responsive(md) {
+      margin-top: 42px;
+      gap: 42px;
+    }
   }
 
   :global(.pagination) {
     display: flex;
     justify-content: center;
-    margin-top: 94px;
+    margin-top: 48px;
+
+    @include responsive(md) {
+      margin-top: 94px;
+    }
+  }
+
+  :global(.bench-card) {
+    width: 100%;
+
+    @include responsive(md) {
+      width: 300px;
+    }
   }
 
   @include responsive(md) {

@@ -5,15 +5,28 @@ import { FiltersDate } from '@/components/pages/benches/all-benches-filters/filt
 import { FiltersTags } from '@/components/pages/benches/all-benches-filters/filters-tags'
 
 import styles from './style.module.scss'
+import { useScreen } from '@/shared/lib/hooks/use-screen'
+import { Icon } from '@/components/shared'
 
 export const AllBenchesFilters = () => {
+  const { isMobileOrTablet } = useScreen()
+
   return (
-    <aside className={styles['all-benches-filters']}>
-      <FiltersDate />
+    <>
+      { !isMobileOrTablet ? (
+        <aside className={styles['all-benches-filters']}>
+          <FiltersDate />
 
-      <FiltersDistricts />
+          <FiltersDistricts />
 
-      <FiltersTags />
-    </aside>
+          <FiltersTags />
+        </aside>
+      ) : null
+        // DEBT: Надо добавить Drawer список для фильтров.
+        // <div className={styles['all-benches-mobile-filters']}>
+        //   <Icon name={'filter'} />
+        // </div>
+      }
+    </>
   )
 }

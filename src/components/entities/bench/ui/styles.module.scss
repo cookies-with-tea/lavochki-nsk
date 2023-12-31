@@ -7,12 +7,17 @@
   &__tags {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 34px;
+    margin-top: 16px;
     gap: 5px 10px;
+
+    @include responsive(md) {
+      margin-top: 34px;
+    }
   }
 
-  &__title {
-    margin-top: 30px;
+  img {
+    width: 100%;
+    object-fit: cover;
   }
 
   &__tag {
@@ -28,5 +33,10 @@
 
   &__content {
     padding: 0 32px 26px;
+    margin-top: 16px;
+
+    @include responsive(md) {
+      margin-top: 30px;
+    }
   }
 }

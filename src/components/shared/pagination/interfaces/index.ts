@@ -17,6 +17,7 @@ export interface IPaginationProps {
   showFirstButton?: boolean
   hideNextButton?: boolean
   hidePrevButton?: boolean
+  size?: 'md' | 'sm'
 
   onChange?: (event: ChangeEvent, page: number) => void
 }
