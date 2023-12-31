@@ -14,7 +14,7 @@ interface IInputProps  extends InputHTMLAttributes<HTMLInputElement>  {
   type?: HTMLInputElement['type'] & 'textarea'
 }
 
-const InputInner = (props: IInputProps) => {
+const InputInner = (props: IInputProps, ref: any) => {
   const {
     footer,
     action,
@@ -34,7 +34,7 @@ const InputInner = (props: IInputProps) => {
   ))
 
   return (
-    <div className={classes}>
+    <div className={classes} ref={ref}>
       <div className={styles['input__wrapper']}>
         {
           type !== 'textarea'

@@ -8,7 +8,7 @@ interface IFormProps {
   onSubmit?: (event: FormEvent<HTMLFormElement>) => void
 }
 
-const FormInner = (props: IFormProps) => {
+const FormInner = (props: IFormProps, ref: any) => {
   const { children, onSubmit  } = props
 
   const onFormSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -18,7 +18,7 @@ const FormInner = (props: IFormProps) => {
   }
 
   return (
-    <form onSubmit={onFormSubmit}>
+    <form ref={ref} onSubmit={onFormSubmit}>
       { children }
     </form>
   )
