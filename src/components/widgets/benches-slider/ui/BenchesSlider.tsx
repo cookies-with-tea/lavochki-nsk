@@ -8,7 +8,7 @@ import { ReactNode, useEffect, useRef, useState } from 'react'
 import { Navigation } from 'swiper/modules'
 import { SwiperOptions } from 'swiper/types'
 import cn from 'classnames'
-import { useScreen } from '@/shared/lib/hooks/use-screen'
+import { useScreen } from '@/shared/lib/hooks'
 
 interface ILatestBenchSliderProps extends SwiperOptions {
   slides: ReactNode

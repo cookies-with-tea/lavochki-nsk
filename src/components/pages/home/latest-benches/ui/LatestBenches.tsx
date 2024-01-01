@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { LatestBench } from '@/components/pages/home/latest-bench'
 import styles from './styles.module.scss'
 import { BENCHES_MOCK_DATA } from '@/shared/mocks/benches'
-import { useScreen } from '@/shared/lib/hooks/use-screen'
+import { useScreen } from '@/shared/lib/hooks'
 
 export const LatestBenches = () => {
   const { isMobile } = useScreen()

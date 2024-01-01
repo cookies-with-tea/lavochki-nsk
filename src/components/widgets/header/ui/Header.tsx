@@ -7,7 +7,7 @@ import { Icon, Badge, Button } from '@/components/shared'
 import { HeaderProfile } from '@/components/widgets/header/ui/HeaderProfile/HeaderProfile'
 import { TelegramAuth } from '@/components/features/telegram-auth'
 import Link from 'next/link'
-import { useScreen } from '@/shared/lib/hooks/use-screen'
+import { useScreen } from '@/shared/lib/hooks'
 
 const cx = cb.bind(styles)
 

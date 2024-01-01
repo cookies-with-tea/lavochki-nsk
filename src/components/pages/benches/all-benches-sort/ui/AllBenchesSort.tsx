@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { allBenchesSort } from '../config'
 import { Icon } from '@/components/shared'
 import styles from './style.module.scss'
-import { useScreen } from '@/shared/lib/hooks/use-screen'
+import { useScreen } from '@/shared/lib/hooks'
 
 const setOrder = (currentSort: string): string => {
   switch (currentSort) {

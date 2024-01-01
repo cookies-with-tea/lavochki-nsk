@@ -8,7 +8,7 @@ import { BenchesSlider } from '@/components/widgets/benches-slider'
 import { latestBenchSliderConfig } from 'src/components/pages/home/latest-bench/config'
 import Image from 'next/image'
 import { SwiperSlide } from 'swiper/react'
-import { useScreen } from '@/shared/lib/hooks/use-screen'
+import { useScreen } from '@/shared/lib/hooks'
 
 interface IBenchProps {
   bench: BenchTypes.One

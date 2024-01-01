@@ -8,6 +8,7 @@ import { BenchTypes } from '@/shared/types/bench'
 import { BENCHES_MOCK_DATA } from '@/shared/mocks/benches'
 import { BenchComments } from '@/components/pages/bench/bench-comments'
 import { BenchBack } from '@/components/pages/bench/bench-back'
+import { TagsList } from '@/components/entities/tag'
 
 type Props = {
   params: { id: string }
@@ -72,22 +73,16 @@ export default function DetailBench({ params }: Props) {
           <p>Автор: Дмитрий</p>
         </div>
 
-        <div className={styles['bench-page__create-tags']}>
-          <Button as={Link} appearance={'link'} size={'sm'} href={'/benches?tags=nearShops'} className={styles['bench-page__create-tag']}>
-            #Магазин рядом
-          </Button>
+        <TagsList />
 
-          <Button as={Link} appearance={'link'} size={'sm'} href={'/benches?tags=nearShops'} className={styles['bench-page__create-tag']}>
-            #Магазин рядом
-          </Button>
-        </div>
-
-        <div>
+        <div className={styles['bench-page__content']}>
           <BenchSlider images={bench.images} />
 
+          {/* DEBT: Вынести за границы контейнера */}
           <BenchMap />
 
-          <BenchComments />
+          {/* DEBT: Скрыто. Перенесено на MVP2 */}
+          {/*<BenchComments />*/}
         </div>
       </div>
     </div>

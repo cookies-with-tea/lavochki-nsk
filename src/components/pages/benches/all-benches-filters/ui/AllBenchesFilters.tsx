@@ -5,7 +5,7 @@ import { FiltersDate } from '@/components/pages/benches/all-benches-filters/filt
 import { FiltersTags } from '@/components/pages/benches/all-benches-filters/filters-tags'
 
 import styles from './style.module.scss'
-import { useScreen } from '@/shared/lib/hooks/use-screen'
+import { useScreen } from '@/shared/lib/hooks'
 import { Icon } from '@/components/shared'
 
 export const AllBenchesFilters = () => {

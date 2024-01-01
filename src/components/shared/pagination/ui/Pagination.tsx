@@ -6,7 +6,7 @@ import styles from './styles.module.scss'
 import { IPaginationProps } from '@/components/shared/pagination/interfaces'
 import { usePagination } from '@/components/shared/pagination/hooks/usePagination'
 import { PaginationItem } from '../pagination-item'
-import { useScreen } from '@/shared/lib/hooks/use-screen'
+import { useScreen } from '@/shared/lib/hooks'
 
 const cx = cb.bind(styles)
 

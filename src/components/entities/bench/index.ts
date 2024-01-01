@@ -1,1 +1,1 @@
-export { BenchCard } from '@/components/entities/bench/ui/BenchCard'
+export { BenchCard } from '@/components/entities/bench/bench-card/ui/BenchCard'

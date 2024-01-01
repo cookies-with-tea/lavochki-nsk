@@ -1,5 +1,5 @@
 .bench-map {
-  margin-top: 60px;
+  margin-top: 24px;
 
   &__coordinates {
     font-size: 20px;
@@ -8,7 +8,7 @@
     margin-top: 24px;
   }
 
-  :global(.yandex-map) {
-    margin-top: 28px;
+  @include responsive(md) {
+    margin-top: 60px;
   }
 }

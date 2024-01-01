@@ -1,0 +1,50 @@
+.tags-list {
+  --visibility: visible;
+  --opacity: 1;
+
+  position: relative;
+  transition: opacity var(--animation--time) ease, visibility var(--animation--time) ease;
+
+  &::after {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 24px;
+    position: absolute;
+    background: linear-gradient(
+        -90deg,
+        rgba(255, 255, 255, 0) -40%,
+        rgb(255, 252, 247) -9%,
+        rgba(255, 255, 255, 0) 40%);
+    visibility: var(--visibility);
+    opacity: var(--opacity);
+
+    @include responsive(md, $breakpoints-only-max) {
+      content: '';
+    }
+  }
+
+  &__inner {
+    width: 100%;
+    display: flex;
+    font-size: var(--font-size--sm);
+    padding-bottom: 4px;
+    margin-top: 12px;
+    overflow-y: hidden;
+    gap: 14px;
+
+    :global(.base-button__content) {
+      white-space: nowrap;
+    }
+
+    @include responsive(md) {
+      margin-top: 24px;
+    }
+  }
+
+  :global(.base-button) {
+    @include responsive(md, $breakpoints-only-max) {
+      border: none;
+    }
+  }
+}
