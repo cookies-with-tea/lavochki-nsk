@@ -24,6 +24,7 @@
     "next": "14.0.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-transition-group": "^4.4.5",
     "svg-sprite-loader": "^6.0.11",
     "swiper": "^11.0.5"
   },

@@ -1,6 +1,14 @@
+'use client'
+
+import { CSSTransition } from 'react-transition-group'
+
 import { Button, Icon } from '@/components/shared'
+import { useState } from 'react'
+import { Dialog } from '@/components/shared/dialog'
 
 export default function Uikit() {
+  const [isDialogVisible, setIsDialogVisible] = useState(false)
+
   return (
     <div className={'uikit'}>
       <div className="d-flex" style={{ gap: 30, alignItems: 'center' }}>
@@ -56,6 +64,25 @@ export default function Uikit() {
 
       <div className="d-flex" style={{ gap: 30, alignItems: 'center' }}>
         <Button as={'a'} href={'/'}>Все лавочки</Button></div>
+
+      <div className={'d-flex'}>
+        <Button onClick={() => setIsDialogVisible(!isDialogVisible)}>
+          Открыть диалог
+        </Button>
+
+        <CSSTransition
+          unmountOnExit
+          in={isDialogVisible}
+          timeout={200}
+          classNames="modal"
+        >
+          <Dialog visible={isDialogVisible} onClose={() => setIsDialogVisible(!isDialogVisible)}>
+            Какой-то текст
+          </Dialog>
+        </CSSTransition>
+
+
+      </div>
     </div>
   )
 }

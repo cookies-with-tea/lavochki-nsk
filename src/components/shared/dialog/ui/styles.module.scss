@@ -1,0 +1,28 @@
+.dialog {
+  &__overlay {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(6px);
+    inset: 0;
+  }
+
+  &__content {
+    width: 60%;
+    min-height: 50vh;
+    max-height: calc(100vh - 100px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 3px 6px #00000029;
+    background-color: var(--color-white);
+    padding: 30px;
+    overflow-y: auto;
+  }
+
+  &__header {
+    display: flex;
+    align-self: flex-end;
+  }
+}

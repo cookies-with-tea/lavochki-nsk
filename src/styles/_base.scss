@@ -130,3 +130,24 @@ h5,
 
   }
 }
+
+.modal-enter .modalContent {
+  transform: scale(0.9);
+  opacity: 0;
+}
+
+.modal-enter-active .modalContent {
+  transform: translateX(0);
+  transition: all 0.2s;
+  opacity: 1;
+}
+
+.modal-exit .modalContent {
+  opacity: 1;
+}
+
+.modal-exit-active .modalContent {
+  transform: scale(0.9);
+  transition: all 0.2s;
+  opacity: 0;
+}
