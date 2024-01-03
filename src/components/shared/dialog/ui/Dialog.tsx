@@ -46,6 +46,8 @@ const DialogInner = (props: IDialogProps, ref: any) => {
     onClose()
   }
 
+  // DEBT: Использовать CSSTransition
+
   return (
     <>
       { visibleProp &&
