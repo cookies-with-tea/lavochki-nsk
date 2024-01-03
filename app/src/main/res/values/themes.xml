@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.LavochkiNSK" parent="Base.Theme.LavochkiNSK" />
+    
+    <style name="Theme.LavochkiNSK.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#FAA547</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/avd_anim</item>
+        <item name="postSplashScreenTheme">@style/Base.Theme.LavochkiNSK</item>
+    </style>
 </resources>
