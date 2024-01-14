@@ -42,4 +42,4 @@ jobs:
           USERNAME: ${{ secrets.BACKEND_DEPLOY_USER }}
           PORT: ${{ secrets.BACKEND_DEPLOY_PORT }}
           KEY: ${{ secrets.BACKEND_DEPLOY_SSH_KEY }}
-          script: cd ${{ secrets.BACKEND_PWD }} && git pull && docker-compose down && docker-compose up -d
+          script: cd ${{ secrets.BACKEND_PWD }} && git pull && docker-compose down && docker-compose up -d --build
