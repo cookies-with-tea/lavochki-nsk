@@ -113,7 +113,7 @@ func (handler *Handler) listModerationBench(writer http.ResponseWriter, request 
 		paginateOptions = &options
 	}
 
-	all, err := handler.policy.GetListBenches(request.Context(), false, sortOptions, paginateOptions)
+	all, err := handler.policy.GetListBenches(request.Context(), false, sortOptions, paginateOptions, nil)
 	if err != nil {
 		return err
 	}

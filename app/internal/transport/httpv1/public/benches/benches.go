@@ -9,6 +9,7 @@ import (
 	"benches/internal/policy/benches"
 	"benches/internal/transport/httpv1"
 	"benches/pkg/api/paginate"
+	"benches/pkg/api/search"
 	"benches/pkg/api/sort"
 
 	"github.com/gorilla/mux"
@@ -33,8 +34,21 @@ func NewHandler(benches *benches.Policy) *Handler {
 func (handler *Handler) Register(router *mux.Router) {
 	router.HandleFunc(urlAllBenches, apperror.Middleware(handler.allListBenches)).Methods("GET")
 	router.HandleFunc(urlNearestBenches, apperror.Middleware(handler.nearestBenches)).Methods("GET")
-	router.HandleFunc(urlListBenches, paginate.Middleware(sort.Middleware(
-		apperror.Middleware(handler.listBenches), "id", sort.ASC), 1, 10)).Methods("GET")
+	router.HandleFunc(
+		urlListBenches,
+		search.Middleware(
+			paginate.Middleware(
+				sort.Middleware(
+					apperror.Middleware(handler.listBenches),
+					"id",
+					sort.ASC,
+				),
+				1,
+				10,
+			),
+			[]string{"id"},
+		),
+	).Methods("GET")
 	router.HandleFunc(urlDetailBench, apperror.Middleware(handler.detailBench)).Methods("GET")
 }
 
@@ -46,7 +60,12 @@ func (handler *Handler) Register(router *mux.Router) {
 // @Router /api/v1/benches [get]
 func (handler *Handler) allListBenches(writer http.ResponseWriter, request *http.Request) error {
 	all, errGetAll := handler.policy.GetListBenches(
-		request.Context(), true, nil, nil)
+		request.Context(),
+		true,
+		nil,
+		nil,
+		nil,
+	)
 
 	if errGetAll != nil {
 		return errGetAll
@@ -79,7 +98,13 @@ func (handler *Handler) listBenches(writer http.ResponseWriter, request *http.Re
 		paginateOptions = &options
 	}
 
-	all, err := handler.policy.GetListBenches(request.Context(), true, sortOptions, paginateOptions)
+	// Получаем параметры для фильтрации
+	var filterOptions *[]search.Option
+	if options, ok := request.Context().Value(search.OptionsContextKey).([]search.Option); ok {
+		filterOptions = &options
+	}
+
+	all, err := handler.policy.GetListBenches(request.Context(), true, sortOptions, paginateOptions, filterOptions)
 	if err != nil {
 		return err
 	}

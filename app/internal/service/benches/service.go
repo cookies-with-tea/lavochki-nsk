@@ -11,6 +11,7 @@ import (
 	"benches/internal/repository/model"
 	"benches/internal/repository/postgres/benches"
 	"benches/pkg/api/paginate"
+	"benches/pkg/api/search"
 	"benches/pkg/api/sort"
 	"benches/pkg/geo"
 
@@ -24,8 +25,13 @@ const (
 )
 
 type Service interface {
-	GetListBenches(ctx context.Context, isActive bool, sortOptions *sort.Options,
-		paginateOptions *paginate.Options) ([]*domain.Bench, error)
+	GetListBenches(
+		ctx context.Context,
+		isActive bool,
+		sortOptions *sort.Options,
+		paginateOptions *paginate.Options,
+		filterOptions *[]search.Option,
+	) ([]*domain.Bench, error)
 	CreateBench(ctx context.Context, bench domain.Bench) (*domain.Bench, error)
 	DecisionBench(ctx context.Context, benchID string, decision bool) error
 	GetBenchByID(ctx context.Context, id string) (*domain.Bench, error)
@@ -47,9 +53,10 @@ func NewService(db benches.Repository, storage *storage.Storage, log *zap.Logger
 }
 
 func (service *service) GetListBenches(ctx context.Context, isActive bool, sortOptions *sort.Options,
-	paginateOptions *paginate.Options) ([]*domain.Bench, error) {
+	paginateOptions *paginate.Options, filterOptions *[]search.Option) ([]*domain.Bench, error) {
 	var optionsForSort model.SortOptions
 	var optionsForPaginate model.PaginateOptions
+	var optionsForFilter model.FilterOptions
 
 	// Создаём параметры для сортировки
 	if sortOptions != nil {
@@ -61,8 +68,13 @@ func (service *service) GetListBenches(ctx context.Context, isActive bool, sortO
 		optionsForPaginate = model.NewPaginateOptions(paginateOptions.Page, paginateOptions.PerPage)
 	}
 
+	// Создаём параметры для фильтрации
+	if filterOptions != nil {
+		optionsForFilter = model.NewFilterOptions(filterOptions)
+	}
+
 	// Получаем все лавочки из базы данных
-	all, err := service.db.All(ctx, isActive, optionsForSort, optionsForPaginate)
+	all, err := service.db.All(ctx, isActive, optionsForSort, optionsForPaginate, optionsForFilter)
 	if err != nil {
 		service.log.Error("error get all benches", zap.Error(err))
 		return nil, err

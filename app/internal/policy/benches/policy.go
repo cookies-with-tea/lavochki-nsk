@@ -11,6 +11,7 @@ import (
 	tagsService "benches/internal/service/tags"
 	usersService "benches/internal/service/users"
 	"benches/pkg/api/paginate"
+	"benches/pkg/api/search"
 	"benches/pkg/api/sort"
 	"benches/pkg/maps"
 
@@ -81,8 +82,8 @@ func (policy *Policy) CreateBenchViaTelegram(ctx context.Context, userTelegramID
 }
 
 func (policy *Policy) GetListBenches(ctx context.Context, isActive bool, sortOptions *sort.Options,
-	paginateOptions *paginate.Options) (domain.BenchesList, error) {
-	all, errGetList := policy.benchesService.GetListBenches(ctx, isActive, sortOptions, paginateOptions)
+	paginateOptions *paginate.Options, searchOptions *[]search.Option) (domain.BenchesList, error) {
+	all, errGetList := policy.benchesService.GetListBenches(ctx, isActive, sortOptions, paginateOptions, searchOptions)
 	if errGetList != nil {
 		return domain.BenchesList{}, errGetList
 	}
@@ -96,6 +97,7 @@ func (policy *Policy) GetListBenches(ctx context.Context, isActive bool, sortOpt
 	if count != 0 {
 		countAllPages = count / paginateOptions.PerPage
 	}
+
 	list := domain.NewBenchesList(all, count, len(all), countAllPages, paginateOptions.Page)
 
 	return list, nil

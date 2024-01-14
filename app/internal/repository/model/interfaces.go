@@ -8,3 +8,7 @@ type PaginateOptions interface {
 	GetPage() uint64
 	GetPerPage() uint64
 }
+
+type FilterOptions interface {
+	GetFilters() []map[string]any
+}

@@ -22,8 +22,13 @@ const (
 )
 
 type Repository interface {
-	All(ctx context.Context, isActive bool,
-		sortOptions model.SortOptions, paginateOptions model.PaginateOptions) ([]*domain.Bench, error)
+	All(
+		ctx context.Context,
+		isActive bool,
+		sortOptions model.SortOptions,
+		paginateOptions model.PaginateOptions,
+		filtersOptions model.FilterOptions,
+	) ([]*domain.Bench, error)
 	Count(ctx context.Context, isActive bool) (int, error)
 	ByID(ctx context.Context, id string) (*domain.Bench, error)
 	Create(ctx context.Context, bench domain.Bench) (*domain.Bench, error)
@@ -45,7 +50,7 @@ func NewBenchesRepository(client postgres.Client) Repository {
 }
 
 func (repository *repository) All(ctx context.Context, isActive bool, sortOptions model.SortOptions,
-	paginateOptions model.PaginateOptions) ([]*domain.Bench, error) {
+	paginateOptions model.PaginateOptions, filtersOptions model.FilterOptions) ([]*domain.Bench, error) {
 	query := repository.queryBuilder.
 		Select("id").
 		Columns("lat", "lng", "street", "is_active", "images", "owner_id").
@@ -60,6 +65,12 @@ func (repository *repository) All(ctx context.Context, isActive bool, sortOption
 		perPage := paginateOptions.GetPerPage()
 
 		query = query.Limit(perPage).Offset((page - 1) * perPage)
+	}
+
+	if filtersOptions != nil {
+		for _, filter := range filtersOptions.GetFilters() {
+			query = query.Where(filter)
+		}
 	}
 
 	sql, args, err := query.ToSql()
