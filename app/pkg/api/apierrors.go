@@ -3,8 +3,8 @@ package api
 import "encoding/json"
 
 type ErrorResponse struct {
-	Message string
-	Details json.RawMessage
+	Message string          `json:"message"`
+	Details json.RawMessage `json:"details"`
 }
 
 type JSONMarshal interface {
