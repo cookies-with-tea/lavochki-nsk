@@ -14,8 +14,6 @@ interface IYandexMapProps {
 }
 
 export const YandexMap = ({ height = 396, className = '', benches }: IYandexMapProps) => {
-  // const { data } = useBenches()
-
   return (
     <div className={cn('yandex-map', styles['yandex-map'], className)}>
       <YMaps query={mapConfig.MAP_QUERY}>
