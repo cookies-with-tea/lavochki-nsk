@@ -4,11 +4,8 @@ import { Button, Icon } from '@/components/shared'
 import Link from 'next/link'
 import { LatestBench } from '@/components/pages/home/latest-bench'
 import styles from './styles.module.scss'
-import { BENCHES_MOCK_DATA } from '@/shared/mocks/benches'
 import { useScreen } from '@/shared/lib/hooks'
-import { useQuery } from '@tanstack/react-query'
-import { benchesApi } from '@/shared/api/benches'
-import { useBenches } from '@/shared/store'
+import { useBenches } from '@/app/store'
 
 // Вывод последних 6-ти добавленных лавочек.
 export const LatestBenches = () => {

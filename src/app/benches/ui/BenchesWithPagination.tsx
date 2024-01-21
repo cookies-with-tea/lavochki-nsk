@@ -2,13 +2,13 @@
 
 import styles from '@/app/benches/benches.module.scss'
 import { BenchCard } from '@/components/entities/bench'
-import { useBenches } from '@/app/benches/store'
+import { useAllBenches } from '@/app/benches/store'
 import { CommonTypes } from '@/shared/types/common'
 import { Pagination } from '@/components/shared'
 import { useState } from 'react'
 
 export const BenchesWithPagination = () => {
-  const { data } = useBenches()
+  const { data } = useAllBenches()
 
   const [pagination, setPagination] = useState<Partial<CommonTypes.Pagination>>({
     page: data.pagination.current_page ?? 1,

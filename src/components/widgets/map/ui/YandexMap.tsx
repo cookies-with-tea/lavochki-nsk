@@ -4,15 +4,13 @@ import styles from './styles.module.scss'
 import { Map, YMaps } from '@pbe/react-yandex-maps'
 import { mapConfig } from '@/components/widgets/map/config'
 import { YandexMapClusterer } from '@/components/widgets/map/YandexMapClusterer'
-import { BENCHES_MOCK_DATA } from '@/shared/mocks/benches'
 import cn from 'classnames'
 import { BenchTypes } from '@/shared/types/bench'
-import { useBenches } from '@/shared/store'
 
 interface IYandexMapProps {
   height?: number
   className?: string
-  benches: any
+  benches: BenchTypes.All
 }
 
 export const YandexMap = ({ height = 396, className = '', benches }: IYandexMapProps) => {

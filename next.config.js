@@ -22,6 +22,9 @@ const nextConfig = {
       {
         hostname: 'gas-kvas.com',
       },
+      {
+        hostname: process.env.BASE_URL
+      }
     ],
   },
   env: {
