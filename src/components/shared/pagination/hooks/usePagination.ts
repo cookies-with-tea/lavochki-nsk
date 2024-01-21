@@ -31,7 +31,7 @@ export const usePagination = (props: IPaginationProps) => {
     if (!pageProp) {
       setPageState(value)
     }
-    if (handleChange) {      
+    if (handleChange) {
       handleChange(event, value)
     }
   }
@@ -140,7 +140,7 @@ export const usePagination = (props: IPaginationProps) => {
   })
 
   return {
-    items,
+    items: items.some((item) => item.type === 'page') ? items : [],
     ...other,
   }
 }

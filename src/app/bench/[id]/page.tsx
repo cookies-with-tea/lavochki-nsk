@@ -9,6 +9,10 @@ import { BENCHES_MOCK_DATA } from '@/shared/mocks/benches'
 import { BenchComments } from '@/components/pages/bench/bench-comments'
 import { BenchBack } from '@/components/pages/bench/bench-back'
 import { TagsList } from '@/components/entities/tag'
+import { dehydrate, useQuery } from '@tanstack/react-query'
+import { benchesApi } from '@/shared/api/benches'
+import { getQueryClient } from '@/shared/lib/utils'
+import { Hydrate } from '@/components/shared/hydrate'
 
 type Props = {
   params: { id: string }
@@ -22,69 +26,56 @@ export const metadata: Metadata = {
   },
 }
 
-// export async function generateMetadata({ params }: Props): Promise<Promise<Metadata> | any> {
-//   const id = params.id
-//
-//     return {
-//     id,
-//   }
-// }
+export default async function DetailBench({ params }: Props) {
+  const client = getQueryClient()
 
-// export async function generateMetadata(
-//   { params, searchParams }: Props,
-//   parent: ResolvingMetadata
-// ): Promise<Promise<Metadata> | any> {
-//   // read route params
-//   const id = params.id
-//
-//   // // fetch data
-//   // const product = await fetch(`https://.../${id}`).then((res) => res.json())
-//   //
-//   // // optionally access and extend (rather than replace) parent metadata
-//   // const previousImages = (await parent).openGraph?.images || []
-//   //
-//   // return {
-//   //   title: product.title,
-//   //   openGraph: {
-//   //     images: ['/some-specific-page-image.jpg', ...previousImages],
-//   //   },
-//   // }
-//
-//   return {
-//     id,
-//   }
-// }
-export default function DetailBench({ params }: Props) {
-  const bench = BENCHES_MOCK_DATA.items.find((_bench) => params.id === _bench.id)
+  // const bench = BENCHES_MOCK_DATA.items.find((_bench) => params.id === _bench.id)
+  // const bench = BENCHES_MOCK_DATA.items[0]
+
+  await client.prefetchQuery({
+    queryKey: ['benches'],
+    queryFn: async () => await benchesApi.getOne(params.id),
+  })
+
+  const data = await client.fetchQuery({
+    queryKey: ['benches'],
+    queryFn: async () => await benchesApi.getOne(params.id),
+  })
+
+  const dehydratedState = dehydrate(client, {
+    shouldDehydrateQuery: () => true,
+  })
 
   return (
-    <div className={styles['bench-page']}>
-      <div className={'container'}>
-        <div className={styles['bench-page__header']}>
-          <h1>Лавочка №1</h1>
+    <Hydrate state={dehydratedState}>
+      <div className={styles['bench-page']}>
+        <div className={'container'}>
+          <div className={styles['bench-page__header']}>
+            <h1>Лавочка №1</h1>
 
-          <BenchBack />
-        </div>
+            <BenchBack />
+          </div>
 
 
-        <div className={styles['bench-page__create-info']}>
-          <p>Добавлено: 15 октября 2022</p>
+          <div className={styles['bench-page__create-info']}>
+            <p>Добавлено: 15 октября 2022</p>
 
-          <p>Автор: Дмитрий</p>
-        </div>
+            <p>Автор: Дмитрий</p>
+          </div>
 
-        <TagsList />
+          <TagsList />
 
-        <div className={styles['bench-page__content']}>
-          <BenchSlider images={bench.images} />
+          <div className={styles['bench-page__content']}>
+            <BenchSlider images={data.images} />
 
-          {/* DEBT: Вынести за границы контейнера */}
-          <BenchMap />
+            {/* DEBT: Вынести за границы контейнера */}
+            <BenchMap />
 
-          {/* DEBT: Скрыто. Перенесено на MVP2 */}
-          {/*<BenchComments />*/}
+            {/* DEBT: Скрыто. Перенесено на MVP2 */}
+            {/*<BenchComments />*/}
+          </div>
         </div>
       </div>
-    </div>
+    </Hydrate>
   )
 }

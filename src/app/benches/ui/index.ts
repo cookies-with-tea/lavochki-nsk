@@ -1,0 +1,1 @@
+export { BenchesWithPagination } from './BenchesWithPagination'

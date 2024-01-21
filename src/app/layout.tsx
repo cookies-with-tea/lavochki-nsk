@@ -6,6 +6,7 @@ import { Header } from '@/components/widgets/header'
 import { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import { Footer } from '@/components/widgets/footer'
+import { TanstackProvider } from '@/components/app/providers/TanstackProvider'
 
 requireSvg()
 
@@ -30,11 +31,15 @@ export default function RootLayout({
   return (
     <html lang={'ru'} className={poppins.className}>
       <body>
-        <Header />
+        <TanstackProvider>
+          <>
+            <Header />
 
-        <main className={'main'}>{children}</main>
+            <main className={'main'}>{children}</main>
 
-        <Footer />
+            <Footer />
+          </>
+        </TanstackProvider>
 
         <script async src={'https://telegram.org/js/telegram-widget.js?27'} />
       </body>

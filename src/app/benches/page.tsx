@@ -1,95 +1,58 @@
-'use client'
-
-// TODO: Избавиться от этого безобразия
-
-import { Button, Pagination } from '@/components/shared'
-import styles from '@/styles/pages/benches.module.scss'
+import styles from '@/app/benches/benches.module.scss'
 import { AllBenchesSort } from '@/components/pages/benches/all-benches-sort'
-import { BENCHES_MOCK_DATA } from '@/shared/mocks/benches'
-import { BenchCard } from 'src/components/entities/bench'
 import { Metadata } from 'next'
 import { AllBenchesFilters } from '@/components/pages/benches/all-benches-filters'
-import { CommonTypes } from '@/shared/types/common'
-import { useEffect, useState } from 'react'
+import { getQueryClient } from '@/shared/lib/utils'
+import { benchesApi } from '@/shared/api/benches'
+import { dehydrate } from '@tanstack/react-query'
+import { Hydrate } from '@/components/shared/hydrate'
+import { BenchesWithPagination } from '@/app/benches/ui'
 
-// export const metadata: Metadata = {
-//   title: 'Все лавочки',
-//   openGraph: {
-//     title: 'Все лавочки',
-//   },
-// }
+export const metadata: Metadata = {
+  title: 'Все лавочки',
+  openGraph: {
+    title: 'Все лавочки',
+  },
+}
 
-export default function BenchesPage() {
-  const paginationData = {
-    count: 100,
-    count_all_pages: 10,
-    current_page: 1,
-    per_page: 10
-  }
+export default async function BenchesPage() {
+  const client = getQueryClient()
 
-  const [pagination, setPagination] = useState<Partial<CommonTypes.Pagination>>({
-    page: 1,
-    perPage: 10,
-    countPages: 100,
-    total: 1000,
+  await client.prefetchQuery({
+    queryKey: ['benches-all'],
+    queryFn: async () => await benchesApi.getAll(),
   })
 
-  const handlePageChange = (event: any, page: number) => {
-    setPagination({
-      ...pagination,
-      page,
-    })
-  }
-
-  // TODO: Избавиться от этого безобразия
-  // useEffect(() => {
-  //   setPagination({
-  //     total: paginationData.count,
-  //     countPages: paginationData.count_all_pages,
-  //     page: paginationData.current_page,
-  //     perPage: paginationData.per_page,
-  //   })
-  // }, [])
-
-  const benchesList = BENCHES_MOCK_DATA.items.map((bench) => (
-    <BenchCard key={bench.id} bench={bench} />
-  ))
+  const dehydratedState = dehydrate(client, {
+    shouldDehydrateQuery: () => true,
+  })
 
   return (
-    <div className={styles['benches-page']}>
-      <div className={'container'}>
-        <div className={styles['benches-page__header']}>
-          <div className={styles['benches-page__header-top']}>
-            <h1 className={styles['benches-page__title']}>
-              Все лавочки
-            </h1>
+    <Hydrate state={dehydratedState}>
+      <div className={styles['benches-page']}>
+        <div className={'container'}>
+          <div className={styles['benches-page__header']}>
+            <div className={styles['benches-page__header-top']}>
+              <h1 className={styles['benches-page__title']}>
+                Все лавочки
+              </h1>
 
-            {/* DEBT: Узнать что будет происходить */}
-            {/*<Button appearance={'link-underline'}>Показать на карте</Button>*/}
-          </div>
-        </div>
-
-        <div className={styles['benches-page__content']}>
-          <AllBenchesFilters />
-
-          <div className={styles['benches-page__benches-content']}>
-            <AllBenchesSort />
-
-            <div className={styles['benches-page__list']}>
-              { benchesList }
+              {/* DEBT: Узнать что будет происходить */}
+              {/*<Button appearance={'link-underline'}>Показать на карте</Button>*/}
             </div>
+          </div>
 
-            <Pagination
-              showFirstButton
-              showLastButton
-              page={pagination.page}
-              countPages={pagination.countPages}
-              total={pagination.total}
-              onChange={handlePageChange}
-            />
+          <div className={styles['benches-page__content']}>
+            <AllBenchesFilters />
+
+            <div className={styles['benches-page__benches-content']}>
+              <AllBenchesSort />
+
+              <BenchesWithPagination />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Hydrate>
   )
 }

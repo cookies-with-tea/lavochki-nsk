@@ -6,13 +6,18 @@ import { mapConfig } from '@/components/widgets/map/config'
 import { YandexMapClusterer } from '@/components/widgets/map/YandexMapClusterer'
 import { BENCHES_MOCK_DATA } from '@/shared/mocks/benches'
 import cn from 'classnames'
+import { BenchTypes } from '@/shared/types/bench'
+import { useBenches } from '@/shared/store'
 
 interface IYandexMapProps {
   height?: number
   className?: string
+  benches: any
 }
 
-export const YandexMap = ({ height = 396, className = '' }: IYandexMapProps) => {
+export const YandexMap = ({ height = 396, className = '', benches }: IYandexMapProps) => {
+  // const { data } = useBenches()
+
   return (
     <div className={cn('yandex-map', styles['yandex-map'], className)}>
       <YMaps query={mapConfig.MAP_QUERY}>
@@ -23,7 +28,7 @@ export const YandexMap = ({ height = 396, className = '' }: IYandexMapProps) => 
           defaultState={mapConfig.MAP_PARAMS.defaultState}
           modules={mapConfig.MAP_PARAMS.modules}
         >
-          <YandexMapClusterer benches={BENCHES_MOCK_DATA.items} />
+          <YandexMapClusterer benches={benches} />
         </Map>
       </YMaps>
     </div>

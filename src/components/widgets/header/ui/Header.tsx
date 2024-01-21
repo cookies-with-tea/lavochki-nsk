@@ -8,13 +8,18 @@ import { HeaderProfile } from '@/components/widgets/header/ui/HeaderProfile/Head
 import { TelegramAuth } from '@/components/features/telegram-auth'
 import Link from 'next/link'
 import { useScreen } from '@/shared/lib/hooks'
+import { useEffect, useState } from 'react'
 
 const cx = cb.bind(styles)
 
 export const Header = () => {
   const { isMobile } = useScreen()
 
-  const isAuth = false
+  const [isAuth, setIsAuth] = useState(false)
+
+  useEffect(() => {
+    setIsAuth(!!localStorage.getItem('access'))
+  })
 
   return (
     <header className={cx('header')}>
@@ -29,7 +34,7 @@ export const Header = () => {
 
         <div className={cx('header__item')}>
           {
-            !isAuth ? <TelegramAuth/> :
+            !isAuth ? <TelegramAuth onSuccess={() => setIsAuth(true)} /> :
             <>
               <Badge content={0}>
                 <Icon name={'notifications'} />

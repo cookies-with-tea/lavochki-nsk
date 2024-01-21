@@ -13,7 +13,7 @@ interface IBenchCardProps {
 }
 
 export const BenchCard = ({ bench }: IBenchCardProps) => {
-  const tagsList = bench.tags.map((tag) => (
+  const tagsList = bench?.tags?.map((tag) => (
     <button className={styles['bench-card__tag']} key={tag.id}>
       #{ tag.title }
     </button>
