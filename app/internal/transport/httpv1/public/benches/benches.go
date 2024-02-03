@@ -71,7 +71,7 @@ func (handler *Handler) allListBenches(writer http.ResponseWriter, request *http
 		return errGetAll
 	}
 
-	handler.ResponseJson(writer, all, 200)
+	handler.ResponseJson(writer, all, http.StatusOK)
 	return nil
 }
 
@@ -108,7 +108,7 @@ func (handler *Handler) listBenches(writer http.ResponseWriter, request *http.Re
 	if err != nil {
 		return err
 	}
-	handler.ResponseJson(writer, all, 200)
+	handler.ResponseJson(writer, all, http.StatusOK)
 	return nil
 }
 

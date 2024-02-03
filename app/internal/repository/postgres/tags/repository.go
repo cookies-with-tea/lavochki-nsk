@@ -21,6 +21,7 @@ type Repository interface {
 	All(ctx context.Context) ([]*domain.Tag, error)
 	Create(ctx context.Context, tag domain.Tag) error
 	CreateTagToBench(ctx context.Context, tagBench domain.TagBench) error
+	ByBenches(ctx context.Context, benchesIDs []string) (map[string][]*domain.Tag, error)
 	Delete(ctx context.Context, ids []string) error
 	DeleteByBench(ctx context.Context, benchID string) error
 }
@@ -117,6 +118,40 @@ func (repository *repository) CreateTagToBench(ctx context.Context, tagBench dom
 	}
 
 	return nil
+}
+
+// ByBenches Получить теги связанные с определёнными лавочками.
+func (repository *repository) ByBenches(ctx context.Context, benchesIDs []string) (map[string][]*domain.Tag, error) {
+	query := repository.queryBuilder.Select("bt.bench_id", "t.id", "t.title").
+		From("tags t").
+		Join("tags_benches bt ON t.id = bt.tag_id").
+		Where(squirrel.Eq{"bt.bench_id": benchesIDs})
+
+	sql, args, err := query.ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := repository.client.Query(ctx, sql, args...)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	tags := make(map[string][]*domain.Tag)
+	for rows.Next() {
+		var benchID string
+		var tag domain.Tag
+		errScan := rows.Scan(&benchID, &tag.ID, &tag.Title)
+
+		if errScan != nil {
+			return nil, errScan
+		}
+		tags[benchID] = append(tags[benchID], &tag)
+	}
+
+	return tags, nil
 }
 
 func (repository *repository) Delete(ctx context.Context, ids []string) error {

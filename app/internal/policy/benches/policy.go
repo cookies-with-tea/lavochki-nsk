@@ -88,6 +88,24 @@ func (policy *Policy) GetListBenches(ctx context.Context, isActive bool, sortOpt
 		return domain.BenchesList{}, errGetList
 	}
 
+	ids := make([]string, len(all))
+	for index, bench := range all {
+		ids[index] = bench.ID
+	}
+
+	tags, errGetTags := policy.tagsService.AllTagsByBenches(ctx, ids)
+	if errGetTags != nil {
+		return domain.BenchesList{}, errGetTags
+	}
+
+	for _, bench := range all {
+		bench.Tags = []*domain.Tag{}
+
+		if tagsByBench, ok := tags[bench.ID]; ok && tagsByBench != nil {
+			bench.Tags = tagsByBench
+		}
+	}
+
 	count, errGetCount := policy.benchesService.CountAllBenches(ctx, isActive)
 	if errGetCount != nil {
 		return domain.BenchesList{}, errGetCount
@@ -219,6 +237,16 @@ func (policy *Policy) GetDetailBench(ctx context.Context, id string, userRole st
 
 	if !bench.IsActive && userRole != roles.Admin {
 		return nil, apperror.ErrNotFound
+	}
+
+	tags, errGetTags := policy.tagsService.AllTagsByBenches(ctx, []string{bench.ID})
+	if errGetTags != nil {
+		return nil, errGetTags
+	}
+
+	bench.Tags = []*domain.Tag{}
+	if len(tags) != 0 {
+		bench.Tags = tags[bench.ID]
 	}
 
 	return bench, nil

@@ -12,6 +12,7 @@ import (
 type Service interface {
 	GetAllTags(ctx context.Context) ([]*domain.Tag, error)
 	CreateTag(ctx context.Context, tag domain.Tag) error
+	AllTagsByBenches(ctx context.Context, benchesIDs []string) (map[string][]*domain.Tag, error)
 	AddTagToBench(ctx context.Context, tagBench domain.TagBench) error
 	DeleteByBench(ctx context.Context, benchID string) error
 }
@@ -53,6 +54,20 @@ func (service *service) AddTagToBench(ctx context.Context, tagBench domain.TagBe
 	}
 
 	return nil
+}
+
+func (service *service) AllTagsByBenches(ctx context.Context, benchesIDs []string) (map[string][]*domain.Tag, error) {
+	list, err := service.db.ByBenches(ctx, benchesIDs)
+	if err != nil {
+		service.log.Error(
+			"failed get tags by benches ids",
+			zap.Strings("benches id", benchesIDs),
+			zap.Error(err),
+		)
+		return nil, err
+	}
+
+	return list, nil
 }
 
 // DeleteByBench Удаление тегов по лавочки.

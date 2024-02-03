@@ -14,6 +14,8 @@ type Bench struct {
 	Images   []string `json:"images"`
 	IsActive bool     `json:"is_active"`
 	Owner    string   `json:"owner"`
+
+	Tags []*Tag `json:"tags"`
 }
 
 type BenchesList struct {
