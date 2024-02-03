@@ -82,7 +82,8 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	usersComposite.PublicHandler.Register(appUsersRouter)
 
 	// Лавочки
-	appBenchesRouter := router.PathPrefix("/api/v1/benches").Subrouter()
+	appBenchesPrivateRouter := router.PathPrefix("/api/v1/private/benches").Subrouter()
+	appBenchesPublicRouter := router.PathPrefix("/api/v1/public/benches").Subrouter()
 	benchesComposite := composites.NewBenchComposite(
 		databases,
 		usersComposite,
@@ -91,8 +92,8 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 		geoCoder,
 		logger,
 	)
-	benchesComposite.PrivateHandler.Register(appBenchesRouter, managers.AuthManager)
-	benchesComposite.PublicHandler.Register(appBenchesRouter)
+	benchesComposite.PublicHandler.Register(appBenchesPublicRouter)
+	benchesComposite.PrivateHandler.Register(appBenchesPrivateRouter, managers.AuthManager)
 
 	// Бот
 	appBotRouter := router.PathPrefix("/api/v1/bot").Subrouter()
