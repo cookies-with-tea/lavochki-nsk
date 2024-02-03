@@ -115,7 +115,7 @@ func (m *Manager) JWTRoleMiddleware(role string) func(next http.Handler) http.Ha
 					Details: nil,
 				}
 
-				w.WriteHeader(http.StatusUnauthorized)
+				w.WriteHeader(http.StatusForbidden)
 				_, _ = w.Write(errorResponse.Marshal()) // nolint: errcheck
 				return
 			}
