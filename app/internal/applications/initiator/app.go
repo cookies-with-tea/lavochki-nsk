@@ -69,11 +69,17 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	// Уведомления
 	notificationsComposite := composites.NewNotificationComposite(cfg, logger)
 
+	// Районы
+	appDistrictsRouter := router.PathPrefix("/api/v1/districts").Subrouter()
+	districtsComposite := composites.NewDistrictsComposite(databases, logger)
+	districtsComposite.PublicHandler.Register(appDistrictsRouter)
+
 	// Теги
-	appTagsRouter := router.PathPrefix("/api/v1/tags").Subrouter()
+	appTagsPrivateRouter := router.PathPrefix("/api/v1/private/tags").Subrouter()
+	appTagsPublicRouter := router.PathPrefix("/api/v1/public/tags").Subrouter()
 	tagsComposite := composites.NewTagComposite(databases, logger)
-	tagsComposite.PublicHandler.Register(appTagsRouter)
-	tagsComposite.PrivateHandler.Register(appTagsRouter, managers.AuthManager)
+	tagsComposite.PublicHandler.Register(appTagsPublicRouter)
+	tagsComposite.PrivateHandler.Register(appTagsPrivateRouter, managers.AuthManager)
 
 	// Пользователи
 	appUsersRouter := router.PathPrefix("/api/v1/users").Subrouter()
