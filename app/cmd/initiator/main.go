@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	logger, err := zap.NewDevelopment()
+	logger, err := zap.NewProduction()
 
 	if err != nil {
 		fmt.Errorf("failed to create logger: %v", err)

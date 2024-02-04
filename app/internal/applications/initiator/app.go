@@ -70,7 +70,7 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	notificationsComposite := composites.NewNotificationComposite(cfg, logger)
 
 	// Районы
-	appDistrictsRouter := router.PathPrefix("/api/v1/districts").Subrouter()
+	appDistrictsRouter := router.PathPrefix("/api/v1/public/districts").Subrouter()
 	districtsComposite := composites.NewDistrictsComposite(databases, logger)
 	districtsComposite.PublicHandler.Register(appDistrictsRouter)
 
@@ -240,7 +240,6 @@ func initSwagger(logger *zap.Logger, router *mux.Router) {
 	logger.Info("swagger initializing")
 
 	docs.SwaggerInfo.Title = "Лавочки"
-	docs.SwaggerInfo.BasePath = "/api/v1"
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
 	router.PathPrefix("/api/swagger").Handler(httpSwagger.WrapHandler)
