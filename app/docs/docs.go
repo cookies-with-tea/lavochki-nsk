@@ -220,26 +220,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/districts": {
-            "get": {
-                "description": "Get a list of districts",
-                "tags": [
-                    "Districts"
-                ],
-                "summary": "List districts",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/benches_internal_domain.District"
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/private/benches": {
             "post": {
                 "produces": [
@@ -664,6 +644,26 @@ const docTemplate = `{
                         "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/benches_internal_apperror.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/public/districts": {
+            "get": {
+                "description": "Get a list of districts",
+                "tags": [
+                    "Districts"
+                ],
+                "summary": "List districts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/benches_internal_domain.District"
+                            }
                         }
                     }
                 }
