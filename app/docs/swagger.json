@@ -255,6 +255,15 @@
                     "Benches"
                 ],
                 "summary": "Detail bench",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bench ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -309,7 +318,7 @@
             },
             "patch": {
                 "produces": [
-                    "application/json"
+                    "multipart/form-data"
                 ],
                 "tags": [
                     "Benches"
@@ -894,6 +903,12 @@
                 },
                 "street": {
                     "type": "string"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/benches_internal_domain.Tag"
+                    }
                 }
             }
         },
@@ -940,13 +955,13 @@
         "benches_internal_domain.CommentReport": {
             "type": "object",
             "properties": {
-                "ID": {
-                    "type": "string"
-                },
                 "cause": {
                     "type": "string"
                 },
                 "comment_id": {
+                    "type": "string"
+                },
+                "id": {
                     "type": "string"
                 },
                 "is_active": {

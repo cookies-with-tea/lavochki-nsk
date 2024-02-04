@@ -267,6 +267,15 @@ const docTemplate = `{
                     "Benches"
                 ],
                 "summary": "Detail bench",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bench ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -321,7 +330,7 @@ const docTemplate = `{
             },
             "patch": {
                 "produces": [
-                    "application/json"
+                    "multipart/form-data"
                 ],
                 "tags": [
                     "Benches"
@@ -906,6 +915,12 @@ const docTemplate = `{
                 },
                 "street": {
                     "type": "string"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/benches_internal_domain.Tag"
+                    }
                 }
             }
         },
@@ -952,13 +967,13 @@ const docTemplate = `{
         "benches_internal_domain.CommentReport": {
             "type": "object",
             "properties": {
-                "ID": {
-                    "type": "string"
-                },
                 "cause": {
                     "type": "string"
                 },
                 "comment_id": {
+                    "type": "string"
+                },
+                "id": {
                     "type": "string"
                 },
                 "is_active": {
