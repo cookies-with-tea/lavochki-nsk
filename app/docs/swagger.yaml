@@ -70,6 +70,13 @@ definitions:
       user_id:
         type: string
     type: object
+  benches_internal_domain.District:
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+    type: object
   benches_internal_domain.Pagination:
     properties:
       count:
@@ -222,244 +229,6 @@ definitions:
 info:
   contact: {}
 paths:
-  /api/v1/benches:
-    get:
-      description: Get a list of benches with filtering and pagination
-      parameters:
-      - description: sort field
-        in: query
-        name: sort_by
-        type: string
-      - description: sort order
-        in: query
-        name: sort_order
-        type: string
-      - description: page
-        in: query
-        name: page
-        type: integer
-      - description: per page
-        in: query
-        name: per_page
-        type: integer
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/benches_internal_domain.BenchesList'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/benches_internal_apperror.AppError'
-      summary: List benches with filtering and pagination
-      tags:
-      - Benches
-    post:
-      parameters:
-      - description: bench data
-        in: body
-        name: Bench
-        required: true
-        schema:
-          $ref: '#/definitions/benches_internal_dto.CreateBench'
-      - description: Bearer
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - multipart/form-data
-      responses:
-        "201":
-          description: Created
-        "400":
-          description: Bad Request
-        "418":
-          description: I'm a teapot
-      summary: Create bench
-      tags:
-      - Benches
-  /api/v1/benches/{id}:
-    delete:
-      description: Delete bench by ID
-      parameters:
-      - description: Bearer
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: Bench ID
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/benches_internal_apperror.AppError'
-        "418":
-          description: I'm a teapot
-      summary: Delete bench
-      tags:
-      - Benches
-    get:
-      description: Get detail active bench
-      parameters:
-      - description: Bench ID
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/benches_internal_domain.Bench'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/benches_internal_apperror.AppError'
-      summary: Detail bench
-      tags:
-      - Benches
-    patch:
-      parameters:
-      - description: bench data
-        in: body
-        name: Bench
-        required: true
-        schema:
-          $ref: '#/definitions/benches_internal_dto.UpdateBench'
-      - description: Bearer
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: Bench ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - multipart/form-data
-      responses:
-        "201":
-          description: Created
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/benches_internal_apperror.AppError'
-        "418":
-          description: I'm a teapot
-      summary: Update bench
-      tags:
-      - Benches
-  /api/v1/benches/moderation:
-    get:
-      description: Get list moderation benches
-      parameters:
-      - description: Bearer
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: sort field
-        in: query
-        name: sort_by
-        type: string
-      - description: sort order
-        in: query
-        name: sort_order
-        type: string
-      - description: page
-        in: query
-        name: page
-        type: integer
-      - description: pre page
-        in: query
-        name: per_page
-        type: integer
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/benches_internal_domain.Bench'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/benches_internal_apperror.AppError'
-      summary: Moderation list benches
-      tags:
-      - Benches
-    post:
-      description: Accept or reject a bench
-      parameters:
-      - description: decision bench data
-        in: body
-        name: Decision
-        required: true
-        schema:
-          $ref: '#/definitions/benches_internal_dto.DecisionBench'
-      - description: Bearer
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/benches_internal_apperror.AppError'
-      summary: Decision bench
-      tags:
-      - Benches
-  /api/v1/benches/nearest/{id}:
-    get:
-      description: Get the nearest benches by bench
-      parameters:
-      - description: Bench ID
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/benches_internal_apperror.AppError'
-        "418":
-          description: I'm a teapot
-      summary: Get the nearest benches
-      tags:
-      - Benches
-  /api/v1/benches/telegram:
-    post:
-      parameters:
-      - description: bench data
-        in: body
-        name: CreateBenchViaTelegram
-        required: true
-        schema:
-          $ref: '#/definitions/benches_internal_dto.CreateBenchViaTelegram'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-        "400":
-          description: Bad Request
-      summary: Create bench via telegram
-      tags:
-      - Benches
   /api/v1/bot/auth:
     post:
       parameters:
@@ -593,6 +362,318 @@ paths:
       summary: List comments by bench
       tags:
       - Comments
+  /api/v1/districts:
+    get:
+      description: Get a list of districts
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/benches_internal_domain.District'
+            type: array
+      summary: List districts
+      tags:
+      - Districts
+  /api/v1/private/benches:
+    post:
+      parameters:
+      - description: bench data
+        in: body
+        name: Bench
+        required: true
+        schema:
+          $ref: '#/definitions/benches_internal_dto.CreateBench'
+      - description: Bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - multipart/form-data
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+        "418":
+          description: I'm a teapot
+      summary: Create bench
+      tags:
+      - Benches
+  /api/v1/private/benches/{id}:
+    delete:
+      description: Delete bench by ID
+      parameters:
+      - description: Bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Bench ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/benches_internal_apperror.AppError'
+        "418":
+          description: I'm a teapot
+      summary: Delete bench
+      tags:
+      - Benches
+    get:
+      description: Get detail active bench
+      parameters:
+      - description: Bench ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/benches_internal_domain.Bench'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/benches_internal_apperror.AppError'
+      summary: Detail bench
+      tags:
+      - Benches
+    patch:
+      parameters:
+      - description: bench data
+        in: body
+        name: Bench
+        required: true
+        schema:
+          $ref: '#/definitions/benches_internal_dto.UpdateBench'
+      - description: Bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Bench ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - multipart/form-data
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/benches_internal_apperror.AppError'
+        "418":
+          description: I'm a teapot
+      summary: Update bench
+      tags:
+      - Benches
+  /api/v1/private/benches/moderation:
+    get:
+      description: Get list moderation benches
+      parameters:
+      - description: Bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: sort field
+        in: query
+        name: sort_by
+        type: string
+      - description: sort order
+        in: query
+        name: sort_order
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: pre page
+        in: query
+        name: per_page
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/benches_internal_domain.Bench'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/benches_internal_apperror.AppError'
+      summary: Moderation list benches
+      tags:
+      - Benches
+    post:
+      description: Accept or reject a bench
+      parameters:
+      - description: decision bench data
+        in: body
+        name: Decision
+        required: true
+        schema:
+          $ref: '#/definitions/benches_internal_dto.DecisionBench'
+      - description: Bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/benches_internal_apperror.AppError'
+      summary: Decision bench
+      tags:
+      - Benches
+  /api/v1/private/benches/telegram:
+    post:
+      parameters:
+      - description: bench data
+        in: body
+        name: CreateBenchViaTelegram
+        required: true
+        schema:
+          $ref: '#/definitions/benches_internal_dto.CreateBenchViaTelegram'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+      summary: Create bench via telegram
+      tags:
+      - Benches
+  /api/v1/private/tags:
+    post:
+      description: Create tag
+      parameters:
+      - description: tag data
+        in: body
+        name: CreateTag
+        required: true
+        schema:
+          $ref: '#/definitions/benches_internal_dto.CreateTag'
+      responses:
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/benches_internal_apperror.AppError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/benches_internal_apperror.AppError'
+      summary: Create tag
+      tags:
+      - Tags
+  /api/v1/public/benches:
+    get:
+      description: Get a list of benches with filtering and pagination
+      parameters:
+      - description: sort field
+        in: query
+        name: sort_by
+        type: string
+      - description: sort order
+        in: query
+        name: sort_order
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: per page
+        in: query
+        name: per_page
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/benches_internal_domain.BenchesList'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/benches_internal_apperror.AppError'
+      summary: List benches with filtering and pagination
+      tags:
+      - Benches
+  /api/v1/public/benches/{id}:
+    get:
+      description: Get detail active bench
+      parameters:
+      - description: Bench ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/benches_internal_domain.Bench'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/benches_internal_apperror.AppError'
+      summary: Detail bench
+      tags:
+      - Benches
+  /api/v1/public/benches/nearest/{id}:
+    get:
+      description: Get the nearest benches by bench
+      parameters:
+      - description: Bench ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/benches_internal_apperror.AppError'
+        "418":
+          description: I'm a teapot
+      summary: Get the nearest benches
+      tags:
+      - Benches
+  /api/v1/public/tags:
+    get:
+      description: Get list tags
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/benches_internal_domain.Tag'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/benches_internal_apperror.AppError'
+      summary: List tags
+      tags:
+      - Tags
   /api/v1/reports/comments:
     get:
       parameters:
@@ -640,44 +721,6 @@ paths:
       summary: Create report comment
       tags:
       - Reports
-  /api/v1/tags:
-    get:
-      description: Get list tags
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/benches_internal_domain.Tag'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/benches_internal_apperror.AppError'
-      summary: List tags
-      tags:
-      - Tags
-    post:
-      description: Create tag
-      parameters:
-      - description: tag data
-        in: body
-        name: CreateTag
-        required: true
-        schema:
-          $ref: '#/definitions/benches_internal_dto.CreateTag'
-      responses:
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/benches_internal_apperror.AppError'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/benches_internal_apperror.AppError'
-      summary: Create tag
-      tags:
-      - Tags
   /api/v1/users:
     get:
       parameters:

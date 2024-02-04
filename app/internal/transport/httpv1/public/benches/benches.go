@@ -57,7 +57,7 @@ func (handler *Handler) Register(router *mux.Router) {
 // @Tags Benches
 // @Success 200 {object} domain.BenchesList
 // @Failure 400 {object} apperror.AppError
-// @Router /api/v1/benches [get]
+// @Router /api/v1/public/benches [get]
 func (handler *Handler) allListBenches(writer http.ResponseWriter, request *http.Request) error {
 	all, errGetAll := handler.policy.GetListBenches(
 		request.Context(),
@@ -84,7 +84,7 @@ func (handler *Handler) allListBenches(writer http.ResponseWriter, request *http
 // @Param per_page query int false "per page"
 // @Success 200 {object} domain.BenchesList
 // @Failure 400 {object} apperror.AppError
-// @Router /api/v1/benches [get]
+// @Router /api/v1/public/benches [get]
 func (handler *Handler) listBenches(writer http.ResponseWriter, request *http.Request) error {
 	// Получаем параметры для сортировки
 	var sortOptions *sort.Options
@@ -118,7 +118,7 @@ func (handler *Handler) listBenches(writer http.ResponseWriter, request *http.Re
 // @Param id path string true "Bench ID"
 // @Success 200 {object} domain.Bench
 // @Failure 400 {object} apperror.AppError
-// @Router /api/v1/benches/{id} [get]
+// @Router /api/v1/public/benches/{id} [get]
 func (handler *Handler) detailBench(w http.ResponseWriter, r *http.Request) error {
 	id := mux.Vars(r)["id"]
 	bench, err := handler.policy.GetDetailBench(r.Context(), id, roles.User)
@@ -137,7 +137,7 @@ func (handler *Handler) detailBench(w http.ResponseWriter, r *http.Request) erro
 // @Success 200
 // @Failure 400 {object} apperror.AppError
 // @Failure 418
-// @Router /api/v1/benches/nearest/{id} [get]
+// @Router /api/v1/public/benches/nearest/{id} [get]
 func (handler *Handler) nearestBenches(writer http.ResponseWriter, request *http.Request) error {
 	idBench := mux.Vars(request)["id"]
 

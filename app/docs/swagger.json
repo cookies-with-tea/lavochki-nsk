@@ -4,367 +4,6 @@
         "contact": {}
     },
     "paths": {
-        "/api/v1/benches": {
-            "get": {
-                "description": "Get a list of benches with filtering and pagination",
-                "tags": [
-                    "Benches"
-                ],
-                "summary": "List benches with filtering and pagination",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "sort field",
-                        "name": "sort_by",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "sort order",
-                        "name": "sort_order",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "page",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "per page",
-                        "name": "per_page",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/benches_internal_domain.BenchesList"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/benches_internal_apperror.AppError"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "produces": [
-                    "multipart/form-data"
-                ],
-                "tags": [
-                    "Benches"
-                ],
-                "summary": "Create bench",
-                "parameters": [
-                    {
-                        "description": "bench data",
-                        "name": "Bench",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/benches_internal_dto.CreateBench"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "description": "Bearer",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created"
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "418": {
-                        "description": "I'm a teapot"
-                    }
-                }
-            }
-        },
-        "/api/v1/benches/moderation": {
-            "get": {
-                "description": "Get list moderation benches",
-                "tags": [
-                    "Benches"
-                ],
-                "summary": "Moderation list benches",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Bearer",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "sort field",
-                        "name": "sort_by",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "sort order",
-                        "name": "sort_order",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "page",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "pre page",
-                        "name": "per_page",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/benches_internal_domain.Bench"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/benches_internal_apperror.AppError"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Accept or reject a bench",
-                "tags": [
-                    "Benches"
-                ],
-                "summary": "Decision bench",
-                "parameters": [
-                    {
-                        "description": "decision bench data",
-                        "name": "Decision",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/benches_internal_dto.DecisionBench"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "description": "Bearer",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/benches_internal_apperror.AppError"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/benches/nearest/{id}": {
-            "get": {
-                "description": "Get the nearest benches by bench",
-                "tags": [
-                    "Benches"
-                ],
-                "summary": "Get the nearest benches",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Bench ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/benches_internal_apperror.AppError"
-                        }
-                    },
-                    "418": {
-                        "description": "I'm a teapot"
-                    }
-                }
-            }
-        },
-        "/api/v1/benches/telegram": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Benches"
-                ],
-                "summary": "Create bench via telegram",
-                "parameters": [
-                    {
-                        "description": "bench data",
-                        "name": "CreateBenchViaTelegram",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/benches_internal_dto.CreateBenchViaTelegram"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created"
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    }
-                }
-            }
-        },
-        "/api/v1/benches/{id}": {
-            "get": {
-                "description": "Get detail active bench",
-                "tags": [
-                    "Benches"
-                ],
-                "summary": "Detail bench",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Bench ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/benches_internal_domain.Bench"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/benches_internal_apperror.AppError"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "Delete bench by ID",
-                "tags": [
-                    "Benches"
-                ],
-                "summary": "Delete bench",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Bearer",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Bench ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/benches_internal_apperror.AppError"
-                        }
-                    },
-                    "418": {
-                        "description": "I'm a teapot"
-                    }
-                }
-            },
-            "patch": {
-                "produces": [
-                    "multipart/form-data"
-                ],
-                "tags": [
-                    "Benches"
-                ],
-                "summary": "Update bench",
-                "parameters": [
-                    {
-                        "description": "bench data",
-                        "name": "Bench",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/benches_internal_dto.UpdateBench"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "description": "Bearer",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Bench ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created"
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/benches_internal_apperror.AppError"
-                        }
-                    },
-                    "418": {
-                        "description": "I'm a teapot"
-                    }
-                }
-            }
-        },
         "/api/v1/bot/auth": {
             "post": {
                 "produces": [
@@ -569,6 +208,481 @@
                 }
             }
         },
+        "/api/v1/districts": {
+            "get": {
+                "description": "Get a list of districts",
+                "tags": [
+                    "Districts"
+                ],
+                "summary": "List districts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/benches_internal_domain.District"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/private/benches": {
+            "post": {
+                "produces": [
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "Benches"
+                ],
+                "summary": "Create bench",
+                "parameters": [
+                    {
+                        "description": "bench data",
+                        "name": "Bench",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/benches_internal_dto.CreateBench"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "418": {
+                        "description": "I'm a teapot"
+                    }
+                }
+            }
+        },
+        "/api/v1/private/benches/moderation": {
+            "get": {
+                "description": "Get list moderation benches",
+                "tags": [
+                    "Benches"
+                ],
+                "summary": "Moderation list benches",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "sort field",
+                        "name": "sort_by",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "sort order",
+                        "name": "sort_order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pre page",
+                        "name": "per_page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/benches_internal_domain.Bench"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/benches_internal_apperror.AppError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Accept or reject a bench",
+                "tags": [
+                    "Benches"
+                ],
+                "summary": "Decision bench",
+                "parameters": [
+                    {
+                        "description": "decision bench data",
+                        "name": "Decision",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/benches_internal_dto.DecisionBench"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/benches_internal_apperror.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/private/benches/telegram": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Benches"
+                ],
+                "summary": "Create bench via telegram",
+                "parameters": [
+                    {
+                        "description": "bench data",
+                        "name": "CreateBenchViaTelegram",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/benches_internal_dto.CreateBenchViaTelegram"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/api/v1/private/benches/{id}": {
+            "get": {
+                "description": "Get detail active bench",
+                "tags": [
+                    "Benches"
+                ],
+                "summary": "Detail bench",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bench ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/benches_internal_domain.Bench"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/benches_internal_apperror.AppError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete bench by ID",
+                "tags": [
+                    "Benches"
+                ],
+                "summary": "Delete bench",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bench ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/benches_internal_apperror.AppError"
+                        }
+                    },
+                    "418": {
+                        "description": "I'm a teapot"
+                    }
+                }
+            },
+            "patch": {
+                "produces": [
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "Benches"
+                ],
+                "summary": "Update bench",
+                "parameters": [
+                    {
+                        "description": "bench data",
+                        "name": "Bench",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/benches_internal_dto.UpdateBench"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bench ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/benches_internal_apperror.AppError"
+                        }
+                    },
+                    "418": {
+                        "description": "I'm a teapot"
+                    }
+                }
+            }
+        },
+        "/api/v1/private/tags": {
+            "post": {
+                "description": "Create tag",
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "Create tag",
+                "parameters": [
+                    {
+                        "description": "tag data",
+                        "name": "CreateTag",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/benches_internal_dto.CreateTag"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/benches_internal_apperror.AppError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/benches_internal_apperror.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/public/benches": {
+            "get": {
+                "description": "Get a list of benches with filtering and pagination",
+                "tags": [
+                    "Benches"
+                ],
+                "summary": "List benches with filtering and pagination",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "sort field",
+                        "name": "sort_by",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "sort order",
+                        "name": "sort_order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "per page",
+                        "name": "per_page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/benches_internal_domain.BenchesList"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/benches_internal_apperror.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/public/benches/nearest/{id}": {
+            "get": {
+                "description": "Get the nearest benches by bench",
+                "tags": [
+                    "Benches"
+                ],
+                "summary": "Get the nearest benches",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bench ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/benches_internal_apperror.AppError"
+                        }
+                    },
+                    "418": {
+                        "description": "I'm a teapot"
+                    }
+                }
+            }
+        },
+        "/api/v1/public/benches/{id}": {
+            "get": {
+                "description": "Get detail active bench",
+                "tags": [
+                    "Benches"
+                ],
+                "summary": "Detail bench",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bench ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/benches_internal_domain.Bench"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/benches_internal_apperror.AppError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/public/tags": {
+            "get": {
+                "description": "Get list tags",
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "List tags",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/benches_internal_domain.Tag"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/benches_internal_apperror.AppError"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/reports/comments": {
             "get": {
                 "produces": [
@@ -637,64 +751,6 @@
                     },
                     "409": {
                         "description": "Conflict"
-                    }
-                }
-            }
-        },
-        "/api/v1/tags": {
-            "get": {
-                "description": "Get list tags",
-                "tags": [
-                    "Tags"
-                ],
-                "summary": "List tags",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/benches_internal_domain.Tag"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/benches_internal_apperror.AppError"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Create tag",
-                "tags": [
-                    "Tags"
-                ],
-                "summary": "Create tag",
-                "parameters": [
-                    {
-                        "description": "tag data",
-                        "name": "CreateTag",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/benches_internal_dto.CreateTag"
-                        }
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/benches_internal_apperror.AppError"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "schema": {
-                            "$ref": "#/definitions/benches_internal_apperror.AppError"
-                        }
                     }
                 }
             }
@@ -968,6 +1024,17 @@
                     "type": "boolean"
                 },
                 "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "benches_internal_domain.District": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "title": {
                     "type": "string"
                 }
             }

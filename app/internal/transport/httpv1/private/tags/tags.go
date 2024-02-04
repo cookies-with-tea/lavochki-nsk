@@ -43,7 +43,7 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 // @Param CreateTag body dto.CreateTag true "tag data"
 // @Failure 400 {object} apperror.AppError
 // @Failure 403 {object} apperror.AppError
-// @Router /api/v1/tags [post]
+// @Router /api/v1/private/tags [post]
 func (handler *Handler) createTag(w http.ResponseWriter, r *http.Request) error {
 	var tag dto.CreateTag
 	if err := json.NewDecoder(r.Body).Decode(&tag); err != nil {

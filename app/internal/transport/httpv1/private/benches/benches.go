@@ -70,7 +70,7 @@ func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) 
 // @Param CreateBenchViaTelegram body dto.CreateBenchViaTelegram true "bench data"
 // @Success 201
 // @Failure 400
-// @Router /api/v1/benches/telegram [post]
+// @Router /api/v1/private/benches/telegram [post]
 func (handler *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Request) error {
 	var bench dto.CreateBenchViaTelegram
 	if err := json.NewDecoder(r.Body).Decode(&bench); err != nil {
@@ -101,7 +101,7 @@ func (handler *Handler) addBenchViaTelegram(w http.ResponseWriter, r *http.Reque
 // @Param per_page query int false "pre page"
 // @Success 200 {object} []domain.Bench
 // @Failure 400 {object} apperror.AppError
-// @Router /api/v1/benches/moderation [get]
+// @Router /api/v1/private/benches/moderation [get]
 func (handler *Handler) listModerationBench(writer http.ResponseWriter, request *http.Request) error {
 	// Получаем параметры для сортировки
 	var sortOptions *sort.Options
@@ -131,7 +131,7 @@ func (handler *Handler) listModerationBench(writer http.ResponseWriter, request 
 // @Param Authorization header string true "Bearer"
 // @Success 200
 // @Failure 400 {object} apperror.AppError
-// @Router /api/v1/benches/moderation [post]
+// @Router /api/v1/private/benches/moderation [post]
 func (handler *Handler) decisionBench(writer http.ResponseWriter, request *http.Request) error {
 	var decisionBench dto.DecisionBench
 	if err := json.NewDecoder(request.Body).Decode(&decisionBench); err != nil {
@@ -160,7 +160,7 @@ func (handler *Handler) decisionBench(writer http.ResponseWriter, request *http.
 // @Success 201
 // @Failure 400
 // @Failure 418
-// @Router /api/v1/benches [post]
+// @Router /api/v1/private/benches [post]
 func (handler *Handler) createBench(writer http.ResponseWriter, request *http.Request) error {
 	errParseMultipartForm := request.ParseMultipartForm(0)
 	if errParseMultipartForm != nil {
@@ -238,7 +238,7 @@ func (handler *Handler) createBench(writer http.ResponseWriter, request *http.Re
 // @Success 201
 // @Failure 400 {object} apperror.AppError
 // @Failure 418
-// @Router /api/v1/benches/{id} [patch]
+// @Router /api/v1/private/benches/{id} [patch]
 func (handler *Handler) updateBench(writer http.ResponseWriter, request *http.Request) error {
 	errParseMultipartForm := request.ParseMultipartForm(0)
 	if errParseMultipartForm != nil {
@@ -310,7 +310,7 @@ func (handler *Handler) updateBench(writer http.ResponseWriter, request *http.Re
 // @Success 200
 // @Failure 400 {object} apperror.AppError
 // @Failure 418
-// @Router /api/v1/benches/{id} [delete]
+// @Router /api/v1/private/benches/{id} [delete]
 func (handler *Handler) deleteBench(writer http.ResponseWriter, request *http.Request) error {
 	idBench := mux.Vars(request)["id"]
 
@@ -330,7 +330,7 @@ func (handler *Handler) deleteBench(writer http.ResponseWriter, request *http.Re
 // @Param id path string true "Bench ID"
 // @Success 200 {object} domain.Bench
 // @Failure 400 {object} apperror.AppError
-// @Router /api/v1/benches/{id} [get]
+// @Router /api/v1/private/benches/{id} [get]
 func (handler *Handler) detailBench(w http.ResponseWriter, r *http.Request) error {
 	id := mux.Vars(r)["id"]
 	bench, err := handler.policy.GetDetailBench(r.Context(), id, roles.Admin)

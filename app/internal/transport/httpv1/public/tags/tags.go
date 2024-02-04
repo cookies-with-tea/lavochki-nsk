@@ -36,7 +36,7 @@ func (handler *Handler) Register(router *mux.Router) {
 // @Tags Tags
 // @Success 200 {object} []domain.Tag
 // @Failure 400 {object} apperror.AppError
-// @Router /api/v1/tags [get]
+// @Router /api/v1/public/tags [get]
 func (handler *Handler) listTags(w http.ResponseWriter, r *http.Request) error {
 	listTags, err := handler.policy.GetAllTags(r.Context())
 	if err != nil {
