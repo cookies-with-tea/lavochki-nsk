@@ -115,6 +115,7 @@ func (handler *Handler) listBenches(writer http.ResponseWriter, request *http.Re
 // @Summary Detail bench
 // @Description Get detail active bench
 // @Tags Benches
+// @Param id path string true "Bench ID"
 // @Success 200 {object} domain.Bench
 // @Failure 400 {object} apperror.AppError
 // @Router /api/v1/benches/{id} [get]
