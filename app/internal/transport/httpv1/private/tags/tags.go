@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"benches/internal/apperror"
+	"benches/internal/constants/roles"
 	"benches/internal/dto"
 	tagsPolicy "benches/internal/policy/tags"
 	"benches/internal/transport/httpv1"
@@ -31,9 +32,8 @@ func NewHandler(policy *tagsPolicy.Policy) *Handler {
 }
 
 func (handler *Handler) Register(router *mux.Router, authManager *auth.Manager) {
-	router.Use(authManager.JWTMiddleware)
+	router.Use(authManager.JWTRoleMiddleware(roles.Admin))
 
-	// TODO: Создавать может только администратор
 	router.HandleFunc(urlCreateTag, apperror.Middleware(handler.createTag)).Methods("POST")
 }
 
