@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"benches/internal/apperror"
+	"benches/internal/constants/roles"
 	"benches/internal/domain"
 	"benches/internal/repository/postgres/users"
 	redisStorage "benches/internal/repository/redis"
@@ -77,6 +78,7 @@ func (service *service) GetOrCreate(ctx context.Context, userDomain domain.User)
 
 		if errors.Is(err, apperror.ErrNotFound) {
 			// Создаём пользователя
+			userDomain.Role = roles.User
 			dbUser, errCreate = service.db.Create(ctx, userDomain)
 
 			if errCreate != nil {
