@@ -78,3 +78,30 @@ func (b *benchModel) ToMap() (map[string]interface{}, error) {
 
 	return benchMap, nil
 }
+
+func (b *benchModel) ToMapUpdate() (map[string]any, error) {
+	benchMap := make(map[string]interface{})
+
+	if b.ID != "" {
+		benchMap["id"] = b.ID
+	}
+
+	if b.Lat != 0 {
+		benchMap["lat"] = b.Lat
+	}
+	if b.Lng != 0 {
+		benchMap["lng"] = b.Lng
+	}
+
+	if len(b.Images) != 0 {
+		benchMap["images"] = b.Images
+	}
+
+	benchMap["is_active"] = b.IsActive
+
+	if b.Street.Valid {
+		benchMap["street"] = b.Street.String
+	}
+
+	return benchMap, nil
+}

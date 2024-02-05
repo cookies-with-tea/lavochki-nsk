@@ -197,18 +197,26 @@ func (policy *Policy) DecisionBench(ctx context.Context, benchID string, decisio
 	// Получаем лавочку по ID, потому что нам нужен TelegramID создателя лавочки
 	bench, errGetBench := policy.benchesService.GetBenchByID(ctx, benchID)
 	if errGetBench != nil {
+		policy.logger.Error("failed get bench by id", zap.String("bench id", benchID), zap.Error(errGetBench))
 		return errGetBench
 	}
 
 	// Получаем пользователя по ID
 	user, errGetUser := policy.usersService.GetUserByID(ctx, bench.Owner)
 	if errGetUser != nil {
+		policy.logger.Error("failed get user by id", zap.String("user id", bench.Owner), zap.Error(errGetUser))
 		return errGetUser
 	}
 
 	// Обновляем bench. Если decision = false, то лавочка удалится. Иначе будет обновлено поле is_active = true
 	errDecisionBench := policy.benchesService.DecisionBench(ctx, benchID, decision)
 	if errDecisionBench != nil {
+		policy.logger.Error(
+			"failed update bench by id",
+			zap.String("bench id", benchID),
+			zap.Bool("decision", decision),
+			zap.Error(errDecisionBench),
+		)
 		return errDecisionBench
 	}
 
@@ -223,6 +231,10 @@ func (policy *Policy) DecisionBench(ctx context.Context, benchID string, decisio
 	// Отправляем уведомления в telegram
 	errSendNotification := policy.notificationsService.SendNotificationInTelegram(ctx, notification)
 	if errSendNotification != nil {
+		policy.logger.Error(
+			"failed send notification to telegram",
+			zap.Error(errSendNotification),
+		)
 		return errSendNotification
 	}
 

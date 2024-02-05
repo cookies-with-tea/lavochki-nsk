@@ -197,7 +197,7 @@ func (repository *repository) Update(ctx context.Context, id string, bench domai
 	updateBenchModel := benchModel{}
 	updateBenchModel.FromDomain(bench)
 
-	modelMap, errToMap := updateBenchModel.ToMap()
+	modelMap, errToMap := updateBenchModel.ToMapUpdate()
 	if errToMap != nil {
 		return errToMap
 	}
