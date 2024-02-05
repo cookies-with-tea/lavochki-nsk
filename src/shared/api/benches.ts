@@ -19,15 +19,14 @@ class BenchesApi extends AxiosService {
   getBenches = async (payload: CommonTypes.PayloadPagination) => {
     return await this.axiosCall<BenchTypes.Response>({
       method: 'get',
-      url: '/v1/benches',
+      url: '/v1/public/benches',
       params: payload,
     })
   }
-  // TODO: Добавить тип
   getModerationBenches = async (payload: CommonTypes.PayloadPagination) => {
     return await this.axiosCall<BenchTypes.Response>({
       method: 'get',
-      url: '/v1/benches/moderation',
+      url: '/v1/private/benches/moderation',
       params: payload,
     })
   }

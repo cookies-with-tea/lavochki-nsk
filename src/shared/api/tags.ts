@@ -10,16 +10,18 @@ class TagsApi extends AxiosService {
 
   get = () => {
     return this.requestFx({
-      url: '/v1/tags',
+      url: '/v1/public/tags',
       method: 'get',
     })
   }
 
   create = async (title: string) => {
     return this.axiosCall({
-      url: '/v1/tags',
+      url: '/v1/private/tags',
       method: 'post',
-      data: { title },
+      data: {
+        title: title.toLocaleLowerCase()
+      },
     })
   }
 }
