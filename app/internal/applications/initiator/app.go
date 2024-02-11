@@ -82,10 +82,11 @@ func NewApp(cfg *config.Config, logger *zap.Logger) (*App, error) {
 	tagsComposite.PrivateHandler.Register(appTagsPrivateRouter, managers.AuthManager)
 
 	// Пользователи
-	appUsersRouter := router.PathPrefix("/api/v1/users").Subrouter()
+	appUsersPrivateRouter := router.PathPrefix("/api/v1/private/users").Subrouter()
+	appUsersPublicRouter := router.PathPrefix("/api/v1/public/users").Subrouter()
 	usersComposite := composites.NewUserComposite(databases, managers, cfg, logger)
-	usersComposite.PrivateHandler.Register(appUsersRouter, managers.AuthManager)
-	usersComposite.PublicHandler.Register(appUsersRouter)
+	usersComposite.PrivateHandler.Register(appUsersPrivateRouter, managers.AuthManager)
+	usersComposite.PublicHandler.Register(appUsersPublicRouter)
 
 	// Лавочки
 	appBenchesPrivateRouter := router.PathPrefix("/api/v1/private/benches").Subrouter()
