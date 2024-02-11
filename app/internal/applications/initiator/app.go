@@ -143,7 +143,7 @@ func (a *App) startHTTP() {
 			http.MethodOptions,
 			http.MethodDelete,
 		},
-		AllowedOrigins:   []string{"http://localhost:3000", "http://localhost:8080"},
+		AllowedOrigins:   a.cfg.Listen.AllowedOrigins,
 		AllowCredentials: true,
 		AllowedHeaders: []string{
 			"Location",

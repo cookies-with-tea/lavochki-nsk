@@ -11,8 +11,9 @@ type Config struct {
 	IsDevelopment bool   `env:"IS_DEV" env-default:"false"`
 	SigningKey    string `env:"SIGNING_KEY"`
 	Listen        struct {
-		BindIP string `env:"BIND_IP" env-default:"0.0.0.0"`
-		Port   string `env:"PORT" env-default:"8000"`
+		BindIP         string   `env:"BIND_IP" env-default:"0.0.0.0"`
+		Port           string   `env:"PORT" env-default:"8000"`
+		AllowedOrigins []string `env:"ALLOWED_ORIGINS" env-default:"http://localhost:3000,http://localhost:8080"`
 	}
 	AppConfig struct {
 		LogLevel  string `env:"LOG_LEVEL" env-default:"trace"`
