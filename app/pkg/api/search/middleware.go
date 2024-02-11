@@ -24,8 +24,11 @@ type Option struct {
 	Operator string
 }
 
-func Middleware(nextHandler http.HandlerFunc, availableFilteringFields []string) http.HandlerFunc {
+func Middleware(nextHandler http.HandlerFunc, availableFilteringFields, ignoreFilteringFields []string) http.HandlerFunc {
 	sort.Strings(availableFilteringFields)
+
+	ignoreFilteringFields = append(ignoreFilteringFields, api.DefaultIgnoreFilteringFields...)
+	sort.Strings(ignoreFilteringFields)
 
 	return func(writer http.ResponseWriter, request *http.Request) {
 		parameters, errParse := url.ParseQuery(request.URL.RawQuery)
@@ -40,30 +43,32 @@ func Middleware(nextHandler http.HandlerFunc, availableFilteringFields []string)
 
 		filters := make([]Option, 0)
 		for key, values := range parameters {
-			if availableFilteringFields != nil {
-				if index := sort.SearchStrings(availableFilteringFields, key); index >= len(availableFilteringFields) {
-					writer.WriteHeader(http.StatusBadRequest)
+			if index := sort.SearchStrings(ignoreFilteringFields, key); index < len(ignoreFilteringFields) {
+				continue
+			}
 
-					details, errMarshal := json.Marshal(map[string]any{
-						"field": key,
-					})
-					if errMarshal != nil {
-						err := api.ErrorResponse{
-							Message: "internal system error",
-							Details: nil,
-						}
-						writer.Write(err.Marshal())
+			if index := sort.SearchStrings(availableFilteringFields, key); index >= len(availableFilteringFields) {
+				writer.WriteHeader(http.StatusBadRequest)
 
-						return
-					}
-
+				details, errMarshal := json.Marshal(map[string]any{
+					"field": key,
+				})
+				if errMarshal != nil {
 					err := api.ErrorResponse{
-						Message: "unknown fields to filter",
-						Details: details,
+						Message: "internal system error",
+						Details: nil,
 					}
 					writer.Write(err.Marshal())
+
 					return
 				}
+
+				err := api.ErrorResponse{
+					Message: "unknown fields to filter",
+					Details: details,
+				}
+				writer.Write(err.Marshal())
+				return
 			}
 
 			for _, value := range values {

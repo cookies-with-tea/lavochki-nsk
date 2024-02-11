@@ -47,6 +47,7 @@ func (handler *Handler) Register(router *mux.Router) {
 				10,
 			),
 			[]string{"id"},
+			nil,
 		),
 	).Methods("GET")
 	router.HandleFunc(urlDetailBench, apperror.Middleware(handler.detailBench)).Methods("GET")
