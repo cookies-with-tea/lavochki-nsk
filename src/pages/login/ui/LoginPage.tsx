@@ -5,16 +5,13 @@ import styles from './styles.module.scss'
 export const LoginPage = () => {
   return (
     <div className={styles['login-page']}>
-      <h1 className={styles['login-page__title']}>
-        Авторизация
-      </h1>
+      <h1 className={styles['login-page__title']}>Авторизация</h1>
 
-      <div  className={styles['login-page__form']}>
+      <div className={styles['login-page__form']}>
         <div className={styles['login-page__form-item']}>
           <p className={styles['login-page__form-text']}>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-            Fugit quo fugiat deserunt dignissimos, ad voluptatem dolorem sequi,
-            quia pariatur similique totam, possimus placeat minima?
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugit quo fugiat deserunt dignissimos, ad
+            voluptatem dolorem sequi, quia pariatur similique totam, possimus placeat minima?
           </p>
 
           <TelegramAuth />

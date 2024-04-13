@@ -1,7 +1,11 @@
 import {
-  createRootRoute, createRoute,
-  createRouter, Outlet, redirect,
-  RootRoute, Route,
+  createRootRoute,
+  createRoute,
+  createRouter,
+  Outlet,
+  redirect,
+  RootRoute,
+  Route,
   RouterProvider as TanstackRouterProvider,
   ScrollRestoration,
 } from '@tanstack/react-router'
@@ -17,10 +21,10 @@ const TanStackRouterDevtools =
   process.env.NODE_ENV === 'production'
     ? () => null
     : lazy(() =>
-      import('@tanstack/router-devtools').then((res) => ({
-        default: res.TanStackRouterDevtools,
-      })),
-    )
+        import('@tanstack/router-devtools').then((res) => ({
+          default: res.TanStackRouterDevtools,
+        }))
+      )
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -67,35 +71,30 @@ const guestLayoutRoute = createRoute({
 const loginRoute = createRoute({
   path: '/',
   getParentRoute: () => guestLayoutRoute,
-  component: lazy(() => import('#pages/login'))
+  component: lazy(() => import('#pages/login')),
 })
 
 const homeRoute = createRoute({
   path: 'home',
   getParentRoute: () => staticPageLayoutRoute,
-  component: lazy(() => import('#pages/home'))
+  component: lazy(() => import('#pages/home')),
 })
 
 const adminsRoute = createRoute({
   path: 'admins',
   getParentRoute: () => staticPageLayoutRoute,
-  component: lazy(() => import('#pages/admins'))
+  component: lazy(() => import('#pages/admins')),
 })
 
 const routeTree = rootRoute.addChildren([
-  guestLayoutRoute.addChildren([
-    loginRoute,
-  ]),
-  staticPageLayoutRoute.addChildren([
-    adminsRoute,
-    homeRoute,
-  ]),
+  guestLayoutRoute.addChildren([loginRoute]),
+  staticPageLayoutRoute.addChildren([adminsRoute, homeRoute]),
 ])
 
 const router = createRouter({ routeTree, context: { isAuth: false } })
 
 export const RouterProvider = () => {
-  const isAuth = false
+  const isAuth = true
 
   return (
     <Suspense fallback={'loading...'}>

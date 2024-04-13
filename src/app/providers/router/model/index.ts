@@ -2,7 +2,7 @@ import { AnyRootRoute, AnyRoute, createRoute, RouteOptions } from '@tanstack/rea
 import { lazy } from 'react'
 
 type Route = {
-  path: string,
+  path: string
   children?: Array<Route>
 } & Partial<RouteOptions>
 
@@ -20,18 +20,20 @@ export const routes: Array<Route> = [
 ]
 
 const getRoutes = (routes: Route[], root: AnyRoute): AnyRootRoute => {
-  root.addChildren(routes.map((route) => {
-    const _route = createRoute({
-      getParentRoute: () => root,
-      ...route
+  root.addChildren(
+    routes.map((route) => {
+      const _route = createRoute({
+        getParentRoute: () => root,
+        ...route,
+      })
+
+      if (route.children) {
+        getRoutes(route.children, _route)
+      }
+
+      return _route
     })
-
-    if(route.children){
-      getRoutes(route.children, _route)
-    }
-
-    return _route
-  }))
+  )
 
   return root
 }

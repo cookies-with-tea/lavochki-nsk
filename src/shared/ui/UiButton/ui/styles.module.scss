@@ -1,0 +1,28 @@
+.ui-button {
+  --s-button-padding-vertical: 12px;
+  --s-button-padding-horizontal: 20px;
+  --s-button-font-size: 16px;
+  --s-button-background-hover-color: var(--color-blue-1-dark);
+
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  border-radius: 16px;
+  font-size: var(--s-button-font-size);
+  padding: var(--s-button-padding-vertical) var(--s-button-padding-horizontal);
+
+  &.postfixIcon {
+    flex-direction: row-reverse;
+
+    :global(.ant-btn-icon) {
+      padding-left: 8px;
+      margin-inline-end: 0 !important;
+    }
+  }
+
+  &--sm {
+    --s-button-padding-vertical: 8px;
+    --s-button-padding-horizontal: 12px;
+    --s-button-font-size: 14px;
+  }
+}

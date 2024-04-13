@@ -1,7 +1,6 @@
 import { Outlet } from '@tanstack/react-router'
 import { lazy, Suspense } from 'react'
 
-
 export const BaseLayout = () => {
   return (
     <div>

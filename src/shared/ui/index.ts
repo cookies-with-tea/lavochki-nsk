@@ -1,1 +1,2 @@
-export { Icon } from '#shared/ui/Icon'
+export { UiButton } from '#shared/ui/UiButton'
+export { UiIcon } from '#shared/ui/UiIcon'
