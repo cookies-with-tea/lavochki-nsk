@@ -1,0 +1,12 @@
+@use 'sass:map';
+@use '../variables/index.scss' as *;
+
+@mixin responsive($key, $map: $breakpoints) {
+  @if map-has-key($map, $key) {
+    @media screen and #{map-get($map, $key)} {
+      @content;
+    }
+  } @else {
+    @warn 'Not found key `#{$key}` in map `#{$map}`';
+  }
+}

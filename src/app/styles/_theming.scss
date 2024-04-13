@@ -1,0 +1,14 @@
+html {
+  &.light {
+    --color-primary: var(--color-blue-1);
+    --color-text: var(--color-dark);
+  }
+
+  &.dark {
+    --color-background: var(--color-black-1);
+    --color-text: var(--color-white);
+    --color-primary: var(--color-beige-1);
+    --color-secondary: var(--color-beige-2);
+    --color-box-shadow: rgb(var(--color-rgb-dark) 0.25);
+  }
+}

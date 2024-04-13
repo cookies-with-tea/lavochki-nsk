@@ -1,0 +1,38 @@
+{
+  "module": "esnext",
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "outDir": "./build",
+    "target": "esnext",
+    "module": "esnext",
+    "newLine": "lf",
+    "jsx": "preserve",
+    "strict": true,
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"],
+      "~/*": ["./src/*"],
+      "@root/*": [ "./*"],
+      "app/*": ["./src/app/*"],
+      "#processes/*": ["./src/processes/*"],
+      "#pages/*": ["./src/pages/*"],
+      "#widgets/*": ["./src/widgets/*"],
+      "#features/*": ["./src/features/*"],
+      "#entities/*": ["./src/entities/*"],
+      "#shared/*": ["./src/shared/*"],
+    },
+    "rootDirs": [
+      "./*"
+    ],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+  },
+
+  "exclude": ["node_modules"]
+}

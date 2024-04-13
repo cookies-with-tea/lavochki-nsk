@@ -1,0 +1,31 @@
+.login-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &__form {
+    border-radius: 20px;
+    box-shadow:
+      -20px 20px 60px var(--color-box-shadow),
+      20px -20px 60px var(--color-box-shadow);
+    padding: 30px;
+  }
+
+  &__form-text {
+    max-width: 320px;
+    font-size: var(--font-size--md);
+    margin-bottom: 12px;
+  }
+
+  :global(.telegram-auth) {
+    display: flex;
+    margin: 0 auto;
+  }
+
+  &__title {
+    color: var(--color-grey-5);
+    margin-bottom: 24px;
+  }
+}

@@ -1,0 +1,32 @@
+@use '../variables/index.scss' as *;
+@import 'responsive';
+
+/* stylelint-disable declaration-no-important */
+@mixin generate-display-classes($displays) {
+  @each $display in $displays {
+    .d-#{$display} {
+      display: $display !important;
+    }
+    @each $key, $value in $breakpoints {
+      .d-#{$key}-#{$display} {
+        @include responsive($key, $breakpoints) {
+          display: $display !important;
+        }
+      }
+    }
+    @each $key, $value in $breakpoints-with-max {
+      .d-only-#{$key}-#{$display} {
+        @include responsive($key, $breakpoints-with-max) {
+          display: $display !important;
+        }
+      }
+    }
+    @each $key, $value in $breakpoints-only-max {
+      .d-max-#{$key}-#{$display} {
+        @include responsive($key, $breakpoints-only-max) {
+          display: $display !important;
+        }
+      }
+    }
+  }
+}
