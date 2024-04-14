@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: benches-web
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/opt/benches/
+    depends_on:
+      - db
+      - minio
+      - redis
+
+  db:
+    image: postgres:12.0-alpine
+    container_name: benches-db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file: .env
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+      interval: 10s
+      timeout: 15s
+      retries: 5
+
+  redis:
+    image: redis:7.0
+    command:
+      - /bin/sh
+      - -c
+      - redis-server --requirepass "$${REDIS_PASSWORD:?REDIS_PASSWORD variable is not set}"
+    container_name: benches-redis
+    volumes:
+      - redis_data:/bitnami/redis/data
+    ports:
+      - "6379:6379"
+    env_file: .env
+
+  minio:
+    image: minio/minio:latest
+    command: server --console-address ":9001" /data
+    restart: always
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    env_file: .env
+    volumes:
+      - minio_data:/data
+      - minio_config:/root/.minio
+
+
+volumes:
+  postgres_data:
+  minio_data:
+  minio_config:
+  redis_data:
