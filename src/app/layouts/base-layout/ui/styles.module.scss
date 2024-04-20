@@ -1,0 +1,10 @@
+.base-layout {
+  min-height: 100%;
+
+  &__content {
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    background-color: var(--color-background-main);
+  }
+}
