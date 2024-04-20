@@ -1,14 +1,37 @@
 html {
-  &.light {
-    --color-primary: var(--color-blue-1);
-    --color-text: var(--color-dark);
+  --color-primary: var(--color-blue-1);
+  --color-text: var(--color-dark);
+  --color-background-main: var(--color-white-1);
+  --color-box-shadow-theme: rgb(var(--color-rgb-black-2) / 0.25);
+  --td-cell-background-color: var(--color-white);
+
+  .mantine-Table-table {
+    .mantine-Table {
+      &-tr {
+        &.active {
+          --td-cell-background-color: rgb(var(--color-rgb-blue-1) / 0.5);
+        }
+      }
+    }
   }
 
-  &.dark {
-    --color-background: var(--color-black-1);
+  &[data-mantine-color-scheme='dark'] {
+    --color-background-main: var(--color-black-1);
     --color-text: var(--color-white);
     --color-primary: var(--color-beige-1);
     --color-secondary: var(--color-beige-2);
-    --color-box-shadow: rgb(var(--color-rgb-dark) 0.25);
+    --color-box-shadow-theme: rgb(var(--color-rgb-white) / 0.25);
+
+    .mantine-Table-table {
+      .mantine-Table {
+        &-tr {
+          --td-cell-background-color: var(--color-black-2);
+
+          &.active {
+            --td-cell-background-color: rgb(var(--color-rgb-orange-1) / 0.6);
+          }
+        }
+      }
+    }
   }
 }

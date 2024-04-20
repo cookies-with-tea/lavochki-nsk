@@ -17,6 +17,11 @@ export const routes: Array<Route> = [
     id: 'ADMINS_PAGE',
     component: lazy(() => import('#pages/admins')),
   },
+  {
+    path: '/benches',
+    id: 'BENCHES_PAGE',
+    component: lazy(() => import('#pages/benches')),
+  },
 ]
 
 const getRoutes = (routes: Route[], root: AnyRoute): AnyRootRoute => {

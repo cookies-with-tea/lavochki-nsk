@@ -86,9 +86,15 @@ const adminsRoute = createRoute({
   component: lazy(() => import('#pages/admins')),
 })
 
+const benchesRoute = createRoute({
+  path: 'benches',
+  getParentRoute: () => staticPageLayoutRoute,
+  component: lazy(() => import('#pages/benches')),
+})
+
 const routeTree = rootRoute.addChildren([
   guestLayoutRoute.addChildren([loginRoute]),
-  staticPageLayoutRoute.addChildren([adminsRoute, homeRoute]),
+  staticPageLayoutRoute.addChildren([adminsRoute, homeRoute, benchesRoute]),
 ])
 
 const router = createRouter({ routeTree, context: { isAuth: false } })

@@ -1,10 +1,12 @@
 import cn from 'classnames'
 import cnBind from 'classnames/bind'
 
+import { IconNamesType } from '#shared/ui/UiIcon/types'
+
 import styles from './styles.module.scss'
 
 interface IProps {
-  name: string
+  name: IconNamesType
   className?: string
   prefix?: string
   reverse?: boolean

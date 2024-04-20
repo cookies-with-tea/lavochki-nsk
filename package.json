@@ -1,8 +1,6 @@
 {
   "name": "admin-panel",
-  "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 80",
     "build": "tsc && vite build",
@@ -12,14 +10,13 @@
     "eslint:fix": "pnpm eslint --fix",
     "stylelint": "stylelint \"**/*.{css,scss}\"",
     "stylelint:fix": "pnpm stylelint --fix",
-    "lint": "pnpm eslint && pnpm stylelint",
-    "lint:fix": "pnpm eslint:fix && pnpm stylelint:fix",
+    "lint": "pnpm eslint && pnpm stylelint && pnpm prettier",
+    "lint:fix": "pnpm eslint:fix && pnpm stylelint:fix && pnpm prettier:fix",
     "prettier": "prettier --check .",
     "prettier:fix": "prettier --write .",
     "type-check": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
-    "@farfetched/core": "^0.12.3",
     "@mantine/core": "^7.7.1",
     "@mantine/dates": "^7.7.1",
     "@mantine/form": "^7.7.1",
@@ -29,6 +26,7 @@
     "classnames": "^2.5.1",
     "effector": "^23.2.0",
     "effector-react": "^23.2.0",
+    "ky": "^1.2.3",
     "patronum": "^2.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
@@ -68,6 +66,7 @@
     "stylelint-config-recess-order": "^4.3.0",
     "stylelint-config-standard-scss": "^10.0.0",
     "ts-reset": "^0.0.1",
+    "typed-icon-template": "^0.0.3",
     "typescript": "^5.2.2",
     "vite": "^5.1.4",
     "vite-plugin-svg-icons": "^2.0.1",
