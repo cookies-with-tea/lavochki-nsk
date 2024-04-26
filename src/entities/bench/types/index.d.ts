@@ -31,5 +31,5 @@ declare namespace BenchTypes {
     decision: boolean
   }
 
-  type Variants = 'benches' | 'moderation'
+  type Variants = 'benches' | 'moderation' | 'tags'
 }

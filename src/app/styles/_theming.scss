@@ -3,13 +3,16 @@ html {
   --color-text: var(--color-dark);
   --color-background-main: var(--color-white-1);
   --color-box-shadow-theme: rgb(var(--color-rgb-black-2) / 0.25);
-  --td-cell-background-color: var(--color-white);
+  --card-background-color: var(--color-white);
+  --label-text-primary: var(--color-blue-3);
+  --label-text-success: var(--color-green-2);
+  --label-text-danger: var(--color-red-2);
 
   .mantine-Table-table {
     .mantine-Table {
       &-tr {
         &.active {
-          --td-cell-background-color: rgb(var(--color-rgb-blue-1) / 0.5);
+          --card-background-color: rgb(var(--color-rgb-blue-1) / 0.5);
         }
       }
     }
@@ -21,14 +24,17 @@ html {
     --color-primary: var(--color-beige-1);
     --color-secondary: var(--color-beige-2);
     --color-box-shadow-theme: rgb(var(--color-rgb-white) / 0.25);
+    --label-text-primary: var(--color-blue-1);
+    --label-text-success: var(--color-green-1);
+    --label-text-danger: var(--color-red);
 
     .mantine-Table-table {
       .mantine-Table {
         &-tr {
-          --td-cell-background-color: var(--color-black-2);
+          --card-background-color: var(--color-black-2);
 
           &.active {
-            --td-cell-background-color: rgb(var(--color-rgb-orange-1) / 0.6);
+            --card-background-color: rgb(var(--color-rgb-orange-1) / 0.6);
           }
         }
       }

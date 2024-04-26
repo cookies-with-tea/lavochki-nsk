@@ -2,55 +2,66 @@ import { Table, Checkbox, PaginationProps } from '@mantine/core'
 import { useUnit } from 'effector-react'
 import { useState } from 'react'
 
-import { benchesColumns } from '#pages/benches/config'
 import { benchesSelectors } from '#pages/benches/model/benches'
 
-import { UiTable } from '#shared/ui'
+import { BENCHES_MOCK_DATA } from '#entities/bench/mock'
 
-const elements = [
-  { position: 6, mass: 12.011, symbol: 'C', name: 'Carbon' },
-  { position: 7, mass: 14.007, symbol: 'N', name: 'Nitrogen' },
-  { position: 39, mass: 88.906, symbol: 'Y', name: 'Yttrium' },
-  { position: 56, mass: 137.33, symbol: 'Ba', name: 'Barium' },
-  { position: 58, mass: 140.12, symbol: 'Ce', name: 'Cerium' },
-]
+import { UiButton, UiTable } from '#shared/ui'
 
 const pagination: PaginationProps = {
   total: 110,
 }
 
 export const BenchesTable = () => {
-  const [selectedRows, setSelectedRows] = useState<number[]>([])
+  const [selectedRows, setSelectedRows] = useState<string[]>([])
   const [benches] = useUnit([benchesSelectors.benches])
 
-  const rows = elements.map((element) => (
-    <Table.Tr key={element.name} className={selectedRows.includes(element.position) ? 'active' : undefined}>
+  const rows = BENCHES_MOCK_DATA.items.map((element) => (
+    <Table.Tr key={element.id} className={selectedRows.includes(element.id) ? 'active' : undefined}>
       <Table.Td>
         <div className={'td-cell'}>
           <Checkbox
             aria-label="Select row"
-            checked={selectedRows.includes(element.position)}
+            checked={selectedRows.includes(element.id)}
             onChange={(event) =>
               setSelectedRows(
                 event.currentTarget.checked
-                  ? [...selectedRows, element.position]
-                  : selectedRows.filter((position) => position !== element.position)
+                  ? [...selectedRows, element.id]
+                  : selectedRows.filter((position) => position !== element.id)
               )
             }
           />
         </div>
       </Table.Td>
       <Table.Td>
-        <div className={'td-cell'}>{element.position}</div>
+        <div className={'td-cell'}>{element.id}</div>
       </Table.Td>
       <Table.Td>
-        <div className={'td-cell'}>{element.name}</div>
+        <div className={'td-cell'}>{element.owner}</div>
       </Table.Td>
       <Table.Td>
-        <div className={'td-cell'}>{element.symbol}</div>
+        <div className={'td-cell'}>{element.lat}</div>
       </Table.Td>
       <Table.Td>
-        <div className={'td-cell'}>{element.mass}</div>
+        <div className={'td-cell'}>{element.lng}</div>
+      </Table.Td>
+      <Table.Td>
+        <div className={'td-cell'}>{element.street}</div>
+      </Table.Td>
+      <Table.Td>
+        <div className={'td-cell'}>{element.lng}</div>
+      </Table.Td>
+      <Table.Td style={{ width: '180px' }}>
+        <div className={'td-cell'}>
+          <UiButton as={'text'}>Редактировать</UiButton>
+        </div>
+      </Table.Td>
+      <Table.Td style={{ width: '160px' }}>
+        <div className={'td-cell'}>
+          <UiButton as={'text'} appearance={'danger'}>
+            Удалить
+          </UiButton>
+        </div>
       </Table.Td>
     </Table.Tr>
   ))
@@ -62,13 +73,38 @@ export const BenchesTable = () => {
     <UiTable pagination={{ ...pagination, onChange: onPaginationChange }}>
       <Table.Thead>
         <Table.Tr>
-          <Table.Th />
-          <Table.Th>Element position</Table.Th>
-          <Table.Th>Element name</Table.Th>
-          <Table.Th>Symbol</Table.Th>
-          <Table.Th>Atomic mass</Table.Th>
+          <Table.Th>
+            <div className={'td-cell'}>
+              <Checkbox />
+            </div>
+          </Table.Th>
+          <Table.Th>
+            <div className={'td-cell'}>ID</div>
+          </Table.Th>
+          <Table.Th>
+            <div className={'td-cell'}>ID владельца</div>
+          </Table.Th>
+          <Table.Th>
+            <div className={'td-cell'}>Широта</div>
+          </Table.Th>
+          <Table.Th>
+            <div className={'td-cell'}>Долгота</div>
+          </Table.Th>
+          <Table.Th>
+            <div className={'td-cell'}>Адрес</div>
+          </Table.Th>
+          <Table.Th>
+            <div className={'td-cell'}>Дата создания</div>
+          </Table.Th>
+          <Table.Th>
+            <div className={'td-cell'} />
+          </Table.Th>
+          <Table.Th>
+            <div className={'td-cell'} />
+          </Table.Th>
         </Table.Tr>
       </Table.Thead>
+
       <Table.Tbody>{rows}</Table.Tbody>
     </UiTable>
   )

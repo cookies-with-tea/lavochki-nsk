@@ -1,8 +1,6 @@
 import { Table, Checkbox, PaginationProps } from '@mantine/core'
 import { useState } from 'react'
 
-import { benchesColumns } from '#pages/benches/config'
-
 import { UiTable } from '#shared/ui'
 
 const elements = [

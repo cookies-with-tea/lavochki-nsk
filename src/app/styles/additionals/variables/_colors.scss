@@ -20,6 +20,7 @@ $color--beige-2: #e59e6a;
 $color--orange: #f88f2f;
 $color--brown: #f88f2f;
 $color--red: #eb1313;
+$color--red-2: #c61a1a;
 $color--red-light: #eb5757;
 
 $gradient-blue-violet: linear-gradient(90deg, #4cdfe8 -0.58%, #7947f7 101.51%);
@@ -51,6 +52,7 @@ $colors: (
   orange-1: $color--orange,
   brown-1: $color--brown,
   red: $color--red,
+  red-2: $color--red-2,
   red-light: $color--red-light,
 
   background: $color--background,
