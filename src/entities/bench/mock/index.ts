@@ -1,7 +1,7 @@
 export const BENCHES_MOCK_DATA: BenchTypes.Response = {
   items: [
     {
-      id: 'qwerty-123',
+      id: '1',
       lat: 64.333,
       lng: 66.666,
       images: [],
@@ -11,7 +11,7 @@ export const BENCHES_MOCK_DATA: BenchTypes.Response = {
       street: 'Пушкина',
     },
     {
-      id: 'qwerty-123-2',
+      id: '2',
       lat: 64.333,
       lng: 66.666,
       images: [],
@@ -21,7 +21,7 @@ export const BENCHES_MOCK_DATA: BenchTypes.Response = {
       street: 'Пушкина',
     },
     {
-      id: 'qwerty-123-3',
+      id: '3',
       lat: 64.333,
       lng: 66.666,
       images: [],

@@ -1,4 +1,4 @@
-import { createEvent, createStore } from 'effector'
+import { attach, createEvent, createStore } from 'effector'
 import { createGate } from 'effector-react'
 
 import { benchApiFx } from '#entities/bench'
@@ -8,6 +8,8 @@ import { searchParams } from '#shared/lib/utils'
 const { get, set } = searchParams()
 
 export const BenchesPageGate = createGate()
+
+const attachedFx = attach({ effect: benchApiFx.getAllFx })
 
 const tabChanged = createEvent<BenchTypes.Variants>()
 
@@ -27,7 +29,7 @@ BenchesPageGate.status.watch(async (opened) => {
   }
 
   if (opened) {
-    await benchApiFx.getAllFx()
+    attachedFx()
   }
 })
 
