@@ -1,6 +1,47 @@
 import { createEvent, createStore, sample } from 'effector'
 import { attach } from 'effector'
+import { createForm } from 'effector-forms'
 import { not } from 'patronum'
+
+import { benchApiFx } from '#entities/bench'
+
+export const createBenchForm = createForm<BenchTypes.Create>({
+  fields: {
+    lat: {
+      init: 0,
+      rules: [
+        {
+          name: 'lat',
+          validator: (value) => Boolean(value),
+        },
+      ],
+    },
+    lng: {
+      init: 0,
+      rules: undefined,
+      filter: undefined,
+      validateOn: undefined,
+      units: undefined,
+    },
+    owner: {
+      init: '',
+      rules: undefined,
+      filter: undefined,
+      validateOn: undefined,
+      units: undefined,
+    },
+    tags: {
+      init: [],
+      rules: undefined,
+      filter: undefined,
+      validateOn: undefined,
+      units: undefined,
+    },
+  },
+  validateOn: ['submit'],
+})
+
+const attachedCreateBenchFx = attach({ effect: benchApiFx.createFx })
 
 // const localGetTagsFx = attach({ effect: getTagsFx })
 
@@ -29,22 +70,10 @@ $tags.on(tagsChanged, (_, tags) => tags)
 $isDialogOpen.on(dialogOpened, () => true)
 $isDialogOpen.on(dialogClosed, () => false)
 
-// sample({
-//   clock: dialogOpened,
-//   target: localGetTagsFx,
-// })
-
-// sample({
-//   clock: formSubmitted,
-//   source: { lat: $lat, lng: $lng, tags: $tags, images: $images },
-//   filter: not(createBenchFx.pending), // TODO: Изменить на $isFormDisabled
-//   target: createBenchFx,
-// })
-
-// sample({
-//   clock: createBenchFx.done,
-//   target: dialogClosed,
-// })
+sample({
+  clock: createBenchForm.formValidated,
+  target: attachedCreateBenchFx,
+})
 
 export const createBenchSelectors = {
   tags: $tags,

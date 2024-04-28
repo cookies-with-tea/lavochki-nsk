@@ -25,6 +25,8 @@ declare namespace BenchTypes {
 
   type Update = Pick<BenchTypes.One, 'id' | 'lat' | 'lng'> & { tags: Array<string> } & { images: any }
 
+  type Create = Pick<BenchTypes.One, 'lat' | 'lng' | 'owner'> & { tags: Array<string> }
+
   type DecisionFormModel = {
     message: string
     id: string

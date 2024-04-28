@@ -3,6 +3,7 @@ import cn from 'classnames'
 import cnBind from 'classnames/bind'
 
 import styles from './styles.module.scss'
+
 const cx = cnBind.bind(styles)
 
 interface IUiButtonProps extends ButtonProps, ElementProps<'button', keyof ButtonProps> {

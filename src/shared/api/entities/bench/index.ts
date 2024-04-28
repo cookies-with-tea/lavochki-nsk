@@ -1,7 +1,7 @@
 import { AbstractBenchApi } from '#shared/api/entities/bench/bench.abstract'
 
 class BenchApi extends AbstractBenchApi {
-  create = async (payload: any) => {
+  create = async (payload: BenchTypes.Create) => {
     return await this.baseFetch<BenchTypes.All>('', {
       method: 'post',
     })
