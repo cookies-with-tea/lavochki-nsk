@@ -1,5 +1,5 @@
 declare namespace UserTypes {
-  export type TelegramType = {
+  type TelegramType = {
     auth_date: number
     first_name: string
     hash: string
@@ -9,10 +9,14 @@ declare namespace UserTypes {
     username: string
   }
 
-  export type One = {
+  type One = {
     id: string
     role: 'user' | 'admin'
     telegram_id: number
     username: string
   }
+
+  type All = Array<One>
+
+  type ResponseType = CommonTypes.TableType<UserTypes.All>
 }

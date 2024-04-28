@@ -1,4 +1,4 @@
-import { AbstractBenchApi } from '#shared/api/entities/bench/bench.abstract'
+import { AbstractBenchApi } from '#entities/bench/api/repositories.abstract'
 
 class BenchApi extends AbstractBenchApi {
   create = async (payload: BenchTypes.Create) => {

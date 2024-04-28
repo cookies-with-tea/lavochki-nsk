@@ -19,4 +19,9 @@ declare namespace CommonTypes {
   }
 
   type PayloadPagination = Omit<Pagination, 'total'>
+
+  type TableType<T = unknown> = {
+    items: T
+    pagination: CommonTypes.ResponsePagination
+  }
 }
