@@ -6,8 +6,11 @@ import { detailBenchSelectors, detailBenchEvents } from './model/detail-bench'
 export const DetailBenchDrawer = () => {
   const closed = useUnit(detailBenchEvents.drawerClosed)
 
-  const [open] = useUnit([detailBenchSelectors.isDrawerOpen])
+  // data
   const [detailBench] = useUnit([detailBenchSelectors.detailBench])
+
+  // states
+  const [open] = useUnit([detailBenchSelectors.isDrawerOpen])
 
   return (
     <Drawer
