@@ -24,4 +24,6 @@ declare namespace CommonTypes {
     items: T
     pagination: CommonTypes.ResponsePagination
   }
+
+  type Status = 'success' | 'error'
 }

@@ -1,0 +1,6 @@
+export { BenchesModerationTable } from '#pages/benches/ui/components/BenchesModerationTable/BenchesModerationTable'
+export { BenchesTable } from '#pages/benches/ui/components/BenchesTable/BenchesTable'
+export { BenchesTagsTable } from '#pages/benches/ui/components/BenchesTagsTable/BenchesTagsTable'
+export { CreateBenchModal } from '#pages/benches/ui/components/CreateBenchModal/CreateBenchModal'
+export { DetailBenchDrawer } from '#pages/benches/ui/components/DetailBenchDrawer/DetailBenchDrawer'
+export { EditBenchModal } from '#pages/benches/ui/components/EditBenchModal/EditBenchModal'

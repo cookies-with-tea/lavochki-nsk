@@ -3,13 +3,13 @@ import { useUnit } from 'effector-react'
 import { useState } from 'react'
 
 import { benchesSelectors } from '#pages/benches/model/benches'
-import { detailBenchEvents } from '#pages/benches/model/detail-bench'
+import { deleteBenchEvents } from '#pages/benches/ui/components/BenchesTable/model/delete-bench'
+import { detailBenchEvents } from '#pages/benches/ui/components/DetailBenchDrawer/model/detail-bench'
+import { editBenchEvents } from '#pages/benches/ui/components/EditBenchModal/model/edit-bench'
 
 import { BENCHES_MOCK_DATA } from '#entities/bench/mock'
 
 import { UiButton, UiTable } from '#shared/ui'
-
-import { deleteBenchEvents } from '../model/delete'
 
 const pagination: PaginationProps = {
   total: 110,
@@ -17,10 +17,11 @@ const pagination: PaginationProps = {
 
 export const BenchesTable = () => {
   const [selectedRows, setSelectedRows] = useState<string[]>([])
-  const [benches] = useUnit([benchesSelectors.benches])
-
-  const [handleDrawerOpen, handleDialogOpen] = useUnit([detailBenchEvents.drawerOpened, detailBenchEvents.dialogOpened])
   const [handleBenchDelete] = useUnit([deleteBenchEvents.benchDeleted])
+
+  const [benches] = useUnit([benchesSelectors.benches])
+  const [handleDrawerOpen] = useUnit([detailBenchEvents.drawerOpened])
+  const [handleModalOpen] = useUnit([editBenchEvents.modalOpened])
 
   const rows = BENCHES_MOCK_DATA.items.map((element) => (
     <Table.Tr
@@ -74,7 +75,7 @@ export const BenchesTable = () => {
             onClick={(event) => {
               event.stopPropagation()
 
-              handleDialogOpen(element.id)
+              handleModalOpen(element.id)
             }}
           >
             Редактировать
@@ -98,6 +99,7 @@ export const BenchesTable = () => {
       </Table.Td>
     </Table.Tr>
   ))
+
   const onPaginationChange = (page: number) => {
     console.log(page)
   }

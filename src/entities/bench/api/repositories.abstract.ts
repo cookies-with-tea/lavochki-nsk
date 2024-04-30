@@ -6,4 +6,5 @@ export abstract class AbstractBenchApi extends KyService {
   abstract getOne(id: BenchTypes.One['id']): Promise<BenchTypes.One>
   abstract updateOne(payload: BenchTypes.Update): Promise<any>
   abstract deleteOne(id: BenchTypes.One['id']): Promise<any>
+  abstract getTags(): Promise<BenchTypes.AllTags>
 }

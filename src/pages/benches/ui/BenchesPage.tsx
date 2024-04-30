@@ -2,16 +2,17 @@ import { Tabs } from '@mantine/core'
 import { useGate } from 'effector-react'
 
 import { benchesEvents, BenchesPageGate } from '#pages/benches/model'
-import { createBenchEvents } from '#pages/benches/model/create-bench'
+import {
+  BenchesModerationTable,
+  BenchesTable,
+  BenchesTagsTable,
+  CreateBenchModal,
+  DetailBenchDrawer,
+  EditBenchModal,
+} from '#pages/benches/ui/components'
+import { createBenchEvents } from '#pages/benches/ui/components/CreateBenchModal/model/create-bench'
 
 import { UiButton, UiIcon } from '#shared/ui'
-
-import { BenchesModerationTable } from './BenchesModerationTable'
-import { BenchesTable } from './BenchesTable'
-import { BenchesTagsTable } from './BenchesTagsTable'
-import { CreateBenchModal } from './CreateBenchModal'
-import { DetailBenchDrawer } from './DetailBenchDrawer'
-import { EditBenchModal } from './EditBenchModal'
 
 export const BenchesPage = () => {
   useGate(BenchesPageGate)
@@ -21,7 +22,7 @@ export const BenchesPage = () => {
       <div className={'header-container'}>
         <h1>Лавочки</h1>
 
-        <UiButton rightSection={<UiIcon name={'plus'} />} onClick={() => createBenchEvents.dialogOpened()}>
+        <UiButton rightSection={<UiIcon name={'plus'} />} onClick={() => createBenchEvents.modalOpened()}>
           Создать
         </UiButton>
       </div>

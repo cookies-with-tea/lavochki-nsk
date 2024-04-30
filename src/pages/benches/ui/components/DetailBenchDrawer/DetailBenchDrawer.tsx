@@ -1,7 +1,7 @@
 import { Drawer } from '@mantine/core'
 import { useUnit } from 'effector-react'
 
-import { detailBenchSelectors, detailBenchEvents } from '#pages/benches/model/detail-bench'
+import { detailBenchSelectors, detailBenchEvents } from './model/detail-bench'
 
 export const DetailBenchDrawer = () => {
   const closed = useUnit(detailBenchEvents.drawerClosed)

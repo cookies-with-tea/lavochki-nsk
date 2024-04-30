@@ -12,9 +12,9 @@ interface IUiButtonProps extends ButtonProps, ElementProps<'button', keyof Butto
 }
 
 export const UiButton = (props: IUiButtonProps) => {
-  const { as = 'button', appearance = 'primary', ...restProps } = props
+  const { as = 'button', appearance = 'primary', className, ...restProps } = props
 
-  const classes = cn('ui-button', cx('ui-button', `ui-button--${as}`, `ui-button--${appearance}`))
+  const classes = cn('ui-button', cx('ui-button', `ui-button--${as}`, `ui-button--${appearance}`), className)
 
   return (
     <Button className={classes} {...restProps}>

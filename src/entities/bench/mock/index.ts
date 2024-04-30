@@ -38,3 +38,16 @@ export const BENCHES_MOCK_DATA: BenchTypes.Response = {
     per_page: 10,
   },
 }
+
+export const BENCH_TAGS_MOCK_DATA: BenchTypes.AllTags = [
+  {
+    id: '1',
+    title: 'Классная лавочка',
+    active: true,
+  },
+  {
+    id: '2',
+    title: 'Рядом урна',
+    active: true,
+  },
+]

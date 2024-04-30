@@ -29,7 +29,7 @@ BenchesPageGate.status.watch(async (opened) => {
   }
 
   if (opened) {
-    attachedFx()
+    await attachedFx()
   }
 })
 

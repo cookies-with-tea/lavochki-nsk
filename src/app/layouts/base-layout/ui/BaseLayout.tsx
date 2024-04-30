@@ -6,6 +6,8 @@ import { Suspense } from 'react'
 import Header from '#widgets/header'
 import { MenuMap } from '#widgets/menu-map'
 
+import { UiCancelModal } from '#shared/ui'
+
 import styles from './styles.module.scss'
 
 const cx = cnBind.bind(styles)
@@ -26,6 +28,8 @@ export const BaseLayout = () => {
           </main>
         </div>
       </div>
+
+      <UiCancelModal />
     </div>
   )
 }

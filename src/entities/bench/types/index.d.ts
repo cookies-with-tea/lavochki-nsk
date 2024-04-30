@@ -1,9 +1,17 @@
 declare namespace BenchTypes {
-  type BenchTag = {
+  type DecisionFormModel = {
+    message: string
+    id: string
+    decision: boolean
+  }
+
+  type Tag = {
     id: string
     title: string
     active: boolean
   }
+
+  type AllTags = Array<BenchTypes.Tag>
 
   type One = {
     id: string
@@ -12,11 +20,11 @@ declare namespace BenchTypes {
     images: Array<string>
     owner: string
     is_active: boolean
-    tags: Array<BenchTag>
+    tags: BenchTypes.AllTags
     street: string
   }
 
-  type All = Array<One>
+  type All = Array<BenchTypes.One>
 
   type Response = {
     items: BenchTypes.All
@@ -26,12 +34,6 @@ declare namespace BenchTypes {
   type Update = Pick<BenchTypes.One, 'id' | 'lat' | 'lng'> & { tags: Array<string> } & { images: any }
 
   type Create = Pick<BenchTypes.One, 'lat' | 'lng' | 'owner'> & { tags: Array<string> }
-
-  type DecisionFormModel = {
-    message: string
-    id: string
-    decision: boolean
-  }
 
   type Variants = 'benches' | 'moderation' | 'tags'
 }

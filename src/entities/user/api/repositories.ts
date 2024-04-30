@@ -2,7 +2,7 @@ import { AbstractUserApi } from '#entities/user/api/repositories.abstract'
 
 class UserApi extends AbstractUserApi {
   getMe = async () => {
-    return await this.baseFetch<UserTypes.One>('', {
+    return await this.baseFetch<UserTypes.One>('1', {
       method: 'get',
     })
   }
