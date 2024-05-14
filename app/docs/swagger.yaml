@@ -1,0 +1,112 @@
+definitions:
+  internal_adapters_primary_httpv1_private_bench.BenchOutput:
+    properties:
+      id:
+        type: string
+      images:
+        items:
+          type: string
+        type: array
+      is_active:
+        type: boolean
+      lat:
+        type: number
+      lng:
+        type: number
+      owner_id:
+        type: string
+      street:
+        type: string
+    type: object
+  internal_adapters_primary_httpv1_private_bench.CreateBenchInput:
+    properties:
+      images:
+        items:
+          type: string
+        type: array
+      lat:
+        type: number
+      lng:
+        type: number
+      street:
+        type: string
+    type: object
+  internal_adapters_primary_httpv1_public_user.CreateUserInput:
+    properties:
+      auth_date:
+        type: integer
+      first_name:
+        type: string
+      hash:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      photo_url:
+        type: string
+      username:
+        type: string
+    type: object
+  internal_adapters_primary_httpv1_public_user.CredentialsOutput:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/private/benches:
+    post:
+      parameters:
+      - description: Bearer
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Информация о лавочке
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/internal_adapters_primary_httpv1_private_bench.CreateBenchInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/internal_adapters_primary_httpv1_private_bench.BenchOutput'
+        "400":
+          description: Bad Request
+        "418":
+          description: I'm a teapot
+      summary: Создание лавочки
+      tags:
+      - Benches
+  /api/v1/public/users:
+    post:
+      parameters:
+      - description: Информация о пользователе
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/internal_adapters_primary_httpv1_public_user.CreateUserInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/internal_adapters_primary_httpv1_public_user.CredentialsOutput'
+        "400":
+          description: Bad Request
+        "418":
+          description: I'm a teapot
+      summary: Регистрация пользователя
+      tags:
+      - Users
+swagger: "2.0"

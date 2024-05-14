@@ -1,0 +1,7 @@
+BEGIN;
+
+DROP TABLE IF EXISTS benches;
+DROP TABLE IF EXISTS tags;
+DROP TABLE IF EXISTS tags_benches;
+
+COMMIT;

@@ -6,7 +6,7 @@ COPY app/go.mod .
 COPY app/go.sum .
 RUN go mod download
 COPY ./app .
-RUN CGO_ENABLED=0 GOOS=linux go build -o /app/build/app ./cmd/initiator/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -o /app/build/app ./cmd/main.go
 
 # Run project
 FROM alpine:latest

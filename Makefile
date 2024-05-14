@@ -1,4 +1,5 @@
 APP_BIN = build/app
+SWAGGER_BIN = /home/saveme/go/bin/swag
 
 .PHONY: lint
 lint:
@@ -9,7 +10,7 @@ $(APP_BIN):
 
 .PHONY: swagger
 swagger:
-	swag init --parseDependency --parseInternal --parseDepth 1 -g ./cmd/initiator/main.go -o ./docs
+	$(SWAGGER_BIN) init --parseDependency --parseInternal --parseDepth 1 -g ./app/cmd/main.go -o ./app/docs
 
 docker-dev:
 	docker-compose up -d --build db redis minio
